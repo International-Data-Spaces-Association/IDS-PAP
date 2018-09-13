@@ -1,0 +1,12 @@
+<form action="#" th:action="@{/Policy/deletAfterPolicyForm}" th:object="${deletAfterPolicy}" method="post">
+  <p>Data: <input type="text" th:field="*{dataUrl}" /></p>
+  <p>Assigner: <input type="text" th:field="*{assigner}" /></p>
+  <p>Assignee: <input type="text" th:field="*{assigne}" /></p>
+  <p>Value: <input type="text" th:field="*{duration.value}" /></p>
+  <select th:field="*{duration.timeUnit}">
+  <option 
+      th:each="dropdownValue: ${singleSelectAllValues}"
+      th:value="${dropdownValue}"
+      th:text="${dropdownValue}" ></option>
+</select>
+</form>
