@@ -1,0 +1,18 @@
+<form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/Policy/ReadDataIntervalFormPolicy}" th:object="${readDataIntervalPolicy}" method="post">
+  <p>Data:
+  <input type="text" th:field="*{dataUrl}" /></p>
+  <p>Assigner:
+  <input type="text" th:field="*{assigner}" /></p>
+  <p>Assignee:
+  <input type="text" th:field="*{assignee}" /></p>
+  <p> Interval Condition:
+  <select th:field="*{intervalCondition}">
+  <option 
+      th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.pap.model.IntervalCondition).values()}"
+      th:value="${dropdownValue}"
+      th:text="${dropdownValue}" ></option>
+</select>
+<p>Start Time: <input type="text" th:field="*{startTime}"/> e.g. 2011-12-03T10:15:30Z</p>
+<p>End Time: <input type="text" th:field="*{endTime}" />  e.g. 2011-12-03T10:15:30Z</p>
+<button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+</form>

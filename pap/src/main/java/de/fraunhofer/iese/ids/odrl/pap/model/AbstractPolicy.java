@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 public abstract class AbstractPolicy {
-	URL data;
+	URL dataUrl;
 	String assigner;
 	String assignee;
 }

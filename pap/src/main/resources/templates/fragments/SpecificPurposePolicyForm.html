@@ -1,0 +1,6 @@
+<form th:action="@{/policy/SpecificPurposePolicyODRL}" th:object="${specificPurposePolicy}" method="post">
+  <p>Data: <input type="text" th:field="*{dataUrl}" /></p>
+  <p>Assigner: <input type="text" th:field="*{assigner}" /></p>
+  <p>Assignee: <input type="text" th:field="*{assignee}" /></p>
+  <p>Purpose: <input type="text" th:field="*{purpose}" /></p>
+  <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>

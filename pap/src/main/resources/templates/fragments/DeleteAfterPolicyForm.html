@@ -1,0 +1,14 @@
+<form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/Policy/deleteAfterPolicyForm}" th:object="${deleteAfterPolicy}" method="post">
+  <p>Data: <input type="text" th:field="*{dataUrl}" /></p>
+  <p>Assigner: <input type="text" th:field="*{assigner}" /></p>
+  <p>Assignee: <input type="text" th:field="*{assignee}" /></p>
+  <p>Value: <input type="text" size="5" "*{duration.value}" /> 
+<select th:field="*{duration.timeUnit}">
+  <option 
+      th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.pap.model.TimeUnit).values()}"
+      th:value="${dropdownValue}"
+      th:text="${dropdownValue}" ></option>
+</select>
+</p>
+<button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+</form>

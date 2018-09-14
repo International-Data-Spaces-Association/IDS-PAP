@@ -8,6 +8,14 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class DeleteDataAtferPolicy extends AbstractPolicy {
+public class DeleteAtferPolicy extends AbstractPolicy {
 	Duration duration;
+	
+//	public void setValue(int value) {
+//		duration.setValue(value);
+//	}
+//	
+//	public void setTimeUnit(TimeUnit timeUnit) {
+//		duration.setTimeUnit(timeUnit);
+//	}
 }
