@@ -10,4 +10,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class SpecificPurposePolicy extends AbstractPolicy {
 	String purpose;
+
+	public String getPurpose() {
+		return purpose;
+	}
 }

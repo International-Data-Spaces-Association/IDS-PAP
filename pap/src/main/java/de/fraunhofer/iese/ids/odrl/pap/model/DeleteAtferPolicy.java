@@ -10,7 +10,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class DeleteAtferPolicy extends AbstractPolicy {
 	Duration duration;
-	
+
+    public Duration getDuration() {
+        return duration;
+    }
+
 //	public void setValue(int value) {
 //		duration.setValue(value);
 //	}

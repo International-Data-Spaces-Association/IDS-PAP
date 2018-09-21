@@ -1,18 +1,17 @@
-<form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/Policy/ReadDataIntervalFormPolicy}" th:object="${readDataIntervalPolicy}" method="post">
-  <p>Data:
-  <input type="text" th:field="*{dataUrl}" /></p>
-  <p>Assigner:
-  <input type="text" th:field="*{assigner}" /></p>
-  <p>Assignee:
-  <input type="text" th:field="*{assignee}" /></p>
-  <p> Interval Condition:
+<form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/ReadDataIntervalPolicyODRL}" th:object="${readDataIntervalPolicy}" method="post">
+  <p>Data: <input type="text" th:field="*{dataUrl}" /> e.g. http://example.com/ids-data:1254</p>
+  <p>Assigner: <input type="text" th:field="*{assigner}" /> e.g. http://example.com/ids-party:my-party</p>
+  <p>Assignee: <input type="text" th:field="*{assignee}" /> e.g. http://example.com/ids-party:consumer-party</p>
+<!--  <p> Interval Condition:
   <select th:field="*{intervalCondition}">
   <option 
       th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.pap.model.IntervalCondition).values()}"
       th:value="${dropdownValue}"
       th:text="${dropdownValue}" ></option>
-</select>
-<p>Start Time: <input type="text" th:field="*{startTime}"/> e.g. 2011-12-03T10:15:30Z</p>
-<p>End Time: <input type="text" th:field="*{endTime}" />  e.g. 2011-12-03T10:15:30Z</p>
+</select>-->
+<p>Start Time: <input placeholder="2018-09-03T08:15:30Z" type="text" th:field="*{startTime}"/>e.g. 2018-09-03T08:15:30Z</p>
+<p>End Time: <input placeholder="2018-09-23T20:05:00Z" type="text" th:field="*{endTime}" />e.g. 2018-09-23T20:05:00Z</p>
 <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+  <p/>
+  <p>NOTE: you can leave the "Assignee" empty if you want the data to be available for all parties.</p>
 </form>

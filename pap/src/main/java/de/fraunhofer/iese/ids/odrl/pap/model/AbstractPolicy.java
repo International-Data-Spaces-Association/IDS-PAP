@@ -16,4 +16,16 @@ public abstract class AbstractPolicy {
 	URL dataUrl;
 	String assigner;
 	String assignee;
+
+	public String getAssignee() {
+		return assignee;
+	}
+
+	public URL getDataUrl() {
+		return dataUrl;
+	}
+
+	public String getAssigner() {
+		return assigner;
+	}
 }

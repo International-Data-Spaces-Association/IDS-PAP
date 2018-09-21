@@ -10,4 +10,20 @@ import lombok.Data;
 public class Duration {
  int value;
  TimeUnit timeUnit;
+
+ public void setValue(){
+  this.value = 1;
+ }
+
+ public int getValue() {
+  return value;
+ }
+
+ public void setTimeUnit(){
+  this.timeUnit = TimeUnit.HOURS;
+ }
+
+ public TimeUnit getTimeUnit() {
+  return timeUnit;
+ }
 }

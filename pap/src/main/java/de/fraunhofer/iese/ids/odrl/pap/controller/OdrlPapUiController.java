@@ -3,6 +3,8 @@
  */
 package de.fraunhofer.iese.ids.odrl.pap.controller;
 
+import de.fraunhofer.iese.ids.odrl.pap.Util.DeleteAfterPolicyOdrlCreator;
+import de.fraunhofer.iese.ids.odrl.pap.Util.ReadDataIntervalPolicyOdrlCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -40,17 +42,29 @@ public class OdrlPapUiController {
 	    return "index";
 	  }
 	  
-	  
 	  @RequestMapping("/policy/DeleteAfterPolicyForm")
 	  public String policy(@ModelAttribute("deleteAfterPolicy") DeleteAtferPolicy deleteAfterPolicy,  Model model) {
 		  model.addAttribute(POLICY_FRAGMENT, "DeleteAfterPolicyForm");
 	    return "index";
 	  }
-	  
+
+	  @RequestMapping("/policy/DeleteAfterPolicyODRL")
+	  public String odrlPolicy(@ModelAttribute DeleteAtferPolicy deleteAtferPolicy,  Model model) {
+	  	model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlPolicy", DeleteAfterPolicyOdrlCreator.createODRL(deleteAtferPolicy));
+		return "index";
+	}
+
 	  @RequestMapping("/policy/ReadDataIntervalPolicyForm")
 	  public String policy(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy,  Model model) {
 		  model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 	    return "index";
 	  }
 
+	@RequestMapping("/policy/ReadDataIntervalPolicyODRL")
+	public String odrlPolicy(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy,  Model model) {
+		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlPolicy", ReadDataIntervalPolicyOdrlCreator.createODRL(readDataIntervalPolicy));
+		return "index";
+	}
 }

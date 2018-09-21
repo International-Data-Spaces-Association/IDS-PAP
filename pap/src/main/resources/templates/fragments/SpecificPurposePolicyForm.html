@@ -1,6 +1,9 @@
 <form th:action="@{/policy/SpecificPurposePolicyODRL}" th:object="${specificPurposePolicy}" method="post">
-  <p>Data: <input type="text" th:field="*{dataUrl}" /></p>
-  <p>Assigner: <input type="text" th:field="*{assigner}" /></p>
-  <p>Assignee: <input type="text" th:field="*{assignee}" /></p>
-  <p>Purpose: <input type="text" th:field="*{purpose}" /></p>
+  <p>Data: <input type="text" th:field="*{dataUrl}" /> e.g. http://example.com/ids-data:1254</p>
+  <p>Assigner: <input type="text" th:field="*{assigner}" /> e.g. http://example.com/ids-party:my-party</p>
+  <p>Assignee: <input type="text" th:field="*{assignee}" /> e.g. http://example.com/ids-party:consumer-party</p>
+  <p>Purpose: <input type="text" th:field="*{purpose}" /> e.g. Risk Management</p>
   <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+  <p/>
+  <p>NOTE: you can leave the "Assignee" empty if you want the data to be available for all parties.</p>
+</form>

@@ -17,7 +17,7 @@ public class SpecificPurposePolicyOdrlCreator {
 		//set target
 		String target = "";
 		if(null != specificPurposePolicy.getDataUrl()) {
-			target = specificPurposePolicy.getAssigner().toString();
+			target = specificPurposePolicy.getDataUrl().toString();
 		}
 		
 		//set assigner 
@@ -26,7 +26,7 @@ public class SpecificPurposePolicyOdrlCreator {
 			assigner = specificPurposePolicy.getAssigner();
 		}
 		
-		//set assigner 
+		//set purpose
 		String purpose = "";
 		if(null != specificPurposePolicy.getPurpose()) {
 			purpose = specificPurposePolicy.getPurpose();
