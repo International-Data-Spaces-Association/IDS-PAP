@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>ODRL PAP</title>
+<div th:include="fragments/css" th:remove="tag"></div>
+</head>
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			<div th:include="sidemenu"></div>
+			<div class="right_col" style="height: 100vh;" role="main">
+			<div class="mainheader">
+			<div class="col-md-10 col-sm-10 col-xs-8">
+					<div class="x_content settings" style="padding:15px;">
+					<div th:if="${policyFragment == 'SpecificPurposePolicyForm'}" th:include="fragments/SpecificPurposePolicyForm" th:remove="tag"></div>
+ 					<div th:if="${policyFragment == 'DeleteAfterPolicyForm'}" th:include="fragments/DeleteAfterPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'ReadDataIntervalPolicyForm'}" th:include="fragments/ReadDataIntervalPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'odrl'}"  th:remove="tag">
+					<textarea style="width:100%; height:80vh">[[${odrlPolicy}]]</textarea>
+					</div> 
+			</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="fragments/scripts :: bottom" th:remove="tag"></div>
+	<script src="/static/js/addSolution.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+a.countdown{
+	display: block;
+	padding: 10px 15px;
+    margin: 10px 3px;
+    position: relative;
+}
+i.countdown{
+	float: left;
+	line-height: 32px;
+}
+p.countdown{
+	float: left;
+}
+.countdown{
+	font-size: 1em;
+}
+.danger {
+    animation-duration: 1s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+@keyframes blink {
+    from {
+        opacity: 0.5;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+i.danger{
+		color: #f34848;
+}
