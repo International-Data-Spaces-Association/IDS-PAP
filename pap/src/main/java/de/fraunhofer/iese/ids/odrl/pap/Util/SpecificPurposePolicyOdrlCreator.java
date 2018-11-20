@@ -1,31 +1,36 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.SpecificPurposePolicy;
 
 public class SpecificPurposePolicyOdrlCreator {
 	
 	public static String createODRL(SpecificPurposePolicy specificPurposePolicy){
-		
+
+		//set type
+		String type = "";
+		if(null != specificPurposePolicy.getPolicyType()) {
+			type = specificPurposePolicy.getPolicyType().toString();
+		}
+
+		//set assigner
+		String assigner = "";
+		if(null != specificPurposePolicy.getAssigner() && !specificPurposePolicy.getAssigner().isEmpty() && !specificPurposePolicy.getPolicyType().equals(PolicyType.Request)) {
+			assigner = "      \"assigner\": \"" + specificPurposePolicy.getAssigner() + "\",    \r\n";
+		}
+
 		//set type and assignee
-		String type = "Offer";
 		String assignee = "";
-		if( null != specificPurposePolicy.getAssignee() && !specificPurposePolicy.getAssignee().isEmpty()) {
-			type = "Agreement";
+		if( null != specificPurposePolicy.getAssignee() && !specificPurposePolicy.getAssignee().isEmpty() && !specificPurposePolicy.getPolicyType().equals(PolicyType.Offer)) {
 			assignee = "      \"assignee\": \"" + specificPurposePolicy.getAssignee() + "\",    \r\n";
 		}
-		
+
 		//set target
 		String target = "";
 		if(null != specificPurposePolicy.getDataUrl()) {
 			target = specificPurposePolicy.getDataUrl().toString();
 		}
-		
-		//set assigner 
-		String assigner = "";
-		if(null != specificPurposePolicy.getAssigner()) {
-			assigner = specificPurposePolicy.getAssigner();
-		}
-		
+
 		//set purpose
 		String purpose = "";
 		if(null != specificPurposePolicy.getPurpose()) {
@@ -38,8 +43,7 @@ public class SpecificPurposePolicyOdrlCreator {
 				"  \"@type\": \"%s\",    \r\n" + 
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
 				"  \"permission\": [{    \r\n" + 
-				"      \"target\": \"%s\",    \r\n" + 
-				"      \"assigner\": \"%s\",    \r\n%s" + 
+				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": \"read\",     \r\n" + 
 				"      \"constraint\": [{    \r\n" + 
 				"        \"leftOperand\": \"purpose\",    \r\n" + 

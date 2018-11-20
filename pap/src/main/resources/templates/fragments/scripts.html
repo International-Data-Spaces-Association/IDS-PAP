@@ -5,9 +5,12 @@
 </div>
 
 <div th:fragment="bottom">
+
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
 <script	type="text/javascript"	src="/static/js/bootstrap.min.js"></script>
-<script	type="text/javascript" src="/static/js/custom.js"></script>
- 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <script	type="text/javascript"	src="/static/js/bootbox.min.js"></script>
 <script	type="text/javascript"	src="/static/js/pnotify.js"></script>
@@ -21,4 +24,68 @@
 <script type="text/javascript" src="/static/js/datatables.min.js"></script>
 <script type="text/javascript" src="/static/js/dataTables.checkboxes.min.js"></script>
 <script	type="text/javascript"	src="/static/js/icheck.min.js"></script>
+<script type="text/javascript">
+    function disableAffiliationBox(control)	{
+
+        var assigner = document.getElementById('assigner');
+        var assignee = document.getElementById('assignee');
+
+        var assignerInput = document.getElementById('assignerInput');
+        var assigneeInput = document.getElementById('assigneeInput');
+
+        if (control.value == 'Offer') {
+            assigner.style.display = 'block';
+            assignerInput.setAttribute('required', '');
+            assignee.style.display = 'none';
+            assigneeInput.removeAttribute("required");
+        } else if (control.value == 'Request'){
+            assigner.style.display = 'none';
+            assignerInput.removeAttribute("required");
+            assignee.style.display = 'block';
+            assigneeInput.setAttribute('required', '');
+        } else{
+            assigner.style.display = 'block';
+            assignerInput.setAttribute('required', '');
+            assignee.style.display = 'block';
+            assigneeInput.setAttribute('required', '');
+        }
+    }
+
+    function activateButton(control)	{
+        var saveBtn = document.getElementById('saveBtn');
+
+        if(control.value != ""){
+            saveBtn.removeAttribute('disabled');
+        }else{
+            saveBtn.setAttribute('disabled',true);
+        }
+    }
+
+	// start time picker
+    $('input[name="startTime"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDThh:mm:ss'
+            },
+        "startDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New start time selected: ' + start.toISOString());
+    });
+
+	// end time picker
+    $('input[name="endTime"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDThh:mm:ss'
+            },
+        "endDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New end time selected: ' + end.toISOString());
+    });
+
+</script>
 </div>

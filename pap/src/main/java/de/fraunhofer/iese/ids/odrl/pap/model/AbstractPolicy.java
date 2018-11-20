@@ -13,9 +13,14 @@ import lombok.Data;
  */
 @Data
 public abstract class AbstractPolicy {
+	PolicyType policyType;
 	URL dataUrl;
 	String assigner;
 	String assignee;
+
+	public PolicyType getPolicyType() {
+		return policyType;
+	}
 
 	public String getAssignee() {
 		return assignee;

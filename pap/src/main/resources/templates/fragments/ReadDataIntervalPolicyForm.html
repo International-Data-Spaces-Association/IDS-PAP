@@ -1,7 +1,14 @@
 <form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/ReadDataIntervalPolicyODRL}" th:object="${readDataIntervalPolicy}" method="post">
-  <p>Data: <input type="text" th:field="*{dataUrl}" /> e.g. http://example.com/ids-data:1254</p>
-  <p>Assigner: <input type="text" th:field="*{assigner}" /> e.g. http://example.com/ids-party:my-party</p>
-  <p>Assignee: <input type="text" th:field="*{assignee}" /> e.g. http://example.com/ids-party:consumer-party</p>
+  <p>Policy*:
+    <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
+      <option value="Agreement">Agreement</option>
+      <option value="Offer">Offer</option>
+      <option value="Request">Request</option>
+    </select>
+  </p>
+  <p>Data*: <input required="required" type="text" size="60" placeholder=" e.g. http://example.com/ids-data:1254" th:field="*{dataUrl}" /></p>
+  <p id="assigner" >Assigner*: <input id="assignerInput" required="required" type="text" size="60" placeholder=" e.g. http://example.com/ids-party:my-party" th:field="*{assigner}" /></p>
+  <p id="assignee" >Assignee*: <input id="assigneeInput" required="required" type="text" size="60" placeholder=" e.g. http://example.com/ids-party:consumer-party" th:field="*{assignee}" /></p>
 <!--  <p> Interval Condition:
   <select th:field="*{intervalCondition}">
   <option 
@@ -9,9 +16,8 @@
       th:value="${dropdownValue}"
       th:text="${dropdownValue}" ></option>
 </select>-->
-<p>Start Time: <input placeholder="2018-09-03T08:15:30Z" type="text" th:field="*{startTime}"/>e.g. 2018-09-03T08:15:30Z</p>
-<p>End Time: <input placeholder="2018-09-23T20:05:00Z" type="text" th:field="*{endTime}" />e.g. 2018-09-23T20:05:00Z</p>
+<p>Start Time*: <input name="startTime" required="required" type="text" th:field="*{startTime}"/></p>
+<p>End Time*: <input name="endTime" required="required" type="text" th:field="*{endTime}" /></p>
 <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
   <p/>
-  <p>NOTE: you can leave the "Assignee" empty if you want the data to be available for all parties.</p>
 </form>

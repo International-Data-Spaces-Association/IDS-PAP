@@ -5,6 +5,7 @@ package de.fraunhofer.iese.ids.odrl.pap.controller;
 
 import de.fraunhofer.iese.ids.odrl.pap.Util.DeleteAfterPolicyOdrlCreator;
 import de.fraunhofer.iese.ids.odrl.pap.Util.ReadDataIntervalPolicyOdrlCreator;
+import de.fraunhofer.iese.ids.odrl.pap.model.Duration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -44,7 +45,11 @@ public class OdrlPapUiController {
 	  
 	  @RequestMapping("/policy/DeleteAfterPolicyForm")
 	  public String policy(@ModelAttribute("deleteAfterPolicy") DeleteAtferPolicy deleteAfterPolicy,  Model model) {
-		  model.addAttribute(POLICY_FRAGMENT, "DeleteAfterPolicyForm");
+		  Duration duration = new Duration();
+		  duration.setValue();
+		  duration.setTimeUnit();
+		  deleteAfterPolicy.setDuration(duration);
+	  	model.addAttribute(POLICY_FRAGMENT, "DeleteAfterPolicyForm");
 	    return "index";
 	  }
 
