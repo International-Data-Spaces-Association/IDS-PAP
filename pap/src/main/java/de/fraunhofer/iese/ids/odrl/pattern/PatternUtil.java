@@ -10,6 +10,7 @@ import java.util.Map;
 import de.fraunhofer.iese.ids.odrl.pap.model.CategorizedPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.ProvideAccessPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.ReadDataIntervalPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.SpecificPurposePolicy;
 
 @SuppressWarnings("rawtypes")
@@ -41,10 +42,12 @@ public class PatternUtil {
 		String assignee = permissionMap.get("assignee").toString();
 		
 		CategorizedPolicy categorizedPolicy = recognizePattern(permissionMap);
-		categorizedPolicy.setPolicyType(policyType);
-		categorizedPolicy.setDataUrl(dataUrl);
-		categorizedPolicy.setAssigner(assigner);
-		categorizedPolicy.setAssignee(assignee);
+		if(null != categorizedPolicy) {
+			categorizedPolicy.setPolicyType(policyType);
+			categorizedPolicy.setDataUrl(dataUrl);
+			categorizedPolicy.setAssigner(assigner);
+			categorizedPolicy.setAssignee(assignee);
+		}
 		
 		return categorizedPolicy;
 	}
@@ -83,6 +86,9 @@ public class PatternUtil {
 			specificPurposePolicy.setPurpose(rightOperandValue);
 			return specificPurposePolicy;
 		}
+		if(isReadDataInterval(permissionMap)) {
+			return new ReadDataIntervalPolicy();
+		}
 		return null;
 	}
 	
@@ -94,6 +100,11 @@ public class PatternUtil {
 	
 	public static boolean isSpecificPurpose(Map permissionMap) {
 		return (actionIsRead(permissionMap) && constraintLeftOperandIsPurpose(permissionMap));
+	}
+
+	public static boolean isReadDataInterval(Map permissionMap) {
+		//TODO
+		return false;
 	}
 	
 	public static String getConstraintRightOperandValue(Map permissionMap) {
@@ -134,10 +145,7 @@ public class PatternUtil {
 		return false;
 	}
 	
-	public static boolean isReadForInterval(Map permissionMap) {
-		//TODO
-		return false;
-	}
+
 	
 	public static boolean isLogAccess(Map permissionMap) {
 		//TODO
