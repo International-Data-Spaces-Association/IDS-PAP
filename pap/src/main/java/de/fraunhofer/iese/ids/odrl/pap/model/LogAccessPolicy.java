@@ -15,4 +15,5 @@ public class LogAccessPolicy extends AbstractPolicy {
 	public String getRecipient() {
 		return recipient;
 	}
+
 }

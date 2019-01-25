@@ -12,7 +12,7 @@ import lombok.Data;
  *
  */
 @Data
-public abstract class AbstractPolicy {
+public abstract class AbstractPolicy implements CategorizedPolicy{
 	PolicyType policyType;
 	URL dataUrl;
 	String assigner;

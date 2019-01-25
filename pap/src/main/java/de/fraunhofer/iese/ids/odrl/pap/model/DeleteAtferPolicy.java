@@ -19,5 +19,4 @@ public class DeleteAtferPolicy extends AbstractPolicy {
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
-
 }
