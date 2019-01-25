@@ -19,6 +19,7 @@ import de.fraunhofer.iese.ids.odrl.pap.Util.LogAccessPolicyOdrlCreator;
 import de.fraunhofer.iese.ids.odrl.pap.Util.ProvideAccessPolicyOdrlCreator;
 import de.fraunhofer.iese.ids.odrl.pap.Util.ReadDataIntervalPolicyOdrlCreator;
 import de.fraunhofer.iese.ids.odrl.pap.Util.SpecificPurposePolicyOdrlCreator;
+import de.fraunhofer.iese.ids.odrl.pap.model.CategorizedPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.DeleteAtferPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.Duration;
 import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
@@ -127,7 +128,11 @@ public class OdrlPapUiController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			PatternUtil.getCategorizedPolicy(map);
+			CategorizedPolicy categorizedPolicy = PatternUtil.getCategorizedPolicy(map);
+			if(null != categorizedPolicy) {
+				System.out.println(categorizedPolicy.getClass().getSimpleName());
+				System.out.println(categorizedPolicy.toString());
+			}
 		  model.addAttribute(POLICY_FRAGMENT, "JsonOdrlPolicyForm");
 	    return "index";
 	  }
