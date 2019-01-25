@@ -1,0 +1,7 @@
+<form th:action="@{/policy/JsonOrdlPolicyMAYDATA}" th:object="${jsonOdrlPolicy}" method="post">
+  <p>
+  <textarea id="jsonString" name="jsonString" style="width: 100%; height: 80vh">[[${odrlPolicy}]]</textarea>
+  </p>
+  <button id="saveBtn" type="submit" class="btn btn-primary">Transfer</button>
+  <p/>
+</form>
