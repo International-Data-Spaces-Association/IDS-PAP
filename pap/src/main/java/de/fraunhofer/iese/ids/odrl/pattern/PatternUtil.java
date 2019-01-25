@@ -87,6 +87,7 @@ public class PatternUtil {
 			return specificPurposePolicy;
 		}
 		if(isReadDataInterval(permissionMap)) {
+			//TODO retrive and fill data
 			return new ReadDataIntervalPolicy();
 		}
 		return null;
@@ -103,7 +104,41 @@ public class PatternUtil {
 	}
 
 	public static boolean isReadDataInterval(Map permissionMap) {
-		//TODO
+		return (actionIsRead(permissionMap) && constraintAndListLeftOperandsAreDateTime(permissionMap));
+	}
+	
+
+	
+	public static boolean constraintLeftOperandIsPurpose(Map permissionMap) {
+		Map constraintMap = getConstraintMap(permissionMap);
+		return (null != constraintMap
+				&& null != constraintMap.get("leftOperand")
+				&& "purpose".equals(constraintMap.get("leftOperand").toString()));
+	}
+	
+	public static boolean constraintAndListLeftOperandsAreDateTime(Map permissionMap) {
+		Map constraintMap = getConstraintMap(permissionMap);
+		if (null != constraintMap && null != constraintMap.get("and") && constraintMap.get("and") instanceof Map) {
+			Map andMap = (Map) constraintMap.get("and");
+			if(null != andMap.get("@list") && andMap.get("@list") instanceof ArrayList) {
+				ArrayList atListArrayList = ((ArrayList)andMap.get("@list"));
+				if(atListArrayList.size() == 2 && atListArrayList.get(0) instanceof Map && atListArrayList.get(1) instanceof Map) {
+					Map startMap = (Map) atListArrayList.get(0);
+					Map endMap = (Map) atListArrayList.get(1);
+					
+					if(		null != startMap.get("leftOperand") 
+						&&	null != endMap.get("leftOperand")
+						&& "dateTime".equals(startMap.get("leftOperand").toString())
+						&& "dateTime".equals(endMap.get("leftOperand").toString())
+						&& 	null != startMap.get("operator")
+						&&  null != endMap.get("operator")
+						&&  "gt".equals(startMap.get("operator").toString())
+						&&  "lt".equals(endMap.get("operator").toString())){
+							return true;
+						}
+				}
+			}
+		}
 		return false;
 	}
 	
@@ -120,13 +155,6 @@ public class PatternUtil {
 		}
 		return null;
 	}
-	
-	public static boolean constraintLeftOperandIsPurpose(Map permissionMap) {
-		Map constraintMap = getConstraintMap(permissionMap);
-		return (null != constraintMap
-				&& null != constraintMap.get("leftOperand")
-				&& "purpose".equals(constraintMap.get("leftOperand").toString()));
-	}
 
 	public static Map getConstraintMap(Map permissionMap) {
 		Object constraint = getConstraint(permissionMap);
@@ -137,6 +165,9 @@ public class PatternUtil {
 					return (Map) o;
 				}
 			}
+		}
+		if(constraint instanceof Map) {
+			return (Map) constraint;
 		}
 		return null;
 	}
