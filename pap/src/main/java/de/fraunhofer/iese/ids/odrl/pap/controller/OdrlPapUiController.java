@@ -6,6 +6,8 @@ package de.fraunhofer.iese.ids.odrl.pap.controller;
 import java.io.IOException;
 import java.util.Map;
 
+import de.fraunhofer.iese.ids.odrl.pap.Util.*;
+import de.fraunhofer.iese.ids.odrl.pap.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,19 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.jsonldjava.utils.JsonUtils;
 
-import de.fraunhofer.iese.ids.odrl.pap.Util.DeleteAfterPolicyOdrlCreator;
-import de.fraunhofer.iese.ids.odrl.pap.Util.LogAccessPolicyOdrlCreator;
-import de.fraunhofer.iese.ids.odrl.pap.Util.ProvideAccessPolicyOdrlCreator;
-import de.fraunhofer.iese.ids.odrl.pap.Util.ReadDataIntervalPolicyOdrlCreator;
-import de.fraunhofer.iese.ids.odrl.pap.Util.SpecificPurposePolicyOdrlCreator;
-import de.fraunhofer.iese.ids.odrl.pap.model.CategorizedPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.DeleteAtferPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.Duration;
-import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.LogAccessPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.ProvideAccessPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.ReadDataIntervalPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.SpecificPurposePolicy;
 import de.fraunhofer.iese.ids.odrl.pattern.PatternUtil;
 
 /**
@@ -71,7 +60,7 @@ public class OdrlPapUiController {
 	  
 	  @RequestMapping("/policy/DeleteAfterPolicyForm")
 	  public String policy(@ModelAttribute("deleteAfterPolicy") DeleteAtferPolicy deleteAfterPolicy,  Model model) {
-		  Duration duration = new Duration();
+		  Duration duration = new Duration(1, TimeUnit.HOURS);
 		  duration.setValue();
 		  duration.setTimeUnit();
 		  deleteAfterPolicy.setDuration(duration);
@@ -128,12 +117,9 @@ public class OdrlPapUiController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			CategorizedPolicy categorizedPolicy = PatternUtil.getCategorizedPolicy(map);
-			if(null != categorizedPolicy) {
-				System.out.println(categorizedPolicy.getClass().getSimpleName());
-				System.out.println(categorizedPolicy.toString());
-			}
-		  model.addAttribute(POLICY_FRAGMENT, "JsonOdrlPolicyForm");
+
+		  model.addAttribute(POLICY_FRAGMENT, "mydata");
+		 model.addAttribute("mydataPolicy", MydataCreator.createMYDATA(map));
 	    return "index";
 	  }
 }

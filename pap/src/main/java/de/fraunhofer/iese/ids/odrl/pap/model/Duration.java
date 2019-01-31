@@ -11,6 +11,17 @@ public class Duration {
  int value;
  TimeUnit timeUnit;
 
+ public  Duration ()
+ {
+
+ }
+
+ public Duration(int v, TimeUnit t)
+ {
+  value = v;
+  timeUnit = t;
+ }
+
  public void setValue(){
   this.value = 1;
  }

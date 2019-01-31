@@ -41,20 +41,20 @@ public class DeleteAfterPolicyOdrlCreator {
 			// timeUnit = deleteAtferPolicy.getDuration().getTimeUnit().toString();
 			switch(deleteAtferPolicy.getDuration().getTimeUnit()) {
 				case HOURS:
-					timeUnit = "H";
+					timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
 					xsdPrefix = "T";
 					break;
 
 				case DAYS:
-					timeUnit = "D";
+					timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
 					break;
 
 				case MONTHS:
-					timeUnit = "M";
+					timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
 					break;
 
 				case YEARS:
-					timeUnit = "Y";
+					timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
 					break;
 
 			}
@@ -68,9 +68,9 @@ public class DeleteAfterPolicyOdrlCreator {
 				"  \"obligation\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": [{    \r\n" +
-				"          \"rdf:value\": { \"@id\": \"odrl:delete\" },     \r\n" +
+				"          \"rdf:value\": { \"@id\": \"delete\" },     \r\n" +
 				"      	   \"refinement\": [{    \r\n" +
-				"        	  \"leftOperand\": \"Delay Period\",    \r\n" +
+				"        	  \"leftOperand\": \"Delay_Period\",    \r\n" +
 				"        	  \"operator\": \"eq\",    \r\n" +
 				"        	  \"rightOperand\": { \"@value\": \"P%s%s%s\", \"@type\": \"xsd:duration\" }     \r\n" +
 				"          }]     \r\n" +

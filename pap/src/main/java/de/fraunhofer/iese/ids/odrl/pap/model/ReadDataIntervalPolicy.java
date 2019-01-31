@@ -16,9 +16,8 @@ public class ReadDataIntervalPolicy extends AbstractPolicy {
 	IntervalCondition intervalCondition;
 	String startTime;
 	String endTime;
-	
-	
-	public TimeInterval getTimeIntervall(){
+
+	public TimeInterval getTimeInterval(){
 		TimeInterval timeinterval = new TimeInterval();
 		timeinterval.setInterval(intervalCondition, startTime, endTime);
 		return timeinterval;
