@@ -8,11 +8,11 @@ package de.fraunhofer.iese.ids.odrl.pap.model;
  *
  */
 public enum IntervalCondition {
-	BEFORE("before","lt"),
+	LT("before","lt"),
 
-	AFTER("after", "eq"),
+	EQ("exactly", "eq"),
 
-	EXACTLY("exactly", "gt");
+	GT("after", "gt");
 
 	private final String mydataInterval;
 	private final String odrlIntervalOperator;

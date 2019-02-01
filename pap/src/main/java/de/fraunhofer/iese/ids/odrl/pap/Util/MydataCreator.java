@@ -42,9 +42,14 @@ public class MydataCreator {
 		// TODO: solution and assignee are always the same?
 		String solution = "";
 		String assignee = "";
+		String assigner = "";
 		if(categorizedPolicy.getPolicyType().equals(PolicyType.Agreement) && !categorizedPolicy.getAssignee().isEmpty()) {
+
 			assignee = getLastSplitElement(categorizedPolicy.getAssignee());
-			solution = getLastSplitElement(categorizedPolicy.getAssignee());
+			solution = assignee;
+		}else if(categorizedPolicy.getPolicyType().equals(PolicyType.Offer) && !categorizedPolicy.getAssigner().isEmpty()) {
+			assigner = getLastSplitElement(categorizedPolicy.getAssigner());
+			solution = assigner;
 		}
 
 		// get timer
@@ -77,8 +82,15 @@ public class MydataCreator {
 		if(!assignee.isEmpty())
 		{
 			Condition assigneeCondition = new Condition(Operator.EQUALS, "assignee", assignee);
-			addElement(conditions, assigneeCondition);
+			conditions = addElement(conditions, assigneeCondition);
 		}
+
+		if(categorizedPolicy instanceof SpecificPurposePolicy)
+		{
+			Condition purposeCondition = new Condition(Operator.EQUALS, "purpose", ((SpecificPurposePolicy) categorizedPolicy).getPurpose());
+			conditions = addElement(conditions, purposeCondition);
+		}
+
 
 		// create MYDATA MydataPolicy
 		MydataPolicy mydataPolicy = new MydataPolicy(solution, pid, action, decision);
@@ -99,6 +111,15 @@ public class MydataCreator {
 		if (null != pxp)
 		{
 			mydataPolicy.setPxp(pxp);
+		}
+
+		// get and set datetimes
+		if(categorizedPolicy instanceof ReadDataIntervalPolicy)
+		{
+			DateTime startTime = new DateTime(IntervalCondition.GT, ((ReadDataIntervalPolicy) categorizedPolicy).getStartTime());
+			DateTime endTime = new DateTime(IntervalCondition.LT, ((ReadDataIntervalPolicy) categorizedPolicy).getEndTime());
+			DateTime[] dateTimes = {startTime, endTime};
+			mydataPolicy.setDateTimes(dateTimes);
 		}
 
 		//set conditions

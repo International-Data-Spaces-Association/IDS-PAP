@@ -19,6 +19,9 @@ public class Condition {
   this.value = value;
  }
 
+ public Condition() {
+ }
+
  public void setOperator(Operator op){
   this.operator = op;
  }

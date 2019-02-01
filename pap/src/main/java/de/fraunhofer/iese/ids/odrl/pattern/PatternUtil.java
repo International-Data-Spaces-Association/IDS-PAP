@@ -63,31 +63,6 @@ public class PatternUtil {
 				categorizedPolicy.setAssignee(assignee);
 			}
 
-			Map constraintMap = getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT);
-
-			if(isNotNull(constraintMap))
-			{
-				// TODO
-			}
-
-			Map actionMap = getActionMap(ruleMap);
-
-			if(isNotNull(actionMap))
-			{
-				Map refinementMap = getSingleConditionMap(actionMap, ConditionType.REFINEMENT);
-				if (categorizedPolicy instanceof DeleteAtferPolicy)
-				{
-
-					if(getRightOperandType(refinementMap).equals("xsd:duration"))
-					{
-						String durationString = getRightOperandValue(refinementMap);
-						Duration d = getDurationFromDelayPeriodValue(durationString);
-						((DeleteAtferPolicy) categorizedPolicy).setDuration(d);
-					}
-
-				}
-			}
-
 			return categorizedPolicy;
 		}
 
@@ -190,20 +165,37 @@ public class PatternUtil {
 			{
 				for (Map m: conditions)
 				{
-					if(getLeftOperand(m).equals(LeftOperand.DATETIME) && getOperator(m).equals(IntervalCondition.AFTER))
+					if(getLeftOperand(m).equals(LeftOperand.DATETIME) && getIntervalOperator(m).equals(IntervalCondition.GT))
 					{
-						readDataIntervalPolicy.setStartTime(getRightOperandValue(ruleMap));
-					}else if(getLeftOperand(m).equals(LeftOperand.DATETIME) && getOperator(m).equals(IntervalCondition.BEFORE))
+						readDataIntervalPolicy.setStartTime(getRightOperandValue(m));
+					}else if(getLeftOperand(m).equals(LeftOperand.DATETIME) && getIntervalOperator(m).equals(IntervalCondition.LT))
 					{
-						readDataIntervalPolicy.setEndTime(getRightOperandValue(ruleMap));
+						readDataIntervalPolicy.setEndTime(getRightOperandValue(m));
 					}
 				}
 			}
-
+			return  readDataIntervalPolicy;
 		}
 		if(isDeleteAfter(ruleMap))
 		{
-			return new DeleteAtferPolicy();
+			DeleteAtferPolicy deleteAtferPolicy = new DeleteAtferPolicy();
+			Map actionMap = getActionMap(ruleMap);
+
+			if(isNotNull(actionMap))
+			{
+				Map refinementMap = getSingleConditionMap(actionMap, ConditionType.REFINEMENT);
+				if (isNotNull(refinementMap))
+				{
+					if(getRightOperandType(refinementMap).equals("xsd:duration"))
+					{
+						String durationString = getRightOperandValue(refinementMap);
+						Duration d = getDurationFromDelayPeriodValue(durationString);
+						deleteAtferPolicy.setDuration(d);
+					}
+
+				}
+			}
+			return deleteAtferPolicy;
 		}
 		return null;
 	}
@@ -216,7 +208,8 @@ public class PatternUtil {
 
 
 	public static boolean isProvideAccess(Map permissionMap) {
-		return (isAction(permissionMap, Action.READ) && isNull(getSingleConditionMap(permissionMap, ConditionType.CONSTRAINT)));
+		return (isAction(permissionMap, Action.READ) && isNull(getSingleConditionMap(permissionMap, ConditionType.CONSTRAINT))
+				&& isNull(getListConditionMap(permissionMap, ConditionType.CONSTRAINT)));
 	}
 
 	public static boolean isSpecificPurpose(Map ruleMap) {
@@ -264,6 +257,10 @@ public class PatternUtil {
 
 	public static Operator getOperator(Map conditionMap) {
 		return isNotNull (conditionMap)? Operator.valueOf(getValue(conditionMap, "operator").toUpperCase()): null;
+	}
+
+	public static IntervalCondition getIntervalOperator(Map conditionMap) {
+		return isNotNull (conditionMap)? IntervalCondition.valueOf(getValue(conditionMap, "operator").toUpperCase()): null;
 	}
 
 	public static String getRightOperandValue(Map conditionMap) {
@@ -329,7 +326,7 @@ public class PatternUtil {
 		}
 		if(condition instanceof Map) {
 			Map o = (Map) condition;
-			if(null == o.get("and"))
+			if(null != o.get("and"))
 			{
 				return null;
 			}

@@ -19,7 +19,9 @@ public class ReadDataIntervalPolicy extends AbstractPolicy {
 
 	public TimeInterval getTimeInterval(){
 		TimeInterval timeinterval = new TimeInterval();
-		timeinterval.setInterval(intervalCondition, startTime, endTime);
+		//timeinterval.setAfter(startTime);
+		//timeinterval.setBefore(endTime);
+		//timeinterval.setInterval(intervalCondition, startTime, endTime);
 		return timeinterval;
 	}
 

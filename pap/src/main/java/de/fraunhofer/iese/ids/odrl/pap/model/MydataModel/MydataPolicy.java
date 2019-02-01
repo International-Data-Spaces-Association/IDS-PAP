@@ -10,6 +10,7 @@ public class MydataPolicy {
  Timer timer;
  Condition[] conditions;
  PIPBoolean[] pipBooleans;
+ DateTime[] dateTimes;
  String solution;
  String pid;
  Action action;
@@ -26,16 +27,16 @@ public class MydataPolicy {
 
  @Override
  public String toString() {
-  String conditionsAndPIPs = getConditionsAndPIPs();
-  String conditionsBlock = getDecisionBlock();
+  String conditionsBlock = getConditions();
+  String decisionBlock = getDecisionBlock();
   String timer = getTimerForPolicy();
 
   String returnPolicy = timer + "\r\n" +
           "  <policy id='urn:policy:" + solution + ":" + pid + "'>    \r\n" +
           "    <mechanism event='urn:action:" + solution + ":" + action.getAction() + "'>    \r\n" +
           "      <if>   \r\n" +
-          conditionsAndPIPs +
           conditionsBlock +
+          decisionBlock +
           "    </mechanism>    \r\n" +
           "  </policy>    \r\n";
   return returnPolicy;
@@ -85,32 +86,50 @@ public class MydataPolicy {
   return null;
  }
 
- private String getConditionsAndPIPs() {
-  if((conditions == null || conditions.length == 0) && (pipBooleans == null || pipBooleans.length == 0 ))
+ private String getConditions() {
+  if((conditions == null || conditions.length == 0) && (pipBooleans == null || pipBooleans.length == 0 ) && (dateTimes == null || dateTimes.length == 0 ))
   {
    return "";
-  }else if (conditions.length == 1 && (pipBooleans == null || pipBooleans.length == 0 ))
+  }else if (conditions.length == 1 && (pipBooleans == null || pipBooleans.length == 0 )&& (dateTimes == null || dateTimes.length == 0 ))
   {
    return conditions[0].toString();
-  }else if ((conditions == null || conditions.length == 0) && pipBooleans.length == 1)
+  }else if ((conditions == null || conditions.length == 0) && pipBooleans.length == 1 && (dateTimes == null || dateTimes.length == 0 ))
   {
    return pipBooleans[0].toString();
+  }else if((conditions == null || conditions.length == 0) && (pipBooleans == null || pipBooleans.length == 0 ) && dateTimes.length == 1)
+  {
+   return dateTimes[0].toString();
   }else //if bigger
   {
    String conditions = "";
    String pips= "";
-   for(int i = 0; i< this.conditions.length; i++)
-   {
-    conditions += this.conditions[i].toString();
+   String dates= "";
+   if(conditions != null ){
+    for(int i = 0; i< this.conditions.length; i++)
+    {
+     conditions += this.conditions[i].toString();
+    }
    }
-   for(int i=0 ; i<pipBooleans.length; i++)
+   if(pipBooleans != null)
    {
-    pips += pipBooleans[i].toString();
+    for(int i=0 ; i<pipBooleans.length; i++)
+    {
+     pips += pipBooleans[i].toString();
+    }
    }
+   if(dateTimes != null)
+   {
+    for(int i=0 ; i<dateTimes.length; i++)
+    {
+     dates += dateTimes[i].toString();
+    }
+   }
+
 
    return  "        <and>  \r\n" +
            conditions +
            pips +
+           dates +
            "        </and>  \r\n";
   }
  }
