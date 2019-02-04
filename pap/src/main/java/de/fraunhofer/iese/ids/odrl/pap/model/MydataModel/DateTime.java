@@ -5,8 +5,10 @@ import lombok.Data;
 
 import javax.xml.bind.DatatypeConverter;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 @Data
 public class DateTime {
@@ -30,6 +32,7 @@ public class DateTime {
 
     private String getMydataDateTime() {
         Calendar cal = DatatypeConverter.parseDateTime(dateTime);
+        cal.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
         java.sql.Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
         return timestamp.toString();
     }
