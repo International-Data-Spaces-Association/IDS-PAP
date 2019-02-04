@@ -5,6 +5,18 @@
 <title>ODRL PAP</title>
 <div th:include="fragments/css" th:remove="tag"></div>
 </head>
+<style>
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    color: Black;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+</style>
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">
@@ -13,18 +25,22 @@
 			<div class="mainheader">
 			<div class="col-md-10 col-sm-10 col-xs-8">
 					<div class="x_content settings" style="padding:15px;">
+					<div th:if="${policyFragment == 'ProvideAccessPolicyForm'}" th:include="fragments/ProvideAccessPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificPurposePolicyForm'}" th:include="fragments/SpecificPurposePolicyForm" th:remove="tag"></div>
  					<div th:if="${policyFragment == 'DeleteAfterPolicyForm'}" th:include="fragments/DeleteAfterPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'ReadDataIntervalPolicyForm'}" th:include="fragments/ReadDataIntervalPolicyForm" th:remove="tag"></div>
-					<div th:if="${policyFragment == 'odrl'}"  th:remove="tag">
-					<textarea style="width:100%; height:80vh">[[${odrlPolicy}]]</textarea>
-					</div> 
-			</div>
+					<div th:if="${policyFragment == 'LogAccessPolicyForm'}" th:include="fragments/LogAccessPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'odrl'}"  th:remove="tag" th:include="fragments/OdrlPolicyForm"></div>
+					<div th:if="${policyFragment == 'mydata'}"  th:remove="tag" >
+						<textarea style="width:100%; height:80vh">[[${mydataPolicy}]]</textarea>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 	<div th:include="fragments/scripts :: bottom" th:remove="tag"></div>
-	<script src="/static/js/addSolution.js"></script>
+	<!--<script src="/static/js/addSolution.js"></script>-->
+
 </body>
 
 </html>

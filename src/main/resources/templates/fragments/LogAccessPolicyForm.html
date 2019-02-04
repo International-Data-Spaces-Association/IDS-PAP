@@ -1,4 +1,4 @@
-<form th:action="@{/policy/SpecificPurposePolicyODRL}" th:object="${specificPurposePolicy}" method="post">
+<form th:action="@{/policy/LogAccessPolicyODRL}" th:object="${logAccessPolicy}" method="post">
   <p>Policy*:
     <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
       <option value="Agreement">Agreement</option>
@@ -9,7 +9,7 @@
   <p>Data*: <input required="required" type="text" size="60" placeholder=" e.g. http://example.com/ids-data:1254" th:field="*{dataUrl}" /></p>
   <p id="assigner" >Assigner*: <input id="assignerInput" required="required" type="text" size="60" placeholder=" e.g. http://example.com/ids-party:my-party" th:field="*{assigner}" /></p>
   <p id="assignee" >Assignee*: <input id="assigneeInput" required="required"  type="text" size="60" placeholder=" e.g. http://example.com/ids-party:consumer-party" th:field="*{assignee}" /></p>
-  <p>Purpose*: <input type="text" size="60" required="required" placeholder=" e.g. Risk Management" th:field="*{purpose}" /></p>
+  <p>Recipient*: <input type="text" size="60" required="required" placeholder=" e.g. http://example.com/party:ESN-database" th:field="*{recipient}" /></p>
   <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
   <p/>
 </form>

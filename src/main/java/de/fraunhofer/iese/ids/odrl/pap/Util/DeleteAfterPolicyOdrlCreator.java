@@ -1,34 +1,39 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.DeleteAtferPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.TimeUnit;
 
 public class DeleteAfterPolicyOdrlCreator {
 	
 	public static String createODRL(DeleteAtferPolicy deleteAtferPolicy){
-		
+
+		//set type
+		String type = "";
+		if(null != deleteAtferPolicy.getPolicyType()) {
+			type = deleteAtferPolicy.getPolicyType().toString();
+		}
+
+		//set assigner
+		String assigner = "";
+		if(null != deleteAtferPolicy.getAssigner() && !deleteAtferPolicy.getAssigner().isEmpty() && !deleteAtferPolicy.getPolicyType().equals(PolicyType.Request)) {
+			assigner = "      \"assigner\": \"" + deleteAtferPolicy.getAssigner() + "\",    \r\n";
+		}
+
 		//set type and assignee
-		String type = "Offer";
 		String assignee = "";
-		if( null != deleteAtferPolicy.getAssignee() && !deleteAtferPolicy.getAssignee().isEmpty()) {
-			type = "Agreement";
+		if( null != deleteAtferPolicy.getAssignee() && !deleteAtferPolicy.getAssignee().isEmpty() && !deleteAtferPolicy.getPolicyType().equals(PolicyType.Offer)) {
 			assignee = "      \"assignee\": \"" + deleteAtferPolicy.getAssignee() + "\",    \r\n";
 		}
-		
+
 		//set target
 		String target = "";
 		if(null != deleteAtferPolicy.getDataUrl()) {
 			target = deleteAtferPolicy.getDataUrl().toString();
 		}
-		
-		//set assigner 
-		String assigner = "";
-		if(null != deleteAtferPolicy.getAssigner()) {
-			assigner = deleteAtferPolicy.getAssigner();
-		}
 
 		//set duration
-		int value = 0;
+		int value = 1;
 		String timeUnit = "";
 		String xsdPrefix = "";
 		if(0 != deleteAtferPolicy.getDuration().getValue()) {
@@ -36,20 +41,20 @@ public class DeleteAfterPolicyOdrlCreator {
 			// timeUnit = deleteAtferPolicy.getDuration().getTimeUnit().toString();
 			switch(deleteAtferPolicy.getDuration().getTimeUnit()) {
 				case HOURS:
-					timeUnit = "H";
+					timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
 					xsdPrefix = "T";
 					break;
 
 				case DAYS:
-					timeUnit = "D";
+					timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
 					break;
 
 				case MONTHS:
-					timeUnit = "M";
+					timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
 					break;
 
 				case YEARS:
-					timeUnit = "Y";
+					timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
 					break;
 
 			}
@@ -61,12 +66,11 @@ public class DeleteAfterPolicyOdrlCreator {
 				"  \"@type\": \"%s\",    \r\n" + 
 				"  \"uid\": \"http://example.com/policy:delete-data\",    \r\n" +
 				"  \"obligation\": [{    \r\n" +
-				"      \"target\": \"%s\",    \r\n" + 
-				"      \"assigner\": \"%s\",    \r\n%s" + 
+				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": [{    \r\n" +
-				"          \"rdf:value\": { \"@id\": \"odrl:delete\" },     \r\n" +
+				"          \"rdf:value\": { \"@id\": \"delete\" },     \r\n" +
 				"      	   \"refinement\": [{    \r\n" +
-				"        	  \"leftOperand\": \"Delay Period\",    \r\n" +
+				"        	  \"leftOperand\": \"Delay_Period\",    \r\n" +
 				"        	  \"operator\": \"eq\",    \r\n" +
 				"        	  \"rightOperand\": { \"@value\": \"P%s%s%s\", \"@type\": \"xsd:duration\" }     \r\n" +
 				"          }]     \r\n" +

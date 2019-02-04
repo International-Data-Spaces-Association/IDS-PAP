@@ -30,13 +30,13 @@ public class TimeInterval {
 	}
 	
 	public void setInterval(IntervalCondition intervalCondition, String startTime, String endTime) {
-		if(IntervalCondition.BEFORE.equals(intervalCondition)) {
+		if(IntervalCondition.LT.equals(intervalCondition)) {
 			setBefore(endTime);
 		}
-		else if(IntervalCondition.AFTER.equals(intervalCondition)) {
+		else if(IntervalCondition.GT.equals(intervalCondition)) {
 			setAfter(startTime);
 		}
-		else if(IntervalCondition.EXACTLY.equals(intervalCondition)){
+		else if(IntervalCondition.EQ.equals(intervalCondition)){
 			setExactly(startTime, endTime);
 		}
 	}

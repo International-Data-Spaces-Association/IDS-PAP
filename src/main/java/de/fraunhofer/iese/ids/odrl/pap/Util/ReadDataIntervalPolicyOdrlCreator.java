@@ -1,39 +1,44 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.ReadDataIntervalPolicy;
 
 public class ReadDataIntervalPolicyOdrlCreator {
 	
 	public static String createODRL(ReadDataIntervalPolicy readDataIntervalPolicy){
-		
+
+		//set type
+		String type = "";
+		if(null != readDataIntervalPolicy.getPolicyType()) {
+			type = readDataIntervalPolicy.getPolicyType().toString();
+		}
+
+		//set assigner
+		String assigner = "";
+		if(null != readDataIntervalPolicy.getAssigner() && !readDataIntervalPolicy.getAssigner().isEmpty() && !readDataIntervalPolicy.getPolicyType().equals(PolicyType.Request)) {
+			assigner = "      \"assigner\": \"" + readDataIntervalPolicy.getAssigner() + "\",    \r\n";
+		}
+
 		//set type and assignee
-		String type = "Offer";
 		String assignee = "";
-		if( null != readDataIntervalPolicy.getAssignee() && !readDataIntervalPolicy.getAssignee().isEmpty()) {
-			type = "Agreement";
+		if( null != readDataIntervalPolicy.getAssignee() && !readDataIntervalPolicy.getAssignee().isEmpty() && !readDataIntervalPolicy.getPolicyType().equals(PolicyType.Offer)) {
 			assignee = "      \"assignee\": \"" + readDataIntervalPolicy.getAssignee() + "\",    \r\n";
 		}
-		
+
 		//set target
 		String target = "";
 		if(null != readDataIntervalPolicy.getDataUrl()) {
 			target = readDataIntervalPolicy.getDataUrl().toString();
 		}
-		
-		//set assigner 
-		String assigner = "";
-		if(null != readDataIntervalPolicy.getAssigner()) {
-			assigner = readDataIntervalPolicy.getAssigner();
-		}
-		
+
 		//set time interval
 		String startTime = "";
 		String endTime = "";
 		if(null != readDataIntervalPolicy.getStartTime()) {
-			startTime = readDataIntervalPolicy.getStartTime();
+			startTime = readDataIntervalPolicy.getStartTime() + "Z";
 		}
 		if(null != readDataIntervalPolicy.getEndTime()) {
-			endTime = readDataIntervalPolicy.getEndTime();
+			endTime = readDataIntervalPolicy.getEndTime() + "Z";
 		}
 		
 		//return the formated String
@@ -42,8 +47,7 @@ public class ReadDataIntervalPolicyOdrlCreator {
 				"  \"@type\": \"%s\",    \r\n" + 
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
 				"  \"permission\": [{    \r\n" + 
-				"      \"target\": \"%s\",    \r\n" + 
-				"      \"assigner\": \"%s\",    \r\n%s" + 
+				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": \"read\",     \r\n" + 
 				"      \"constraint\": {    \r\n" +
 				"        \"and\": {    \r\n" +

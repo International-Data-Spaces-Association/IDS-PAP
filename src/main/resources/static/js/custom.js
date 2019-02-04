@@ -50,7 +50,8 @@ function showModal(title, body, clazz) {
  * and open the template in the editor.
  */
 
-var CURRENT_URL = window.location.href.split('?')[0],
+// var CURRENT_URL = window.location.href.split('?')[0],
+var CURRENT_URL = window.location.pathname
   $BODY = $('body'),
   $MENU_TOGGLE = $('#menu_toggle'),
   $SIDEBAR_MENU = $('#sidebar-menu'),
@@ -121,11 +122,6 @@ $(document).ready(function() {
   // check active menu
   $SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
 
-  $SIDEBAR_MENU.find('a').filter(function() {
-    return (this.href == CURRENT_URL || scope == this.id) && this.id != "nav-solution-direct";
-  }).parent('li').addClass('current-page').parents('ul').slideDown(function() {
-    setContentHeight();
-  }).parent().addClass('active');
 
   // recompute content when resizing
   $(window).smartresize(function() {
