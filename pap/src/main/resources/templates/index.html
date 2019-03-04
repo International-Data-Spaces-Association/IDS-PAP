@@ -19,12 +19,14 @@ input[type=text], select {
 </style>
 <body class="nav-md">
 	<div class="container body">
-		<div class="main_container">
-			<div th:include="sidemenu"></div>
-			<div class="right_col" style="height: 100vh;" role="main">
-			<div class="mainheader">
+	<div class="main_container">
+	<div th:include="sidemenu"></div>
+	<div th:include="topNavigation"></div>
+	<div class="right_col" style="height: 100vh;" role="main">
+		<div class="mainheader">
 			<div class="col-md-10 col-sm-10 col-xs-8">
-					<div class="x_content settings" style="padding:15px;">
+				<div class="x_content settings" style="padding:15px;">
+					<div th:if="${policyFragment == 'index'}" th:include="fragments/Welcome" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'ProvideAccessPolicyForm'}" th:include="fragments/ProvideAccessPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificPurposePolicyForm'}" th:include="fragments/SpecificPurposePolicyForm" th:remove="tag"></div>
  					<div th:if="${policyFragment == 'DeleteAfterPolicyForm'}" th:include="fragments/DeleteAfterPolicyForm" th:remove="tag"></div>
@@ -40,7 +42,8 @@ input[type=text], select {
 	</div>
 	<div th:include="fragments/scripts :: bottom" th:remove="tag"></div>
 	<!--<script src="/static/js/addSolution.js"></script>-->
-
+	</div>
+	</div>
 </body>
 
 </html>

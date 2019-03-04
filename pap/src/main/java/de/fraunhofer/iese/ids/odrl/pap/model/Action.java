@@ -8,6 +8,16 @@ public enum Action {
 
     DELETE("delete"),
 
+    INFORM("inform"),
+
+    PRINT("print"),
+
+    ANONYMIZE("anonymize"),
+
+    REPRODUCE("reproduce"),
+
+    DISTRIBUTE("distribute"),
+
     LOG("log");
 
     private final String action;

@@ -28,8 +28,9 @@ public class OdrlPapUiController {
 	public static final String POLICY_FRAGMENT = "policyFragment";
 	
 	  @RequestMapping("/")
-	  public String index() {
-	    return "index";
+	  public String index(Model model) {
+		  model.addAttribute(POLICY_FRAGMENT, "index");
+	  	return "index";
 	  }
 
 	@RequestMapping("/policy/ProvideAccessPolicyForm")
@@ -100,7 +101,7 @@ public class OdrlPapUiController {
 		model.addAttribute("odrlPolicy", LogAccessPolicyOdrlCreator.createODRL(logAccessPolicy));
 		return "index";
 	}
-	
+
 	 @SuppressWarnings("rawtypes")
 	@RequestMapping("/policy/JsonOrdlPolicyMAYDATA")
 	  public String policy(@ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
