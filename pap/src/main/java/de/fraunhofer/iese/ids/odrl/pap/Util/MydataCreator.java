@@ -39,23 +39,28 @@ public class MydataCreator {
 		}
 
 		//set mydataPolicy assignee : if type is agreement or request, it will have an assignee condition
-		// TODO: solution and assignee are always the same?
 		String solution = "";
 		String assignee = "";
 		String assigner = "";
-		if(categorizedPolicy.getPolicyType().equals(PolicyType.Agreement) && !categorizedPolicy.getAssignee().isEmpty()) {
-
-			assignee = getLastSplitElement(categorizedPolicy.getAssignee());
-			solution = assignee;
-		}else if(categorizedPolicy.getPolicyType().equals(PolicyType.Offer) && !categorizedPolicy.getAssigner().isEmpty()) {
+		if(!categorizedPolicy.getAssigner().isEmpty()) {
 			assigner = getLastSplitElement(categorizedPolicy.getAssigner());
+			// by default, it is a provider side policy
 			solution = assigner;
+		}
+		if(!categorizedPolicy.getAssignee().isEmpty()) {
+			assignee = getLastSplitElement(categorizedPolicy.getAssignee());
+		}
+
+		if(!categorizedPolicy.getProviderSide())
+		{
+			// when it is not a provider side policy, set the solution to assignee
+			solution = assignee;
 		}
 
 		// get timer
 		//get boolean PIP for delay period
 		Timer timer = null;
-		PIPBoolean DelayPeriodPipBoolean = null;
+		PIPBoolean delayPeriodPipBoolean = null;
 		Parameter targetP = new Parameter(ParameterType.STRING,"target",target);
 		if(categorizedPolicy instanceof DeleteAtferPolicy)
 		{
@@ -65,7 +70,7 @@ public class MydataCreator {
 			Parameter valueP = new Parameter(ParameterType.NUMBER,"value",String.valueOf(d.getValue()));
 			Parameter unitP = new Parameter(ParameterType.STRING,"value",d.getTimeUnit().toString());
 			Parameter[] pipParams = {valueP, unitP, targetP};
-			DelayPeriodPipBoolean = new PIPBoolean(solution, LeftOperand.DELAY_PERIOD, pipParams);
+			delayPeriodPipBoolean = new PIPBoolean(solution, LeftOperand.DELAY_PERIOD, pipParams);
 		}
 
 		//get execute action
@@ -79,18 +84,27 @@ public class MydataCreator {
 		// get conditions
 		Condition targetCondition = new Condition(Operator.EQUALS, "target", target);
 		Condition[] conditions = {targetCondition};
-		if(!assignee.isEmpty())
+		if(!assignee.isEmpty() && categorizedPolicy.getProviderSide())
 		{
 			Condition assigneeCondition = new Condition(Operator.EQUALS, "assignee", assignee);
-			conditions = addElement(conditions, assigneeCondition);
+			conditions = (Condition[]) addElement(conditions, assigneeCondition);
 		}
 
+		PIPBoolean purposePipBoolean = null;
+		Parameter assigneeP = new Parameter(ParameterType.STRING,"assignee",assignee);
 		if(categorizedPolicy instanceof SpecificPurposePolicy)
 		{
-			Condition purposeCondition = new Condition(Operator.EQUALS, "purpose", ((SpecificPurposePolicy) categorizedPolicy).getPurpose());
-			conditions = addElement(conditions, purposeCondition);
-		}
+			Parameter purposeP = new Parameter(ParameterType.STRING,"value",getLastSplitElement(((SpecificPurposePolicy) categorizedPolicy).getPurpose()));
+			if(assignee.isEmpty())
+			{
+				Parameter[] pipParams = {purposeP};
+				purposePipBoolean = new PIPBoolean(solution, LeftOperand.PURPOSE, pipParams);
+			}else{
+				Parameter[] pipParams = {purposeP, assigneeP};
+				purposePipBoolean = new PIPBoolean(solution, LeftOperand.PURPOSE, pipParams);
+			}
 
+		}
 
 		// create MYDATA MydataPolicy
 		MydataPolicy mydataPolicy = new MydataPolicy(solution, pid, action, decision);
@@ -101,11 +115,20 @@ public class MydataCreator {
 		}
 
 		//set pipBooleans
-		if (null != DelayPeriodPipBoolean)
+		PIPBoolean[] pipBooleans = {};
+		if (null != delayPeriodPipBoolean)
 		{
-			PIPBoolean[] pipBooleans= {DelayPeriodPipBoolean};
+			pipBooleans = (PIPBoolean[])addElement(pipBooleans, delayPeriodPipBoolean);
+		}
+		if(null != purposePipBoolean)
+		{
+			pipBooleans = (PIPBoolean[])addElement(pipBooleans, purposePipBoolean);
+		}
+		if(pipBooleans.length >0)
+		{
 			mydataPolicy.setPipBooleans(pipBooleans);
 		}
+
 
 		// set execute action
 		if (null != pxp)
@@ -136,7 +159,7 @@ public class MydataCreator {
 		return value;
 	}
 
-	static Condition[] addElement(Condition[] a, Condition e) {
+	static Object[] addElement(Object[] a, Object e) {
 		a  = Arrays.copyOf(a, a.length + 1);
 		a[a.length - 1] = e;
 		return a;

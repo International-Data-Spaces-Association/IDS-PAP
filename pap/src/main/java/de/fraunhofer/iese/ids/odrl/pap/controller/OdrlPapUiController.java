@@ -34,7 +34,15 @@ public class OdrlPapUiController {
 	  }
 
 	@RequestMapping("/policy/ProvideAccessPolicyForm")
-	public String policy(@ModelAttribute ProvideAccessPolicy provideAccessPolicy, Model model) {
+	public String accessPolicy(@ModelAttribute ProvideAccessPolicy provideAccessPolicy, Model model) {
+	  	provideAccessPolicy.setRuleType(RuleType.PERMISSION);
+		model.addAttribute(POLICY_FRAGMENT, "ProvideAccessPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/InhibitAccessPolicyForm")
+	public String inhibitPolicy(@ModelAttribute ProvideAccessPolicy provideAccessPolicy, Model model) {
+		provideAccessPolicy.setRuleType(RuleType.PROHIBITION);
 		model.addAttribute(POLICY_FRAGMENT, "ProvideAccessPolicyForm");
 		return "index";
 	}
@@ -47,10 +55,18 @@ public class OdrlPapUiController {
 	}
 
 	  @RequestMapping("/policy/SpecificPurposePolicyForm")
-	  public String policy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy,  Model model) {
+	  public String providePurposePolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy,  Model model) {
+		  specificPurposePolicy.setRuleType(RuleType.PERMISSION);
 		  model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
 	    return "index";
 	  }
+
+	@RequestMapping("/policy/InhibitSpecificPurposePolicyForm")
+	public String inhibitPurposePolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy,  Model model) {
+		specificPurposePolicy.setRuleType(RuleType.PROHIBITION);
+		model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
+		return "index";
+	}
 	  
 	  @RequestMapping("/policy/SpecificPurposePolicyODRL")
 	  public String odrlPolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
@@ -77,10 +93,18 @@ public class OdrlPapUiController {
 	}
 
 	  @RequestMapping("/policy/ReadDataIntervalPolicyForm")
-	  public String policy(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy,  Model model) {
+	  public String provideInterval(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy,  Model model) {
+		  readDataIntervalPolicy.setRuleType(RuleType.PERMISSION);
 		  model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 	    return "index";
 	  }
+
+	@RequestMapping("/policy/InhibitReadDataIntervalPolicyForm")
+	public String inhibitInterval(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy,  Model model) {
+		readDataIntervalPolicy.setRuleType(RuleType.PROHIBITION);
+		model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
+		return "index";
+	}
 
 	@RequestMapping("/policy/ReadDataIntervalPolicyODRL")
 	public String odrlPolicy(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {

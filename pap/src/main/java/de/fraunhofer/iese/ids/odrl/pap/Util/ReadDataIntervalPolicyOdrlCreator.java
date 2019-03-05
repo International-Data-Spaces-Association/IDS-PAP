@@ -2,10 +2,18 @@ package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.ReadDataIntervalPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
 
 public class ReadDataIntervalPolicyOdrlCreator {
 	
 	public static String createODRL(ReadDataIntervalPolicy readDataIntervalPolicy){
+
+		// set rule type
+		String ruleType = "permission";
+		if(readDataIntervalPolicy.getRuleType()!= null && readDataIntervalPolicy.getRuleType().equals(RuleType.PROHIBITION))
+		{
+			ruleType = RuleType.PROHIBITION.getOdrlRuleType();
+		}
 
 		//set type
 		String type = "";
@@ -46,7 +54,7 @@ public class ReadDataIntervalPolicyOdrlCreator {
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
 				"  \"@type\": \"%s\",    \r\n" + 
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
-				"  \"permission\": [{    \r\n" + 
+				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": \"read\",     \r\n" + 
 				"      \"constraint\": {    \r\n" +
@@ -63,6 +71,6 @@ public class ReadDataIntervalPolicyOdrlCreator {
 				"        }    \r\n" +
 				"      }    \r\n" +
 				"  }]    \r\n" + 
-				"} ", type, target, assigner, assignee, startTime, endTime);
+				"} ", type, ruleType, target, assigner, assignee, startTime, endTime);
 	}
 }

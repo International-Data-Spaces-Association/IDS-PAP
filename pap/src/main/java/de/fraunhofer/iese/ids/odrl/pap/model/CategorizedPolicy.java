@@ -29,4 +29,7 @@ public interface CategorizedPolicy {
 	
 	public String getAssigner();
 	public void setAssigner(String assigner);
+
+	public boolean getProviderSide();
+	public void setProviderSide(boolean providerSide);
 }

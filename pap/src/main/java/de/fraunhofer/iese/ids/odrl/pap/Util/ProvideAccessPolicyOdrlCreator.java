@@ -2,11 +2,19 @@ package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.ProvideAccessPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
 import de.fraunhofer.iese.ids.odrl.pap.model.SpecificPurposePolicy;
 
 public class ProvideAccessPolicyOdrlCreator {
 	
 	public static String createODRL(ProvideAccessPolicy provideAccessPolicy){
+
+		// set rule type
+		String ruleType = "permission";
+		if(provideAccessPolicy.getRuleType()!= null && provideAccessPolicy.getRuleType().equals(RuleType.PROHIBITION))
+		{
+			ruleType = RuleType.PROHIBITION.getOdrlRuleType();
+		}
 
 		//set type
 		String type = "";
@@ -37,10 +45,10 @@ public class ProvideAccessPolicyOdrlCreator {
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
 				"  \"@type\": \"%s\",    \r\n" + 
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
-				"  \"permission\": [{    \r\n" + 
+				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": \"read\"     \r\n" +
 				"  }]    \r\n" + 
-				"} ", type, target, assigner, assignee);
+				"} ", type, ruleType, target, assigner, assignee);
 	}
 }

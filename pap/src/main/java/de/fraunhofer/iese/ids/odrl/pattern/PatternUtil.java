@@ -147,7 +147,9 @@ public class PatternUtil {
 	
 	public static CategorizedPolicy recognizePattern(Map ruleMap) {
 		if(isProvideAccess(ruleMap)) {
-			return new ProvideAccessPolicy();
+			ProvideAccessPolicy policy = new ProvideAccessPolicy();
+			policy.setProviderSide(true);
+			return policy;
 		}
 		if(isSpecificPurpose(ruleMap)) {
 			SpecificPurposePolicy specificPurposePolicy = new SpecificPurposePolicy();
@@ -156,6 +158,7 @@ public class PatternUtil {
 
 			String rightOperandValue = getRightOperandValue(constraintMap);
 			specificPurposePolicy.setPurpose(rightOperandValue);
+			specificPurposePolicy.setProviderSide(true);
 			return specificPurposePolicy;
 		}
 		if(isReadDataInterval(ruleMap)) {
@@ -174,6 +177,7 @@ public class PatternUtil {
 					}
 				}
 			}
+			readDataIntervalPolicy.setProviderSide(true);
 			return  readDataIntervalPolicy;
 		}
 		if(isDeleteAfter(ruleMap))
@@ -195,6 +199,7 @@ public class PatternUtil {
 
 				}
 			}
+			deleteAtferPolicy.setProviderSide(false);
 			return deleteAtferPolicy;
 		}
 		return null;
@@ -202,7 +207,7 @@ public class PatternUtil {
 
 	public static RuleType getRuleType(Map map) {
 		return isNotNull(map.get(RuleType.PERMISSION.getOdrlRuleType()))? RuleType.PERMISSION :
-				(isNotNull(map.get(RuleType.PROHIBITION.getOdrlRuleType()))? RuleType.PERMISSION :
+				(isNotNull(map.get(RuleType.PROHIBITION.getOdrlRuleType()))? RuleType.PROHIBITION :
 						(isNotNull(map.get(RuleType.OBLIGATION.getOdrlRuleType()))? RuleType.OBLIGATION : null ));
 	}
 

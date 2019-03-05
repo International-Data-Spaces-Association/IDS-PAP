@@ -22,6 +22,11 @@ public abstract class AbstractPolicy implements CategorizedPolicy{
 	URL dataUrl;
 	String assigner;
 	String assignee;
+	boolean providerSide;
+
+	public AbstractPolicy(){
+		this.assigner = "http://example.com/ids-party:my-party";
+	}
 
 	public RuleType getRuleType() {
 		return ruleType;
@@ -49,5 +54,9 @@ public abstract class AbstractPolicy implements CategorizedPolicy{
 
 	public String getAssigner() {
 		return assigner;
+	}
+
+	public boolean getProviderSide() {
+		return providerSide;
 	}
 }
