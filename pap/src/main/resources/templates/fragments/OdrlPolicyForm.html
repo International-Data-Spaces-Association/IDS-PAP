@@ -16,7 +16,7 @@ var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jsonString")
                         autoCloseTags: true,
                         foldCode: true,
                         foldGutter: true,
-                        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
                         mode: "application/ld+json",
                         lint: true
                     });
