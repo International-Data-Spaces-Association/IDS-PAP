@@ -8,6 +8,8 @@ public enum LeftOperand {
 
     COUNT("count", "count"),
 
+    SYSTEM("system", "system"),
+
     PURPOSE("purpose", "purpose");
 
     private final String mydataPIP;

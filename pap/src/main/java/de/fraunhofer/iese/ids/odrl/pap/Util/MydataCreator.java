@@ -90,6 +90,12 @@ public class MydataCreator {
 			conditions = (Condition[]) addElement(conditions, assigneeCondition);
 		}
 
+		if(categorizedPolicy instanceof SpecificSystemPolicy)
+		{
+			Condition systemCondition = new Condition(Operator.EQUALS, "system", ((SpecificSystemPolicy) categorizedPolicy).getSystem());
+			conditions = (Condition[]) addElement(conditions, systemCondition);
+		}
+
 		PIPBoolean purposePipBoolean = null;
 		Parameter assigneeP = new Parameter(ParameterType.STRING,"assignee",assignee);
 		if(categorizedPolicy instanceof SpecificPurposePolicy)
