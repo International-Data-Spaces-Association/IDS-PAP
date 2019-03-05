@@ -106,8 +106,18 @@ public class MydataCreator {
 
 		}
 
+		// log pxp
+		boolean hasDuty = false;
+		if(categorizedPolicy instanceof LogAccessPolicy)
+		{
+			hasDuty = true;
+			Parameter recipientP = new Parameter(ParameterType.STRING,"recipient",getLastSplitElement(((LogAccessPolicy) categorizedPolicy).getRecipient()));
+			Parameter[] params = {targetP, assigneeP, recipientP};
+			pxp = new ExecuteAction(solution, Action.LOG, params);
+		}
+
 		// create MYDATA MydataPolicy
-		MydataPolicy mydataPolicy = new MydataPolicy(solution, pid, action, decision);
+		MydataPolicy mydataPolicy = new MydataPolicy(solution, pid, action, decision, hasDuty);
 		//set timer
 		if (null != timer)
 		{

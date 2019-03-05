@@ -183,7 +183,7 @@ public class PatternUtil {
 		if(isDeleteAfter(ruleMap))
 		{
 			DeleteAtferPolicy deleteAtferPolicy = new DeleteAtferPolicy();
-			Map actionMap = getActionMap(ruleMap);
+			Map actionMap = getMap(ruleMap, "action");
 
 			if(isNotNull(actionMap))
 			{
@@ -202,6 +202,24 @@ public class PatternUtil {
 			deleteAtferPolicy.setProviderSide(false);
 			return deleteAtferPolicy;
 		}
+		if(isLogAccess(ruleMap))
+		{
+			LogAccessPolicy policy = new LogAccessPolicy();
+			Map dutyMap = getMap(ruleMap, "duty");
+			Map actionMap = getMap(dutyMap, "action");
+			if(isNotNull(actionMap))
+			{
+				Map refinementMap = getSingleConditionMap(actionMap, ConditionType.REFINEMENT);
+				if(getRightOperandType(refinementMap).equals("xsd:anyURI"))
+				{
+					String recipientString = getRightOperandValue(refinementMap);
+					policy.setRecipient(recipientString);
+				}
+			}
+			policy.setProviderSide(true);
+			return policy;
+		}
+
 		return null;
 	}
 
@@ -212,9 +230,10 @@ public class PatternUtil {
 	}
 
 
-	public static boolean isProvideAccess(Map permissionMap) {
-		return (isAction(permissionMap, Action.READ) && isNull(getSingleConditionMap(permissionMap, ConditionType.CONSTRAINT))
-				&& isNull(getListConditionMap(permissionMap, ConditionType.CONSTRAINT)));
+	public static boolean isProvideAccess(Map ruleMap) {
+		return (isAction(ruleMap, Action.READ) && isNull(getMap(ruleMap, "duty"))
+				&& isNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+				&& isNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)));
 	}
 
 	public static boolean isSpecificPurpose(Map ruleMap) {
@@ -238,7 +257,7 @@ public class PatternUtil {
 			}
 		}
 
-		return (isAction(ruleMap, Action.READ) && flag);
+		return (isAction(ruleMap, Action.READ) && isNotNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)) && flag);
 	}
 
 	public static boolean isDeleteAfter(Map ruleMap) {
@@ -250,6 +269,13 @@ public class PatternUtil {
 					&& getLeftOperand(conditionBlock).equals(LeftOperand.DELAY_PERIOD));
 		}
 		return false;
+	}
+
+	public static boolean isLogAccess(Map ruleMap)
+	{
+		Map dutyMap = getMap(ruleMap, "duty");
+		Action action = getAction(dutyMap);
+		return (isAction(ruleMap, Action.READ) && action.equals(Action.LOG));
 	}
 
 	private static boolean isAction(Map permissionMap, Action action) {
@@ -276,46 +302,6 @@ public class PatternUtil {
 	public static String getRightOperandType(Map conditionMap) {
 		Map rightOperandMap = (Map) conditionMap.get("rightOperand");
 		return isNotNull (rightOperandMap)? getValue(rightOperandMap, "@type"): "";
-	}
-
-	public static boolean constraintAndListLeftOperandsAreDateTime(Map permissionMap) {
-		Map constraintMap = getSingleConditionMap(permissionMap, ConditionType.CONSTRAINT);
-		if (null != constraintMap && null != constraintMap.get("and") && constraintMap.get("and") instanceof Map) {
-			Map andMap = (Map) constraintMap.get("and");
-			if(null != andMap.get("@list") && andMap.get("@list") instanceof ArrayList) {
-				ArrayList atListArrayList = ((ArrayList)andMap.get("@list"));
-				if(atListArrayList.size() == 2 && atListArrayList.get(0) instanceof Map && atListArrayList.get(1) instanceof Map) {
-					Map startMap = (Map) atListArrayList.get(0);
-					Map endMap = (Map) atListArrayList.get(1);
-					
-					if(		null != startMap.get("leftOperand") 
-						&&	null != endMap.get("leftOperand")
-						&& "dateTime".equals(startMap.get("leftOperand").toString())
-						&& "dateTime".equals(endMap.get("leftOperand").toString())
-						&& 	null != startMap.get("operator")
-						&&  null != endMap.get("operator")
-						&&  "gt".equals(startMap.get("operator").toString())
-						&&  "lt".equals(endMap.get("operator").toString())){
-							return true;
-						}
-				}
-			}
-		}
-		return false;
-	}
-	
-	public static String getConstraintRightOperandValue(Map permissionMap) {
-		Map constraintMap = getSingleConditionMap(permissionMap, ConditionType.CONSTRAINT);
-		if(null != constraintMap && null != constraintMap.get("rightOperand")) {
-			Object rightOperandObject = constraintMap.get("rightOperand");
-			if(rightOperandObject instanceof Map) {
-				Map rightOperandMap = (Map) rightOperandObject;
-				if(null != rightOperandMap.get("@value")) {
-					return rightOperandMap.get("@value").toString();
-				}
-			}
-		}
-		return null;
 	}
 
 	public static Map getSingleConditionMap(Map map, ConditionType conditionType) {
@@ -358,8 +344,8 @@ public class PatternUtil {
 		return null;
 	}
 
-	public static Map getActionMap(Map ruleMap) {
-		Object action = ruleMap.get("action");
+	public static Map getMap(Map ruleMap, String tag) {
+		Object action = ruleMap.get(tag);
 		if(action instanceof ArrayList) {
 			if(!((ArrayList) action).isEmpty()) {
 				Object o = ((ArrayList) action).get(0);
@@ -372,11 +358,6 @@ public class PatternUtil {
 			return (Map) action;
 		}
 		return null;
-	}
-
-	public static boolean isLogAccess(Map permissionMap) {
-		//TODO
-		return false;
 	}
 	
 	public static boolean isNull(Object o) {
