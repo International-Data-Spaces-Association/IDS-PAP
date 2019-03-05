@@ -161,6 +161,16 @@ public class PatternUtil {
 			specificPurposePolicy.setProviderSide(true);
 			return specificPurposePolicy;
 		}
+		if(isSpecificSystem(ruleMap)) {
+			SpecificSystemPolicy policy = new SpecificSystemPolicy();
+
+			Map constraintMap = getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT);
+
+			String rightOperandValue = getRightOperandValue(constraintMap);
+			policy.setSystem(rightOperandValue);
+			policy.setProviderSide(true);
+			return policy;
+		}
 		if(isReadDataInterval(ruleMap)) {
 			ReadDataIntervalPolicy readDataIntervalPolicy = new ReadDataIntervalPolicy();
 			ArrayList<Map> conditions = getListConditionMap(ruleMap, ConditionType.CONSTRAINT);
@@ -240,6 +250,12 @@ public class PatternUtil {
 
 		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.PURPOSE));
+	}
+
+	public static boolean isSpecificSystem(Map ruleMap) {
+
+		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.SYSTEM));
 	}
 
 	public static boolean isReadDataInterval(Map ruleMap) {
