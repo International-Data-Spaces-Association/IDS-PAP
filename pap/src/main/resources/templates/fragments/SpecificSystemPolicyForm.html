@@ -1,14 +1,14 @@
 <form th:action="@{/policy/SpecificSystemPolicyODRL}" th:object="${specificSystemPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
 
-  <div th:if="${specificPurposePolicy?.ruleType?.name() == 'PERMISSION'}">
+  <div th:if="${specificSystemPolicy?.ruleType?.name() == 'PERMISSION'}">
     <p>
     <h3><img src="../images/provide_access.png" style="height:60px;" />  <img src="../images/system.png" style="height:60px;" /><br/>
       This policy gives permission to a specified system of an IDS data consumer to read your data.</h3>
     </p>
   </div>
 
-  <div th:if="${specificPurposePolicy?.ruleType?.name() == 'PROHIBITION'}">
+  <div th:if="${specificSystemPolicy?.ruleType?.name() == 'PROHIBITION'}">
     <p>
     <h3><img src="../images/inhibit_access.png" style="height:60px;" />  <img src="../images/system.png" style="height:60px;" /><br/>
       This policy prohibits a specified system of an IDS data consumer to read your data.</h3>
