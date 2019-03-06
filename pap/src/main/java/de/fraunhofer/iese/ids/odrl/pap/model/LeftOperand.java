@@ -10,6 +10,8 @@ public enum LeftOperand {
 
     SYSTEM("system", "system"),
 
+    EVENT("event", "event"),
+
     PURPOSE("purpose", "purpose");
 
     private final String mydataPIP;

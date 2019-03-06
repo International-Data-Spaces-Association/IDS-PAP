@@ -2,6 +2,7 @@ package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.*;
 import de.fraunhofer.iese.ids.odrl.pap.model.MydataModel.*;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.*;
 import de.fraunhofer.iese.ids.odrl.pattern.PatternUtil;
 
 import java.util.Arrays;
@@ -82,18 +83,34 @@ public class MydataCreator {
 		}
 
 		// get conditions
-		Condition targetCondition = new Condition(Operator.EQUALS, "target", target);
+		Event targetFirstOperand = new Event(ParameterType.STRING, "target");
+		Constant targetSecondOperand = new Constant(ParameterType.STRING, target);
+		Condition targetCondition = new Condition(targetFirstOperand,Operator.EQUALS, targetSecondOperand);
 		Condition[] conditions = {targetCondition};
 		if(!assignee.isEmpty() && categorizedPolicy.getProviderSide())
 		{
-			Condition assigneeCondition = new Condition(Operator.EQUALS, "assignee", assignee);
+			Event assigneeFirstOperand = new Event(ParameterType.STRING, "assignee");
+			Constant assigneeSecondOperand = new Constant(ParameterType.STRING, assignee);
+			Condition assigneeCondition = new Condition(assigneeFirstOperand, Operator.EQUALS, assigneeSecondOperand);
 			conditions = (Condition[]) addElement(conditions, assigneeCondition);
 		}
 
 		if(categorizedPolicy instanceof SpecificSystemPolicy)
 		{
-			Condition systemCondition = new Condition(Operator.EQUALS, "system", ((SpecificSystemPolicy) categorizedPolicy).getSystem());
+			Event systemFirstOperand = new Event(ParameterType.STRING, "system");
+			Constant systemSecondOperand = new Constant(ParameterType.STRING, ((SpecificSystemPolicy) categorizedPolicy).getSystem());
+			Condition systemCondition = new Condition(systemFirstOperand, Operator.EQUALS, systemSecondOperand);
 			conditions = (Condition[]) addElement(conditions, systemCondition);
+		}
+
+		if(categorizedPolicy instanceof SpecificEventPolicy)
+		{
+			Parameter eventP = new Parameter(ParameterType.STRING,"value", ((SpecificEventPolicy) categorizedPolicy).getEvent());
+			Parameter[] countParams = {eventP};
+			Count eventFirstOperand = new Count(solution, LeftOperand.EVENT, countParams, FixedTime.THIS_HOUR);
+			Constant eventSecondOperand = new Constant(ParameterType.NUMBER, "1");
+			Condition eventCondition = new Condition(eventFirstOperand, Operator.EQUALS, eventSecondOperand);
+			conditions = (Condition[]) addElement(conditions, eventCondition);
 		}
 
 		PIPBoolean purposePipBoolean = null;

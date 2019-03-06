@@ -1,8 +1,7 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.LogAccessPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.LogAccessPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
-import de.fraunhofer.iese.ids.odrl.pap.model.SpecificPurposePolicy;
 
 public class LogAccessPolicyOdrlCreator {
 	

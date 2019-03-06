@@ -9,6 +9,7 @@ import java.util.Map;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.*;
 import de.fraunhofer.iese.ids.odrl.pap.model.OdrlModel.ConditionType;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.*;
 
 @SuppressWarnings("rawtypes")
 public class PatternUtil {
@@ -171,6 +172,16 @@ public class PatternUtil {
 			policy.setProviderSide(true);
 			return policy;
 		}
+		if(isSpecificEvent(ruleMap)) {
+			SpecificEventPolicy policy = new SpecificEventPolicy();
+
+			Map constraintMap = getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT);
+
+			String rightOperandValue = getRightOperandValue(constraintMap);
+			policy.setEvent(rightOperandValue);
+			policy.setProviderSide(true);
+			return policy;
+		}
 		if(isReadDataInterval(ruleMap)) {
 			ReadDataIntervalPolicy readDataIntervalPolicy = new ReadDataIntervalPolicy();
 			ArrayList<Map> conditions = getListConditionMap(ruleMap, ConditionType.CONSTRAINT);
@@ -256,6 +267,12 @@ public class PatternUtil {
 
 		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.SYSTEM));
+	}
+
+	public static boolean isSpecificEvent(Map ruleMap) {
+
+		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.EVENT));
 	}
 
 	public static boolean isReadDataInterval(Map ruleMap) {

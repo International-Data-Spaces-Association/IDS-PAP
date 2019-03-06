@@ -2,31 +2,34 @@ package de.fraunhofer.iese.ids.odrl.pap.model.MydataModel;
 
 
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.pap.model.Operator;
 import lombok.Data;
-import org.springframework.web.servlet.tags.Param;
 
 @Data
-public class PIPBoolean {
+public class Count implements Operand {
  String solution;
  LeftOperand leftOperand;
  Parameter[] parameters;
+ FixedTime fixedTime;
 
- public PIPBoolean(String solution, LeftOperand leftOperand, Parameter[] parameters) {
+ public Count(String solution, LeftOperand leftOperand, Parameter[] parameters, FixedTime fixedTime) {
   this.solution = solution;
   this.leftOperand = leftOperand;
   this.parameters = parameters;
+  this.fixedTime = fixedTime;
  }
 
- public PIPBoolean() {
+ public Count() {
  }
 
 
  @Override
  public String toString() {
-  return  "          <pip:boolean method='urn:info:"+ solution +":"+ leftOperand.getMydataPIP() +"' default='false'>  \r\n" +
+  return  "            <count>  \r\n" +
+          "              <eventOccurrence event='urn:action:"+ solution +":"+ leftOperand.getMydataPIP() +"'>  \r\n" +
           getParameters() +
-          "          </pip:boolean> \r\n" ;
+          "              </eventOccurrence>   \r\n"+
+          "              <when fixedTime='"+ fixedTime.getFixedTime() +"'/>  \r\n" +
+          "            </count>  \r\n" ;
  }
 
  private String getParameters() {
@@ -38,7 +41,7 @@ public class PIPBoolean {
    String params = "";
    for(int i=0 ; i<parameters.length; i++)
    {
-    params += "            " +parameters[i].toString() + "\r\n";
+    params += "                " +parameters[i].toString() + "\r\n";
    }
 
    return  params;

@@ -1,7 +1,7 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
-import de.fraunhofer.iese.ids.odrl.pap.model.ReadDataIntervalPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.ReadDataIntervalPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
 
 public class ReadDataIntervalPolicyOdrlCreator {

@@ -7,16 +7,16 @@ import lombok.Data;
 
 @Data
 public class Condition {
- Operator operator;
- String eventParameter;
- String value;
- //TODO: for now, we are assuming that we only compare event and constant and the data type is string.
 
- public Condition(Operator operator, String eventParameter, String value)
+ Operand firstOperand;
+ Operator operator;
+ Operand secondOperand;
+
+ public Condition(Operand firstOperand, Operator operator, Operand secondOperand)
  {
+  this.firstOperand = firstOperand;
   this.operator = operator;
-  this.eventParameter = eventParameter;
-  this.value = value;
+  this.secondOperand = secondOperand;
  }
 
  public Condition() {
@@ -33,8 +33,8 @@ public class Condition {
  @Override
  public String toString() {
   return  "          <" + operator.getMydataOp() + ">  \r\n" +
-          "            <event:string eventParameter='" + eventParameter + "'>  \r\n" +
-          "            <constant:string value='" + value + "'>  \r\n" +
+          firstOperand +
+          secondOperand +
           "          </" + operator.getMydataOp() + ">  \r\n";
  }
 }

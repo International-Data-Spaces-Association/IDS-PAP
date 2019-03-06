@@ -8,6 +8,7 @@ import java.util.Map;
 
 import de.fraunhofer.iese.ids.odrl.pap.Util.*;
 import de.fraunhofer.iese.ids.odrl.pap.model.*;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.jsonldjava.utils.JsonUtils;
-
-import de.fraunhofer.iese.ids.odrl.pattern.PatternUtil;
 
 /**
  * @author Robin Brandstaedter <Robin.Brandstaedter@iese.fraunhofer.de>
@@ -55,7 +54,7 @@ public class OdrlPapUiController {
 	}
 
 	  @RequestMapping("/policy/SpecificPurposePolicyForm")
-	  public String providePurposePolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy,  Model model) {
+	  public String providePurposePolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy, Model model) {
 		  specificPurposePolicy.setRuleType(RuleType.PERMISSION);
 		  model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
 	    return "index";
@@ -95,9 +94,30 @@ public class OdrlPapUiController {
 		  model.addAttribute("odrlPolicy", SpecificSystemPolicyOdrlCreator.createODRL(specificSystemPolicy));
 	    return "index";
 	  }
-	  
+
+	@RequestMapping("/policy/SpecificEventPolicyForm")
+	public String provideEventPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy,  Model model) {
+		specificEventPolicy.setRuleType(RuleType.PERMISSION);
+		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/InhibitSpecificEventPolicyForm")
+	public String inhibitEventPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy,  Model model) {
+		specificEventPolicy.setRuleType(RuleType.PROHIBITION);
+		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/SpecificEventPolicyODRL")
+	public String odrlPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlPolicy", SpecificEventPolicyOdrlCreator.createODRL(specificEventPolicy));
+		return "index";
+	}
+
 	  @RequestMapping("/policy/DeleteAfterPolicyForm")
-	  public String policy(@ModelAttribute("deleteAfterPolicy") DeleteAtferPolicy deleteAfterPolicy,  Model model) {
+	  public String policy(@ModelAttribute("deleteAfterPolicy") DeleteAtferPolicy deleteAfterPolicy, Model model) {
 		  Duration duration = new Duration(1, TimeUnit.HOURS);
 		  duration.setValue();
 		  duration.setTimeUnit();
@@ -114,7 +134,7 @@ public class OdrlPapUiController {
 	}
 
 	  @RequestMapping("/policy/ReadDataIntervalPolicyForm")
-	  public String provideInterval(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy,  Model model) {
+	  public String provideInterval(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy, Model model) {
 		  readDataIntervalPolicy.setRuleType(RuleType.PERMISSION);
 		  model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 	    return "index";
@@ -135,7 +155,7 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/LogAccessPolicyForm")
-	public String policy(@ModelAttribute LogAccessPolicy logAccessPolicy,  Model model) {
+	public String policy(@ModelAttribute LogAccessPolicy logAccessPolicy, Model model) {
 		model.addAttribute(POLICY_FRAGMENT, "LogAccessPolicyForm");
 		return "index";
 	}

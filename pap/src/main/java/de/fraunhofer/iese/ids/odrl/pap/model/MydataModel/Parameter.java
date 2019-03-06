@@ -21,6 +21,6 @@ public class Parameter {
 
     @Override
     public String toString() {
-        return  "<parameter:"+ type.toString().toLowerCase() +" name='"+ name +"' value='"+ value +"'/>";
+        return  "<parameter:"+ type.getParameterType() +" name='"+ name +"' value='"+ value +"'/>";
     }
 }

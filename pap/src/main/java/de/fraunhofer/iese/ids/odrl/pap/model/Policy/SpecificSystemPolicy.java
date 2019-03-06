@@ -1,4 +1,4 @@
-package de.fraunhofer.iese.ids.odrl.pap.model;
+package de.fraunhofer.iese.ids.odrl.pap.model.Policy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

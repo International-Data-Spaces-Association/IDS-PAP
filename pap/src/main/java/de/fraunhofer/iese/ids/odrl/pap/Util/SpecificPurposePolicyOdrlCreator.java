@@ -2,7 +2,7 @@ package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
-import de.fraunhofer.iese.ids.odrl.pap.model.SpecificPurposePolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.SpecificPurposePolicy;
 
 public class SpecificPurposePolicyOdrlCreator {
 	

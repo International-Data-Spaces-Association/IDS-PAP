@@ -1,9 +1,8 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
-import de.fraunhofer.iese.ids.odrl.pap.model.ProvideAccessPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.ProvideAccessPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
-import de.fraunhofer.iese.ids.odrl.pap.model.SpecificPurposePolicy;
 
 public class ProvideAccessPolicyOdrlCreator {
 	

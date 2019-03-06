@@ -1,6 +1,6 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.DeleteAtferPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.DeleteAtferPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.TimeUnit;
 
