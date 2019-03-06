@@ -35,7 +35,7 @@ public class MydataPolicy {
 
   String returnPolicy = timer + "\r\n" +
           "  <policy id='urn:policy:" + solution + ":" + pid + "'>    \r\n" +
-          "    <mechanism event='urn:action:" + solution + ":" + action.getAction() + "'>    \r\n" +
+          "    <mechanism event='urn:action:" + solution + ":" + action.name().toLowerCase() + "'>    \r\n" +
           "      <if>   \r\n" +
           conditionsBlock +
           decisionBlock +

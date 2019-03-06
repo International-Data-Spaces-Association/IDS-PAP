@@ -2,32 +2,36 @@ package de.fraunhofer.iese.ids.odrl.pap.model;
 
 public enum LeftOperand {
 
-    DELAY_PERIOD("delay-period","delay period"),
+    DELAY_PERIOD("delay-period","ids:delay period"),
 
-    DATETIME("datetime", "datetime"),
+    DATETIME("datetime", "ids:datetime"),
 
-    COUNT("count", "count"),
+    COUNT("count", "ids:count"),
 
-    SYSTEM("system", "system"),
+    SYSTEM("system", "ids:system"),
 
-    EVENT("event", "event"),
+    EVENT("event", "ids:event"),
 
-    PURPOSE("purpose", "purpose");
+    ENCODING("encoding", "ids:encoding"),
 
-    private final String mydataPIP;
-    private final String odrlLeftOperand;
+    RECIPIENT("recipient", "ids:recipient"),
+
+    PURPOSE("purpose", "ids:purpose");
+
+    private final String mydataLeftOperand;
+    private final String idsLeftOperand;
 
     LeftOperand(String op1, String op2) {
-        mydataPIP = op1;
-        odrlLeftOperand = op2;
+        mydataLeftOperand = op1;
+        idsLeftOperand = op2;
     }
 
-    public String getMydataPIP() {
-        return mydataPIP;
+    public String getMydataLeftOperand() {
+        return mydataLeftOperand;
     }
 
-    public String getOdrlLeftOperand() {
-        return odrlLeftOperand;
+    public String getIdsLeftOperand() {
+        return idsLeftOperand;
     }
 }
 

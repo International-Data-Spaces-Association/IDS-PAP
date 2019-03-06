@@ -28,7 +28,7 @@ public class Timer {
     @Override
     public String toString() {
         return  "  <timer cron='"+ timeUnit.getMydataCron() +"' id='urn:timer:"+ solution +":"+ tid +"'>  \r\n" +
-                "    <event action='urn:action:"+ solution +":"+ action.getAction() +"'>  \r\n" +
+                "    <event action='urn:action:"+ solution +":"+ action.name().toLowerCase() +"'>  \r\n" +
                 getParameter() +
                 "    </event>  \r\n" +
                 "  </timer> \r\n" ;

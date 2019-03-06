@@ -97,7 +97,7 @@ public class MydataCreator {
 
 		if(categorizedPolicy instanceof SpecificSystemPolicy)
 		{
-			Event systemFirstOperand = new Event(ParameterType.STRING, "system");
+			Event systemFirstOperand = new Event(ParameterType.STRING, LeftOperand.SYSTEM.getMydataLeftOperand());
 			Constant systemSecondOperand = new Constant(ParameterType.STRING, ((SpecificSystemPolicy) categorizedPolicy).getSystem());
 			Condition systemCondition = new Condition(systemFirstOperand, Operator.EQUALS, systemSecondOperand);
 			conditions = (Condition[]) addElement(conditions, systemCondition);
@@ -129,12 +129,21 @@ public class MydataCreator {
 
 		}
 
+		PIPBoolean encodingPipBoolean = null;
+		if(categorizedPolicy instanceof EncodingPolicy)
+		{
+			Parameter encodingP = new Parameter(ParameterType.STRING,"value",getLastSplitElement(((EncodingPolicy) categorizedPolicy).getEncoding()));
+			Parameter[] pipParams = {encodingP, targetP};
+			purposePipBoolean = new PIPBoolean(solution, LeftOperand.ENCODING, pipParams);
+
+		}
+
 		// log pxp
 		boolean hasDuty = false;
 		if(categorizedPolicy instanceof LogAccessPolicy)
 		{
 			hasDuty = true;
-			Parameter recipientP = new Parameter(ParameterType.STRING,"recipient",getLastSplitElement(((LogAccessPolicy) categorizedPolicy).getRecipient()));
+			Parameter recipientP = new Parameter(ParameterType.STRING,LeftOperand.RECIPIENT.getMydataLeftOperand(),getLastSplitElement(((LogAccessPolicy) categorizedPolicy).getRecipient()));
 			Parameter[] params = {targetP, assigneeP, recipientP};
 			pxp = new ExecuteAction(solution, Action.LOG, params);
 		}
@@ -156,6 +165,10 @@ public class MydataCreator {
 		if(null != purposePipBoolean)
 		{
 			pipBooleans = (PIPBoolean[])addElement(pipBooleans, purposePipBoolean);
+		}
+		if(null != encodingPipBoolean)
+		{
+			pipBooleans = (PIPBoolean[])addElement(pipBooleans, encodingPipBoolean);
 		}
 		if(pipBooleans.length >0)
 		{

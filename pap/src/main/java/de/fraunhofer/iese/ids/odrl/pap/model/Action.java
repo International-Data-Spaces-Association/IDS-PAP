@@ -2,23 +2,23 @@ package de.fraunhofer.iese.ids.odrl.pap.model;
 
 public enum Action {
 
-    READ("read"),
+    READ("ids:read"),
 
-    DISPLAY("display"),
+    DISPLAY("ids:display"),
 
-    DELETE("delete"),
+    DELETE("ids:delete"),
 
-    INFORM("inform"),
+    INFORM("ids:inform"),
 
-    PRINT("print"),
+    PRINT("ids:print"),
 
-    ANONYMIZE("anonymize"),
+    ANONYMIZE("ids:anonymize"),
 
-    REPRODUCE("reproduce"),
+    REPRODUCE("ids:reproduce"),
 
-    DISTRIBUTE("distribute"),
+    DISTRIBUTE("ids:distribute"),
 
-    LOG("log");
+    LOG("ids:log");
 
     private final String action;
 
@@ -26,8 +26,9 @@ public enum Action {
         action = a;
     }
 
-    public String getAction() {
+    public String getIdsAction() {
         return action;
     }
+
 }
 

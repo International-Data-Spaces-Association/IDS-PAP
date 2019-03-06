@@ -25,7 +25,7 @@ public class Count implements Operand {
  @Override
  public String toString() {
   return  "            <count>  \r\n" +
-          "              <eventOccurrence event='urn:action:"+ solution +":"+ leftOperand.getMydataPIP() +"'>  \r\n" +
+          "              <eventOccurrence event='urn:action:"+ solution +":"+ leftOperand.getMydataLeftOperand() +"'>  \r\n" +
           getParameters() +
           "              </eventOccurrence>   \r\n"+
           "              <when fixedTime='"+ fixedTime.getFixedTime() +"'/>  \r\n" +

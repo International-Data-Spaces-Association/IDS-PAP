@@ -1,5 +1,7 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.Action;
+import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
 import de.fraunhofer.iese.ids.odrl.pap.model.Policy.LogAccessPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 
@@ -44,12 +46,12 @@ public class LogAccessPolicyOdrlCreator {
 				"  \"uid\": \"http://example.com/policy:log-access\",    \r\n" +
 				"  \"permission\": [{    \r\n" +
 				"    \"target\": \"%s\",    \r\n%s%s" +
-				"    \"action\": \"read\",    \r\n" +
+				"    \"action\": \""+ Action.READ.getIdsAction() +"\",    \r\n" +
 				"    \"duty\": [{    \r\n" +
 				"      \"action\": [{    \r\n" +
-				"        \"rdf:value\": { \"@id\": \"log\" },    \r\n" +
+				"        \"rdf:value\": { \"@id\": \""+ Action.LOG.getIdsAction() +"\" },    \r\n" +
 				"        \"refinement\": [{    \r\n" +
-				"          \"leftOperand\": \"recipient\",    \r\n" +
+				"          \"leftOperand\": \""+ LeftOperand.RECIPIENT.getIdsLeftOperand() +"\",    \r\n" +
 				"          \"operator\": \"eq\",    \r\n" +
 				"          \"rightOperand\":  { \"@value\": \"%s\", \"@type\": \"xsd:anyURI\" }    \r\n" +
 				"        }]    \r\n" +

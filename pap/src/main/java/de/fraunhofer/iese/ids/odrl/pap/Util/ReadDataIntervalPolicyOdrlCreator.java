@@ -1,5 +1,7 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.Action;
+import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.Policy.ReadDataIntervalPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
@@ -56,15 +58,15 @@ public class ReadDataIntervalPolicyOdrlCreator {
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
-				"      \"action\": \"read\",     \r\n" + 
+				"      \"action\": \""+ Action.READ.getIdsAction() +"\",     \r\n" +
 				"      \"constraint\": {    \r\n" +
 				"        \"and\": {    \r\n" +
 				"          \"@list\": [{    \r\n" +
-				"            \"leftOperand\": \"dateTime\",    \r\n" +
+				"            \"leftOperand\": \""+ LeftOperand.DATETIME.getIdsLeftOperand() +"\",    \r\n" +
 				"            \"operator\": \"gt\",    \r\n" +
 				"            \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
 				"            },{     \r\n" +
-				"            \"leftOperand\": \"dateTime\",    \r\n" +
+				"            \"leftOperand\": \""+ LeftOperand.DATETIME.getIdsLeftOperand() +"\",    \r\n" +
 				"            \"operator\": \"lt\",    \r\n" +
 				"            \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
 				"          }]     \r\n" +

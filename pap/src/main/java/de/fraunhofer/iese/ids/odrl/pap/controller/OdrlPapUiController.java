@@ -167,6 +167,20 @@ public class OdrlPapUiController {
 		return "index";
 	}
 
+	@RequestMapping("/policy/EncodingPolicyForm")
+	public String policy(@ModelAttribute EncodingPolicy encodingPolicy, Model model) {
+		encodingPolicy.setProviderSide(true);
+		model.addAttribute(POLICY_FRAGMENT, "EncodingPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/EncodingPolicyODRL")
+	public String odrlPolicy(@ModelAttribute EncodingPolicy encodingPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlPolicy", EncodingPolicyOdrlCreator.createODRL(encodingPolicy));
+		return "index";
+	}
+
 	 @SuppressWarnings("rawtypes")
 	@RequestMapping("/policy/JsonOrdlPolicyMAYDATA")
 	  public String policy(@ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {

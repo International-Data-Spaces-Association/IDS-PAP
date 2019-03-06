@@ -1,5 +1,6 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.Action;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.Policy.ProvideAccessPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
@@ -46,7 +47,7 @@ public class ProvideAccessPolicyOdrlCreator {
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
-				"      \"action\": \"read\"     \r\n" +
+				"      \"action\": \""+ Action.READ.getIdsAction() +"\"     \r\n" +
 				"  }]    \r\n" + 
 				"} ", type, ruleType, target, assigner, assignee);
 	}

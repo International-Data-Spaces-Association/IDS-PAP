@@ -1,5 +1,7 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.Action;
+import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
 import de.fraunhofer.iese.ids.odrl.pap.model.Policy.SpecificPurposePolicy;
@@ -52,9 +54,9 @@ public class SpecificPurposePolicyOdrlCreator {
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
-				"      \"action\": \"read\",     \r\n" + 
+				"      \"action\": \""+ Action.READ.getIdsAction() +"\",     \r\n" +
 				"      \"constraint\": [{    \r\n" + 
-				"        \"leftOperand\": \"purpose\",    \r\n" + 
+				"        \"leftOperand\": \""+ LeftOperand.PURPOSE.getIdsLeftOperand() +"\",    \r\n" +
 				"        \"operator\": \"eq\",    \r\n" + 
 				"        \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:anyURI\" }     \r\n" +
 				"      }]     \r\n" + 

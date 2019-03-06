@@ -129,9 +129,9 @@ public class PatternUtil {
 		{
 			Map actionBlock = (Map) ((ArrayList) map.get("action")).get(0);
 			Map valueBlock = (Map) actionBlock.get("rdf:value");
-			return Action.valueOf(valueBlock.get("@id").toString().toUpperCase());
+			return Action.valueOf(removeIdsTag(valueBlock.get("@id").toString()));
 		}else{
-			return Action.valueOf(map.get("action").toString().toUpperCase());
+			return Action.valueOf(removeIdsTag(map.get("action").toString()));
 		}
 	}
 	
@@ -179,6 +179,16 @@ public class PatternUtil {
 
 			String rightOperandValue = getRightOperandValue(constraintMap);
 			policy.setEvent(rightOperandValue);
+			policy.setProviderSide(true);
+			return policy;
+		}
+		if(isEncoding(ruleMap)) {
+			EncodingPolicy policy = new EncodingPolicy();
+
+			Map constraintMap = getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT);
+
+			String rightOperandValue = getRightOperandValue(constraintMap);
+			policy.setEncoding(rightOperandValue);
 			policy.setProviderSide(true);
 			return policy;
 		}
@@ -275,6 +285,11 @@ public class PatternUtil {
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.EVENT));
 	}
 
+	private static boolean isEncoding(Map ruleMap) {
+		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.ENCODING));
+	}
+
 	public static boolean isReadDataInterval(Map ruleMap) {
 		ArrayList<Map> conditions = getListConditionMap(ruleMap, ConditionType.CONSTRAINT);
 		boolean flag = true;
@@ -316,7 +331,7 @@ public class PatternUtil {
 	}
 
 	public static LeftOperand getLeftOperand(Map conditionMap) {
-		return isNotNull (conditionMap)? LeftOperand.valueOf(getValue(conditionMap, "leftOperand").toUpperCase()): null;
+		return isNotNull (conditionMap)? LeftOperand.valueOf(removeIdsTag(getValue(conditionMap, "leftOperand"))): null;
 	}
 
 	public static Operator getOperator(Map conditionMap) {
@@ -400,7 +415,12 @@ public class PatternUtil {
 	public static boolean isNotNull(Object o) {
 		return null != o;
 	}
-	
+
+	private static String removeIdsTag(String term)
+	{
+		  String termWithoutTag = term.trim().replaceAll(" ", "_");
+		return termWithoutTag.substring(4).toUpperCase();
+	}
 }
 
 	

@@ -1,8 +1,11 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.Action;
+import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
 import de.fraunhofer.iese.ids.odrl.pap.model.Policy.DeleteAtferPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.TimeUnit;
+import org.thymeleaf.templateparser.text.AbstractChainedTextHandler;
 
 public class DeleteAfterPolicyOdrlCreator {
 	
@@ -68,9 +71,9 @@ public class DeleteAfterPolicyOdrlCreator {
 				"  \"obligation\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": [{    \r\n" +
-				"          \"rdf:value\": { \"@id\": \"delete\" },     \r\n" +
+				"          \"rdf:value\": { \"@id\": \""+ Action.DELETE.getIdsAction() +"\" },     \r\n" +
 				"      	   \"refinement\": [{    \r\n" +
-				"        	  \"leftOperand\": \"Delay_Period\",    \r\n" +
+				"        	  \"leftOperand\": \""+ LeftOperand.DELAY_PERIOD.getIdsLeftOperand() +"\",    \r\n" +
 				"        	  \"operator\": \"eq\",    \r\n" +
 				"        	  \"rightOperand\": { \"@value\": \"P%s%s%s\", \"@type\": \"xsd:duration\" }     \r\n" +
 				"          }]     \r\n" +
