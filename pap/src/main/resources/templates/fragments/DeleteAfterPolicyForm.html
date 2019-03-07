@@ -1,5 +1,7 @@
 <form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/DeleteAfterPolicyODRL}"
       th:object="${deleteAfterPolicy}" method="post">
+  <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
 
   <div>
     <p>

@@ -46,7 +46,16 @@ public class SpecificSystemPolicyOdrlCreator {
 		if(null != specificSystemPolicy.getSystem()) {
 			system = specificSystemPolicy.getSystem();
 		}
-		
+
+		//set action
+		String action = "";
+		if(null != specificSystemPolicy.getAction()) {
+			action = specificSystemPolicy.getAction().getIdsAction();
+		}
+
+		//set leftOperand
+		String leftOperand = LeftOperand.SYSTEM.getIdsLeftOperand();
+
 		//return the formated String
 		return String.format(" {    \r\n" + 
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
@@ -54,13 +63,13 @@ public class SpecificSystemPolicyOdrlCreator {
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
-				"      \"action\": \""+ Action.READ.getIdsAction() +"\",     \r\n" +
+				"      \"action\": \"%s\",     \r\n" +
 				"      \"constraint\": [{    \r\n" + 
-				"        \"leftOperand\": \""+ LeftOperand.SYSTEM.getIdsLeftOperand() +"\",    \r\n" +
+				"        \"leftOperand\": \"%s\",    \r\n" +
 				"        \"operator\": \"eq\",    \r\n" + 
 				"        \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:anyURI\" }     \r\n" +
 				"      }]     \r\n" + 
 				"  }]    \r\n" + 
-				"} ", type, ruleType, target, assigner, assignee, system);
+				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, system);
 	}
 }

@@ -50,7 +50,16 @@ public class ReadDataIntervalPolicyOdrlCreator {
 		if(null != readDataIntervalPolicy.getEndTime()) {
 			endTime = readDataIntervalPolicy.getEndTime() + "Z";
 		}
-		
+
+		//set action
+		String action = "";
+		if(null != readDataIntervalPolicy.getAction()) {
+			action = readDataIntervalPolicy.getAction().getIdsAction();
+		}
+
+		//set leftOperand
+		String leftOperand = LeftOperand.DATETIME.getIdsLeftOperand();
+
 		//return the formated String
 		return String.format(" {    \r\n" + 
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
@@ -58,21 +67,21 @@ public class ReadDataIntervalPolicyOdrlCreator {
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
-				"      \"action\": \""+ Action.READ.getIdsAction() +"\",     \r\n" +
+				"      \"action\": \"%s\",     \r\n" +
 				"      \"constraint\": {    \r\n" +
 				"        \"and\": {    \r\n" +
 				"          \"@list\": [{    \r\n" +
-				"            \"leftOperand\": \""+ LeftOperand.DATETIME.getIdsLeftOperand() +"\",    \r\n" +
+				"            \"leftOperand\": \"%s\",    \r\n" +
 				"            \"operator\": \"gt\",    \r\n" +
 				"            \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
 				"            },{     \r\n" +
-				"            \"leftOperand\": \""+ LeftOperand.DATETIME.getIdsLeftOperand() +"\",    \r\n" +
+				"            \"leftOperand\": \"%s\",    \r\n" +
 				"            \"operator\": \"lt\",    \r\n" +
 				"            \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
 				"          }]     \r\n" +
 				"        }    \r\n" +
 				"      }    \r\n" +
 				"  }]    \r\n" + 
-				"} ", type, ruleType, target, assigner, assignee, startTime, endTime);
+				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, startTime, leftOperand, endTime);
 	}
 }

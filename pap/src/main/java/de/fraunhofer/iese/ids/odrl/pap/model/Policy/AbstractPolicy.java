@@ -19,6 +19,7 @@ import lombok.Data;
 public abstract class AbstractPolicy implements CategorizedPolicy{
 	RuleType ruleType;
 	Action action;
+	Action dutyAction;
 	URL policyUrl;
 	PolicyType policyType;
 	Condition condition;
@@ -37,6 +38,10 @@ public abstract class AbstractPolicy implements CategorizedPolicy{
 
 	public Action getAction() {
 		return action;
+	}
+
+	public Action getDutyAction() {
+		return dutyAction;
 	}
 
 	public URL getPolicyUrl() {

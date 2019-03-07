@@ -9,6 +9,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class ProvideAccessPolicy extends AbstractPolicy {
+public class BasePolicy extends AbstractPolicy {
 
 }

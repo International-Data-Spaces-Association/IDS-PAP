@@ -1,4 +1,7 @@
 <form th:action="@{/policy/LogAccessPolicyODRL}" th:object="${logAccessPolicy}" method="post">
+  <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
+  <input type="hidden" th:field="*{dutyAction}" />
 
   <div>
     <p>

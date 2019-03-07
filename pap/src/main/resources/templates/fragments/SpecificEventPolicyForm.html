@@ -1,5 +1,6 @@
 <form th:action="@{/policy/SpecificEventPolicyODRL}" th:object="${specificEventPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
 
   <div th:if="${specificEventPolicy?.ruleType?.name() == 'PERMISSION'}">
     <p>

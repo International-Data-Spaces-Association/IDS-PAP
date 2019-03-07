@@ -1,14 +1,15 @@
-<form th:action="@{/policy/ProvideAccessPolicyODRL}" th:object="${provideAccessPolicy}" method="post">
+<form th:action="@{/policy/BasePolicyODRL}" th:object="${basePolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
 
-    <div th:if="${provideAccessPolicy?.ruleType?.name() == 'PERMISSION'}">
+    <div th:if="${basePolicy?.ruleType?.name() == 'PERMISSION'}">
       <p>
         <h3><img src="../images/provide_access.png" style="height:60px;" /><br/>
         This policy gives permission to a specified IDS data consumer to read your data.</h3>
       </p>
     </div>
 
-  <div th:if="${provideAccessPolicy?.ruleType?.name() == 'PROHIBITION'}">
+  <div th:if="${basePolicy?.ruleType?.name() == 'PROHIBITION'}">
     <p>
     <h3><img src="../images/inhibit_access.png" style="height:60px;" /><br/>
       This policy prohibits a specified IDS data consumer to read your data.</h3>

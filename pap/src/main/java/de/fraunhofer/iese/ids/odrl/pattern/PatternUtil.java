@@ -148,8 +148,13 @@ public class PatternUtil {
 	
 	public static CategorizedPolicy recognizePattern(Map ruleMap) {
 		if(isProvideAccess(ruleMap)) {
-			ProvideAccessPolicy policy = new ProvideAccessPolicy();
+			BasePolicy policy = new BasePolicy();
 			policy.setProviderSide(true);
+			return policy;
+		}
+		if(isInhibitPrint(ruleMap)) {
+			BasePolicy policy = new BasePolicy();
+			policy.setProviderSide(false);
 			return policy;
 		}
 		if(isSpecificPurpose(ruleMap)) {
@@ -260,9 +265,14 @@ public class PatternUtil {
 						(isNotNull(map.get(RuleType.OBLIGATION.getOdrlRuleType()))? RuleType.OBLIGATION : null ));
 	}
 
-
 	public static boolean isProvideAccess(Map ruleMap) {
 		return (isAction(ruleMap, Action.READ) && isNull(getMap(ruleMap, "duty"))
+				&& isNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+				&& isNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)));
+	}
+
+	private static boolean isInhibitPrint(Map ruleMap) {
+		return (isAction(ruleMap, Action.PRINT) && isNull(getMap(ruleMap, "duty"))
 				&& isNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& isNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)));
 	}

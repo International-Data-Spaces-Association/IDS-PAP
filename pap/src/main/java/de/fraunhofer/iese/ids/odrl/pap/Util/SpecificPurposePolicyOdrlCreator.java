@@ -46,6 +46,15 @@ public class SpecificPurposePolicyOdrlCreator {
 		if(null != specificPurposePolicy.getPurpose()) {
 			purpose = specificPurposePolicy.getPurpose();
 		}
+
+		//set action
+		String action = "";
+		if(null != specificPurposePolicy.getAction()) {
+			action = specificPurposePolicy.getAction().getIdsAction();
+		}
+
+		//set leftOperand
+		String leftOperand = LeftOperand.PURPOSE.getIdsLeftOperand();
 		
 		//return the formated String
 		return String.format(" {    \r\n" + 
@@ -54,13 +63,13 @@ public class SpecificPurposePolicyOdrlCreator {
 				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
-				"      \"action\": \""+ Action.READ.getIdsAction() +"\",     \r\n" +
+				"      \"action\": \"%s\",     \r\n" +
 				"      \"constraint\": [{    \r\n" + 
-				"        \"leftOperand\": \""+ LeftOperand.PURPOSE.getIdsLeftOperand() +"\",    \r\n" +
+				"        \"leftOperand\": \"%s\",    \r\n" +
 				"        \"operator\": \"eq\",    \r\n" + 
 				"        \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:anyURI\" }     \r\n" +
 				"      }]     \r\n" + 
 				"  }]    \r\n" + 
-				"} ", type, ruleType, target, assigner, assignee, purpose);
+				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, purpose);
 	}
 }

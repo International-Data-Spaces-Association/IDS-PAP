@@ -1,5 +1,6 @@
 <form th:action="@{/policy/EncodingPolicyODRL}" th:object="${encodingPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
 
   <div>
     <p>

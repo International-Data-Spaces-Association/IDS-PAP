@@ -17,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.github.jsonldjava.utils.JsonUtils;
 
-/**
- * @author Robin Brandstaedter <Robin.Brandstaedter@iese.fraunhofer.de>
- *
- */
 @Controller
 public class OdrlPapUiController {
 	
@@ -33,29 +29,32 @@ public class OdrlPapUiController {
 	  }
 
 	@RequestMapping("/policy/ProvideAccessPolicyForm")
-	public String accessPolicy(@ModelAttribute ProvideAccessPolicy provideAccessPolicy, Model model) {
-	  	provideAccessPolicy.setRuleType(RuleType.PERMISSION);
-		model.addAttribute(POLICY_FRAGMENT, "ProvideAccessPolicyForm");
+	public String accessPolicy(@ModelAttribute BasePolicy provideAccessPolicy, Model model) {
+		provideAccessPolicy.setRuleType(RuleType.PERMISSION);
+		provideAccessPolicy.setAction(Action.READ);
+		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
 
 	@RequestMapping("/policy/InhibitAccessPolicyForm")
-	public String inhibitPolicy(@ModelAttribute ProvideAccessPolicy provideAccessPolicy, Model model) {
-		provideAccessPolicy.setRuleType(RuleType.PROHIBITION);
-		model.addAttribute(POLICY_FRAGMENT, "ProvideAccessPolicyForm");
+	public String inhibitPolicy(@ModelAttribute BasePolicy inhibitAccessPolicy, Model model) {
+		inhibitAccessPolicy.setRuleType(RuleType.PROHIBITION);
+		inhibitAccessPolicy.setAction(Action.READ);
+		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
 
-	@RequestMapping("/policy/ProvideAccessPolicyODRL")
-	public String odrlPolicy(@ModelAttribute ProvideAccessPolicy provideAccessPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy, Model model) {
+	@RequestMapping("/policy/BasePolicyODRL")
+	public String odrlPolicy(@ModelAttribute BasePolicy basePolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy, Model model) {
 		model.addAttribute(POLICY_FRAGMENT, "odrl");
-		model.addAttribute("odrlPolicy", ProvideAccessPolicyOdrlCreator.createODRL(provideAccessPolicy));
+		model.addAttribute("odrlPolicy", BasePolicyOdrlCreator.createODRL(basePolicy));
 		return "index";
 	}
 
 	  @RequestMapping("/policy/SpecificPurposePolicyForm")
 	  public String providePurposePolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy, Model model) {
 		  specificPurposePolicy.setRuleType(RuleType.PERMISSION);
+		  specificPurposePolicy.setAction(Action.READ);
 		  model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
 	    return "index";
 	  }
@@ -63,6 +62,7 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/InhibitSpecificPurposePolicyForm")
 	public String inhibitPurposePolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy,  Model model) {
 		specificPurposePolicy.setRuleType(RuleType.PROHIBITION);
+		specificPurposePolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
 		return "index";
 	}
@@ -77,6 +77,7 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/SpecificSystemPolicyForm")
 	public String provideSystemPolicy(@ModelAttribute SpecificSystemPolicy specificSystemPolicy,  Model model) {
 		specificSystemPolicy.setRuleType(RuleType.PERMISSION);
+		specificSystemPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificSystemPolicyForm");
 		return "index";
 	}
@@ -84,6 +85,7 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/InhibitSpecificSystemPolicyForm")
 	public String inhibitSystemPolicy(@ModelAttribute SpecificSystemPolicy specificSystemPolicy,  Model model) {
 		specificSystemPolicy.setRuleType(RuleType.PROHIBITION);
+		specificSystemPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificSystemPolicyForm");
 		return "index";
 	}
@@ -98,6 +100,7 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/SpecificEventPolicyForm")
 	public String provideEventPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy,  Model model) {
 		specificEventPolicy.setRuleType(RuleType.PERMISSION);
+		specificEventPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
 		return "index";
 	}
@@ -105,6 +108,7 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/InhibitSpecificEventPolicyForm")
 	public String inhibitEventPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy,  Model model) {
 		specificEventPolicy.setRuleType(RuleType.PROHIBITION);
+		specificEventPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
 		return "index";
 	}
@@ -118,6 +122,8 @@ public class OdrlPapUiController {
 
 	  @RequestMapping("/policy/DeleteAfterPolicyForm")
 	  public String policy(@ModelAttribute("deleteAfterPolicy") DeleteAtferPolicy deleteAfterPolicy, Model model) {
+		  deleteAfterPolicy.setRuleType(RuleType.OBLIGATION);
+		  deleteAfterPolicy.setAction(Action.DELETE);
 		  Duration duration = new Duration(1, TimeUnit.HOURS);
 		  duration.setValue();
 		  duration.setTimeUnit();
@@ -136,6 +142,7 @@ public class OdrlPapUiController {
 	  @RequestMapping("/policy/ReadDataIntervalPolicyForm")
 	  public String provideInterval(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy, Model model) {
 		  readDataIntervalPolicy.setRuleType(RuleType.PERMISSION);
+		  readDataIntervalPolicy.setAction(Action.READ);
 		  model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 	    return "index";
 	  }
@@ -143,6 +150,7 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/InhibitReadDataIntervalPolicyForm")
 	public String inhibitInterval(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy,  Model model) {
 		readDataIntervalPolicy.setRuleType(RuleType.PROHIBITION);
+		readDataIntervalPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 		return "index";
 	}
@@ -156,6 +164,9 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/LogAccessPolicyForm")
 	public String policy(@ModelAttribute LogAccessPolicy logAccessPolicy, Model model) {
+		logAccessPolicy.setRuleType(RuleType.PERMISSION);
+		logAccessPolicy.setAction(Action.READ);
+		logAccessPolicy.setDutyAction(Action.LOG);
 		model.addAttribute(POLICY_FRAGMENT, "LogAccessPolicyForm");
 		return "index";
 	}
@@ -169,7 +180,8 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/EncodingPolicyForm")
 	public String policy(@ModelAttribute EncodingPolicy encodingPolicy, Model model) {
-		encodingPolicy.setProviderSide(true);
+		encodingPolicy.setRuleType(RuleType.PERMISSION);
+		encodingPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "EncodingPolicyForm");
 		return "index";
 	}
@@ -178,6 +190,14 @@ public class OdrlPapUiController {
 	public String odrlPolicy(@ModelAttribute EncodingPolicy encodingPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute(POLICY_FRAGMENT, "odrl");
 		model.addAttribute("odrlPolicy", EncodingPolicyOdrlCreator.createODRL(encodingPolicy));
+		return "index";
+	}
+
+	@RequestMapping("/policy/PrintPolicyForm")
+	public String policy(@ModelAttribute BasePolicy printPolicy, Model model) {
+		printPolicy.setRuleType(RuleType.PROHIBITION);
+		printPolicy.setAction(Action.PRINT);
+		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
 

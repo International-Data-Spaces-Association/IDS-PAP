@@ -1,5 +1,6 @@
 <form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/ReadDataIntervalPolicyODRL}" th:object="${readDataIntervalPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
 
   <div th:if="${readDataIntervalPolicy?.ruleType?.name() == 'PERMISSION'}">
     <p>

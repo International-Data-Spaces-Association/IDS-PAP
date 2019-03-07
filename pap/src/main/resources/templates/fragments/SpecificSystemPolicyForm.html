@@ -1,5 +1,6 @@
 <form th:action="@{/policy/SpecificSystemPolicyODRL}" th:object="${specificSystemPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
 
   <div th:if="${specificSystemPolicy?.ruleType?.name() == 'PERMISSION'}">
     <p>

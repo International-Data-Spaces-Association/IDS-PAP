@@ -63,6 +63,15 @@ public class DeleteAfterPolicyOdrlCreator {
 			}
 		}
 
+		//set action
+		String action = "";
+		if(null != deleteAtferPolicy.getAction()) {
+			action = deleteAtferPolicy.getAction().getIdsAction();
+		}
+
+		//set leftOperand
+		String leftOperand = LeftOperand.DELAY_PERIOD.getIdsLeftOperand();
+
 		//return the formated String
 		return String.format(" {    \r\n" + 
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
@@ -71,14 +80,14 @@ public class DeleteAfterPolicyOdrlCreator {
 				"  \"obligation\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": [{    \r\n" +
-				"          \"rdf:value\": { \"@id\": \""+ Action.DELETE.getIdsAction() +"\" },     \r\n" +
+				"          \"rdf:value\": { \"@id\": \"%s\" },     \r\n" +
 				"      	   \"refinement\": [{    \r\n" +
-				"        	  \"leftOperand\": \""+ LeftOperand.DELAY_PERIOD.getIdsLeftOperand() +"\",    \r\n" +
+				"        	  \"leftOperand\": \"%s\",    \r\n" +
 				"        	  \"operator\": \"eq\",    \r\n" +
 				"        	  \"rightOperand\": { \"@value\": \"P%s%s%s\", \"@type\": \"xsd:duration\" }     \r\n" +
 				"          }]     \r\n" +
 				"      }]     \r\n" +
 				"  }]    \r\n" + 
-				"} ", type, target, assigner, assignee, xsdPrefix, value, timeUnit);
+				"} ", type, target, assigner, assignee, action, leftOperand, xsdPrefix, value, timeUnit);
 	}
 }
