@@ -194,9 +194,17 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/PrintPolicyForm")
-	public String policy(@ModelAttribute BasePolicy printPolicy, Model model) {
+	public String inhibitPrintPolicy(@ModelAttribute BasePolicy printPolicy, Model model) {
 		printPolicy.setRuleType(RuleType.PROHIBITION);
 		printPolicy.setAction(Action.PRINT);
+		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/AnonymizeInRestPolicyForm")
+	public String anonymizeInRestolicy(@ModelAttribute BasePolicy anonymizeInRestPolicy, Model model) {
+		anonymizeInRestPolicy.setRuleType(RuleType.OBLIGATION);
+		anonymizeInRestPolicy.setAction(Action.ANONYMIZE);
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}

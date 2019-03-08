@@ -9,6 +9,25 @@ public class LogAccessPolicyOdrlCreator {
 	
 	public static String createODRL(LogAccessPolicy logAccessPolicy){
 
+		// set rule type
+		String ruleType = "";
+		if(logAccessPolicy.getRuleType()!= null)
+		{
+			switch(logAccessPolicy.getRuleType()) {
+				case OBLIGATION:
+					ruleType = "obligation";
+					break;
+
+				case PERMISSION:
+					ruleType = "permission";
+					break;
+
+				case PROHIBITION:
+					ruleType = "prohibition";
+					break;
+			}
+		}
+
 		//set type
 		String type = "";
 		if(null != logAccessPolicy.getPolicyType()) {
@@ -59,7 +78,7 @@ public class LogAccessPolicyOdrlCreator {
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" +
 				"  \"@type\": \"%s\",    \r\n" +
 				"  \"uid\": \"http://example.com/policy:log-access\",    \r\n" +
-				"  \"permission\": [{    \r\n" +
+				"  \"%s\": [{    \r\n" +
 				"    \"target\": \"%s\",    \r\n%s%s" +
 				"    \"action\": \"%s\",    \r\n" +
 				"    \"duty\": [{    \r\n" +
@@ -73,7 +92,7 @@ public class LogAccessPolicyOdrlCreator {
 				"      }]     \r\n" +
 				"    }]    \r\n" +
 				"  }]    \r\n" +
-				"} ", type, target, assigner, assignee, action, dutyAction, leftOperand, recipient);
+				"} ", type, ruleType, target, assigner, assignee, action, dutyAction, leftOperand, recipient);
 
 	}
 }

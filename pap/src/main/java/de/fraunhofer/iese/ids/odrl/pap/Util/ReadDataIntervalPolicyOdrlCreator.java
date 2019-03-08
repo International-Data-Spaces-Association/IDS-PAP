@@ -11,10 +11,22 @@ public class ReadDataIntervalPolicyOdrlCreator {
 	public static String createODRL(ReadDataIntervalPolicy readDataIntervalPolicy){
 
 		// set rule type
-		String ruleType = "permission";
-		if(readDataIntervalPolicy.getRuleType()!= null && readDataIntervalPolicy.getRuleType().equals(RuleType.PROHIBITION))
+		String ruleType = "";
+		if(readDataIntervalPolicy.getRuleType()!= null)
 		{
-			ruleType = RuleType.PROHIBITION.getOdrlRuleType();
+			switch(readDataIntervalPolicy.getRuleType()) {
+				case OBLIGATION:
+					ruleType = "obligation";
+					break;
+
+				case PERMISSION:
+					ruleType = "permission";
+					break;
+
+				case PROHIBITION:
+					ruleType = "prohibition";
+					break;
+			}
 		}
 
 		//set type

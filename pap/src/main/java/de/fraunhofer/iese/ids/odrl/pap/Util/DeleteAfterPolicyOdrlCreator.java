@@ -11,6 +11,25 @@ public class DeleteAfterPolicyOdrlCreator {
 	
 	public static String createODRL(DeleteAtferPolicy deleteAtferPolicy){
 
+		// set rule type
+		String ruleType = "";
+		if(deleteAtferPolicy.getRuleType()!= null)
+		{
+			switch(deleteAtferPolicy.getRuleType()) {
+				case OBLIGATION:
+					ruleType = "obligation";
+					break;
+
+				case PERMISSION:
+					ruleType = "permission";
+					break;
+
+				case PROHIBITION:
+					ruleType = "prohibition";
+					break;
+			}
+		}
+
 		//set type
 		String type = "";
 		if(null != deleteAtferPolicy.getPolicyType()) {
@@ -77,7 +96,7 @@ public class DeleteAfterPolicyOdrlCreator {
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
 				"  \"@type\": \"%s\",    \r\n" + 
 				"  \"uid\": \"http://example.com/policy:delete-data\",    \r\n" +
-				"  \"obligation\": [{    \r\n" +
+				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": [{    \r\n" +
 				"          \"rdf:value\": { \"@id\": \"%s\" },     \r\n" +
@@ -88,6 +107,6 @@ public class DeleteAfterPolicyOdrlCreator {
 				"          }]     \r\n" +
 				"      }]     \r\n" +
 				"  }]    \r\n" + 
-				"} ", type, target, assigner, assignee, action, leftOperand, xsdPrefix, value, timeUnit);
+				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, xsdPrefix, value, timeUnit);
 	}
 }

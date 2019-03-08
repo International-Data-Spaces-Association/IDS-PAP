@@ -7,10 +7,12 @@ public class Event implements Operand {
 
     ParameterType type;
     String eventParameter;
+    String jsonPath;
 
-    public Event(ParameterType type, String eventParameter) {
+    public Event(ParameterType type, String eventParameter, String jsonPath) {
         this.type = type;
         this.eventParameter = eventParameter;
+        this.jsonPath = jsonPath;
     }
 
     public Event() {
@@ -18,6 +20,6 @@ public class Event implements Operand {
 
     @Override
     public String toString() {
-        return  "            <event:" + type.getParameterType() + " eventParameter='" + eventParameter + "'>  \r\n";
+        return  "            <event:" + type.getParameterType() + " eventParameter='" + eventParameter + "' jsonPathQuery='$." + jsonPath + "'>  \r\n";
     }
 }

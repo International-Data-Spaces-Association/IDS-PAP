@@ -157,6 +157,11 @@ public class PatternUtil {
 			policy.setProviderSide(false);
 			return policy;
 		}
+		if(isAnonymizeInRest(ruleMap)) {
+			BasePolicy policy = new BasePolicy();
+			policy.setProviderSide(false);
+			return policy;
+		}
 		if(isSpecificPurpose(ruleMap)) {
 			SpecificPurposePolicy specificPurposePolicy = new SpecificPurposePolicy();
 
@@ -276,6 +281,13 @@ public class PatternUtil {
 				&& isNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& isNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)));
 	}
+
+	private static boolean isAnonymizeInRest(Map ruleMap) {
+		return (isAction(ruleMap, Action.ANONYMIZE) && isNull(getMap(ruleMap, "duty"))
+				&& isNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+				&& isNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)));
+	}
+
 
 	public static boolean isSpecificPurpose(Map ruleMap) {
 

@@ -3,19 +3,34 @@ package de.fraunhofer.iese.ids.odrl.pap.Util;
 import de.fraunhofer.iese.ids.odrl.pap.model.Action;
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
 import de.fraunhofer.iese.ids.odrl.pap.model.Policy.EncodingPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.SpecificPurposePolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
+
+import java.lang.invoke.SwitchPoint;
+
+import static de.fraunhofer.iese.ids.odrl.pap.model.RuleType.OBLIGATION;
 
 public class EncodingPolicyOdrlCreator {
 	
 	public static String createODRL(EncodingPolicy encodingPolicy){
 
 		// set rule type
-		String ruleType = "permission";
-		if(encodingPolicy.getRuleType()!= null && encodingPolicy.getRuleType().equals(RuleType.PROHIBITION))
+		String ruleType = "";
+		if(encodingPolicy.getRuleType()!= null)
 		{
-			ruleType = RuleType.PROHIBITION.getOdrlRuleType();
+			switch(encodingPolicy.getRuleType()) {
+				case OBLIGATION:
+					ruleType = "obligation";
+					break;
+
+				case PERMISSION:
+					ruleType = "permission";
+					break;
+
+				case PROHIBITION:
+					ruleType = "prohibition";
+					break;
+			}
 		}
 
 		//set type

@@ -11,10 +11,22 @@ public class SpecificSystemPolicyOdrlCreator {
 	public static String createODRL(SpecificSystemPolicy specificSystemPolicy){
 
 		// set rule type
-		String ruleType = "permission";
-		if(specificSystemPolicy.getRuleType()!= null && specificSystemPolicy.getRuleType().equals(RuleType.PROHIBITION))
+		String ruleType = "";
+		if(specificSystemPolicy.getRuleType()!= null)
 		{
-			ruleType = RuleType.PROHIBITION.getOdrlRuleType();
+			switch(specificSystemPolicy.getRuleType()) {
+				case OBLIGATION:
+					ruleType = "obligation";
+					break;
+
+				case PERMISSION:
+					ruleType = "permission";
+					break;
+
+				case PROHIBITION:
+					ruleType = "prohibition";
+					break;
+			}
 		}
 
 		//set type

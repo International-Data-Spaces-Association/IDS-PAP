@@ -2,17 +2,31 @@
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
 
-    <div th:if="${basePolicy?.ruleType?.name() == 'PERMISSION'}">
+    <div th:if="${(basePolicy?.ruleType?.name() == 'PERMISSION') and (basePolicy?.action?.name() == 'READ')}">
       <p>
         <h3><img src="../images/provide_access.png" style="height:60px;" /><br/>
         This policy gives permission to a specified IDS data consumer to read your data.</h3>
       </p>
     </div>
 
-  <div th:if="${basePolicy?.ruleType?.name() == 'PROHIBITION'}">
+  <div th:if="${(basePolicy?.ruleType?.name() == 'PROHIBITION') and (basePolicy?.action?.name() == 'READ')}">
     <p>
     <h3><img src="../images/inhibit_access.png" style="height:60px;" /><br/>
       This policy prohibits a specified IDS data consumer to read your data.</h3>
+    </p>
+  </div>
+
+  <div th:if="${(basePolicy?.ruleType?.name() == 'PROHIBITION') and (basePolicy?.action?.name() == 'PRINT')}">
+    <p>
+    <h3><img src="../images/print.png" style="height:60px;" /><br/>
+      This policy prohibits a specified IDS data consumer to print your data.</h3>
+    </p>
+  </div>
+
+  <div th:if="${(basePolicy?.ruleType?.name() == 'OBLIGATION') and (basePolicy?.action?.name() == 'ANONYMIZE')}">
+    <p>
+    <h3><img src="../images/rest.png" style="height:60px;" /><br/>
+    The assumption is that your data is stored in a database on consumer side.<br/>This policy requests a specified IDS data consumer to anonymize your stored data.</h3>
     </p>
   </div>
 

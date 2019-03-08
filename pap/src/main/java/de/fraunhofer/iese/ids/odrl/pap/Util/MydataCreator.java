@@ -17,7 +17,7 @@ public class MydataCreator {
 		//set mydataPolicy target
 		String target = "";
 		if(null != categorizedPolicy.getDataUrl()) {
-			target = getLastSplitElement(categorizedPolicy.getDataUrl().toString());
+			target = categorizedPolicy.getDataUrl().toString();
 		}
 
 		//set mydataPolicy id
@@ -33,7 +33,6 @@ public class MydataCreator {
 		}
 
 		//set mydataPolicy decision
-		//TODO: take care of obligation
 		RuleType decision = null;
 		if(null != categorizedPolicy.getRuleType()) {
 			decision = categorizedPolicy.getRuleType();
@@ -62,7 +61,7 @@ public class MydataCreator {
 		//get boolean PIP for delay period
 		Timer timer = null;
 		PIPBoolean delayPeriodPipBoolean = null;
-		Parameter targetP = new Parameter(ParameterType.STRING,"target",target);
+		Parameter targetP = new Parameter(ParameterType.STRING,"target-uri",target);
 		if(categorizedPolicy instanceof DeleteAtferPolicy)
 		{
 			Duration d = ((DeleteAtferPolicy) categorizedPolicy).getDuration();
@@ -82,30 +81,28 @@ public class MydataCreator {
 			pxp = new ExecuteAction(solution, Action.DELETE, params);
 		}
 
+		if (categorizedPolicy.getAction().equals(Action.ANONYMIZE) && categorizedPolicy.getRuleType().equals(RuleType.OBLIGATION))
+		{
+			Parameter[] params = {targetP};
+			pxp = new ExecuteAction(solution, Action.ANONYMIZE, params);
+		}
+
 		// get conditions
-		Event targetFirstOperand = new Event(ParameterType.STRING, "target");
+		Event targetFirstOperand = new Event(ParameterType.STRING, EventParameter.TARGET.getEventParameter(), "uri" );
 		Constant targetSecondOperand = new Constant(ParameterType.STRING, target);
 		Condition targetCondition = new Condition(targetFirstOperand,Operator.EQUALS, targetSecondOperand);
 		Condition[] conditions = {targetCondition};
 		if(!assignee.isEmpty() && categorizedPolicy.getProviderSide())
 		{
-			Event assigneeFirstOperand = new Event(ParameterType.STRING, "assignee");
+			Event assigneeFirstOperand = new Event(ParameterType.STRING, EventParameter.ASSIGNEE.getEventParameter(), "name");
 			Constant assigneeSecondOperand = new Constant(ParameterType.STRING, assignee);
 			Condition assigneeCondition = new Condition(assigneeFirstOperand, Operator.EQUALS, assigneeSecondOperand);
 			conditions = (Condition[]) addElement(conditions, assigneeCondition);
 		}
 
-		if(categorizedPolicy instanceof SpecificSystemPolicy)
-		{
-			Event systemFirstOperand = new Event(ParameterType.STRING, LeftOperand.SYSTEM.getMydataLeftOperand());
-			Constant systemSecondOperand = new Constant(ParameterType.STRING, ((SpecificSystemPolicy) categorizedPolicy).getSystem());
-			Condition systemCondition = new Condition(systemFirstOperand, Operator.EQUALS, systemSecondOperand);
-			conditions = (Condition[]) addElement(conditions, systemCondition);
-		}
-
 		if(categorizedPolicy instanceof SpecificEventPolicy)
 		{
-			Parameter eventP = new Parameter(ParameterType.STRING,"value", ((SpecificEventPolicy) categorizedPolicy).getEvent());
+			Parameter eventP = new Parameter(ParameterType.STRING,"event-uri", ((SpecificEventPolicy) categorizedPolicy).getEvent());
 			Parameter[] countParams = {eventP};
 			Count eventFirstOperand = new Count(solution, LeftOperand.EVENT, countParams, FixedTime.THIS_HOUR);
 			Constant eventSecondOperand = new Constant(ParameterType.NUMBER, "1");
@@ -114,10 +111,10 @@ public class MydataCreator {
 		}
 
 		PIPBoolean purposePipBoolean = null;
-		Parameter assigneeP = new Parameter(ParameterType.STRING,"assignee",assignee);
+		Parameter assigneeP = new Parameter(ParameterType.STRING,"assignee-name",assignee);
 		if(categorizedPolicy instanceof SpecificPurposePolicy)
 		{
-			Parameter purposeP = new Parameter(ParameterType.STRING,"value",getLastSplitElement(((SpecificPurposePolicy) categorizedPolicy).getPurpose()));
+			Parameter purposeP = new Parameter(ParameterType.STRING,LeftOperand.PURPOSE.getMydataLeftOperand()+"-uri",((SpecificPurposePolicy) categorizedPolicy).getPurpose());
 			if(assignee.isEmpty())
 			{
 				Parameter[] pipParams = {purposeP};
@@ -126,15 +123,23 @@ public class MydataCreator {
 				Parameter[] pipParams = {purposeP, assigneeP};
 				purposePipBoolean = new PIPBoolean(solution, LeftOperand.PURPOSE, pipParams);
 			}
+		}
 
+		PIPBoolean systemPipBoolean = null;
+		if(categorizedPolicy instanceof SpecificSystemPolicy)
+		{
+			Parameter systemP = new Parameter(ParameterType.STRING,LeftOperand.SYSTEM.getMydataLeftOperand()+"-uri",((SpecificSystemPolicy) categorizedPolicy).getSystem());
+
+			Parameter[] pipParams = {systemP};
+			systemPipBoolean = new PIPBoolean(solution, LeftOperand.SYSTEM, pipParams);
 		}
 
 		PIPBoolean encodingPipBoolean = null;
 		if(categorizedPolicy instanceof EncodingPolicy)
 		{
-			Parameter encodingP = new Parameter(ParameterType.STRING,"value",getLastSplitElement(((EncodingPolicy) categorizedPolicy).getEncoding()));
+			Parameter encodingP = new Parameter(ParameterType.STRING,LeftOperand.ENCODING.getMydataLeftOperand()+"-uri",((EncodingPolicy) categorizedPolicy).getEncoding());
 			Parameter[] pipParams = {encodingP, targetP};
-			purposePipBoolean = new PIPBoolean(solution, LeftOperand.ENCODING, pipParams);
+			encodingPipBoolean = new PIPBoolean(solution, LeftOperand.ENCODING, pipParams);
 
 		}
 
@@ -143,7 +148,7 @@ public class MydataCreator {
 		if(categorizedPolicy instanceof LogAccessPolicy)
 		{
 			hasDuty = true;
-			Parameter recipientP = new Parameter(ParameterType.STRING,LeftOperand.RECIPIENT.getMydataLeftOperand(),getLastSplitElement(((LogAccessPolicy) categorizedPolicy).getRecipient()));
+			Parameter recipientP = new Parameter(ParameterType.STRING,LeftOperand.RECIPIENT.getMydataLeftOperand()+"-uri",((LogAccessPolicy) categorizedPolicy).getRecipient());
 			Parameter[] params = {targetP, assigneeP, recipientP};
 			pxp = new ExecuteAction(solution, Action.LOG, params);
 		}
@@ -169,6 +174,10 @@ public class MydataCreator {
 		if(null != encodingPipBoolean)
 		{
 			pipBooleans = (PIPBoolean[])addElement(pipBooleans, encodingPipBoolean);
+		}
+		if(null != systemPipBoolean)
+		{
+			pipBooleans = (PIPBoolean[])addElement(pipBooleans, systemPipBoolean);
 		}
 		if(pipBooleans.length >0)
 		{
@@ -198,7 +207,7 @@ public class MydataCreator {
 
 	}
 
-	private static String getLastSplitElement(String url) {
+	 private static String getLastSplitElement(String url) {
 		String value;
 		String[] bits = url.split(":");
 		value = bits[bits.length-1];
