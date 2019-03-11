@@ -3,6 +3,8 @@ package de.fraunhofer.iese.ids.odrl.pap.model;
 public enum Action {
     ACTION("odrl:action", ""),
 
+    USE("ids:use","ACTION"),
+
     READ("ids:read", "ACTION"),
 
     DISPLAY("ids:display", "ACTION"),

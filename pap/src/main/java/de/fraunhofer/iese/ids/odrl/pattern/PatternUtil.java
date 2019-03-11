@@ -329,7 +329,7 @@ public class PatternUtil {
 			policy.setProviderSide(true);
 			return policy;
 		}
-		return null;
+		return new BasePolicy();
 	}
 
 	public static RuleType getRuleType(Map map) {
@@ -339,7 +339,7 @@ public class PatternUtil {
 	}
 
 	public static boolean isProvideAccess(Map ruleMap) {
-		return (isAction(ruleMap, Action.READ) && isNull(getMap(ruleMap, "duty"))
+		return (isNull(getMap(ruleMap, "duty"))
 				&& isNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& isNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)));
 	}
@@ -359,30 +359,30 @@ public class PatternUtil {
 
 	public static boolean isSpecificPurpose(Map ruleMap) {
 
-		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+		return (isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.PURPOSE));
 	}
 
 	public static boolean isSpecificSystem(Map ruleMap) {
 
-		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+		return (isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.SYSTEM));
 	}
 
 	public static boolean isSpecificEvent(Map ruleMap) {
 
-		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+		return (isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.EVENT));
 	}
 
 	public static boolean isCountAccess(Map ruleMap) {
 
-		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+		return (isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.COUNT));
 	}
 
 	private static boolean isEncoding(Map ruleMap) {
-		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+		return (isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.ENCODING));
 	}
 
@@ -401,7 +401,7 @@ public class PatternUtil {
 			}
 		}
 
-		return (isAction(ruleMap, Action.READ) && isNotNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)) && flag);
+		return (isNotNull(getListConditionMap(ruleMap, ConditionType.CONSTRAINT)) && flag);
 	}
 
 	public static boolean isDeleteAfter(Map ruleMap) {
@@ -418,21 +418,33 @@ public class PatternUtil {
 	public static boolean isLogAccess(Map ruleMap)
 	{
 		Map dutyMap = getMap(ruleMap, "duty");
-		Action action = getAction(dutyMap);
-		return (isAction(ruleMap, Action.READ) && action.equals(Action.LOG));
+		if(isNotNull(dutyMap))
+		{
+			Action action = getAction(dutyMap);
+			return (action.equals(Action.LOG));
+		}
+		return false;
 	}
 
 	public static boolean isInformParty(Map ruleMap)
 	{
 		Map dutyMap = getMap(ruleMap, "duty");
-		Action action = getAction(dutyMap);
-		return (isAction(ruleMap, Action.READ) && action.equals(Action.INFORM));
+		if(isNotNull(dutyMap))
+		{
+			Action action = getAction(dutyMap);
+			return (action.equals(Action.INFORM));
+		}
+		return false;
 	}
 
 	private static boolean isAnonymizeInTransit(Map ruleMap) {
 		Map dutyMap = getMap(ruleMap, "duty");
-		Action abstractAction = getAbstractAction(dutyMap);
-		return (isAction(ruleMap, Action.READ) && abstractAction.equals(Action.ANONYMIZE));
+		if(isNotNull(dutyMap))
+		{
+			Action abstractAction = getAbstractAction(dutyMap);
+			return (abstractAction.equals(Action.ANONYMIZE));
+		}
+		return false;
 	}
 
 	private static boolean isAction(Map permissionMap, Action action) {
