@@ -18,6 +18,6 @@ public class Constant implements Operand {
 
     @Override
     public String toString() {
-        return  "            <constant:" + type.getParameterType() + " value='" + value + "'>  \r\n";
+        return  "            <constant:" + type.getParameterType() + " value='" + value + "'/>  \r\n";
     }
 }

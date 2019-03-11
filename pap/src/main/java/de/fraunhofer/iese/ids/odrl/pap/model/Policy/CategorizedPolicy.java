@@ -18,6 +18,9 @@ public interface CategorizedPolicy {
 	public Action getDutyAction();
 	public void setDutyAction(Action dutyAction);
 
+	public Action getAbstractAction();
+	public void setAbstractAction(Action abstractAction);
+
 	public URL getPolicyUrl();
 	public void setPolicyUrl(URL policyUrl);
 

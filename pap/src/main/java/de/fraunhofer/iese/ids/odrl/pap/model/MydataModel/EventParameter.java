@@ -6,7 +6,9 @@ public enum EventParameter {
 
     ASSIGNER("assigner"),
 
-    ASSIGNEE("assignee");
+    ASSIGNEE("assignee"),
+
+    DIGIT("digit");
 
     private final String eventParameter;
 

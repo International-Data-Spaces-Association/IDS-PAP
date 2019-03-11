@@ -13,33 +13,42 @@
     </h4>
     <h3>Actions</h3>
     <h4>
-      ids:read <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-read">odrl:read</a>. When there is no interface defined, it means http get.
+      <i>ids:read</i> <br/>
+      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-read">odrl:read</a>. When there is no interface defined, it means http get.<br/>
+      It may get <i>ids:system</i>, <i>ids:purpose</i>, <i>ids:encoding</i> or <i>ids:count</i> as a left operand.<br/>
+      <i>ids:read</i> a <i>odrl:Action</i>
       <br/><br/>
-      ids:delete <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-delete">odrl:delete</a>. Remove all copies of an artifact in the consumer connector (assumption is that there is
-      no copy of that data outside of the consumer connector)
+      <i>ids:delete</i> <br/>
+      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-delete">odrl:delete</a>. In order to remove all copies of an artifact in the consumer connector (assumption is that there is
+      no copy of that data outside of the consumer connector)<br/>
+      It gets <i>ids:delay period</i> as a left operand.
       <br/><br/>
-      ids:log <br/>
-      To log information to a known logging server.
+      <i>ids:log</i> <br/>
+      In order to log information to a known logging server.<br/>
+      It gets <i>ids:recipient</i> as a left operand.
       <br/><br/>
-      ids:inform <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-inform">odrl:inform</a>. To notify an informedParty that an action has been performed.
+      <i>ids:inform</i> <br/>
+      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-inform">odrl:inform</a>. In order to notify an <i>ids:informedParty</i> that an action has been performed.
       <br/><br/>
-      ids:print <br/>
+      <i>ids:print</i> <br/>
       Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-print">odrl:print</a>.
       <br/><br/>
-      ids:anonymize <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-anonymize">odrl:anonymize</a>. An anonymizationMethod left operand must be defined.
+      <i>ids:reproduce</i> <br/>
+      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-reproduce">odrl:reproduce</a>. In order tn order to make a duplicate copy to the consumer side connector.
       <br/><br/>
-      ids:reproduce <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-reproduce">odrl:reproduce</a>. To make a duplicate copy to the consumer side connector.
+      <i>ids:display</i> <br/>
+      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-display">odrl:display</a>. In order to visually render a resource (artifact).
       <br/><br/>
-      ids:display <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-display">odrl:display</a>. To visually render a resource (artifact).
+      <i>ids:distribute</i> <br/>
+      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-distribute">odrl:distribute</a>. In order to send data out of the connector (unauthorized party)
+      <br/><br/><br/>
+
+      <i>ids:anonymize</i> <br/>
+      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-anonymize">odrl:anonymize</a>. This is an abstract action.
       <br/><br/>
-      ids:distribute <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-distribute">odrl:distribute</a>. To send data out of the connector (unauthorized party)
+      <i>ids:round</i> <br/>
+      This class extends <i>ids:anonymize</i> action.
+      It gets an <i>ids:jsonPath</i> and an <i>ids:digit</i> as input parameters and returns a rounded number value.<br/>
       <br/><br/>
     </h4>
   </p>

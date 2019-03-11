@@ -134,6 +134,17 @@ public class PatternUtil {
 			return Action.valueOf(removeIdsTag(map.get("action").toString()));
 		}
 	}
+
+	public static Action getAbstractAction(Map map) {
+		if(map.get("action") instanceof ArrayList)
+		{
+			Map actionBlock = (Map) ((ArrayList) map.get("action")).get(0);
+			Map valueBlock = (Map) actionBlock.get("rdf:type");
+			return Action.valueOf(removeIdsTag(valueBlock.get("@id").toString()));
+		}else{
+			return null;
+		}
+	}
 	
 	public static URL getUrl(String urlString) {
 		URL dataURL = null;
@@ -189,6 +200,16 @@ public class PatternUtil {
 
 			String rightOperandValue = getRightOperandValue(constraintMap);
 			policy.setEvent(rightOperandValue);
+			policy.setProviderSide(true);
+			return policy;
+		}
+		if(isCountAccess(ruleMap)) {
+			CountAccessPolicy policy = new CountAccessPolicy();
+
+			Map constraintMap = getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT);
+
+			String rightOperandValue = getRightOperandValue(constraintMap);
+			policy.setCount(rightOperandValue);
 			policy.setProviderSide(true);
 			return policy;
 		}
@@ -248,6 +269,8 @@ public class PatternUtil {
 			LogAccessPolicy policy = new LogAccessPolicy();
 			Map dutyMap = getMap(ruleMap, "duty");
 			Map actionMap = getMap(dutyMap, "action");
+			Action dutyMethod = getAction(dutyMap);
+			policy.setDutyAction(dutyMethod);
 			if(isNotNull(actionMap))
 			{
 				Map refinementMap = getSingleConditionMap(actionMap, ConditionType.REFINEMENT);
@@ -260,7 +283,52 @@ public class PatternUtil {
 			policy.setProviderSide(true);
 			return policy;
 		}
+		if(isInformParty(ruleMap))
+		{
+			InformPolicy policy = new InformPolicy();
+			Map dutyMap = getMap(ruleMap, "duty");
+			Action dutyMethod = getAction(dutyMap);
+			policy.setDutyAction(dutyMethod);
 
+			if(isNotNull(dutyMap))
+			{
+				String informedParty = getInformedParty(dutyMap);
+				policy.setInformedParty(informedParty);
+			}
+
+			policy.setProviderSide(true);
+			return policy;
+		}
+		if(isAnonymizeInTransit(ruleMap))
+		{
+			AnonymizeInTransitPolicy policy = new AnonymizeInTransitPolicy();
+			Map dutyMap = getMap(ruleMap, "duty");
+			Map actionMap = getMap(dutyMap, "action");
+
+			Action dutyMethod = getAction(dutyMap);
+			policy.setDutyAction(dutyMethod);
+
+			if(isNotNull(actionMap))
+			{
+				ArrayList<Map> conditions = getListConditionMap(actionMap, ConditionType.REFINEMENT);
+				if(isNotNull(conditions))
+				{
+					for (Map m: conditions)
+					{
+						if(getLeftOperand(m).equals(LeftOperand.JSONPATH) && getIntervalOperator(m).equals(IntervalCondition.EQ))
+						{
+							policy.setJsonPath(getRightOperandValue(m));
+						}else if(getLeftOperand(m).equals(LeftOperand.DIGIT) && getIntervalOperator(m).equals(IntervalCondition.EQ))
+						{
+							policy.setDigit(getRightOperandValue(m));
+						}
+					}
+				}
+			}
+
+			policy.setProviderSide(true);
+			return policy;
+		}
 		return null;
 	}
 
@@ -307,6 +375,12 @@ public class PatternUtil {
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.EVENT));
 	}
 
+	public static boolean isCountAccess(Map ruleMap) {
+
+		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
+				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.COUNT));
+	}
+
 	private static boolean isEncoding(Map ruleMap) {
 		return (isAction(ruleMap, Action.READ)&& isNotNull(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT))
 				&& getLeftOperand(getSingleConditionMap(ruleMap, ConditionType.CONSTRAINT)).equals(LeftOperand.ENCODING));
@@ -348,12 +422,29 @@ public class PatternUtil {
 		return (isAction(ruleMap, Action.READ) && action.equals(Action.LOG));
 	}
 
+	public static boolean isInformParty(Map ruleMap)
+	{
+		Map dutyMap = getMap(ruleMap, "duty");
+		Action action = getAction(dutyMap);
+		return (isAction(ruleMap, Action.READ) && action.equals(Action.INFORM));
+	}
+
+	private static boolean isAnonymizeInTransit(Map ruleMap) {
+		Map dutyMap = getMap(ruleMap, "duty");
+		Action abstractAction = getAbstractAction(dutyMap);
+		return (isAction(ruleMap, Action.READ) && abstractAction.equals(Action.ANONYMIZE));
+	}
+
 	private static boolean isAction(Map permissionMap, Action action) {
 		return getAction(permissionMap).equals(action);
 	}
 
 	public static LeftOperand getLeftOperand(Map conditionMap) {
 		return isNotNull (conditionMap)? LeftOperand.valueOf(removeIdsTag(getValue(conditionMap, "leftOperand"))): null;
+	}
+
+	public static String getInformedParty (Map dutyMap) {
+		return isNotNull (dutyMap)? dutyMap.get("ids:informedParty").toString(): "";
 	}
 
 	public static Operator getOperator(Map conditionMap) {

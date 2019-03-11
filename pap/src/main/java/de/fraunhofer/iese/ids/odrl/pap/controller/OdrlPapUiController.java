@@ -209,6 +209,52 @@ public class OdrlPapUiController {
 		return "index";
 	}
 
+	@RequestMapping("/policy/AnonymizeInTransitPolicyForm")
+	public String policy(@ModelAttribute AnonymizeInTransitPolicy anonymizeInTransitPolicy, Model model) {
+		anonymizeInTransitPolicy.setRuleType(RuleType.PERMISSION);
+		anonymizeInTransitPolicy.setAction(Action.READ);
+		model.addAttribute(POLICY_FRAGMENT, "AnonymizeInTransitPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/AnonymizeInTransitPolicyODRL")
+	public String odrlPolicy(@ModelAttribute AnonymizeInTransitPolicy anonymizeInTransitPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlPolicy", AnonymizeInTransitPolicyOdrlCreator.createODRL(anonymizeInTransitPolicy));
+		return "index";
+	}
+
+	@RequestMapping("/policy/CountAccessPolicyForm")
+	public String policy(@ModelAttribute CountAccessPolicy countAccessPolicy, Model model) {
+		countAccessPolicy.setRuleType(RuleType.PERMISSION);
+		countAccessPolicy.setAction(Action.READ);
+		model.addAttribute(POLICY_FRAGMENT, "CountAccessPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/CountAccessPolicyODRL")
+	public String odrlPolicy(@ModelAttribute CountAccessPolicy countAccessPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlPolicy", CountAccessPolicyOdrlCreator.createODRL(countAccessPolicy));
+		return "index";
+	}
+
+	@RequestMapping("/policy/InformPolicyForm")
+	public String policy(@ModelAttribute InformPolicy informPolicy, Model model) {
+		informPolicy.setRuleType(RuleType.PERMISSION);
+		informPolicy.setAction(Action.READ);
+		informPolicy.setDutyAction(Action.INFORM);
+		model.addAttribute(POLICY_FRAGMENT, "InformPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/InformPolicyODRL")
+	public String odrlPolicy(@ModelAttribute InformPolicy informPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlPolicy", InformPolicyOdrlCreator.createODRL(informPolicy));
+		return "index";
+	}
+
 	 @SuppressWarnings("rawtypes")
 	@RequestMapping("/policy/JsonOrdlPolicyMAYDATA")
 	  public String policy(@ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {

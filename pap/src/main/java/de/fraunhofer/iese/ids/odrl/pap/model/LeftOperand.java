@@ -16,6 +16,12 @@ public enum LeftOperand {
 
     RECIPIENT("recipient", "ids:recipient"),
 
+    JSONPATH("jsonPathQuery","ids:jsonPath"),
+
+    DIGIT("digit","ids:digit"),
+
+    INFORMEDPARTY("informedParty", "ids:informedParty"),
+
     PURPOSE("purpose", "ids:purpose");
 
     private final String mydataLeftOperand;

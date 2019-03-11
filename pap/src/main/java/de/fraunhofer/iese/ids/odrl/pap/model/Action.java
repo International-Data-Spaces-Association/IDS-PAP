@@ -1,33 +1,42 @@
 package de.fraunhofer.iese.ids.odrl.pap.model;
 
 public enum Action {
+    ACTION("odrl:action", ""),
 
-    READ("ids:read"),
+    READ("ids:read", "ACTION"),
 
-    DISPLAY("ids:display"),
+    DISPLAY("ids:display", "ACTION"),
 
-    DELETE("ids:delete"),
+    DELETE("ids:delete", "ACTION"),
 
-    INFORM("ids:inform"),
+    INFORM("ids:inform", "ACTION"),
 
-    PRINT("ids:print"),
+    PRINT("ids:print", "ACTION"),
 
-    ANONYMIZE("ids:anonymize"),
+    ANONYMIZE("ids:anonymize", "ACTION"),
 
-    REPRODUCE("ids:reproduce"),
+    REPRODUCE("ids:reproduce", "ACTION"),
 
-    DISTRIBUTE("ids:distribute"),
+    DISTRIBUTE("ids:distribute", "ACTION"),
 
-    LOG("ids:log");
+    ROUND("ids:round", "ANONYMIZE"),
 
-    private final String action;
+    LOG("ids:log", "ACTION");
 
-    Action(String a) {
-        action = a;
+    private final String idsAction;
+    private final String abstractAction;
+
+    Action(String a, String b) {
+
+        idsAction = a;
+        abstractAction = b;
     }
 
     public String getIdsAction() {
-        return action;
+        return idsAction;
+    }
+    public String getAbstractIdsAction() {
+        return abstractAction;
     }
 
 }

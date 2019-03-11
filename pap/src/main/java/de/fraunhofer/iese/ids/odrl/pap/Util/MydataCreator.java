@@ -104,9 +104,18 @@ public class MydataCreator {
 		{
 			Parameter eventP = new Parameter(ParameterType.STRING,"event-uri", ((SpecificEventPolicy) categorizedPolicy).getEvent());
 			Parameter[] countParams = {eventP};
-			Count eventFirstOperand = new Count(solution, LeftOperand.EVENT, countParams, FixedTime.THIS_HOUR);
+			Count eventFirstOperand = new Count(solution, LeftOperand.EVENT, null, countParams, FixedTime.THIS_HOUR);
 			Constant eventSecondOperand = new Constant(ParameterType.NUMBER, "1");
 			Condition eventCondition = new Condition(eventFirstOperand, Operator.EQUALS, eventSecondOperand);
+			conditions = (Condition[]) addElement(conditions, eventCondition);
+		}
+
+		if(categorizedPolicy instanceof CountAccessPolicy)
+		{
+			Parameter[] countParams = {};
+			Count eventFirstOperand = new Count(solution, null, action, countParams, FixedTime.ALWAYS);
+			Constant eventSecondOperand = new Constant(ParameterType.NUMBER, ((CountAccessPolicy) categorizedPolicy).getCount());
+			Condition eventCondition = new Condition(eventFirstOperand, Operator.LESS, eventSecondOperand);
 			conditions = (Condition[]) addElement(conditions, eventCondition);
 		}
 
@@ -150,11 +159,28 @@ public class MydataCreator {
 			hasDuty = true;
 			Parameter recipientP = new Parameter(ParameterType.STRING,LeftOperand.RECIPIENT.getMydataLeftOperand()+"-uri",((LogAccessPolicy) categorizedPolicy).getRecipient());
 			Parameter[] params = {targetP, assigneeP, recipientP};
-			pxp = new ExecuteAction(solution, Action.LOG, params);
+			pxp = new ExecuteAction(solution, categorizedPolicy.getDutyAction(), params);
+		}
+
+		if(categorizedPolicy instanceof InformPolicy)
+		{
+			hasDuty = true;
+			Parameter informedPartyP = new Parameter(ParameterType.STRING,LeftOperand.INFORMEDPARTY.getMydataLeftOperand()+"-uri",((InformPolicy) categorizedPolicy).getInformedParty());
+			Parameter[] params = {informedPartyP};
+			pxp = new ExecuteAction(solution, categorizedPolicy.getDutyAction(), params);
+		}
+
+		Modify modify = null;
+		if(categorizedPolicy instanceof AnonymizeInTransitPolicy)
+		{
+			// anonymize in transit policy needs a modifier!
+			Parameter anonymizeMethodP = new Parameter(ParameterType.STRING,LeftOperand.DIGIT.getMydataLeftOperand(),((AnonymizeInTransitPolicy) categorizedPolicy).getDigit());
+			Parameter[] params = {anonymizeMethodP};
+			modify = new Modify(EventParameter.TARGET.getEventParameter(), categorizedPolicy.getDutyAction(), ((AnonymizeInTransitPolicy) categorizedPolicy).getJsonPath(),params);
 		}
 
 		// create MYDATA MydataPolicy
-		MydataPolicy mydataPolicy = new MydataPolicy(solution, pid, action, decision, hasDuty);
+		MydataPolicy mydataPolicy = new MydataPolicy(solution, pid, action, decision, hasDuty, modify);
 		//set timer
 		if (null != timer)
 		{

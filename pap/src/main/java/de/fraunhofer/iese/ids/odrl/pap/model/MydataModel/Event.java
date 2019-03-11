@@ -20,6 +20,6 @@ public class Event implements Operand {
 
     @Override
     public String toString() {
-        return  "            <event:" + type.getParameterType() + " eventParameter='" + eventParameter + "' jsonPathQuery='$." + jsonPath + "'>  \r\n";
+        return  "            <event:" + type.getParameterType() + " eventParameter='" + eventParameter + "' jsonPathQuery='$." + jsonPath + "'/>  \r\n";
     }
 }

@@ -17,14 +17,16 @@ public class MydataPolicy {
  RuleType decision;
  ExecuteAction pxp;
  boolean hasDuty;
+ Modify modify;
 
- public MydataPolicy(String solution, String pid, Action action, RuleType decision, boolean hasDuty)
+ public MydataPolicy(String solution, String pid, Action action, RuleType decision, boolean hasDuty, Modify modify)
  {
   this.solution = solution;
   this.pid = pid;
   this.action = action;
   this.decision = decision;
   this.hasDuty = hasDuty;
+  this.modify = modify;
  }
 
  @Override
@@ -46,7 +48,13 @@ public class MydataPolicy {
 
  private String getDecisionBlock() {
   RuleType elseDecision = getElseDecision();
-  if(decision.equals(RuleType.OBLIGATION) || (decision.equals(RuleType.PERMISSION) && this.hasDuty))
+  if(null != modify)
+  {
+   return  "        <then>  \r\n" +
+           modify.toString() +
+           "        </then>  \r\n" +
+           "      </if>   \r\n" ;
+  } else if(decision.equals(RuleType.OBLIGATION) || (decision.equals(RuleType.PERMISSION) && this.hasDuty))
   {
    if(null != pxp)
    {

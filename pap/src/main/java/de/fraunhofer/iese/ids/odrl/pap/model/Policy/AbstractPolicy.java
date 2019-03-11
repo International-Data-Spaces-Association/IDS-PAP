@@ -20,6 +20,7 @@ public abstract class AbstractPolicy implements CategorizedPolicy{
 	RuleType ruleType;
 	Action action;
 	Action dutyAction;
+	Action abstractAction;
 	URL policyUrl;
 	PolicyType policyType;
 	Condition condition;
@@ -42,6 +43,15 @@ public abstract class AbstractPolicy implements CategorizedPolicy{
 
 	public Action getDutyAction() {
 		return dutyAction;
+	}
+	public void setDutyAction(Action dutyAction)
+	{
+		this.dutyAction = dutyAction;
+		this.setAbstractAction(Action.valueOf(dutyAction.getAbstractIdsAction()));
+	}
+
+	public Action getAbstractAction() {
+		return abstractAction;
 	}
 
 	public URL getPolicyUrl() {

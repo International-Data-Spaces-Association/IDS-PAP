@@ -52,7 +52,7 @@ public class LogAccessPolicyOdrlCreator {
 			target = logAccessPolicy.getDataUrl().toString();
 		}
 
-		//set purpose
+		//set recipient
 		String recipient = "";
 		if(null != logAccessPolicy.getRecipient()) {
 			recipient = logAccessPolicy.getRecipient();
