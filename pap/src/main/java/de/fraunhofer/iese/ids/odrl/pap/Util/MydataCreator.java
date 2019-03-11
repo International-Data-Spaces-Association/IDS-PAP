@@ -106,7 +106,7 @@ public class MydataCreator {
 			Parameter[] countParams = {eventP};
 			Count eventFirstOperand = new Count(solution, LeftOperand.EVENT, null, countParams, FixedTime.THIS_HOUR);
 			Constant eventSecondOperand = new Constant(ParameterType.NUMBER, "1");
-			Condition eventCondition = new Condition(eventFirstOperand, Operator.EQUALS, eventSecondOperand);
+			Condition eventCondition = new Condition(eventFirstOperand, Operator.GREATER_EQUAL, eventSecondOperand);
 			conditions = (Condition[]) addElement(conditions, eventCondition);
 		}
 
@@ -174,7 +174,7 @@ public class MydataCreator {
 		if(categorizedPolicy instanceof AnonymizeInTransitPolicy)
 		{
 			// anonymize in transit policy needs a modifier!
-			Parameter anonymizeMethodP = new Parameter(ParameterType.STRING,LeftOperand.DIGIT.getMydataLeftOperand(),((AnonymizeInTransitPolicy) categorizedPolicy).getDigit());
+			Parameter anonymizeMethodP = new Parameter(ParameterType.NUMBER,LeftOperand.DIGIT.getMydataLeftOperand(),((AnonymizeInTransitPolicy) categorizedPolicy).getDigit());
 			Parameter[] params = {anonymizeMethodP};
 			modify = new Modify(EventParameter.TARGET.getEventParameter(), categorizedPolicy.getDutyAction(), ((AnonymizeInTransitPolicy) categorizedPolicy).getJsonPath(),params);
 		}
