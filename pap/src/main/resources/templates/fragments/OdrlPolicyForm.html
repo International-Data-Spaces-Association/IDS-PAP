@@ -1,7 +1,19 @@
-<form th:action="@{/policy/JsonOrdlPolicyMAYDATA}" th:object="${jsonOdrlPolicy}" method="post">
+<form  th:action="@{/policy/JsonOrdlPolicyMAYDATA}" th:object="${jsonOdrlPolicy}" method="post">
+  <div class="row">
   <p>
-  <textarea id="jsonString" name="jsonString" style="width: 100%; height: 80vh">[[${odrlPolicy}]]</textarea>
+  <span style='float: left;'>
+  <font size="5">ODRL</font>
+  <textarea id="jsonString" name="jsonString" style="width: 45%; height: 80vh">[[${odrlPolicy}]]</textarea>	
+  </span>
+  <span>
+  <div th:if="${mydataFragment}" th:remove="tag">
+   <font size="5">MYDATA</font>
+	<textarea id="mydataPolicy" style="width: 45%; height: 80vh">[[${mydataPolicy}]]</textarea>
+  </div>
+  </span>
   </p>
+  </div>
+  <div style="clear:both;"></div>
   <button id="saveBtn" type="submit" class="btn btn-primary">Transfer</button>
   <p/>
 </form>
@@ -20,5 +32,26 @@ var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jsonString")
                         mode: "application/ld+json",
                         lint: true
                     });
-    myCodeMirror.setSize("100%", "80vh");
+    myCodeMirror.setSize("auto", "auto");
 </script>
+ <script type="text/javascript">
+			var myCodeMirror = CodeMirror.fromTextArea(document
+					.getElementById("mydataPolicy"), {
+				lineNumbers : true,
+				readOnly : false,
+				theme : "neo",
+				matchBrackets : true,
+				matchTags : true,
+				autoCloseBrackets : true,
+				autoCloseTags : true,
+				foldCode : true,
+				foldGutter : true,
+				gutters : [ "CodeMirror-linenumbers", "CodeMirror-foldgutter",
+						"CodeMirror-lint-markers" ],
+				mode : "application/xml",
+				lint : true
+			});
+			myCodeMirror.setSize("auto", "auto");
+</script>
+
+

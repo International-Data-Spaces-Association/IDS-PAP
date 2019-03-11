@@ -25,7 +25,7 @@ input[type=text], select {
 	<div th:include="topNavigation"></div>
 	<div class="right_col" style="height: 100vh;" role="main">
 		<div class="mainheader">
-			<div class="col-md-10 col-sm-10 col-xs-8">
+			<div class="col-md-11 col-sm-11 col-xs-8">
 				<div class="x_content settings" style="padding:15px;">
 					<div th:if="${policyFragment == 'index'}" th:include="fragments/Welcome" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'BasePolicyForm'}" th:include="fragments/BasePolicyForm" th:remove="tag"></div>
@@ -39,28 +39,9 @@ input[type=text], select {
 					<div th:if="${policyFragment == 'InformPolicyForm'}" th:include="fragments/InformPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'CountAccessPolicyForm'}" th:include="fragments/CountAccessPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'AnonymizeInTransitPolicyForm'}" th:include="fragments/AnonymizeInTransitPolicyForm" th:remove="tag"></div>
-					<div th:include="fragments/textareaStyleScripts" th:if="${policyFragment == 'odrl'} or ${policyFragment == 'mydata'}" th:remove="tag"></div>
-					<div th:if="${policyFragment == 'odrl'}"  th:remove="tag" th:include="fragments/OdrlPolicyForm"></div>
-					<div th:if="${policyFragment == 'mydata'}"  th:remove="tag" >
-						<textarea id="mydataPolicy" style="width:100%; height:80vh">[[${mydataPolicy}]]</textarea>
-						<script type="text/javascript">
-							var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("mydataPolicy"), {
-													lineNumbers: true,
-													readOnly: false,
-													theme: "neo",
-													matchBrackets: true,
-													matchTags: true,
-													autoCloseBrackets: true,
-													autoCloseTags: true,
-													foldCode: true,
-													foldGutter: true,
-													gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
-													mode: "application/xml",
-													lint: true
-												});
-							myCodeMirror.setSize("100%", "80vh");
-						</script>
-					</div>
+					<div th:include="fragments/textareaStyleScripts" th:if="${odrlFragment} or ${mydataFragment}" th:remove="tag"></div>
+					<div th:if="${odrlFragment}"  th:remove="tag" th:include="fragments/OdrlPolicyForm"></div>
+
 				</div>
 			</div>
 		</div>

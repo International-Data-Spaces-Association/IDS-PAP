@@ -46,7 +46,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/BasePolicyODRL")
 	public String odrlPolicy(@ModelAttribute BasePolicy basePolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy, Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", BasePolicyOdrlCreator.createODRL(basePolicy));
 		return "index";
 	}
@@ -69,7 +69,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/SpecificPurposePolicyODRL")
 	public String odrlPolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", SpecificPurposePolicyOdrlCreator.createODRL(specificPurposePolicy));
 		return "index";
 	}
@@ -92,7 +92,7 @@ public class OdrlPapUiController {
 
 	  @RequestMapping("/policy/SpecificSystemPolicyODRL")
 	  public String odrlPolicy(@ModelAttribute SpecificSystemPolicy specificSystemPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		  model.addAttribute(POLICY_FRAGMENT, "odrl");
+		  model.addAttribute("odrlFragment", "true");
 		  model.addAttribute("odrlPolicy", SpecificSystemPolicyOdrlCreator.createODRL(specificSystemPolicy));
 	    return "index";
 	  }
@@ -115,7 +115,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/SpecificEventPolicyODRL")
 	public String odrlPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", SpecificEventPolicyOdrlCreator.createODRL(specificEventPolicy));
 		return "index";
 	}
@@ -134,7 +134,7 @@ public class OdrlPapUiController {
 
 	  @RequestMapping("/policy/DeleteAfterPolicyODRL")
 	  public String odrlPolicy(@ModelAttribute DeleteAtferPolicy deleteAtferPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-	  	model.addAttribute(POLICY_FRAGMENT, "odrl");
+	  	model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", DeleteAfterPolicyOdrlCreator.createODRL(deleteAtferPolicy));
 		return "index";
 	}
@@ -157,7 +157,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/ReadDataIntervalPolicyODRL")
 	public String odrlPolicy(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", ReadDataIntervalPolicyOdrlCreator.createODRL(readDataIntervalPolicy));
 		return "index";
 	}
@@ -173,7 +173,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/LogAccessPolicyODRL")
 	public String odrlPolicy(@ModelAttribute LogAccessPolicy logAccessPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", LogAccessPolicyOdrlCreator.createODRL(logAccessPolicy));
 		return "index";
 	}
@@ -188,7 +188,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/EncodingPolicyODRL")
 	public String odrlPolicy(@ModelAttribute EncodingPolicy encodingPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", EncodingPolicyOdrlCreator.createODRL(encodingPolicy));
 		return "index";
 	}
@@ -219,7 +219,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/AnonymizeInTransitPolicyODRL")
 	public String odrlPolicy(@ModelAttribute AnonymizeInTransitPolicy anonymizeInTransitPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", AnonymizeInTransitPolicyOdrlCreator.createODRL(anonymizeInTransitPolicy));
 		return "index";
 	}
@@ -234,7 +234,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/CountAccessPolicyODRL")
 	public String odrlPolicy(@ModelAttribute CountAccessPolicy countAccessPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", CountAccessPolicyOdrlCreator.createODRL(countAccessPolicy));
 		return "index";
 	}
@@ -250,7 +250,7 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/InformPolicyODRL")
 	public String odrlPolicy(@ModelAttribute InformPolicy informPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		model.addAttribute(POLICY_FRAGMENT, "odrl");
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", InformPolicyOdrlCreator.createODRL(informPolicy));
 		return "index";
 	}
@@ -271,9 +271,10 @@ public class OdrlPapUiController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-		  model.addAttribute(POLICY_FRAGMENT, "mydata");
-		 model.addAttribute("mydataPolicy", MydataCreator.createMYDATA(map));
+		model.addAttribute("odrlFragment", "true");
+		model.addAttribute("odrlPolicy", jsonOdrlPolicy.getJsonString());
+		model.addAttribute("mydataFragment", "true");
+		model.addAttribute("mydataPolicy", MydataCreator.createMYDATA(map));
 	    return "index";
 	  }
 }
