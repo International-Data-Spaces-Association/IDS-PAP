@@ -15,11 +15,13 @@
   </div>
   <div style="clear:both;"></div>
   <button id="saveBtn" type="submit" class="btn btn-primary">Transfer</button>
+  <button id="exportPolicyBtn" type="button" onclick="JavaScript:exportMYDATAPolicy()" class="btn btn-primary">Export</button>
   <p/>
 </form>
 <script type="text/javascript">
 var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jsonString"), {
                         lineNumbers: true,
+                        lineWrapping: true,
                         readOnly: false,
                         theme: "neo",
                         matchBrackets: true,
@@ -38,6 +40,7 @@ var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jsonString")
 			var myCodeMirror = CodeMirror.fromTextArea(document
 					.getElementById("mydataPolicy"), {
 				lineNumbers : true,
+				lineWrapping: false,
 				readOnly : false,
 				theme : "neo",
 				matchBrackets : true,
@@ -53,5 +56,12 @@ var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jsonString")
 			});
 			myCodeMirror.setSize("auto", "auto");
 </script>
-
-
+<script type="text/javascript">
+  function exportMYDATAPolicy() {
+    var blob = new Blob([document.getElementById("mydataPolicy").value], {type: 'application/xml'});
+    var a = document.createElement('a');
+    a.href = window.URL.createObjectURL(blob);
+    a.download = 'mydatapolicyexport-' + Math.round(new Date().getTime()/1000) + '.xml';
+    a.dispatchEvent(new MouseEvent('click'));
+  }
+</script>
