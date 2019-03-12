@@ -35,8 +35,20 @@ public class MydataPolicy {
   String decisionBlock = getDecisionBlock();
   String timer = getTimerForPolicy();
 
-  String returnPolicy = timer + "\r\n" +
-          "  <policy id='urn:policy:" + solution + ":" + pid + "'>    \r\n" +
+  final String returnPolicy = timer + "\r\n" +
+          "  <policy id='urn:policy:" + solution + ":" + pid + "' xmlns='http://www.iese.fraunhofer.de/ind2uce/3.2.46/ind2uceLanguage'\n" +
+      "  xmlns:tns='http://www.iese.fraunhofer.de/ind2uce/3.2.46/ind2uceLanguage'\n" +
+      "  xmlns:parameter='http://www.iese.fraunhofer.de/ind2uce/3.2.46/parameter'\n" +
+      "  xmlns:pip='http://www.iese.fraunhofer.de/ind2uce/3.2.46/pip'\n" +
+      "  xmlns:function='http://www.iese.fraunhofer.de/ind2uce/3.2.46/function'\n" +
+      "  xmlns:event='http://www.iese.fraunhofer.de/ind2uce/3.2.46/event'\n" +
+      "  xmlns:constant='http://www.iese.fraunhofer.de/ind2uce/3.2.46/constant'\n" +
+      "  xmlns:variable='http://www.iese.fraunhofer.de/ind2uce/3.2.46/variable'\n" +
+      "  xmlns:variableDeclaration='http://www.iese.fraunhofer.de/ind2uce/3.2.46/variableDeclaration'\n" +
+      "  xmlns:valueChanged='http://www.iese.fraunhofer.de/ind2uce/3.2.46/valueChanged'\n" +
+      "  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n" +
+      "  xmlns:date='http://www.iese.fraunhofer.de/ind2uce/3.2.46/date'\n" +
+      "  xmlns:time='http://www.iese.fraunhofer.de/ind2uce/3.2.46/time'>    \r\n" +
           "    <mechanism event='urn:action:" + solution + ":" + action.name().toLowerCase() + "'>    \r\n" +
           "      <if>   \r\n" +
           conditionsBlock +
