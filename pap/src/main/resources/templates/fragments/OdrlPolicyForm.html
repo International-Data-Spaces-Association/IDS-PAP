@@ -1,7 +1,7 @@
 <form  th:action="@{/policy/JsonOrdlPolicyMAYDATA}" th:object="${jsonOdrlPolicy}" method="post">
   <div class="row">
     <div class="col-md-6"><span style="font-size: x-large;">ODRL</span> <textarea id="jsonString" style=" height: 80vh;" name="jsonString">[[${odrlPolicy}]]</textarea><p><button id="saveBtn" class="btn btn-primary" type="submit">Transfer</button></p></div> <!-- 50% -->
-    <div class="col-md-6" th:if="${mydataFragment}"><span style="font-size: x-large;">MYDATA</span> <textarea id="mydataPolicy" style=" height: 80vh;">[[${mydataPolicy}]]</textarea><p><button id="exportPolicyBtn" class="btn btn-primary" type="button">Export</button></p></div> <!-- 50% -->
+    <div class="col-md-6" th:if="${mydataFragment}"><span style="font-size: x-large;">MYDATA</span> <textarea id="mydataPolicy" style=" height: 80vh;">[[${mydataPolicy}]]</textarea><p><button id="exportPolicyBtn" onclick="JavaScript:exportMYDATAPolicy()" class="btn btn-primary" type="button">Export</button></p></div> <!-- 50% -->
   </div>
 </form>
 <script type="text/javascript">

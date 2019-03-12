@@ -29,45 +29,52 @@ public class PatternUtil {
 	 */
 	public static CategorizedPolicy getCategorizedPolicy(Map map) {
 
-		//Assumption: we are assuming that there is only one rule per policy
-		PolicyType policyType = getPolicyType(map);
-
-		//if there is a valid odrl policy
-		if(isNotNull(policyType))
+		try
 		{
-			// get rule type
-			RuleType ruleType = getRuleType(map);
-			Map ruleMap = getRuleMap(map, ruleType);
+			//Assumption: we are assuming that there is only one rule per policy
+			PolicyType policyType = getPolicyType(map);
 
-			//get policy id
-			String pid = getValue(map, "uid");
-			URL pidUrl = getUrl(pid);
+			//if there is a valid odrl policy
+			if(isNotNull(policyType))
+			{
+				// get rule type
+				RuleType ruleType = getRuleType(map);
+				Map ruleMap = getRuleMap(map, ruleType);
 
-			// get target
-			String target = getValue(ruleMap, "target");
-			URL dataUrl = getUrl(target);
+				//get policy id
+				String pid = getValue(map, "uid");
+				URL pidUrl = getUrl(pid);
 
-			//get action, assigner, assigner (if exists), decision
-			Action action = getAction(ruleMap);
-			String assigner = getValue(ruleMap, "assigner");
-			String assignee = getValue(ruleMap, "assignee");
-			RuleType decision = getRuleType(map);
+				// get target
+				String target = getValue(ruleMap, "target");
+				URL dataUrl = getUrl(target);
 
-			CategorizedPolicy categorizedPolicy = recognizePattern(ruleMap);
-			if(null != categorizedPolicy) {
-				categorizedPolicy.setRuleType(decision);
-				categorizedPolicy.setPolicyType(policyType);
-				categorizedPolicy.setAction(action);
-				categorizedPolicy.setPolicyUrl(pidUrl);
-				categorizedPolicy.setDataUrl(dataUrl);
-				categorizedPolicy.setAssigner(assigner);
-				categorizedPolicy.setAssignee(assignee);
+				//get action, assigner, assigner (if exists), decision
+				Action action = getAction(ruleMap);
+				String assigner = getValue(ruleMap, "assigner");
+				String assignee = getValue(ruleMap, "assignee");
+				RuleType decision = getRuleType(map);
+
+				CategorizedPolicy categorizedPolicy = recognizePattern(ruleMap);
+				if(null != categorizedPolicy) {
+					categorizedPolicy.setRuleType(decision);
+					categorizedPolicy.setPolicyType(policyType);
+					categorizedPolicy.setAction(action);
+					categorizedPolicy.setPolicyUrl(pidUrl);
+					categorizedPolicy.setDataUrl(dataUrl);
+					categorizedPolicy.setAssigner(assigner);
+					categorizedPolicy.setAssignee(assignee);
+				}
+
+				return categorizedPolicy;
 			}
 
-			return categorizedPolicy;
+			return null;
+		}
+		catch (IllegalArgumentException e){
+			return null;
 		}
 
-		return null;
 	}
 
 	// get Duration(2,TimeUnit.H) from "PT2H"
