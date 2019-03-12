@@ -1,22 +1,8 @@
 <form  th:action="@{/policy/JsonOrdlPolicyMAYDATA}" th:object="${jsonOdrlPolicy}" method="post">
   <div class="row">
-  <p>
-  <span style='float: left;'>
-  <font size="5">ODRL</font>
-  <textarea id="jsonString" name="jsonString" style="width: 45%; height: 80vh">[[${odrlPolicy}]]</textarea>	
-  </span>
-  <span>
-  <div th:if="${mydataFragment}" th:remove="tag">
-   <font size="5">MYDATA</font>
-	<textarea id="mydataPolicy" style="width: 45%; height: 80vh">[[${mydataPolicy}]]</textarea>
+    <div class="col-md-6"><span style="font-size: x-large;">ODRL</span> <textarea id="jsonString" style=" height: 80vh;" name="jsonString">[[${odrlPolicy}]]</textarea><p><button id="saveBtn" class="btn btn-primary" type="submit">Transfer</button></p></div> <!-- 50% -->
+    <div class="col-md-6" th:if="${mydataFragment}"><span style="font-size: x-large;">MYDATA</span> <textarea id="mydataPolicy" style=" height: 80vh;">[[${mydataPolicy}]]</textarea><p><button id="exportPolicyBtn" class="btn btn-primary" type="button">Export</button></p></div> <!-- 50% -->
   </div>
-  </span>
-  </p>
-  </div>
-  <div style="clear:both;"></div>
-  <button id="saveBtn" type="submit" class="btn btn-primary">Transfer</button>
-  <button id="exportPolicyBtn" type="button" onclick="JavaScript:exportMYDATAPolicy()" class="btn btn-primary">Export</button>
-  <p/>
 </form>
 <script type="text/javascript">
 var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jsonString"), {
@@ -40,7 +26,7 @@ var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jsonString")
 			var myCodeMirror = CodeMirror.fromTextArea(document
 					.getElementById("mydataPolicy"), {
 				lineNumbers : true,
-				lineWrapping: false,
+				lineWrapping: true,
 				readOnly : false,
 				theme : "neo",
 				matchBrackets : true,

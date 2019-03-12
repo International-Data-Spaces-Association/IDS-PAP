@@ -36,7 +36,8 @@ public class MydataPolicy {
   String timer = getTimerForPolicy();
 
   final String returnPolicy = timer + "\r\n" +
-          "  <policy id='urn:policy:" + solution + ":" + pid + "' xmlns='http://www.iese.fraunhofer.de/ind2uce/3.2.46/ind2uceLanguage'\n" +
+          "  <policy id='urn:policy:" + solution + ":" + pid + "'\n" +
+      "  xmlns='http://www.iese.fraunhofer.de/ind2uce/3.2.46/ind2uceLanguage'\n" +
       "  xmlns:tns='http://www.iese.fraunhofer.de/ind2uce/3.2.46/ind2uceLanguage'\n" +
       "  xmlns:parameter='http://www.iese.fraunhofer.de/ind2uce/3.2.46/parameter'\n" +
       "  xmlns:pip='http://www.iese.fraunhofer.de/ind2uce/3.2.46/pip'\n" +
