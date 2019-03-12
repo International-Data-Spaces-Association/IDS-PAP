@@ -10,16 +10,16 @@
     </p>
   </div>
 
-  <p>Policy*:
+  <p>Policy Type*:
     <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
       <option value="Agreement">Agreement</option>
       <option value="Offer">Offer</option>
       <option value="Request">Request</option>
     </select>
   </p>
-  <p>Data*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{dataUrl}" /></p>
-  <p id="assigner" >Assigner*: <input id="assignerInput" required="required" type="text" size="40" value="My party" /></p>
-  <p id="assignee" >Assignee*:
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{dataUrl}" /></p>
+  <p id="assigner" >Assigner (Data Provider)*: <input id="assignerInput" required="required" type="text" size="40" value="My party" /></p>
+  <p id="assignee" >Assignee (Data Consumer)*:
     <div class="form-group blu-margin">
       <select id="assigneeInput" class="form-control" th:field="*{assignee}" required="required">
         <option value="http://example.com/ids-party:consumer-party" selected>Consumer party</option>
