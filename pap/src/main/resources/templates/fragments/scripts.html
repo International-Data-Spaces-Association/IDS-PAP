@@ -65,9 +65,10 @@
     $('input[name="startTime"]').daterangepicker({
         "singleDatePicker": true,
         "timePicker": true,
+        "timePicker24Hour": true,
         "autoApply": true,
         locale: {
-            format: 'YYYY-MM-DDThh:mm:ss'
+            format: 'YYYY-MM-DDTH:mm:ss'
             },
         "startDate": Date.now()
     }, function(start, end, label) {
@@ -78,9 +79,10 @@
     $('input[name="endTime"]').daterangepicker({
         "singleDatePicker": true,
         "timePicker": true,
+        "timePicker24Hour": true,
         "autoApply": true,
         locale: {
-            format: 'YYYY-MM-DDThh:mm:ss'
+            format: 'YYYY-MM-DDTH:mm:ss'
             },
         "endDate": Date.now()
     }, function(start, end, label) {
