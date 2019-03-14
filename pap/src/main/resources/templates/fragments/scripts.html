@@ -37,16 +37,19 @@
             assigner.style.display = 'block';
             assignerInput.setAttribute('required', '');
             assignee.style.display = 'none';
+            assigneeDiv.style.display = 'none';
             assigneeInput.removeAttribute("required");
         } else if (control.value == 'Request'){
             assigner.style.display = 'none';
             assignerInput.removeAttribute("required");
             assignee.style.display = 'block';
+            assigneeDiv.style.display = 'block';
             assigneeInput.setAttribute('required', '');
         } else{
             assigner.style.display = 'block';
             assignerInput.setAttribute('required', '');
             assignee.style.display = 'block';
+            assigneeDiv.style.display = 'block';
             assigneeInput.setAttribute('required', '');
         }
     }

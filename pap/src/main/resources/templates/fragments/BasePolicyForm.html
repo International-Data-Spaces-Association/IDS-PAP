@@ -41,7 +41,7 @@
   <p id="assigner" >Assigner (Data Provider)*: <input id="assignerInput" required="required" type="text" size="40" value="My party"/></p>
   <!--<p id="assignee" >Assignee*: <input id="assigneeInput" required="required"  type="text" size="40" placeholder=" e.g. http://example.com/ids-party:consumer-party" th:field="*{assignee}" /></p>-->
   <p id="assignee" >Assignee (Data Consumer)*:
-  <div class="form-group blu-margin">
+  <div id="assigneeDiv" class="form-group blu-margin">
     <select id="assigneeInput" class="form-control" th:field="*{assignee}" required="required">
       <option value="http://example.com/ids-party:consumer-party" selected>Consumer party</option>
     </select>
