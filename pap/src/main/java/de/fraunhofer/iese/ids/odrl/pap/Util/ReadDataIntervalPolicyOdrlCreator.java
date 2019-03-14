@@ -77,6 +77,7 @@ public class ReadDataIntervalPolicyOdrlCreator {
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
 				"  \"@type\": \"%s\",    \r\n" + 
 				"  \"uid\": \"http://example.com/policy:restrict-access-interval\",    \r\n" +
+				"  \"profile\": \"http://example.com/ids-profile\",    \r\n" +
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": \"%s\",     \r\n" +
