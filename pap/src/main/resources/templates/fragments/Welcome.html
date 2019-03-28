@@ -1,15 +1,37 @@
 
 <form id="demo-form2" class="form-horizontal form-label-left">
+  <div>
+    <p>
+      <h3>Data Usage Control Scenario <br/><br/>
+      <img src="../images/PAP-Editor_Scenario.png" style="height:300px;" />
+      </h3>
+    </p>
+  </div>
   <p>
-    <h4>In the IDS platform, there exists at least one connector per IDS customer.<br/>
-    Each customer can be a Data Provider or a Data Consumer.<br/>
-    There are variety of Data Usage Control policies that can be defined to protect the customers data.<br/>
-    In this tool, we have implemented an editor that supports the customers to specify their Data Usage Control policies.<br/><br/>
-    As an IDS customer, you can choose a policy type from the side bar and then, follow the instructions.<br/>
-    You will get the corresponding <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policy.
+    <h4 style="line-height:30px;">
+    An IDS customer can be a Data Provider or a Data Consumer.<br/>
+    There are variety of Data Usage Control policies that can be defined by data providers to protect their data.<br/>
+    The Open Digital Rights Language (<a href="https://www.w3.org/TR/odrl-model/">ODRL</a>) is a policy expression language that provides a flexible and interoperable information model, vocabulary, and encoding mechanisms for representing statements about the usage of content and services. <br/>
+    <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policies are technology-independent and are not made to be technically enforced to a system. Therefore, it is been decided to use this language as a baseline for other technology-dependent solutions that can enforce Data Usage Control policies into the systems to protect data.<br/>
+    One of the technology-dependent policy languages and platforms provided by <a href="https://www.iese.fraunhofer.de/">Fraunhofer IESE</a> is <a href="https://developer.mydata-control.de/">MYDATA</a>.<br/>
+    <a href="https://developer.mydata-control.de/">MYDATA</a> is a solution that intercepts events or data flows in a system and enforces a security decision based on <a href="https://developer.mydata-control.de/">MYDATA</a> policies.<br/><br/>
+
+    <b>PAP Editor</b><br/>
+    In this tool, we have implemented an editor that supports the data providers to specify their Data Usage Control <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policies.<br/>
+    In addition, they can use this tool to translate the <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policies to <a href="https://developer.mydata-control.de/">MYDATA</a> policies.<br/><br/>
+
+    <b>How To</b><br/>
+    As an IDS Data Provider, you can choose a policy class from the side bar of the tool and then, follow the instructions.<br/>
+    By pressing the "Save" button, you will get the corresponding <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policy.<br/>
+    In order to get the <a href="https://developer.mydata-control.de/">MYDATA</a> policy, you can press the "Transfer" button.<br/>
+    In addition, you can export the <a href="https://developer.mydata-control.de/">MYDATA</a> policy from this editor. <br/>
+    This exported <a href="https://developer.mydata-control.de/">MYDATA</a> policy is ready to be imported into the <a href="https://developer.mydata-control.de/">MYDATA</a> PMP (Policy Management Point).<br/>
+    You can then deploy the <a href="https://developer.mydata-control.de/">MYDATA</a> policy. <br/>
+    Deploying <a href="https://developer.mydata-control.de/">MYDATA</a> policy into the <a href="https://developer.mydata-control.de/">MYDATA</a> PDP (Policy Decision Point) is not enough for the policy enforcement. <br/>
+    Be aware that you still need to create <a href="https://developer.mydata-control.de/">MYDATA</a> PEP (Policy Enforcement Point) and the needed <a href="https://developer.mydata-control.de/">MYDATA</a> PIPs (Policy Information Points) and <a href="https://developer.mydata-control.de/">MYDATA</a> PXPs (Policy Execution Points).<br/>
+    When the enforcement point is implemented, then you can be assured that your data is technically protected. To implement your <a href="https://developer.mydata-control.de/">MYDATA</a> PEP (Policy Enforcement Point), follow the instructions documented in <a href="https://developer.mydata-control.de/sdk/howto_pep.html">MYDATA Web Page</a>.<br/>
+
     <br/>
-    In addition, we have implemented a mapping tool that translates an <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policy to a <a href="https://developer.mydata-control.de/">MYDATA</a> policy.
-    This policy can be deployed to <a href="https://developer.mydata-control.de/">MYDATA</a> framework to technically protect your data.
     </h4>
     <h3>Actions</h3>
     <h4>
