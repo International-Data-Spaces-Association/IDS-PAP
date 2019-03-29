@@ -1,12 +1,32 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.LogAccessPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Action;
+import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.LogAccessPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
-import de.fraunhofer.iese.ids.odrl.pap.model.SpecificPurposePolicy;
 
 public class LogAccessPolicyOdrlCreator {
 	
 	public static String createODRL(LogAccessPolicy logAccessPolicy){
+
+		// set rule type
+		String ruleType = "";
+		if(logAccessPolicy.getRuleType()!= null)
+		{
+			switch(logAccessPolicy.getRuleType()) {
+				case OBLIGATION:
+					ruleType = "obligation";
+					break;
+
+				case PERMISSION:
+					ruleType = "permission";
+					break;
+
+				case PROHIBITION:
+					ruleType = "prohibition";
+					break;
+			}
+		}
 
 		//set type
 		String type = "";
@@ -17,13 +37,13 @@ public class LogAccessPolicyOdrlCreator {
 		//set assigner
 		String assigner = "";
 		if(null != logAccessPolicy.getAssigner() && !logAccessPolicy.getAssigner().isEmpty() && !logAccessPolicy.getPolicyType().equals(PolicyType.Request)) {
-			assigner = "      \"assigner\": \"" + logAccessPolicy.getAssigner() + "\",    \r\n";
+			assigner = "    \"assigner\": \"" + logAccessPolicy.getAssigner() + "\",    \r\n";
 		}
 
 		//set type and assignee
 		String assignee = "";
 		if( null != logAccessPolicy.getAssignee() && !logAccessPolicy.getAssignee().isEmpty() && !logAccessPolicy.getPolicyType().equals(PolicyType.Offer)) {
-			assignee = "      \"assignee\": \"" + logAccessPolicy.getAssignee() + "\",    \r\n";
+			assignee = "    \"assignee\": \"" + logAccessPolicy.getAssignee() + "\",    \r\n";
 		}
 
 		//set target
@@ -32,36 +52,48 @@ public class LogAccessPolicyOdrlCreator {
 			target = logAccessPolicy.getDataUrl().toString();
 		}
 
-		//set purpose
+		//set recipient
 		String recipient = "";
 		if(null != logAccessPolicy.getRecipient()) {
 			recipient = logAccessPolicy.getRecipient();
 		}
-		
+
+		//set action
+		String action = "";
+		if(null != logAccessPolicy.getAction()) {
+			action = logAccessPolicy.getAction().getIdsAction();
+		}
+
+		//set dutyAction
+		String dutyAction = "";
+		if(null != logAccessPolicy.getDutyAction()) {
+			dutyAction = logAccessPolicy.getDutyAction().getIdsAction();
+		}
+
+		//set leftOperand
+		String leftOperand = LeftOperand.RECIPIENT.getIdsLeftOperand();
+
 		//return the formated String
-		return String.format(" {    \r\n" + 
-				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
-				"  \"@type\": \"%s\",    \r\n" + 
-				"  \"uid\": \"http://example.com/policy:restrict-access\",    \r\n" + 
-				"  \"permission\": [{    \r\n" + 
-				"     \"target\": \"%s\",    \r\n%s%s" +
-				"     \"action\": [{    \r\n" +
-				"        \"rdf:value\": { \"@id\": \"odrl:read\" }, \r\n" +
-				"        \"refinement\": {    \r\n" +
-				"           \"andSequence\": {  \r\n" +
-				"              \"@list\": [ \r\n" +
-				"                 {\"leftOperand\": \"fileFormat\", \r\n" +
-				"                 \"operator\": \"eq\", \r\n" +
-				"                 \"rightOperand\": \"https://www.wikidata.org/wiki/Q13769783\", \r\n" +
-				"                 \"rdfs:comment\": \"log (Q13769783)\"}, \r\n" +
-				"                 \"{leftOperand\": \"recipient\",    \r\n" +
-				"                 \"operator\": \"eq\",    \r\n" +
-				"                 \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:string\" }}     \r\n" +
-				"               ] \r\n" +
-				"            }  \r\n" +
-				"         }     \r\n" +
+		return String.format(" {    \r\n" +
+				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" +
+				"  \"@type\": \"%s\",    \r\n" +
+				"  \"uid\": \"http://example.com/policy:log-access\",    \r\n" +
+				"  \"profile\": \"http://example.com/ids-profile\",    \r\n" +
+				"  \"%s\": [{    \r\n" +
+				"    \"target\": \"%s\",    \r\n%s%s" +
+				"    \"action\": \"%s\",    \r\n" +
+				"    \"duty\": [{    \r\n" +
+				"      \"action\": [{    \r\n" +
+				"        \"rdf:value\": { \"@id\": \"%s\" },    \r\n" +
+				"        \"refinement\": [{    \r\n" +
+				"          \"leftOperand\": \"%s\",    \r\n" +
+				"          \"operator\": \"eq\",    \r\n" +
+				"          \"rightOperand\":  { \"@value\": \"%s\", \"@type\": \"xsd:anyURI\" }    \r\n" +
+				"        }]    \r\n" +
 				"      }]     \r\n" +
-				"   }]     \r\n" +
-				"} ", type, target, assigner, assignee, recipient);
+				"    }]    \r\n" +
+				"  }]    \r\n" +
+				"} ", type, ruleType, target, assigner, assignee, action, dutyAction, leftOperand, recipient);
+
 	}
 }

@@ -1,0 +1,31 @@
+<form th:action="@{/policy/EncodingPolicyODRL}" th:object="${encodingPolicy}" method="post">
+  <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
+
+  <div>
+    <p>
+    <h3><img src="../images/encoding.png" style="height:60px;" /><br/>
+      This policy makes sure that a specified IDS data consumer has permission to read your data only if your data is encrypted.</h3>
+    </p>
+  </div>
+
+  <p>Policy Type*:
+    <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
+      <option value="Agreement">Agreement</option>
+      <option value="Offer">Offer</option>
+      <option value="Request">Request</option>
+    </select>
+  </p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{dataUrl}" /></p>
+  <p id="assigner" >Assigner (Data Provider)*: <input  id="assignerInput" required="required" type="text" size="40" value="My party"></p>
+  <p id="assignee" >Assignee (Data Consumer)*:
+    <div id="assigneeDiv"  class="form-group blu-margin">
+      <select id="assigneeInput" class="form-control" th:field="*{assignee}" required="required">
+        <option value="http://example.com/ids-party:consumer-party" selected>Consumer party</option>
+      </select>
+    </div>
+  </p>
+  <p>Encoding*: <input required="required" type="text" size="40" placeholder=" e.g. https://www.wikidata.org/wiki/Q136218 (ZIP)" th:field="*{encoding}" /></p>
+
+  <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+</form>

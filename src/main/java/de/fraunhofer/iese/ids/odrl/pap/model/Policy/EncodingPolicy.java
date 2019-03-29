@@ -1,4 +1,4 @@
-package de.fraunhofer.iese.ids.odrl.pap.model;
+package de.fraunhofer.iese.ids.odrl.pap.model.Policy;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,11 +9,10 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class LogAccessPolicy extends AbstractPolicy {
-	String recipient;
+public class EncodingPolicy extends AbstractPolicy {
+	String encoding;
 
-	public String getRecipient() {
-		return recipient;
+	public String getEncoding() {
+		return encoding;
 	}
-
 }

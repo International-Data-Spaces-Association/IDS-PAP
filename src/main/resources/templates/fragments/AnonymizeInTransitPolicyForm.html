@@ -1,0 +1,41 @@
+<form th:action="@{/policy/AnonymizeInTransitPolicyODRL}" th:object="${anonymizeInTransitPolicy}" method="post">
+  <input type="hidden" th:field="*{ruleType}" />
+  <input type="hidden" th:field="*{action}" />
+
+  <div>
+    <p>
+    <h3><img src="../images/transit.png" style="height:60px;" /><br/>
+      This policy gives permission to a specified IDS data consumer to read your data. <br/>
+      But data must be anonymized in transit before it is sent. <br/>
+      Using jsonPath left operand, you define which part of your data must be anonymized.</h3>
+    </p>
+  </div>
+
+  <p>Policy Type*:
+    <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
+      <option value="Agreement">Agreement</option>
+      <option value="Offer">Offer</option>
+      <option value="Request">Request</option>
+    </select>
+  </p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{dataUrl}" /></p>
+  <p id="assigner" >Assigner (Data Provider)*: <input  id="assignerInput" required="required" type="text" size="40" value="My party"></p>
+  <p id="assignee" >Assignee (Data Consumer)*:
+    <div id="assigneeDiv" class="form-group blu-margin">
+      <select id="assigneeInput" class="form-control" th:field="*{assignee}" required="required">
+        <option value="http://example.com/ids-party:consumer-party" selected>Consumer party</option>
+      </select>
+    </div>
+  </p>
+  <p id="dutyAction" >Duty Action to anonymize data*:
+  <div class="form-group blu-margin">
+    <select id="dutyActionInput" class="form-control" th:field="*{dutyAction}" required="required">
+      <option value="ROUND" selected>Round Action</option>
+    </select>
+  </div>
+  </p>
+  <p>Enter a value for <i>ids:digit</i>*: <input required="required" type="text" size="40" placeholder=" e.g. -6" th:field="*{digit}" /></p>
+  <p>Enter the field (<i>ids:jsonPath</i>) that you want to modify*: <input required="required" type="text" size="40" placeholder=" e.g. budget" th:field="*{jsonPath}" /></p>
+
+  <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+</form>

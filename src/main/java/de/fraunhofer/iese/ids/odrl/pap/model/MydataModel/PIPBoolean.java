@@ -24,9 +24,9 @@ public class PIPBoolean {
 
  @Override
  public String toString() {
-  return  "        <pip:boolean method='urn:info:"+ solution +":"+ leftOperand.getMydataPIP() +"' default='false'>  \r\n" +
+  return  "          <pip:boolean method='urn:info:"+ solution +":"+ leftOperand.getMydataLeftOperand() +"' default='false'>  \r\n" +
           getParameters() +
-          "        </pip:boolean> \r\n" ;
+          "          </pip:boolean> \r\n" ;
  }
 
  private String getParameters() {
@@ -38,7 +38,7 @@ public class PIPBoolean {
    String params = "";
    for(int i=0 ; i<parameters.length; i++)
    {
-    params += "          " +parameters[i].toString() + "\r\n";
+    params += "            " +parameters[i].toString() + "\r\n";
    }
 
    return  params;

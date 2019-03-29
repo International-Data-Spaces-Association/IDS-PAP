@@ -9,6 +9,11 @@ public class OdrlPapMvcConfig extends WebMvcConfigurationSupport {
 	@Override
 	  public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	    registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("/images/**").addResourceLocations("classpath:/images/");
+		registry.addResourceHandler("/js/**").addResourceLocations("classpath:/js/");
+		registry.addResourceHandler("/templates/**").addResourceLocations("classpath:/templates/");
+		registry.addResourceHandler("/css/**").addResourceLocations("classpath:/css/");
+		registry.addResourceHandler("/jQuery/**").addResourceLocations("classpath:/jQuery/");
 	  }
 
 }

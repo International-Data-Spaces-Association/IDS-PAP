@@ -37,16 +37,19 @@
             assigner.style.display = 'block';
             assignerInput.setAttribute('required', '');
             assignee.style.display = 'none';
+            assigneeDiv.style.display = 'none';
             assigneeInput.removeAttribute("required");
         } else if (control.value == 'Request'){
             assigner.style.display = 'none';
             assignerInput.removeAttribute("required");
             assignee.style.display = 'block';
+            assigneeDiv.style.display = 'block';
             assigneeInput.setAttribute('required', '');
         } else{
             assigner.style.display = 'block';
             assignerInput.setAttribute('required', '');
             assignee.style.display = 'block';
+            assigneeDiv.style.display = 'block';
             assigneeInput.setAttribute('required', '');
         }
     }
@@ -65,9 +68,10 @@
     $('input[name="startTime"]').daterangepicker({
         "singleDatePicker": true,
         "timePicker": true,
+        "timePicker24Hour": true,
         "autoApply": true,
         locale: {
-            format: 'YYYY-MM-DDThh:mm:ss'
+            format: 'YYYY-MM-DDTHH:mm:ss'
             },
         "startDate": Date.now()
     }, function(start, end, label) {
@@ -78,9 +82,10 @@
     $('input[name="endTime"]').daterangepicker({
         "singleDatePicker": true,
         "timePicker": true,
+        "timePicker24Hour": true,
         "autoApply": true,
         locale: {
-            format: 'YYYY-MM-DDThh:mm:ss'
+            format: 'YYYY-MM-DDTHH:mm:ss'
             },
         "endDate": Date.now()
     }, function(start, end, label) {

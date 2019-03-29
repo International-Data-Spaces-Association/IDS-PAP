@@ -2,14 +2,24 @@ package de.fraunhofer.iese.ids.odrl.pap.model.MydataModel;
 
 public enum ParameterType {
 
-    STRING,
+    STRING("string"),
 
-    NUMBER,
+    NUMBER("number"),
 
-    BOOLEAN,
+    BOOLEAN("boolean"),
 
-    OBJECT,
+    OBJECT("object"),
 
-    LIST;
+    LIST("list");
+
+    private final String type;
+
+    ParameterType(String a) {
+        type = a;
+    }
+
+    public String getParameterType() {
+        return type;
+    }
 }
 

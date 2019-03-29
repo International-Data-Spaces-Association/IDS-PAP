@@ -2,11 +2,11 @@ package de.fraunhofer.iese.ids.odrl.pap.model;
 
 public enum RuleType {
 
-    PERMISSION("Allow","permission"),
+    PERMISSION("allow","permission"),
 
-    PROHIBITION("Inhibit", "prohibition"),
+    PROHIBITION("inhibit", "prohibition"),
 
-    OBLIGATION("Allow", "obligation");
+    OBLIGATION("allow", "obligation");
 
     private final String mydataDecision;
     private final String odrlRuleType;

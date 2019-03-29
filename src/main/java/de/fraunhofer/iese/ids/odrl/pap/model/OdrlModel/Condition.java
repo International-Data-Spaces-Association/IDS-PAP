@@ -33,7 +33,7 @@ public class Condition {
  @Override
  public String toString() {
   return  "      \" "+ type.getOdrlConditionType() +" \": [{  \n" +
-          "        \"leftOperand\": \" "+ leftOperand.getOdrlLeftOperand() +" \",  \n" +
+          "        \"leftOperand\": \" "+ leftOperand.getIdsLeftOperand() +" \",  \n" +
           "        \"operator\": \" "+ operator.getOdrlOp() +" \",  \n" +
           "        \"rightOperand\": { \"@value\": \" "+ rightOperandValue +" \", \"@type\": \" "+ rightOperandType +" \" }  \n" +
           "      }]";

@@ -1,12 +1,34 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.DeleteAtferPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Action;
+import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.DeleteAtferPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.TimeUnit;
+import org.thymeleaf.templateparser.text.AbstractChainedTextHandler;
 
 public class DeleteAfterPolicyOdrlCreator {
 	
 	public static String createODRL(DeleteAtferPolicy deleteAtferPolicy){
+
+		// set rule type
+		String ruleType = "";
+		if(deleteAtferPolicy.getRuleType()!= null)
+		{
+			switch(deleteAtferPolicy.getRuleType()) {
+				case OBLIGATION:
+					ruleType = "obligation";
+					break;
+
+				case PERMISSION:
+					ruleType = "permission";
+					break;
+
+				case PROHIBITION:
+					ruleType = "prohibition";
+					break;
+			}
+		}
 
 		//set type
 		String type = "";
@@ -60,22 +82,32 @@ public class DeleteAfterPolicyOdrlCreator {
 			}
 		}
 
+		//set action
+		String action = "";
+		if(null != deleteAtferPolicy.getAction()) {
+			action = deleteAtferPolicy.getAction().getIdsAction();
+		}
+
+		//set leftOperand
+		String leftOperand = LeftOperand.DELAY_PERIOD.getIdsLeftOperand();
+
 		//return the formated String
 		return String.format(" {    \r\n" + 
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
 				"  \"@type\": \"%s\",    \r\n" + 
 				"  \"uid\": \"http://example.com/policy:delete-data\",    \r\n" +
-				"  \"obligation\": [{    \r\n" +
+				"  \"profile\": \"http://example.com/ids-profile\",    \r\n" +
+				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": [{    \r\n" +
-				"          \"rdf:value\": { \"@id\": \"delete\" },     \r\n" +
+				"          \"rdf:value\": { \"@id\": \"%s\" },     \r\n" +
 				"      	   \"refinement\": [{    \r\n" +
-				"        	  \"leftOperand\": \"Delay_Period\",    \r\n" +
+				"        	  \"leftOperand\": \"%s\",    \r\n" +
 				"        	  \"operator\": \"eq\",    \r\n" +
 				"        	  \"rightOperand\": { \"@value\": \"P%s%s%s\", \"@type\": \"xsd:duration\" }     \r\n" +
 				"          }]     \r\n" +
 				"      }]     \r\n" +
 				"  }]    \r\n" + 
-				"} ", type, target, assigner, assignee, xsdPrefix, value, timeUnit);
+				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, xsdPrefix, value, timeUnit);
 	}
 }

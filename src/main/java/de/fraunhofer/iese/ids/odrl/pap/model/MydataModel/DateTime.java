@@ -4,9 +4,6 @@ import de.fraunhofer.iese.ids.odrl.pap.model.IntervalCondition;
 import lombok.Data;
 
 import javax.xml.bind.DatatypeConverter;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -26,7 +23,28 @@ public class DateTime {
 
     @Override
     public String toString() {
-        return  "          <dateTime is='"+ is.getMydataInterval() +"' value='"+ getMydataDateTime() +"'/> \r\n";
+        if(this.is.equals(IntervalCondition.GT))
+        {
+            return "          <or> \r\n" +
+                    "            <and> \r\n" +
+                    "              <date is='exactly' value='"+ getDate(getMydataDateTime()) +"'/> \r\n" +
+                    "              <time is='"+ is.getMydataInterval() +"' value='"+ getTime(getMydataDateTime()) +"'/> \r\n" +
+                    "            </and> \r\n" +
+                    "            <date is='"+ is.getMydataInterval() +"' value='"+ getDate(getMydataDateTime()) +"'/> \r\n" +
+                    "          </or> \r\n";
+        }else if(this.is.equals(IntervalCondition.LT))
+        {
+            return "          <or> \r\n" +
+                    "            <date is='"+ is.getMydataInterval() +"' value='"+ getDate(getMydataDateTime()) +"'/> \r\n" +
+                    "            <and> \r\n" +
+                    "              <date is='exactly' value='"+ getDate(getMydataDateTime()) +"'/> \r\n" +
+                    "              <time is='"+ is.getMydataInterval() +"' value='"+ getTime(getMydataDateTime()) +"'/> \r\n" +
+                    "            </and> \r\n" +
+                    "          </or> \r\n";
+        }
+        return "";
+        // We may implement dateTime function for MYDATA in near future
+        //return  "          <dateTime is='"+ is.getMydataInterval() +"' value='"+ getMydataDateTime() +"'/> \r\n";
     }
 
 
@@ -37,4 +55,15 @@ public class DateTime {
         return timestamp.toString();
     }
 
+    private String getDate(String dateTime)
+    {
+        String[] parts = dateTime.split(" ");
+        return parts[0];
+    }
+
+    private String getTime(String dateTime)
+    {
+        String[] parts = dateTime.split(" ");
+        return parts[1];
+    }
 }

@@ -3,7 +3,7 @@ package de.fraunhofer.iese.ids.odrl.pap.model;
 
 public enum Operator {
 
- EQUALS("equal", "eq"),
+ EQUALS("equals", "eq"),
 
  LESS("less", "lt"),
 

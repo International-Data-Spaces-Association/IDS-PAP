@@ -1,6 +1,9 @@
-package de.fraunhofer.iese.ids.odrl.pap.model;
+package de.fraunhofer.iese.ids.odrl.pap.model.Policy;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.Action;
 import de.fraunhofer.iese.ids.odrl.pap.model.OdrlModel.Condition;
+import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
+import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
 
 import java.net.URL;
 
@@ -11,6 +14,12 @@ public interface CategorizedPolicy {
 
 	public Action getAction();
 	public void setAction(Action action);
+
+	public Action getDutyAction();
+	public void setDutyAction(Action dutyAction);
+
+	public Action getAbstractAction();
+	public void setAbstractAction(Action abstractAction);
 
 	public URL getPolicyUrl();
 	public void setPolicyUrl(URL policyUrl);
@@ -29,4 +38,7 @@ public interface CategorizedPolicy {
 	
 	public String getAssigner();
 	public void setAssigner(String assigner);
+
+	public boolean getProviderSide();
+	public void setProviderSide(boolean providerSide);
 }

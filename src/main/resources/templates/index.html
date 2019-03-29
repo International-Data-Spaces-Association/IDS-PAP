@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>ODRL PAP</title>
 <div th:include="fragments/css" th:remove="tag"></div>
+<div th:include="fragments/textareaStyleCSS" th:remove="tag"></div>
 </head>
 <style>
 input[type=text], select {
@@ -19,28 +20,37 @@ input[type=text], select {
 </style>
 <body class="nav-md">
 	<div class="container body">
-		<div class="main_container">
-			<div th:include="sidemenu"></div>
-			<div class="right_col" style="height: 100vh;" role="main">
-			<div class="mainheader">
-			<div class="col-md-10 col-sm-10 col-xs-8">
-					<div class="x_content settings" style="padding:15px;">
-					<div th:if="${policyFragment == 'ProvideAccessPolicyForm'}" th:include="fragments/ProvideAccessPolicyForm" th:remove="tag"></div>
+	<div class="main_container">
+	<div th:include="sidemenu"></div>
+	<div th:include="topNavigation"></div>
+	<div class="right_col" style="height: 100vh;" role="main">
+		<div class="mainheader">
+			<div class="col-md-12 col-sm-12 col-xs-8">
+				<div class="x_content settings" style="padding:15px;">
+					<div th:if="${policyFragment == 'index'}" th:include="fragments/Welcome" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'HowTo'}" th:include="fragments/Howto" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'BasePolicyForm'}" th:include="fragments/BasePolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'SpecificSystemPolicyForm'}" th:include="fragments/SpecificSystemPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificPurposePolicyForm'}" th:include="fragments/SpecificPurposePolicyForm" th:remove="tag"></div>
- 					<div th:if="${policyFragment == 'DeleteAfterPolicyForm'}" th:include="fragments/DeleteAfterPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'SpecificEventPolicyForm'}" th:include="fragments/SpecificEventPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'EncodingPolicyForm'}" th:include="fragments/EncodingPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'DeleteAfterPolicyForm'}" th:include="fragments/DeleteAfterPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'ReadDataIntervalPolicyForm'}" th:include="fragments/ReadDataIntervalPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'LogAccessPolicyForm'}" th:include="fragments/LogAccessPolicyForm" th:remove="tag"></div>
-					<div th:if="${policyFragment == 'odrl'}"  th:remove="tag" th:include="fragments/OdrlPolicyForm"></div>
-					<div th:if="${policyFragment == 'mydata'}"  th:remove="tag" >
-						<textarea style="width:100%; height:80vh">[[${mydataPolicy}]]</textarea>
-					</div>
+					<div th:if="${policyFragment == 'InformPolicyForm'}" th:include="fragments/InformPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'CountAccessPolicyForm'}" th:include="fragments/CountAccessPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'AnonymizeInTransitPolicyForm'}" th:include="fragments/AnonymizeInTransitPolicyForm" th:remove="tag"></div>
+					<div th:include="fragments/textareaStyleScripts" th:if="${odrlFragment} or ${mydataFragment}" th:remove="tag"></div>
+					<div th:if="${odrlFragment}"  th:remove="tag" th:include="fragments/OdrlPolicyForm"></div>
+
 				</div>
 			</div>
 		</div>
 	</div>
 	<div th:include="fragments/scripts :: bottom" th:remove="tag"></div>
 	<!--<script src="/static/js/addSolution.js"></script>-->
-
+	</div>
+	</div>
 </body>
 
 </html>
