@@ -28,6 +28,7 @@ input[type=text], select {
 			<div class="col-md-12 col-sm-12 col-xs-8">
 				<div class="x_content settings" style="padding:15px;">
 					<div th:if="${policyFragment == 'index'}" th:include="fragments/Welcome" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'HowTo'}" th:include="fragments/Howto" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'BasePolicyForm'}" th:include="fragments/BasePolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificSystemPolicyForm'}" th:include="fragments/SpecificSystemPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificPurposePolicyForm'}" th:include="fragments/SpecificPurposePolicyForm" th:remove="tag"></div>
