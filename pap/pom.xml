@@ -30,7 +30,7 @@
 		<docker.image.prefix>mydata</docker.image.prefix>
 		<docker-maven-plugin-version>0.4.13</docker-maven-plugin-version>
 
-		<project.build.finalName>mydata.odrlpap.webservice.war</project.build.finalName>
+		<finalName>mydata.odrlpap.webservice.war</finalName>
 	</properties>
 
 	<dependencies>
