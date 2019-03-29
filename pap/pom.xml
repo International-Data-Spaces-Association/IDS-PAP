@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 
-		<start-class>de.fraunhofer.iese.ids.odrl.OdrlPapApplication</start-class>
+		<start-class>de.fraunhofer.iese.ids.odrl.pap.OdrlPapApplication</start-class>
 
 		<resource.delimiter>@</resource.delimiter>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
