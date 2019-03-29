@@ -7,6 +7,7 @@
       </h3>
     </p>
   </div>
+  <br/>
   <p>
     <h4 style="line-height:30px;">
     An IDS customer can be a Data Provider or a Data Consumer.<br/>
@@ -20,58 +21,23 @@
     In this tool, we have implemented an editor that supports the data providers to specify their Data Usage Control <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policies.<br/>
     In addition, they can use this tool to translate the <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policies to <a href="https://developer.mydata-control.de/">MYDATA</a> policies.<br/><br/>
 
-    <b>How To</b><br/>
-    As an IDS Data Provider, you can choose a policy class from the side bar of the tool and then, follow the instructions.<br/>
-    By pressing the "Save" button, you will get the corresponding <a href="https://www.w3.org/TR/odrl-model/">ODRL</a> policy.<br/>
-    In order to get the <a href="https://developer.mydata-control.de/">MYDATA</a> policy, you can press the "Transfer" button.<br/>
-    In addition, you can export the <a href="https://developer.mydata-control.de/">MYDATA</a> policy from this editor. <br/>
-    This exported <a href="https://developer.mydata-control.de/">MYDATA</a> policy is ready to be imported into the <a href="https://developer.mydata-control.de/">MYDATA</a> PMP (Policy Management Point).<br/>
-    You can then deploy the <a href="https://developer.mydata-control.de/">MYDATA</a> policy. <br/>
-    Deploying <a href="https://developer.mydata-control.de/">MYDATA</a> policy into the <a href="https://developer.mydata-control.de/">MYDATA</a> PDP (Policy Decision Point) is not enough for the policy enforcement. <br/>
-    Be aware that you still need to create <a href="https://developer.mydata-control.de/">MYDATA</a> PEP (Policy Enforcement Point) and the needed <a href="https://developer.mydata-control.de/">MYDATA</a> PIPs (Policy Information Points) and <a href="https://developer.mydata-control.de/">MYDATA</a> PXPs (Policy Execution Points).<br/>
-    When the enforcement point is implemented, then you can be assured that your data is technically protected. To implement your <a href="https://developer.mydata-control.de/">MYDATA</a> PEP (Policy Enforcement Point), follow the instructions documented in <a href="https://developer.mydata-control.de/sdk/howto_pep.html">MYDATA Web Page</a>.<br/>
+      <b><h3>Click <u><a href="/policy/HowTo">here</a></u> to learn how to use this editor!</h3></b>
 
+
+      <br/>
+      <div class="alert-success row col-md-11">
+        <br/>
+        <div class="col-md-1"><center><i class="fas fa-question fa-4x" ></i></center></div>
+        <div class="col-md-10">
+          <p>
+            Please check our page on <a href="https://www.ids.isst.fraunhofer.de/confluence/pages/viewpage.action?spaceKey=FDS&title=T8+-+Work+Content">IDS confluence</a> to get more information about the policy transformation rules, ODRL and MYDATA policy specification and IDS specific profile. <br/>
+            IDS profile includes information model about the IDS Actions and IDS Left Operands.<br/>
+            If you have any further questions, please do not hesitate to <a href="https://www.mydata-control.de/#contact">Contact us</a>.<br/>
+          </p>
+        </div>
+        <br/>
+      </div>
     <br/>
-    </h4>
-    <h3>Actions</h3>
-    <h4>
-      <i>ids:read</i> <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-read">odrl:read</a>. When there is no interface defined, it means http get.<br/>
-      It may get <i>ids:system</i>, <i>ids:purpose</i>, <i>ids:encoding</i> or <i>ids:count</i> as a left operand.<br/>
-      <i>ids:read</i> a <i>odrl:Action</i>
-      <br/><br/>
-      <i>ids:delete</i> <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-delete">odrl:delete</a>. In order to remove all copies of an artifact in the consumer connector (assumption is that there is
-      no copy of that data outside of the consumer connector)<br/>
-      It gets <i>ids:delay period</i> as a left operand.
-      <br/><br/>
-      <i>ids:log</i> <br/>
-      In order to log information to a known logging server.<br/>
-      It gets <i>ids:recipient</i> as a left operand.
-      <br/><br/>
-      <i>ids:inform</i> <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-inform">odrl:inform</a>. In order to notify an <i>ids:informedParty</i> that an action has been performed.
-      <br/><br/>
-      <i>ids:print</i> <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-print">odrl:print</a>.
-      <br/><br/>
-      <i>ids:reproduce</i> <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-reproduce">odrl:reproduce</a>. In order tn order to make a duplicate copy to the consumer side connector.
-      <br/><br/>
-      <i>ids:display</i> <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-display">odrl:display</a>. In order to visually render a resource (artifact).
-      <br/><br/>
-      <i>ids:distribute</i> <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-distribute">odrl:distribute</a>. In order to send data out of the connector (unauthorized party)
-      <br/><br/><br/>
-
-      <i>ids:anonymize</i> <br/>
-      Similar concept to <a href="https://www.w3.org/TR/odrl-vocab/#term-anonymize">odrl:anonymize</a>. This is an abstract action.
-      <br/><br/>
-      <i>ids:round</i> <br/>
-      This class extends <i>ids:anonymize</i> action.
-      It gets an <i>ids:jsonPath</i> and an <i>ids:digit</i> as input parameters and returns a rounded number value.<br/>
-      <br/><br/>
     </h4>
   </p>
 </form>

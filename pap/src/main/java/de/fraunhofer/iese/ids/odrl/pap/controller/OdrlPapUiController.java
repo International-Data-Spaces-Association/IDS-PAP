@@ -255,6 +255,12 @@ public class OdrlPapUiController {
 		return "index";
 	}
 
+	@RequestMapping("/policy/HowTo")
+	public String howto(Model model) {
+		model.addAttribute(POLICY_FRAGMENT, "HowTo");
+		return "index";
+	}
+
 	 @SuppressWarnings("rawtypes")
 	@RequestMapping("/policy/JsonOrdlPolicyMAYDATA")
 	  public String policy(@ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
