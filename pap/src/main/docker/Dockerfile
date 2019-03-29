@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejre8:slim
+FROM openjdk:8-jre-alpine
 VOLUME /tmp
 COPY ./mydata.odrlpap.webservice.war mydata.odrlpap.webservice.war
 RUN sh -c 'touch /mydata.odrlpap.webservice.war'

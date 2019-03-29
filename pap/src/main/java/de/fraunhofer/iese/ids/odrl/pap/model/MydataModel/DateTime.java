@@ -4,9 +4,6 @@ import de.fraunhofer.iese.ids.odrl.pap.model.IntervalCondition;
 import lombok.Data;
 
 import javax.xml.bind.DatatypeConverter;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.TimeZone;
 
