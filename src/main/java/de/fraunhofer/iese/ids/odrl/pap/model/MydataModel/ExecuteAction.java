@@ -24,7 +24,8 @@ public class ExecuteAction {
 
  @Override
  public String toString() {
-  return  "          <execute action='urn:action:"+ solution +":"+ action.name().toLowerCase() +"'>  \r\n" +
+  return  "          <allow/>  \r\n" +
+          "          <execute action='urn:action:"+ solution +":"+ action.name().toLowerCase() +"'>  \r\n" +
           getParameters() +
           "          </execute> \r\n";
  }

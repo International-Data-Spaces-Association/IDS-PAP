@@ -2,5 +2,3 @@ spring:
   thymeleaf:
     mode: HTML
     cache: false
-server:
-  port: 9090

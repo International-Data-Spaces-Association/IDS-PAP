@@ -1,13 +1,12 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.Action;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.BasePolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AbstractPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
-import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
 
 public class BasePolicyOdrlCreator {
 	
-	public static String createODRL(BasePolicy basePolicy){
+	public static String createODRL(AbstractPolicy basePolicy){
 
 		// set rule type
 		String ruleType = "";

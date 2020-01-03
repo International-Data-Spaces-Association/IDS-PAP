@@ -7,13 +7,15 @@ import lombok.Data;
 @Data
 public class Timer {
     TimeUnit timeUnit;
+    String cron;
     String tid;
     String solution;
     Action action;
     Parameter parameter;
 
-    public Timer(TimeUnit timeUnit, String tid, String solution, Action action, Parameter parameter) {
+    public Timer(TimeUnit timeUnit, String exactCron, String tid, String solution, Action action, Parameter parameter) {
         this.timeUnit = timeUnit;
+        this.cron = exactCron;
         this.tid = tid;
         this.solution = solution;
         this.action = action;
@@ -27,7 +29,7 @@ public class Timer {
 
     @Override
     public String toString() {
-        return  "  <timer cron='"+ timeUnit.getMydataCron() +"' id='urn:timer:"+ solution +":"+ tid +"'>  \r\n" +
+        return  "  <timer cron='"+ getCron() +"' id='urn:timer:"+ solution +":"+ tid +"'>  \r\n" +
                 "    <event action='urn:action:"+ solution +":"+ action.name().toLowerCase() +"'>  \r\n" +
                 getParameter() +
                 "    </event>  \r\n" +
@@ -40,5 +42,15 @@ public class Timer {
             return "      "+ parameter.toString() +"  \r\n";
         }
         return "";
+    }
+
+    private String getCron(){
+        if(null != timeUnit)
+        {
+            return timeUnit.getMydataCron();
+        }else
+        {
+            return cron;
+        }
     }
 }

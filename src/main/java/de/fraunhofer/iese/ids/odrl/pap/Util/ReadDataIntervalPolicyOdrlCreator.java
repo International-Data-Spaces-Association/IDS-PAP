@@ -1,14 +1,12 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.Action;
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AbstractPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.ReadDataIntervalPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
 
 public class ReadDataIntervalPolicyOdrlCreator {
 	
-	public static String createODRL(ReadDataIntervalPolicy readDataIntervalPolicy){
+	public static String createODRL(AbstractPolicy readDataIntervalPolicy){
 
 		// set rule type
 		String ruleType = "";
@@ -81,19 +79,15 @@ public class ReadDataIntervalPolicyOdrlCreator {
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": \"%s\",     \r\n" +
-				"      \"constraint\": {    \r\n" +
-				"        \"and\": {    \r\n" +
-				"          \"@list\": [{    \r\n" +
-				"            \"leftOperand\": \"%s\",    \r\n" +
-				"            \"operator\": \"gt\",    \r\n" +
-				"            \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
-				"            },{     \r\n" +
-				"            \"leftOperand\": \"%s\",    \r\n" +
-				"            \"operator\": \"lt\",    \r\n" +
-				"            \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
-				"          }]     \r\n" +
-				"        }    \r\n" +
-				"      }    \r\n" +
+				"      \"constraint\": [{    \r\n" +
+				"        \"leftOperand\": \"%s\",    \r\n" +
+				"        \"operator\": \"gt\",    \r\n" +
+				"        \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
+				"        },{     \r\n" +
+				"        \"leftOperand\": \"%s\",    \r\n" +
+				"        \"operator\": \"lt\",    \r\n" +
+				"        \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
+				"      }]     \r\n" +
 				"  }]    \r\n" + 
 				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, startTime, leftOperand, endTime);
 	}

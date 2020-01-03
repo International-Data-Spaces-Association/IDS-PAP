@@ -1,13 +1,13 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.ConstraintRightOperands;
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AnonymizeInTransitPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.SpecificSystemPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AbstractPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 
 public class AnonymizeInTransitPolicyOdrlCreator {
 	
-	public static String createODRL(AnonymizeInTransitPolicy anonymizeInTransitPolicy){
+	public static String createODRL(AbstractPolicy anonymizeInTransitPolicy){
 
 		// set rule type
 		String ruleType = "";
@@ -88,6 +88,12 @@ public class AnonymizeInTransitPolicyOdrlCreator {
 		//set leftOperand
 		String secondLeftOperand = LeftOperand.DIGIT.getIdsLeftOperand();
 
+		//set leftOperand
+		String leftOperand = LeftOperand.EVENT.getIdsLeftOperand();
+
+		//set rightOperand
+		String  rightOperand = ConstraintRightOperands.Policy_Rule_Usage.getIdsRightOperand();
+
 		//return the formated String
 		return String.format(" {    \r\n" + 
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
@@ -101,22 +107,23 @@ public class AnonymizeInTransitPolicyOdrlCreator {
 				"        \"action\": [{ \r\n" +
 				"          \"rdf:value\": { \"@id\": \"%s\" }, \r\n" +
 				"          \"rdf:type\": { \"@id\": \"%s\"},    \r\n" +
-				"          \"refinement\": {        \r\n" +
-				"            \"and\": {   \r\n" +
-				"              \"@list\": [{         \r\n" +
-				"                \"leftOperand\": \"%s\",      \r\n" +
-				"                \"operator\": \"eq\",       \r\n" +
-				"                \"rightOperand\": { \"@value\": \"$.content.%s\", \"@type\": \"xsd:string\" }      \r\n" +
-				"              },{       \r\n" +
-				"                \"leftOperand\": \"%s\",     \r\n" +
-				"                \"operator\": \"eq\",      \r\n" +
-				"                \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:number\"  }       \r\n" +
-				"              }]        \r\n" +
-				"            }      \r\n" +
-				"          }    \r\n" +
-				"        }]     \r\n" +
+				"          \"refinement\": [{        \r\n" +
+				"            \"leftOperand\": \"%s\",      \r\n" +
+				"            \"operator\": \"eq\",       \r\n" +
+				"            \"rightOperand\": { \"@value\": \"$.content.%s\", \"@type\": \"xsd:string\" }      \r\n" +
+				"            },{       \r\n" +
+				"            \"leftOperand\": \"%s\",     \r\n" +
+				"            \"operator\": \"eq\",      \r\n" +
+				"            \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:number\"  }       \r\n" +
+				"          }]        \r\n" +
+				"        }],     \r\n" +
+				"        \"constraint\": [{        \r\n" +
+				"          \"leftOperand\": \"%s\",      \r\n" +
+				"          \"operator\": \"lt\",       \r\n" +
+				"          \"rightOperand\": { \"@id\": \"%s\"}      \r\n" +
+				"        }]        \r\n" +
 				"      }]     \r\n" +
 				"  }]    \r\n" +
-				"} ", type, ruleType, target, assigner, assignee, action, dutyAction, abstractAction, firstLeftOperand, jsonPath,secondLeftOperand, digit);
+				"} ", type, ruleType, target, assigner, assignee, action, dutyAction, abstractAction, firstLeftOperand, jsonPath,secondLeftOperand, digit, leftOperand, rightOperand);
 	}
 }

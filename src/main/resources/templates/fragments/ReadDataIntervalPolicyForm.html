@@ -1,15 +1,15 @@
-<form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/ReadDataIntervalPolicyODRL}" th:object="${readDataIntervalPolicy}" method="post">
+<form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/ReadDataIntervalPolicyODRL}" th:object="${abstractPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
 
-  <div th:if="${readDataIntervalPolicy?.ruleType?.name() == 'PERMISSION'}">
+  <div th:if="${abstractPolicy?.ruleType?.name() == 'PERMISSION'}">
     <p>
     <h3><img src="../images/provide_access.png" style="height:60px;" />  <img src="../images/interval.png" style="height:60px;" /><br/>
       This policy gives permission to a specified IDS data consumer to read your data in a specified time interval.</h3>
     </p>
   </div>
 
-  <div th:if="${readDataIntervalPolicy?.ruleType?.name() == 'PROHIBITION'}">
+  <div th:if="${abstractPolicy?.ruleType?.name() == 'PROHIBITION'}">
     <p>
     <h3><img src="../images/inhibit_access.png" style="height:60px;" />  <img src="../images/interval.png" style="height:60px;" /><br/>
       This policy prohibits a specified IDS data consumer to read your data in a specified time interval.</h3>
@@ -17,7 +17,7 @@
   </div>
 
   <p>Policy type*:
-    <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
+    <select id="policyType" th:field="*{policyType}" onchange="policyTypeOnChanges(this)" required="required">
       <option value="Agreement">Agreement</option>
       <option value="Offer">Offer</option>
       <option value="Request">Request</option>

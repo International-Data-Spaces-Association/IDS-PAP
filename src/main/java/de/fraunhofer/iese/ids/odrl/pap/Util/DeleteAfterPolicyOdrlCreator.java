@@ -1,15 +1,14 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.Action;
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.DeleteAtferPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AbstractPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 import de.fraunhofer.iese.ids.odrl.pap.model.TimeUnit;
-import org.thymeleaf.templateparser.text.AbstractChainedTextHandler;
+import de.fraunhofer.iese.ids.odrl.pattern.PatternUtil;
 
 public class DeleteAfterPolicyOdrlCreator {
 	
-	public static String createODRL(DeleteAtferPolicy deleteAtferPolicy){
+	public static String createODRL(AbstractPolicy deleteAtferPolicy){
 
 		// set rule type
 		String ruleType = "";
@@ -54,42 +53,68 @@ public class DeleteAfterPolicyOdrlCreator {
 			target = deleteAtferPolicy.getDataUrl().toString();
 		}
 
-		//set duration
-		int value = 1;
-		String timeUnit = "";
-		String xsdPrefix = "";
-		if(0 != deleteAtferPolicy.getDuration().getValue()) {
-			value = deleteAtferPolicy.getDuration().getValue();
-			// timeUnit = deleteAtferPolicy.getDuration().getTimeUnit().toString();
-			switch(deleteAtferPolicy.getDuration().getTimeUnit()) {
-				case HOURS:
-					timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
-					xsdPrefix = "T";
-					break;
-
-				case DAYS:
-					timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
-					break;
-
-				case MONTHS:
-					timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
-					break;
-
-				case YEARS:
-					timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
-					break;
-
-			}
-		}
-
 		//set action
 		String action = "";
 		if(null != deleteAtferPolicy.getAction()) {
 			action = deleteAtferPolicy.getAction().getIdsAction();
 		}
 
-		//set leftOperand
-		String leftOperand = LeftOperand.DELAY_PERIOD.getIdsLeftOperand();
+		//set duration
+		int value = 1;
+		String timeUnit = "";
+		String xsdPrefix = "";
+		String leftOperand = "";
+		String refinement = "";
+		String dateTime = "";
+		if (PatternUtil.isNotNull(deleteAtferPolicy.getDuration()))
+		{
+			if(0 != deleteAtferPolicy.getDuration().getValue()) {
+				value = deleteAtferPolicy.getDuration().getValue();
+				// timeUnit = deleteAtferPolicy.getDuration().getTimeUnit().toString();
+				switch(deleteAtferPolicy.getDuration().getTimeUnit()) {
+					case HOURS:
+						timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
+						xsdPrefix = "T";
+						break;
+
+					case DAYS:
+						timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
+						break;
+
+					case MONTHS:
+						timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
+						break;
+
+					case YEARS:
+						timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
+						break;
+
+				}
+			}
+
+			//set leftOperand
+			leftOperand = LeftOperand.DELAYPERIOD.getIdsLeftOperand();
+
+			refinement = String.format("      	   \"refinement\": [{    \r\n" +
+					"        	  \"leftOperand\": \"%s\",    \r\n" +
+					"        	  \"operator\": \"eq\",    \r\n" +
+					"        	  \"rightOperand\": { \"@value\": \"P%s%s%s\", \"@type\": \"xsd:duration\" }     \r\n" +
+					"          }]     \r\n", leftOperand, xsdPrefix, value, timeUnit);
+		}else if(PatternUtil.isNotNull(deleteAtferPolicy.getDateTime()))
+		{
+			if(null != deleteAtferPolicy.getDateTime()) {
+				dateTime = deleteAtferPolicy.getDateTime() + "Z";
+			}
+			//set leftOperand
+			leftOperand = LeftOperand.DATETIME.getIdsLeftOperand();
+
+			refinement = String.format("      	   \"refinement\": [{    \r\n" +
+					"        	  \"leftOperand\": \"%s\",    \r\n" +
+					"        	  \"operator\": \"eq\",    \r\n" +
+					"        	  \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:dateTime\" }     \r\n" +
+					"          }]     \r\n", leftOperand, dateTime);
+		}
+
 
 		//return the formated String
 		return String.format(" {    \r\n" + 
@@ -101,13 +126,9 @@ public class DeleteAfterPolicyOdrlCreator {
 				"      \"target\": \"%s\",    \r\n%s%s" +
 				"      \"action\": [{    \r\n" +
 				"          \"rdf:value\": { \"@id\": \"%s\" },     \r\n" +
-				"      	   \"refinement\": [{    \r\n" +
-				"        	  \"leftOperand\": \"%s\",    \r\n" +
-				"        	  \"operator\": \"eq\",    \r\n" +
-				"        	  \"rightOperand\": { \"@value\": \"P%s%s%s\", \"@type\": \"xsd:duration\" }     \r\n" +
-				"          }]     \r\n" +
+				"%s" +
 				"      }]     \r\n" +
 				"  }]    \r\n" + 
-				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, xsdPrefix, value, timeUnit);
+				"} ", type, ruleType, target, assigner, assignee, action, refinement);
 	}
 }

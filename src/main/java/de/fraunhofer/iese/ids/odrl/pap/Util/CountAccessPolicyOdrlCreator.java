@@ -1,13 +1,12 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.CountAccessPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.SpecificEventPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AbstractPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 
 public class CountAccessPolicyOdrlCreator {
 	
-	public static String createODRL(CountAccessPolicy countAccessPolicy){
+	public static String createODRL(AbstractPolicy countAccessPolicy){
 
 		// set rule type
 		String ruleType = "";

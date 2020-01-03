@@ -29,7 +29,7 @@ public class OdrlPapUiController {
 	  }
 
 	@RequestMapping("/policy/ProvideAccessPolicyForm")
-	public String accessPolicy(@ModelAttribute BasePolicy provideAccessPolicy, Model model) {
+	public String accessPolicy(@ModelAttribute AbstractPolicy provideAccessPolicy, Model model) {
 		provideAccessPolicy.setRuleType(RuleType.PERMISSION);
 		provideAccessPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
@@ -37,7 +37,7 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/InhibitAccessPolicyForm")
-	public String inhibitPolicy(@ModelAttribute BasePolicy inhibitAccessPolicy, Model model) {
+	public String inhibitPolicy(@ModelAttribute AbstractPolicy inhibitAccessPolicy, Model model) {
 		inhibitAccessPolicy.setRuleType(RuleType.PROHIBITION);
 		inhibitAccessPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
@@ -45,14 +45,14 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/BasePolicyODRL")
-	public String odrlPolicy(@ModelAttribute BasePolicy basePolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy, Model model) {
+	public String odrlBasicPolicy(@ModelAttribute AbstractPolicy basePolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy, Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", BasePolicyOdrlCreator.createODRL(basePolicy));
 		return "index";
 	}
 
 	  @RequestMapping("/policy/SpecificPurposePolicyForm")
-	  public String providePurposePolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy, Model model) {
+	  public String providePurposePolicy(@ModelAttribute AbstractPolicy specificPurposePolicy, Model model) {
 		  specificPurposePolicy.setRuleType(RuleType.PERMISSION);
 		  specificPurposePolicy.setAction(Action.READ);
 		  model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
@@ -60,7 +60,7 @@ public class OdrlPapUiController {
 	  }
 
 	@RequestMapping("/policy/InhibitSpecificPurposePolicyForm")
-	public String inhibitPurposePolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy,  Model model) {
+	public String inhibitPurposePolicy(@ModelAttribute AbstractPolicy specificPurposePolicy,  Model model) {
 		specificPurposePolicy.setRuleType(RuleType.PROHIBITION);
 		specificPurposePolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
@@ -68,14 +68,14 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/SpecificPurposePolicyODRL")
-	public String odrlPolicy(@ModelAttribute SpecificPurposePolicy specificPurposePolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	public String odrlPurposePolicy(@ModelAttribute AbstractPolicy specificPurposePolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", SpecificPurposePolicyOdrlCreator.createODRL(specificPurposePolicy));
 		return "index";
 	}
 
 	@RequestMapping("/policy/SpecificSystemPolicyForm")
-	public String provideSystemPolicy(@ModelAttribute SpecificSystemPolicy specificSystemPolicy,  Model model) {
+	public String provideSystemPolicy(@ModelAttribute AbstractPolicy specificSystemPolicy,  Model model) {
 		specificSystemPolicy.setRuleType(RuleType.PERMISSION);
 		specificSystemPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificSystemPolicyForm");
@@ -83,7 +83,7 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/InhibitSpecificSystemPolicyForm")
-	public String inhibitSystemPolicy(@ModelAttribute SpecificSystemPolicy specificSystemPolicy,  Model model) {
+	public String inhibitSystemPolicy(@ModelAttribute AbstractPolicy specificSystemPolicy,  Model model) {
 		specificSystemPolicy.setRuleType(RuleType.PROHIBITION);
 		specificSystemPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificSystemPolicyForm");
@@ -91,14 +91,38 @@ public class OdrlPapUiController {
 	}
 
 	  @RequestMapping("/policy/SpecificSystemPolicyODRL")
-	  public String odrlPolicy(@ModelAttribute SpecificSystemPolicy specificSystemPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	  public String odrlSystemPolicy(@ModelAttribute AbstractPolicy specificSystemPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		  model.addAttribute("odrlFragment", "true");
 		  model.addAttribute("odrlPolicy", SpecificSystemPolicyOdrlCreator.createODRL(specificSystemPolicy));
 	    return "index";
 	  }
 
+	@RequestMapping("/policy/SpecificLocationPolicyForm")
+	public String provideLocationPolicy(@ModelAttribute AbstractPolicy specificLocationPolicy,  Model model) {
+		specificLocationPolicy.setRuleType(RuleType.PERMISSION);
+		specificLocationPolicy.setAction(Action.READ);
+		model.addAttribute(POLICY_FRAGMENT, "SpecificLocationPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/InhibitSpecificLocationPolicyForm")
+	public String inhibitLocationPolicy(@ModelAttribute AbstractPolicy specificLocationPolicy,  Model model) {
+		specificLocationPolicy.setRuleType(RuleType.PROHIBITION);
+		specificLocationPolicy.setAction(Action.READ);
+		model.addAttribute(POLICY_FRAGMENT, "SpecificLocationPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/SpecificLocationPolicyODRL")
+	public String odrlLocationPolicy(@ModelAttribute AbstractPolicy specificLocationPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute("odrlFragment", "true");
+		model.addAttribute("odrlPolicy", SpecificLocationPolicyOdrlCreator.createODRL(specificLocationPolicy));
+		return "index";
+	}
+
+
 	@RequestMapping("/policy/SpecificEventPolicyForm")
-	public String provideEventPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy,  Model model) {
+	public String provideEventPolicy(@ModelAttribute AbstractPolicy specificEventPolicy,  Model model) {
 		specificEventPolicy.setRuleType(RuleType.PERMISSION);
 		specificEventPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
@@ -106,7 +130,7 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/InhibitSpecificEventPolicyForm")
-	public String inhibitEventPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy,  Model model) {
+	public String inhibitEventPolicy(@ModelAttribute AbstractPolicy specificEventPolicy,  Model model) {
 		specificEventPolicy.setRuleType(RuleType.PROHIBITION);
 		specificEventPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
@@ -114,33 +138,49 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/SpecificEventPolicyODRL")
-	public String odrlPolicy(@ModelAttribute SpecificEventPolicy specificEventPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	public String odrlEventPolicy(@ModelAttribute AbstractPolicy specificEventPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", SpecificEventPolicyOdrlCreator.createODRL(specificEventPolicy));
 		return "index";
 	}
 
-	  @RequestMapping("/policy/DeleteAfterPolicyForm")
-	  public String policy(@ModelAttribute("deleteAfterPolicy") DeleteAtferPolicy deleteAfterPolicy, Model model) {
+	  @RequestMapping("/policy/DeleteAfterUsagePeriodPolicyForm")
+	  public String deletePolicyAfterUsagePeriod(@ModelAttribute AbstractPolicy deleteAfterPolicy, Model model) {
 		  deleteAfterPolicy.setRuleType(RuleType.OBLIGATION);
 		  deleteAfterPolicy.setAction(Action.DELETE);
 		  Duration duration = new Duration(1, TimeUnit.HOURS);
 		  duration.setValue();
 		  duration.setTimeUnit();
 		  deleteAfterPolicy.setDuration(duration);
-	  	model.addAttribute(POLICY_FRAGMENT, "DeleteAfterPolicyForm");
+	  	model.addAttribute(POLICY_FRAGMENT, "DeleteAfterUsagePeriodPolicyForm");
 	    return "index";
 	  }
 
-	  @RequestMapping("/policy/DeleteAfterPolicyODRL")
-	  public String odrlPolicy(@ModelAttribute DeleteAtferPolicy deleteAtferPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-	  	model.addAttribute("odrlFragment", "true");
+	@RequestMapping("/policy/DeleteAfterPolicyODRL")
+	public String odrlDeletePolicy(@ModelAttribute AbstractPolicy deleteAtferPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", DeleteAfterPolicyOdrlCreator.createODRL(deleteAtferPolicy));
 		return "index";
 	}
 
+	@RequestMapping("/policy/DeleteAfterUsagePolicyForm")
+	public String deletePolicyAfterUsage(@ModelAttribute AbstractPolicy deleteAfterPolicy, Model model) {
+		deleteAfterPolicy.setRuleType(RuleType.PERMISSION);
+		deleteAfterPolicy.setAction(Action.USE);
+		deleteAfterPolicy.setDutyAction(Action.DELETE);
+		model.addAttribute(POLICY_FRAGMENT, "DeleteAfterUsagePolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/DeleteAfterEachUsagePolicyODRL")
+	public String odrlDeleteAfterEachUsagePolicy(@ModelAttribute AbstractPolicy deleteAtferPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute("odrlFragment", "true");
+		model.addAttribute("odrlPolicy", DeleteAfterEachUsagePolicyOdrlCreator.createODRL(deleteAtferPolicy));
+		return "index";
+	}
+
 	  @RequestMapping("/policy/ReadDataIntervalPolicyForm")
-	  public String provideInterval(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy, Model model) {
+	  public String provideInterval(@ModelAttribute AbstractPolicy readDataIntervalPolicy, Model model) {
 		  readDataIntervalPolicy.setRuleType(RuleType.PERMISSION);
 		  readDataIntervalPolicy.setAction(Action.READ);
 		  model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
@@ -148,7 +188,7 @@ public class OdrlPapUiController {
 	  }
 
 	@RequestMapping("/policy/InhibitReadDataIntervalPolicyForm")
-	public String inhibitInterval(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy,  Model model) {
+	public String inhibitInterval(@ModelAttribute AbstractPolicy readDataIntervalPolicy,  Model model) {
 		readDataIntervalPolicy.setRuleType(RuleType.PROHIBITION);
 		readDataIntervalPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
@@ -156,14 +196,29 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/ReadDataIntervalPolicyODRL")
-	public String odrlPolicy(@ModelAttribute ReadDataIntervalPolicy readDataIntervalPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	public String odrlIntervalPolicy(@ModelAttribute AbstractPolicy readDataIntervalPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", ReadDataIntervalPolicyOdrlCreator.createODRL(readDataIntervalPolicy));
 		return "index";
 	}
 
+	@RequestMapping("/policy/ReadAfterPaymentPolicyForm")
+	public String provideAfterPayment(@ModelAttribute AbstractPolicy readDataPaymentPolicy, Model model) {
+		readDataPaymentPolicy.setRuleType(RuleType.PERMISSION);
+		readDataPaymentPolicy.setAction(Action.READ);
+		model.addAttribute(POLICY_FRAGMENT, "ReadAfterPaymentPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/ReadAfterPaymentPolicyODRL")
+	public String odrlAfterPayment(@ModelAttribute AbstractPolicy readDataPaymentPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute("odrlFragment", "true");
+		model.addAttribute("odrlPolicy", ReadAfterPaymentPolicyOdrlCreator.createODRL(readDataPaymentPolicy));
+		return "index";
+	}
+
 	@RequestMapping("/policy/LogAccessPolicyForm")
-	public String policy(@ModelAttribute LogAccessPolicy logAccessPolicy, Model model) {
+	public String logPolicy(@ModelAttribute AbstractPolicy logAccessPolicy, Model model) {
 		logAccessPolicy.setRuleType(RuleType.PERMISSION);
 		logAccessPolicy.setAction(Action.READ);
 		logAccessPolicy.setDutyAction(Action.LOG);
@@ -172,14 +227,14 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/LogAccessPolicyODRL")
-	public String odrlPolicy(@ModelAttribute LogAccessPolicy logAccessPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	public String odrlLogPolicy(@ModelAttribute AbstractPolicy logAccessPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", LogAccessPolicyOdrlCreator.createODRL(logAccessPolicy));
 		return "index";
 	}
 
 	@RequestMapping("/policy/EncodingPolicyForm")
-	public String policy(@ModelAttribute EncodingPolicy encodingPolicy, Model model) {
+	public String encodingPolicy(@ModelAttribute AbstractPolicy encodingPolicy, Model model) {
 		encodingPolicy.setRuleType(RuleType.PERMISSION);
 		encodingPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "EncodingPolicyForm");
@@ -187,14 +242,30 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/EncodingPolicyODRL")
-	public String odrlPolicy(@ModelAttribute EncodingPolicy encodingPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	public String odrlEncodingPolicy(@ModelAttribute AbstractPolicy encodingPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", EncodingPolicyOdrlCreator.createODRL(encodingPolicy));
 		return "index";
 	}
 
+	@RequestMapping("/policy/DistributeToThirdPartyPolicyForm")
+	public String distributeToThirdPartyPolicy(@ModelAttribute AbstractPolicy distributeToThirdPartyPolicy, Model model) {
+		distributeToThirdPartyPolicy.setRuleType(RuleType.PERMISSION);
+		distributeToThirdPartyPolicy.setAction(Action.READ);
+		distributeToThirdPartyPolicy.setDutyAction(Action.NEXTPOLICY);
+		model.addAttribute(POLICY_FRAGMENT, "DistributeToThirdPartyPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/DistributeToThirdPartyPolicyODRL")
+	public String odrlDistributeToThirdPartyPolicy(@ModelAttribute AbstractPolicy distributeToThirdPartyPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute("odrlFragment", "true");
+		model.addAttribute("odrlPolicy", DistributeToThirdPartyPolicyOdrlCreator.createODRL(distributeToThirdPartyPolicy));
+		return "index";
+	}
+
 	@RequestMapping("/policy/PrintPolicyForm")
-	public String inhibitPrintPolicy(@ModelAttribute BasePolicy printPolicy, Model model) {
+	public String inhibitPrintPolicy(@ModelAttribute AbstractPolicy printPolicy, Model model) {
 		printPolicy.setRuleType(RuleType.PROHIBITION);
 		printPolicy.setAction(Action.PRINT);
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
@@ -202,7 +273,7 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/AnonymizeInRestPolicyForm")
-	public String anonymizeInRestolicy(@ModelAttribute BasePolicy anonymizeInRestPolicy, Model model) {
+	public String anonymizeInRestolicy(@ModelAttribute AbstractPolicy anonymizeInRestPolicy, Model model) {
 		anonymizeInRestPolicy.setRuleType(RuleType.OBLIGATION);
 		anonymizeInRestPolicy.setAction(Action.ANONYMIZE);
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
@@ -210,7 +281,7 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/AnonymizeInTransitPolicyForm")
-	public String policy(@ModelAttribute AnonymizeInTransitPolicy anonymizeInTransitPolicy, Model model) {
+	public String anonymizeTransitPolicy(@ModelAttribute AbstractPolicy anonymizeInTransitPolicy, Model model) {
 		anonymizeInTransitPolicy.setRuleType(RuleType.PERMISSION);
 		anonymizeInTransitPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "AnonymizeInTransitPolicyForm");
@@ -218,14 +289,14 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/AnonymizeInTransitPolicyODRL")
-	public String odrlPolicy(@ModelAttribute AnonymizeInTransitPolicy anonymizeInTransitPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	public String odrlAnonymizeInTransitPolicy(@ModelAttribute AbstractPolicy anonymizeInTransitPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", AnonymizeInTransitPolicyOdrlCreator.createODRL(anonymizeInTransitPolicy));
 		return "index";
 	}
 
 	@RequestMapping("/policy/CountAccessPolicyForm")
-	public String policy(@ModelAttribute CountAccessPolicy countAccessPolicy, Model model) {
+	public String countPolicy(@ModelAttribute AbstractPolicy countAccessPolicy, Model model) {
 		countAccessPolicy.setRuleType(RuleType.PERMISSION);
 		countAccessPolicy.setAction(Action.READ);
 		model.addAttribute(POLICY_FRAGMENT, "CountAccessPolicyForm");
@@ -233,25 +304,41 @@ public class OdrlPapUiController {
 	}
 
 	@RequestMapping("/policy/CountAccessPolicyODRL")
-	public String odrlPolicy(@ModelAttribute CountAccessPolicy countAccessPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	public String odrlCountPolicy(@ModelAttribute AbstractPolicy countAccessPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", CountAccessPolicyOdrlCreator.createODRL(countAccessPolicy));
 		return "index";
 	}
 
 	@RequestMapping("/policy/InformPolicyForm")
-	public String policy(@ModelAttribute InformPolicy informPolicy, Model model) {
+	public String policy(@ModelAttribute AbstractPolicy informPolicy, Model model) {
 		informPolicy.setRuleType(RuleType.PERMISSION);
 		informPolicy.setAction(Action.READ);
 		informPolicy.setDutyAction(Action.INFORM);
+		informPolicy.setInformedParty("http://example.com/ids-party:my-party");
 		model.addAttribute(POLICY_FRAGMENT, "InformPolicyForm");
 		return "index";
 	}
 
 	@RequestMapping("/policy/InformPolicyODRL")
-	public String odrlPolicy(@ModelAttribute InformPolicy informPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+	public String odrlInformPolicy(@ModelAttribute AbstractPolicy informPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", InformPolicyOdrlCreator.createODRL(informPolicy));
+		return "index";
+	}
+
+	@RequestMapping("/policy/ComplexPolicyForm")
+	public String complexPolicy(@ModelAttribute AbstractPolicy abstractPolicy, Model model) {
+		abstractPolicy.setRuleType(RuleType.PERMISSION);
+		abstractPolicy.setAction(Action.USE);
+		model.addAttribute(POLICY_FRAGMENT, "ComplexPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/ComplexPolicyODRL")
+	public String odrlComplexPolicy(@ModelAttribute AbstractPolicy abstractPolicy, @ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		model.addAttribute("odrlFragment", "true");
+		model.addAttribute("odrlPolicy", ComplexPolicyOdrlCreator.createODRL(abstractPolicy));
 		return "index";
 	}
 
@@ -280,7 +367,8 @@ public class OdrlPapUiController {
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", jsonOdrlPolicy.getJsonString());
 		model.addAttribute("mydataFragment", "true");
-		model.addAttribute("mydataPolicy", MydataCreator.createMYDATA(map));
+		boolean tempProviderSide = true;
+		model.addAttribute("mydataPolicy", MydataCreator.createMYDATA(map, tempProviderSide));
 	    return "index";
 	  }
 }

@@ -1,7 +1,8 @@
-<form th:action="@{/policy/InformPolicyODRL}" th:object="${informPolicy}" method="post">
+<form th:action="@{/policy/InformPolicyODRL}" th:object="${abstractPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
   <input type="hidden" th:field="*{dutyAction}" />
+  <input type="hidden" th:field="*{informedParty}" />
 
   <div>
     <p>
@@ -11,7 +12,7 @@
   </div>
 
   <p>Policy Type*:
-    <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
+    <select id="policyType" th:field="*{policyType}" onchange="policyTypeOnChanges(this)" required="required">
       <option value="Agreement">Agreement</option>
       <option value="Offer">Offer</option>
       <option value="Request">Request</option>

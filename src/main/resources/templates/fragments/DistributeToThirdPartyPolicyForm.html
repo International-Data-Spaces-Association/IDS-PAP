@@ -1,18 +1,12 @@
-<form th:action="@{/policy/SpecificSystemPolicyODRL}" th:object="${abstractPolicy}" method="post">
+<form th:action="@{/policy/DistributeToThirdPartyPolicyODRL}" th:object="${abstractPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
+  <input type="hidden" th:field="*{dutyAction}" />
 
-  <div th:if="${abstractPolicy?.ruleType?.name() == 'PERMISSION'}">
+  <div>
     <p>
-    <h3><img src="../images/provide_access.png" style="height:60px;" />  <img src="../images/system.png" style="height:60px;" /><br/>
-      This policy gives permission to a specified system of an IDS data consumer to read your data.</h3>
-    </p>
-  </div>
-
-  <div th:if="${abstractPolicy?.ruleType?.name() == 'PROHIBITION'}">
-    <p>
-    <h3><img src="../images/inhibit_access.png" style="height:60px;" />  <img src="../images/system.png" style="height:60px;" /><br/>
-      This policy prohibits a specified system of an IDS data consumer to read your data.</h3>
+    <h3><img src="../images/encoding.png" style="height:60px;" /><br/>
+      This policy makes sure that a specified IDS data consumer has permission to read your data only if your data is encrypted.</h3>
     </p>
   </div>
 
@@ -26,13 +20,13 @@
   <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{dataUrl}" /></p>
   <p id="assigner" >Assigner (Data Provider)*: <input  id="assignerInput" required="required" type="text" size="40" value="My party"></p>
   <p id="assignee" >Assignee (Data Consumer)*:
-    <div id="assigneeDiv" class="form-group blu-margin">
+    <div id="assigneeDiv"  class="form-group blu-margin">
       <select id="assigneeInput" class="form-control" th:field="*{assignee}" required="required">
         <option value="http://example.com/ids-party:consumer-party" selected>Consumer party</option>
       </select>
     </div>
   </p>
-  <p id="system">System*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-app:risk-management-system" th:field="*{system}" /></p>
+  <p>Policy to be sent to the third party*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/policy:third-party-policy" th:field="*{nextPolicyUrl}" /></p>
 
   <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
 </form>

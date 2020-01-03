@@ -12,6 +12,7 @@ public class DateTime {
 
     IntervalCondition is;
     String dateTime;
+    String mydataDateTime;
 
     public DateTime() {
     }
@@ -19,6 +20,7 @@ public class DateTime {
     public DateTime(IntervalCondition interval, String dateTime) {
         this.is = interval;
         this.dateTime = dateTime;
+        this.mydataDateTime = getMydataDateTime();
     }
 
     @Override
@@ -27,18 +29,18 @@ public class DateTime {
         {
             return "          <or> \r\n" +
                     "            <and> \r\n" +
-                    "              <date is='exactly' value='"+ getDate(getMydataDateTime()) +"'/> \r\n" +
-                    "              <time is='"+ is.getMydataInterval() +"' value='"+ getTime(getMydataDateTime()) +"'/> \r\n" +
+                    "              <date is='exactly' value='"+ getDate() +"'/> \r\n" +
+                    "              <time is='"+ is.getMydataInterval() +"' value='"+ getTime() +"'/> \r\n" +
                     "            </and> \r\n" +
-                    "            <date is='"+ is.getMydataInterval() +"' value='"+ getDate(getMydataDateTime()) +"'/> \r\n" +
+                    "            <date is='"+ is.getMydataInterval() +"' value='"+ getDate() +"'/> \r\n" +
                     "          </or> \r\n";
         }else if(this.is.equals(IntervalCondition.LT))
         {
             return "          <or> \r\n" +
-                    "            <date is='"+ is.getMydataInterval() +"' value='"+ getDate(getMydataDateTime()) +"'/> \r\n" +
+                    "            <date is='"+ is.getMydataInterval() +"' value='"+ getDate() +"'/> \r\n" +
                     "            <and> \r\n" +
-                    "              <date is='exactly' value='"+ getDate(getMydataDateTime()) +"'/> \r\n" +
-                    "              <time is='"+ is.getMydataInterval() +"' value='"+ getTime(getMydataDateTime()) +"'/> \r\n" +
+                    "              <date is='exactly' value='"+ getDate() +"'/> \r\n" +
+                    "              <time is='"+ is.getMydataInterval() +"' value='"+ getTime() +"'/> \r\n" +
                     "            </and> \r\n" +
                     "          </or> \r\n";
         }
@@ -55,15 +57,52 @@ public class DateTime {
         return timestamp.toString();
     }
 
-    private String getDate(String dateTime)
+    private String getDate()
     {
-        String[] parts = dateTime.split(" ");
+        String[] parts = mydataDateTime.split(" ");
         return parts[0];
     }
 
-    private String getTime(String dateTime)
+    private String getTime()
     {
-        String[] parts = dateTime.split(" ");
+        String[] parts = mydataDateTime.split(" ");
         return parts[1];
+    }
+
+    public String getYear()
+    {
+        String[] parts = this.getDate().split("-");
+        return parts[0];
+    }
+
+    public String getMonth()
+    {
+        String[] parts = this.getDate().split("-");
+        return parts[1];
+    }
+
+    public String getDay()
+    {
+        String[] parts = this.getDate().split("-");
+        return parts[2];
+    }
+
+    public String getHour()
+    {
+        String[] parts = this.getTime().split(":");
+        return parts[0];
+    }
+
+    public String getMinute()
+    {
+        String[] parts = this.getTime().split(":");
+        return parts[1];
+    }
+
+    public String getSecond()
+    {
+        String[] parts = this.getTime().split(":");
+        String[] partsOfSecond=  parts[2].split("[.]");
+        return partsOfSecond[0];
     }
 }

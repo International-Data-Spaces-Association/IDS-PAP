@@ -9,16 +9,16 @@ package de.fraunhofer.iese.ids.odrl.pap.model;
  */
 public enum TimeUnit {
 	//every hour
-	HOURS("0 0 * * * *","H"),
+	HOURS("0 0 * * * ?","H"),
 
 	//every day
-	DAYS("0 0 0 * * *","D"),
+	DAYS("0 0 0 * * ?","D"),
 
 	//every first day of the month
-	MONTHS("0 0 0 1 * *", "M"),
+	MONTHS("0 0 0 1 * ?", "M"),
 
 	//every first of January
-	YEARS("0 0 0 1 1 *", "Y");
+	YEARS("0 0 0 1 1 ?", "Y");
 
 	private final String mydataCron;
 	private final String odrlXsdDuration;

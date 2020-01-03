@@ -2,7 +2,7 @@ package de.fraunhofer.iese.ids.odrl.pap.model;
 
 public enum LeftOperand {
 
-    DELAY_PERIOD("delay-period","ids:delay period"),
+    DELAYPERIOD("delayperiod","ids:delayperiod"),
 
     DATETIME("datetime", "ids:datetime"),
 
@@ -16,11 +16,15 @@ public enum LeftOperand {
 
     RECIPIENT("recipient", "ids:recipient"),
 
+    SYSTEMDEVICE("systemDevice", "ids:systemDevice"),
+
+    PAYAMOUNT("payamount", "ids:payamount"),
+
     JSONPATH("jsonPathQuery","ids:jsonPath"),
 
     DIGIT("digit","ids:digit"),
 
-    INFORMEDPARTY("informedParty", "ids:informedParty"),
+    ABSOLUTESPATIALPOSITION("absoluteSpatialPosition","ids:absoluteSpatialPosition"),
 
     PURPOSE("purpose", "ids:purpose");
 

@@ -1,4 +1,4 @@
-<form th:action="@{/policy/CountAccessPolicyODRL}" th:object="${countAccessPolicy}" method="post">
+<form th:action="@{/policy/CountAccessPolicyODRL}" th:object="${abstractPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
 
@@ -10,7 +10,7 @@
   </div>
 
   <p>Policy Type*:
-    <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
+    <select id="policyType" th:field="*{policyType}" onchange="policyTypeOnChanges(this)" required="required">
       <option value="Agreement">Agreement</option>
       <option value="Offer">Offer</option>
       <option value="Request">Request</option>

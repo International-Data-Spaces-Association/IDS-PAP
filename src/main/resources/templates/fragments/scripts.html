@@ -25,7 +25,7 @@
 <script type="text/javascript" src="/static/js/dataTables.checkboxes.min.js"></script>
 <script	type="text/javascript"	src="/static/js/icheck.min.js"></script>
 <script type="text/javascript">
-    function disableAffiliationBox(control)	{
+    function policyTypeOnChanges(control)	{
 
         var assigner = document.getElementById('assigner');
         var assignee = document.getElementById('assignee');
@@ -64,6 +64,93 @@
         }
     }
 
+    $(function () {
+        $("input[name='periodRadio']").click(function () {
+            if ($("#durationValue").is(":checked")) {
+                $("#durationBox").removeAttr("disabled");
+                $("#durationUnitBox").removeAttr("disabled");
+                $("#dateTimeBox").attr("disabled", "disabled");
+                $("#durationBox").focus();
+            } else {
+                $("#durationBox").attr("disabled", "disabled");
+                $("#durationUnitBox").attr("disabled", "disabled");
+                $("#dateTimeBox").removeAttr("disabled");
+                $("#dateTimeBox").focus();
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='purposeCheckboxInput']").click(function () {
+            if ($("#purposeCheckbox").is(":checked")) {
+                $("#purposeInput").removeAttr("disabled");
+                $("#purposeInput").focus();
+            } else {
+                $("#purposeInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='locationCheckboxInput']").click(function () {
+            if ($("#locationCheckbox").is(":checked")) {
+                $("#locationInput").removeAttr("style");
+                $("#locationInput").removeAttr("disabled");
+                $("#locationInput").focus();
+            } else {
+                $("#locationInput").attr("style", "visibility: hidden");
+                $("#locationInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='systemCheckboxInput']").click(function () {
+            if ($("#systemCheckbox").is(":checked")) {
+                $("#systemInput").removeAttr("disabled");
+                $("#systemInput").focus();
+            } else {
+                $("#systemInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='eventCheckboxInput']").click(function () {
+            if ($("#eventCheckbox").is(":checked")) {
+                $("#eventInput").removeAttr("disabled");
+                $("#eventInput").focus();
+            } else {
+                $("#eventInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='timeIntervalCheckboxInput']").click(function () {
+            if ($("#timeIntervalCheckbox").is(":checked")) {
+                $("#startTimeInput").removeAttr("disabled");
+                $("#endTimeInput").removeAttr("disabled");
+            } else {
+                $("#startTimeInput").attr("disabled", "disabled");
+                $("#endTimeInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='paymentCheckboxInput']").click(function () {
+            if ($("#paymentCheckbox").is(":checked")) {
+                $("#paymentValueInput").removeAttr("disabled");
+                $("#paymentValueInput").focus();
+                $("#paymentContractInput").removeAttr("disabled");
+            } else {
+                $("#paymentValueInput").attr("disabled", "disabled");
+                $("#paymentContractInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
 	// start time picker
     $('input[name="startTime"]').daterangepicker({
         "singleDatePicker": true,
@@ -92,6 +179,19 @@
       console.log('New end time selected: ' + end.toISOString());
     });
 
+	// date time picker
+    $('input[name="dateTime"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "dateTime": Date.now()
+    }, function(start, end, label) {
+      console.log('New end time selected: ' + end.toISOString());
+    });
 
 </script>
 </div>

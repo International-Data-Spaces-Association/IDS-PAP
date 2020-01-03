@@ -1,13 +1,13 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.InformPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.LogAccessPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.PartyFunction;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AbstractPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 
 public class InformPolicyOdrlCreator {
 	
-	public static String createODRL(InformPolicy informPolicy){
+	public static String createODRL(AbstractPolicy informPolicy){
 
 		// set rule type
 		String ruleType = "";
@@ -70,8 +70,8 @@ public class InformPolicyOdrlCreator {
 			dutyAction = informPolicy.getDutyAction().getIdsAction();
 		}
 
-		//set leftOperand
-		String leftOperand = LeftOperand.INFORMEDPARTY.getIdsLeftOperand();
+		//set partyFunction
+		String partyFunction = PartyFunction.INFORMEDPARTY.getIdsPartyFunction();
 
 		//return the formated String
 		return String.format(" {    \r\n" +
@@ -89,7 +89,7 @@ public class InformPolicyOdrlCreator {
 				"      \"%s\": \"%s\"  \r\n" +
 				"    }]    \r\n" +
 				"  }]    \r\n" +
-				"} ", type, ruleType, target, assigner, assignee, action, dutyAction, leftOperand, informedParty);
+				"} ", type, ruleType, target, assigner, assignee, action, dutyAction, partyFunction, informedParty);
 
 	}
 }

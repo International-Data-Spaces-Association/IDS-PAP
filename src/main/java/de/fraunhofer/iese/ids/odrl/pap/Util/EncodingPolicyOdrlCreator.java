@@ -1,18 +1,14 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.Action;
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.EncodingPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AbstractPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
-import de.fraunhofer.iese.ids.odrl.pap.model.RuleType;
-
-import java.lang.invoke.SwitchPoint;
 
 import static de.fraunhofer.iese.ids.odrl.pap.model.RuleType.OBLIGATION;
 
 public class EncodingPolicyOdrlCreator {
 	
-	public static String createODRL(EncodingPolicy encodingPolicy){
+	public static String createODRL(AbstractPolicy encodingPolicy){
 
 		// set rule type
 		String ruleType = "";

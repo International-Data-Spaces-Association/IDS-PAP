@@ -1,29 +1,29 @@
-<form th:action="@{/policy/BasePolicyODRL}" th:object="${basePolicy}" method="post">
+<form th:action="@{/policy/BasePolicyODRL}" th:object="${abstractPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
 
-    <div th:if="${(basePolicy?.ruleType?.name() == 'PERMISSION') and (basePolicy?.action?.name() == 'READ')}">
+    <div th:if="${(abstractPolicy?.ruleType?.name() == 'PERMISSION') and (abstractPolicy?.action?.name() == 'READ')}">
       <p>
         <h3><img src="../images/provide_access.png" style="height:60px;" /><br/>
         This policy gives permission to a specified IDS data consumer to read your data.</h3>
       </p>
     </div>
 
-  <div th:if="${(basePolicy?.ruleType?.name() == 'PROHIBITION') and (basePolicy?.action?.name() == 'READ')}">
+  <div th:if="${(abstractPolicy?.ruleType?.name() == 'PROHIBITION') and (abstractPolicy?.action?.name() == 'READ')}">
     <p>
     <h3><img src="../images/inhibit_access.png" style="height:60px;" /><br/>
       This policy prohibits a specified IDS data consumer to read your data.</h3>
     </p>
   </div>
 
-  <div th:if="${(basePolicy?.ruleType?.name() == 'PROHIBITION') and (basePolicy?.action?.name() == 'PRINT')}">
+  <div th:if="${(abstractPolicy?.ruleType?.name() == 'PROHIBITION') and (abstractPolicy?.action?.name() == 'PRINT')}">
     <p>
     <h3><img src="../images/print.png" style="height:60px;" /><br/>
       This policy prohibits a specified IDS data consumer to print your data.</h3>
     </p>
   </div>
 
-  <div th:if="${(basePolicy?.ruleType?.name() == 'OBLIGATION') and (basePolicy?.action?.name() == 'ANONYMIZE')}">
+  <div th:if="${(abstractPolicy?.ruleType?.name() == 'OBLIGATION') and (abstractPolicy?.action?.name() == 'ANONYMIZE')}">
     <p>
     <h3><img src="../images/rest.png" style="height:60px;" /><br/>
     The assumption is that your data is stored in a database on consumer side.<br/>This policy requests a specified IDS data consumer to anonymize your stored data.</h3>
@@ -31,7 +31,7 @@
   </div>
 
   <p>Policy Type*:
-    <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
+    <select id="policyType" th:field="*{policyType}" onchange="policyTypeOnChanges(this)" required="required">
       <option value="Agreement">Agreement</option>
       <option value="Offer">Offer</option>
       <option value="Request">Request</option>

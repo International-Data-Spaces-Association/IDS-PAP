@@ -1,4 +1,4 @@
-<form th:action="@{/policy/LogAccessPolicyODRL}" th:object="${logAccessPolicy}" method="post">
+<form th:action="@{/policy/LogAccessPolicyODRL}" th:object="${abstractPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
   <input type="hidden" th:field="*{dutyAction}" />
@@ -11,7 +11,7 @@
   </div>
 
   <p>Policy Type*:
-    <select id="policyType" th:field="*{policyType}" onchange="disableAffiliationBox(this)" required="required">
+    <select id="policyType" th:field="*{policyType}" onchange="policyTypeOnChanges(this)" required="required">
       <option value="Agreement">Agreement</option>
       <option value="Offer">Offer</option>
       <option value="Request">Request</option>
@@ -26,7 +26,7 @@
       </select>
     </div>
   </p>
-  <p>Recipient*: <input type="text" size="40" required="required" placeholder=" e.g. http://example.com/party:ESN-database" th:field="*{recipient}" /></p>
+  <p>Recipient*: <input type="text" size="40" required="required" placeholder=" e.g. http://example.com/party:ESN-database" th:field="*{systemDevice}" /></p>
   <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
   <p/>
 </form>

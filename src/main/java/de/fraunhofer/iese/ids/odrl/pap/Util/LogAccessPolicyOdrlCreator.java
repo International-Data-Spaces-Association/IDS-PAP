@@ -1,13 +1,12 @@
 package de.fraunhofer.iese.ids.odrl.pap.Util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.Action;
 import de.fraunhofer.iese.ids.odrl.pap.model.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.LogAccessPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.Policy.AbstractPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.model.PolicyType;
 
 public class LogAccessPolicyOdrlCreator {
 	
-	public static String createODRL(LogAccessPolicy logAccessPolicy){
+	public static String createODRL(AbstractPolicy logAccessPolicy){
 
 		// set rule type
 		String ruleType = "";
@@ -52,10 +51,10 @@ public class LogAccessPolicyOdrlCreator {
 			target = logAccessPolicy.getDataUrl().toString();
 		}
 
-		//set recipient
-		String recipient = "";
-		if(null != logAccessPolicy.getRecipient()) {
-			recipient = logAccessPolicy.getRecipient();
+		//set systemDevice
+		String systemDevice = "";
+		if(null != logAccessPolicy.getSystemDevice()) {
+			systemDevice = logAccessPolicy.getSystemDevice();
 		}
 
 		//set action
@@ -71,7 +70,7 @@ public class LogAccessPolicyOdrlCreator {
 		}
 
 		//set leftOperand
-		String leftOperand = LeftOperand.RECIPIENT.getIdsLeftOperand();
+		String leftOperand = LeftOperand.SYSTEMDEVICE.getIdsLeftOperand();
 
 		//return the formated String
 		return String.format(" {    \r\n" +
@@ -93,7 +92,7 @@ public class LogAccessPolicyOdrlCreator {
 				"      }]     \r\n" +
 				"    }]    \r\n" +
 				"  }]    \r\n" +
-				"} ", type, ruleType, target, assigner, assignee, action, dutyAction, leftOperand, recipient);
+				"} ", type, ruleType, target, assigner, assignee, action, dutyAction, leftOperand, systemDevice);
 
 	}
 }

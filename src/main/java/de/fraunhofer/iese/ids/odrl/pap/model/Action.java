@@ -19,6 +19,8 @@ public enum Action {
 
     REPRODUCE("ids:reproduce", "ACTION"),
 
+    NEXTPOLICY("ids:nextPolicy", "ACTION"),
+
     DISTRIBUTE("ids:distribute", "ACTION"),
 
     ROUND("ids:round", "ANONYMIZE"),
