@@ -1,6 +1,7 @@
 <form th:action="@{/policy/ReadAfterPaymentPolicyODRL}" th:object="${abstractPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
+  <input type="hidden" th:field="*{payment.unit}" />
 
   <div th:if="${abstractPolicy?.ruleType?.name() == 'PERMISSION'}">
     <p>

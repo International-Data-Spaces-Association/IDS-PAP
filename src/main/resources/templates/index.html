@@ -30,6 +30,7 @@ input[type=text], select {
 					<div th:if="${policyFragment == 'index'}" th:include="fragments/Welcome" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'HowTo'}" th:include="fragments/Howto" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'BasePolicyForm'}" th:include="fragments/BasePolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'InterpretOdrlPolicy'}" th:include="fragments/InterpretOdrlPolicy" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'ComplexPolicyForm'}" th:include="fragments/ComplexPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificSystemPolicyForm'}" th:include="fragments/SpecificSystemPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificPurposePolicyForm'}" th:include="fragments/SpecificPurposePolicyForm" th:remove="tag"></div>
@@ -45,9 +46,9 @@ input[type=text], select {
 					<div th:if="${policyFragment == 'InformPolicyForm'}" th:include="fragments/InformPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'CountAccessPolicyForm'}" th:include="fragments/CountAccessPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'AnonymizeInTransitPolicyForm'}" th:include="fragments/AnonymizeInTransitPolicyForm" th:remove="tag"></div>
-					<div th:include="fragments/textareaStyleScripts" th:if="${odrlFragment} or ${mydataFragment}" th:remove="tag"></div>
+					<div th:include="fragments/textareaStyleScripts" th:if="${odrlFragment} or ${mydataFragment} or ${translateFragment}" th:remove="tag"></div>
 					<div th:if="${odrlFragment}"  th:remove="tag" th:include="fragments/OdrlPolicyForm"></div>
-
+					<div th:if="${translateFragment}"  th:remove="tag" th:include="fragments/InterpretOdrlPolicy"></div>
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 <form th:action="@{/policy/ComplexPolicyODRL}" th:object="${abstractPolicy}" method="post">
   <input type="hidden" th:field="*{ruleType}" />
   <input type="hidden" th:field="*{action}" />
+  <input type="hidden" th:field="*{payment.unit}" />
 
   <div th:if="${abstractPolicy?.ruleType?.name() == 'PERMISSION'}">
     <p>
@@ -46,7 +47,7 @@
 
   <input type="checkbox" id="locationCheckbox" name="locationCheckboxInput"> Restrict Location<br>
   <p id="location" >You can restrict the usage of your data to a specific location:  <br/>
-    <input id="locationInput" required="required" type="text" size="40" placeholder=" e.g. http://ontologi.es/place/DE" th:field="*{location}" disabled="disabled" style="visibility: hidden" /></p>
+    <input id="locationInput" required="required" type="text" size="40" placeholder=" e.g. http://ontologi.es/place/DE" th:field="*{location}" disabled="disabled"/></p>
 
   <input type="checkbox" id="systemCheckbox" name="systemCheckboxInput"> Restrict System<br>
   <p id="system">You can restrict the usage of your data to a specific system:  <br/>

@@ -11,16 +11,18 @@ import lombok.Data;
 public class Payment {
  int value;
  String contract;
+ String unit;
 
  public Payment()
  {
 
  }
 
- public Payment(int v, String c)
+ public Payment(int v, String c, String u)
  {
   value = v;
   contract = c;
+  unit = u;
  }
 
  public void setValue(){
@@ -38,5 +40,14 @@ public class Payment {
 
  public String getContract() {
   return contract;
+ }
+
+
+ public void setUnit(){
+  this.unit = "http://dbpedia.org/resource/Euro";
+ }
+
+ public String getUnit() {
+  return unit;
  }
 }

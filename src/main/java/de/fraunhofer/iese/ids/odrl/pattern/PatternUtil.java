@@ -263,6 +263,7 @@ public class PatternUtil {
 					Payment p = new Payment();
 					p.setValue(Integer.valueOf(rightOperandValue));
 					p.setContract(getValue(conditionMap, "ids:contract"));
+					p.setUnit(getValue(conditionMap, "unit"));
 					policy.setPayment(p);
 					break;
 				case ABSOLUTESPATIALPOSITION:

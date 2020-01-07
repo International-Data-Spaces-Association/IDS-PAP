@@ -4,6 +4,8 @@
 package de.fraunhofer.iese.ids.odrl.pap.controller;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 
 import de.fraunhofer.iese.ids.odrl.pap.Util.*;
@@ -206,6 +208,9 @@ public class OdrlPapUiController {
 	public String provideAfterPayment(@ModelAttribute AbstractPolicy readDataPaymentPolicy, Model model) {
 		readDataPaymentPolicy.setRuleType(RuleType.PERMISSION);
 		readDataPaymentPolicy.setAction(Action.READ);
+		Payment payment = new Payment();
+		payment.setUnit();
+		readDataPaymentPolicy.setPayment(payment);
 		model.addAttribute(POLICY_FRAGMENT, "ReadAfterPaymentPolicyForm");
 		return "index";
 	}
@@ -236,7 +241,7 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/EncodingPolicyForm")
 	public String encodingPolicy(@ModelAttribute AbstractPolicy encodingPolicy, Model model) {
 		encodingPolicy.setRuleType(RuleType.PERMISSION);
-		encodingPolicy.setAction(Action.READ);
+		encodingPolicy.setAction(Action.DISTRIBUTE);
 		model.addAttribute(POLICY_FRAGMENT, "EncodingPolicyForm");
 		return "index";
 	}
@@ -251,7 +256,7 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/DistributeToThirdPartyPolicyForm")
 	public String distributeToThirdPartyPolicy(@ModelAttribute AbstractPolicy distributeToThirdPartyPolicy, Model model) {
 		distributeToThirdPartyPolicy.setRuleType(RuleType.PERMISSION);
-		distributeToThirdPartyPolicy.setAction(Action.READ);
+		distributeToThirdPartyPolicy.setAction(Action.DISTRIBUTE);
 		distributeToThirdPartyPolicy.setDutyAction(Action.NEXTPOLICY);
 		model.addAttribute(POLICY_FRAGMENT, "DistributeToThirdPartyPolicyForm");
 		return "index";
@@ -331,6 +336,9 @@ public class OdrlPapUiController {
 	public String complexPolicy(@ModelAttribute AbstractPolicy abstractPolicy, Model model) {
 		abstractPolicy.setRuleType(RuleType.PERMISSION);
 		abstractPolicy.setAction(Action.USE);
+		Payment payment = new Payment();
+		payment.setUnit();
+		abstractPolicy.setPayment(payment);
 		model.addAttribute(POLICY_FRAGMENT, "ComplexPolicyForm");
 		return "index";
 	}
@@ -371,4 +379,41 @@ public class OdrlPapUiController {
 		model.addAttribute("mydataPolicy", MydataCreator.createMYDATA(map, tempProviderSide));
 	    return "index";
 	  }
+
+
+	@SuppressWarnings("rawtypes")
+	@RequestMapping("/policy/InterpretOdrlPolicy")
+	public String interpretPolicy(@ModelAttribute JsonOdrlPolicy odrlPolicy, Model model) throws MalformedURLException {
+	  	AbstractPolicy basePolicy = new AbstractPolicy();
+	  	basePolicy.setPolicyType(PolicyType.Offer);
+	  	basePolicy.setRuleType(RuleType.PERMISSION);
+	  	basePolicy.setAction(Action.READ);
+	  	basePolicy.setPolicyUrl(new URL("http://example.com/policy:sample"));
+	  	basePolicy.setDataUrl(new URL("http://example.com/ids-data:sample"));
+	  	basePolicy.setAssigner("http://example.com/ids-party:my-party");
+	  	basePolicy.setProviderSide(true);
+		BasePolicyOdrlCreator.createODRL(basePolicy);
+		Map map = null;
+
+		try {
+			if(null != odrlPolicy.getJsonString())
+			{
+				Object o = JsonUtils.fromString(odrlPolicy.getJsonString());
+				if (o instanceof Map) {
+					map  = (Map) o;
+				}
+				model.addAttribute("odrlPolicy", odrlPolicy.getJsonString());
+			}else{
+				model.addAttribute("odrlPolicy", BasePolicyOdrlCreator.createODRL(basePolicy));
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		model.addAttribute("translateFragment", "true");
+		boolean tempProviderSide = true;
+		model.addAttribute("translate", OdrlTranslator.translate(map, tempProviderSide, basePolicy));
+		return "index";
+	}
 }

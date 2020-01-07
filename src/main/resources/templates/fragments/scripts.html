@@ -94,11 +94,11 @@
     $(function () {
         $("input[name='locationCheckboxInput']").click(function () {
             if ($("#locationCheckbox").is(":checked")) {
-                $("#locationInput").removeAttr("style");
+               // $("#locationInput").removeAttr("style");
                 $("#locationInput").removeAttr("disabled");
                 $("#locationInput").focus();
             } else {
-                $("#locationInput").attr("style", "visibility: hidden");
+                // $("#locationInput").attr("style", "visibility: hidden");
                 $("#locationInput").attr("disabled", "disabled");
             }
         });

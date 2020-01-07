@@ -124,8 +124,9 @@ public class ComplexPolicyOdrlCreator {
 		if(null != abstractPolicy.getPayment()) {
 			int value = abstractPolicy.getPayment().getValue();
 			String contract = abstractPolicy.getPayment().getContract();
+			String unit = abstractPolicy.getPayment().getUnit();
 			Condition paymentCondition = new Condition(Operator.EQUALS, LeftOperand.PAYAMOUNT , String.valueOf(value), "xsd:decimal",
-					null, null,contract,null);
+					null, unit, contract,null);
 			odrlConditions.add(paymentCondition);
 		}
 

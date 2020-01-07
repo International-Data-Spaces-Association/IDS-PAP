@@ -54,9 +54,11 @@ public class ReadAfterPaymentPolicyOdrlCreator {
 		//set payment
 		int value = 0;
 		String contract = "";
+		String unit = "";
 		if(null != readAfterPaymentPolicy.getPayment()) {
 			value = readAfterPaymentPolicy.getPayment().getValue();
 			contract = readAfterPaymentPolicy.getPayment().getContract();
+			unit = readAfterPaymentPolicy.getPayment().getUnit();
 		}
 
 		//set action
@@ -82,9 +84,9 @@ public class ReadAfterPaymentPolicyOdrlCreator {
 				"        \"operator\": \"eq\",    \r\n" +
 				"        \"rightOperand\": { \"@value\": \"%s\", \"@type\": \"xsd:decimal\" },     \r\n" +
 				"        \"ids:contract\": \"%s\" ,     \r\n" +
-				"        \"unit\": \"http://dbpedia.org/resource/Euro\"     \r\n" +
+				"        \"unit\": \"%s\"     \r\n" +
 				"      }]     \r\n" +
 				"  }]    \r\n" + 
-				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, value, contract);
+				"} ", type, ruleType, target, assigner, assignee, action, leftOperand, value, contract, unit);
 	}
 }

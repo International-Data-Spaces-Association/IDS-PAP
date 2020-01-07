@@ -57,12 +57,12 @@ public class MydataCreator {
 			String solution = "";
 			String assignee = "";
 			String assigner = "";
-			if(!categorizedPolicy.getAssigner().isEmpty()) {
+			if(null != categorizedPolicy.getAssigner() && !categorizedPolicy.getAssigner().isEmpty()) {
 				assigner = getLastSplitElement(categorizedPolicy.getAssigner());
 				// by default, it is a provider side policy
 				solution = assigner;
 			}
-			if(!categorizedPolicy.getAssignee().isEmpty()) {
+			if(null != categorizedPolicy.getAssignee() && !categorizedPolicy.getAssignee().isEmpty()) {
 				assignee = getLastSplitElement(categorizedPolicy.getAssignee());
 			}
 

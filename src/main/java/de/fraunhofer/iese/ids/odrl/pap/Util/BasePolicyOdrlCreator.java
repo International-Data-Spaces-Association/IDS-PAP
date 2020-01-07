@@ -56,13 +56,18 @@ public class BasePolicyOdrlCreator {
 		//set action
 		String action = "";
 		if(null != basePolicy.getAction()) {
-			if (basePolicy.getAction().equals(Action.PRINT))
-				uid = "restrict-print";
+			if(null != basePolicy.getPolicyUrl())
+			{
+				uid = basePolicy.getPolicyUrl().toString();
+			}else{
+				if (basePolicy.getAction().equals(Action.PRINT))
+					uid = "http://example.com/policy:restrict-print";
 
-			else if (basePolicy.getAction().equals(Action.ANONYMIZE))
-				uid = "anonymize-in-rest";
+				else if (basePolicy.getAction().equals(Action.ANONYMIZE))
+					uid = "http://example.com/policy:anonymize-in-rest";
 
-			else uid = "restrict-access";
+				else uid = "http://example.com/policy:restrict-access";
+			}
 
 			action = basePolicy.getAction().getIdsAction();
 		}
@@ -71,7 +76,7 @@ public class BasePolicyOdrlCreator {
 		return String.format(" {    \r\n" + 
 				"  \"@context\": \"http://www.w3.org/ns/odrl.jsonld\",    \r\n" + 
 				"  \"@type\": \"%s\",    \r\n" + 
-				"  \"uid\": \"http://example.com/policy:%s\",    \r\n" +
+				"  \"uid\": \"%s\",    \r\n" +
 				"  \"profile\": \"http://example.com/ids-profile\",    \r\n" +
 				"  \"%s\": [{    \r\n" +
 				"      \"target\": \"%s\",    \r\n%s%s" +

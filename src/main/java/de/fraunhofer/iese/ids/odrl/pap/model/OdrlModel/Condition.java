@@ -89,7 +89,7 @@ public class Condition {
    return "\"@id\": \""+ rightOperandId +"\"";
   }else if(this.rightOperandId == null && this.rightOperandValue != null && this.rightOperandType != null)
   {
-   return "\"@value\": \""+ rightOperandValue +" \", \"@type\": \""+ rightOperandType +"\"";
+   return "\"@value\": \""+ rightOperandValue +"\", \"@type\": \""+ rightOperandType +"\"";
   }else
   {
    return "\"@id\": \""+ rightOperandId + "\"@value\": \""+ rightOperandValue +"\", \"@type\": \""+ rightOperandType +"\"";
