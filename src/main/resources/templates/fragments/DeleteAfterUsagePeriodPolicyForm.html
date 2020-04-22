@@ -1,0 +1,56 @@
+<form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/ODRLCreator}" th:object="${odrlPolicy}" method="post">
+  <input type="hidden" th:field="*{policyId}" />
+  <input type="hidden" th:field="*{consumer.type}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.delayPeriodRefinement.type}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.delayPeriodRefinement.operator}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.delayPeriodRefinement.leftOperand}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.delayPeriodRefinement.timeUnit}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.delayPeriodRefinement.rightOperand.type}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.dateTimeRefinement.type}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.dateTimeRefinement.operator}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.dateTimeRefinement.leftOperand}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.deleteAction.dateTimeRefinement.rightOperand.type}" />
+  <input type="hidden" th:field="*{obligationRuleDeleteAction.type}" />
+
+  <div>
+    <p>
+      <h3><img src="../images/delete.png" style="height:60px;" /><br/>
+      The assumption is that your data is stored in a database on consumer side.<br/>This policy requests to delete your data after a specified period of time.</h3>
+    </p>
+  </div>
+
+  <p>Policy Type*:
+    <select id="policyType" th:field="*{type}" onchange="typeOnChanges(this)" required="required">
+      <option value="AGREEMENT">Agreement</option>
+      <option value="OFFER">Offer</option>
+      <option value="REQUEST">Request</option>
+    </select>
+  </p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{target}" /></p>
+  <p id="provider" >Data Provider*: <input id="providerInput" required="required" type="text" size="40" value="My party"/></p>
+  <p id="consumer" >Data Consumer*:
+    <div id="consumerDiv" class="form-group blu-margin">
+      <select id="consumerInput" class="form-control" th:field="*{consumer.uri}" required="required">
+        <option value="http://example.com/party/consumer-party" selected>Consumer party</option>
+      </select>
+    </div>
+  </p>
+  <div th:if="${odrlPolicy?.obligationRuleDeleteAction != null}">
+  <fieldset id="periodRadio">
+    <input type="radio" id="durationValue" name="periodRadio" checked> Specify a time duration that the application has to wait before deleting the data:<br>
+    <p>Duration value*:<input id="durationBox" type="text" required="required" size="5" th:field="*{obligationRuleDeleteAction.deleteAction.delayPeriodRefinement.rightOperand.value}" />
+      <select id="durationUnitBox" th:field="*{obligationRuleDeleteAction.deleteAction.delayPeriodRefinement.timeUnit}">
+        <option
+                th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.pap.model.TimeUnit).values()}"
+                th:value="${dropdownValue}"
+                th:text="${dropdownValue}" ></option>
+      </select>
+    </p>
+    <input type="radio" id="TimeValue" name="periodRadio"> Specify an exact date and time to delete the data:<br>
+    <p>Date and Time*: <input id="dateTimeBox" required="required" type="text" th:field="*{obligationRuleDeleteAction.deleteAction.dateTimeRefinement.rightOperand.value}" disabled="disabled"/></p>
+  </fieldset>
+  </div>
+
+<button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+  <p/>
+</form>

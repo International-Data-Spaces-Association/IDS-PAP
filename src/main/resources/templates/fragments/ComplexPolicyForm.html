@@ -1,0 +1,104 @@
+<form th:action="@{/policy/ODRLCreator}" th:object="${odrlPolicy}" method="post">
+  <input type="hidden" th:field="*{policyId}" />
+  <input type="hidden" th:field="*{consumer.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.useAction.type}" />
+
+  <input type="hidden" th:field="*{permissionRuleUseAction.systemConstraint.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.systemConstraint.operator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.systemConstraint.leftOperand}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.systemConstraint.rightOperand.type}" />
+
+  <input type="hidden" th:field="*{permissionRuleUseAction.purposeConstraint.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.purposeConstraint.operator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.purposeConstraint.leftOperand}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.purposeConstraint.rightOperand.type}" />
+
+  <input type="hidden" th:field="*{permissionRuleUseAction.eventConstraint.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.eventConstraint.operator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.eventConstraint.leftOperand}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.eventConstraint.rightOperand.type}" />
+
+  <input type="hidden" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.operator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.leftOperand}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.rightOperand.type}" />
+
+  <input type="hidden" th:field="*{permissionRuleUseAction.paymentConstraint.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.paymentConstraint.operator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.paymentConstraint.leftOperand}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.paymentConstraint.unit}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.paymentConstraint.rightOperand.type}" />
+
+  <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.operator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.secondOperator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.leftOperand}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.rightOperand.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.secondRightOperand.type}" />
+
+  <div>
+    <p>
+    <h3><img src="../images/provide_access.png" style="height:60px;" />  <img src="../images/purpose.png" style="height:60px;" /><br/>
+      This policy gives permission to a specified IDS data consumer to use your data.</h3>
+    </p>
+  </div>
+
+  <p>Policy Type*:
+    <select id="policyType" th:field="*{type}" onchange="typeOnChanges(this)" required="required">
+      <option value="AGREEMENT">Agreement</option>
+      <option value="OFFER">Offer</option>
+      <option value="REQUEST">Request</option>
+    </select>
+  </p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{target}" /></p>
+  <p id="provider" >Data Provider*: <input  id="providerInput" required="required" type="text" size="40" value="My party"></p>
+  <p id="consumer" >Data Consumer*:
+    <div id="consumerDiv" class="form-group blu-margin">
+      <select id="consumerInput" class="form-control" th:field="*{consumer.uri}" required="required">
+        <option value="http://example.com/party/consumer-party" selected>Consumer party</option>
+      </select>
+    </div>
+  </p>
+
+  <input type="checkbox" id="purposeCheckbox" name="purposeCheckboxInput"> Restrict Purpose<br>
+  <p id="purpose">Any certified application in the market place uses the data for a specified purpose. <br/>
+    You can restrict the usage of your data to specific applications by choosing your intended purpose from the list below:
+  <div class="form-group blu-margin">
+    <select id="purposeInput" class="form-control" th:field="*{permissionRuleUseAction.purposeConstraint.rightOperand.value}" required="required" disabled="disabled">
+      <option value="http://example.com/ids-purpose:Marketing" selected>Marketing</option>
+      <option value="http://example.com/ids-purpose:Risk-Management">Risk Management</option>
+    </select>
+  </div>
+  </p>
+
+  <input type="checkbox" id="locationCheckbox" name="locationCheckboxInput"> Restrict Location<br>
+  <p id="location" >You can restrict the usage of your data to a specific location:  <br/>
+    <input id="locationInput" required="required" type="text" size="40" placeholder=" e.g. http://ontologi.es/place/DE" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.rightOperand.value}" disabled="disabled"/></p>
+
+  <input type="checkbox" id="systemCheckbox" name="systemCheckboxInput"> Restrict System<br>
+  <p id="system">You can restrict the usage of your data to a specific system:  <br/>
+    <input id="systemInput" required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-app:risk-management-system" th:field="*{permissionRuleUseAction.systemConstraint.rightOperand.value}" disabled="disabled" /></p>
+
+  <input type="checkbox" id="eventCheckbox" name="eventCheckboxInput"> Restrict Event<br>
+  <p id="event">You can restrict the usage of your data to occurrence of a specific event:  <br/>
+    <input id="eventInput" required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-event:exhibition" th:field="*{permissionRuleUseAction.eventConstraint.rightOperand.value}" disabled="disabled" /></p>
+
+  <input type="checkbox" id="timeIntervalCheckbox" name="timeIntervalCheckboxInput"> Restrict Time Interval<br>
+  <p id="startTime">Start Time: <input id="startTimeInput" required="required" type="text" th:field="*{permissionRuleUseAction.timeIntervalConstraint.rightOperand.value}" disabled="disabled"/></p>
+  <p id="endTime">End Time: <input id="endTimeInput" required="required" type="text" th:field="*{permissionRuleUseAction.timeIntervalConstraint.secondRightOperand.value}" disabled="disabled"/></p>
+
+  <input type="checkbox" id="paymentCheckbox" name="paymentCheckboxInput"> After Payment<br>
+  <p id="payment" >Payment (Euro)*:<br/>
+    <input id="paymentValueInput" type="text" required="required" size="5" th:field="*{permissionRuleUseAction.paymentConstraint.rightOperand.value}" disabled="disabled" />
+    (for sale data or rent data)
+  <div class="form-group blu-margin">
+    <select id="paymentContractInput" class="form-control" th:field="*{permissionRuleUseAction.paymentConstraint.contract}" required="required" disabled="disabled">
+      <option value="http://dbpedia.org/page/Rent" selected>Rent</option>
+      <option value="http://dbpedia.org/page/Sale">Sale</option>
+    </select>
+  </div>
+  </p>
+
+  <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+</form>

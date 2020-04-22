@@ -1,0 +1,253 @@
+<div th:fragment="top">
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/switchery.min.js"></script>
+<script src="/static/js/jszip.js"></script>
+</div>
+
+<div th:fragment="bottom">
+
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script	type="text/javascript"	src="/static/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<script	type="text/javascript"	src="/static/js/bootbox.min.js"></script>
+<script	type="text/javascript"	src="/static/js/pnotify.js"></script>
+<script	type="text/javascript"	src="/static/js/pnotify.buttons.js"></script>
+<script type="text/javascript" src="/static/js/filesaver.js"></script>
+<script	type="text/javascript"	src="/static/js/sidebar.js"></script>
+<script	type="text/javascript" src="/static/js/custom.js"></script>
+
+<script	type="text/javascript"	src="/static/js/jquery_loadTemplate.min.js"></script>
+<script	type="text/javascript"	src="/static/js/session-timeout.js"></script>
+<script type="text/javascript" src="/static/js/datatables.min.js"></script>
+<script type="text/javascript" src="/static/js/dataTables.checkboxes.min.js"></script>
+<script	type="text/javascript"	src="/static/js/icheck.min.js"></script>
+<script type="text/javascript">
+    function typeOnChanges(control)	{
+
+        var provider = document.getElementById('provider');
+        var consumer = document.getElementById('consumer');
+
+        var providerInput = document.getElementById('providerInput');
+        var consumerInput = document.getElementById('consumerInput');
+
+        if (control.value == 'OFFER') {
+            provider.style.display = 'block';
+            providerInput.setAttribute('required', '');
+            consumer.style.display = 'none';
+            consumerDiv.style.display = 'none';
+            consumerInput.removeAttribute("required");
+        } else if (control.value == 'REQUEST'){
+            provider.style.display = 'none';
+            providerInput.removeAttribute("required");
+            consumer.style.display = 'block';
+            consumerDiv.style.display = 'block';
+            consumerInput.setAttribute('required', '');
+        } else{
+            provider.style.display = 'block';
+            providerInput.setAttribute('required', '');
+            consumer.style.display = 'block';
+            consumerDiv.style.display = 'block';
+            consumerInput.setAttribute('required', '');
+        }
+    }
+
+    function activateButton(control)	{
+        var saveBtn = document.getElementById('saveBtn');
+
+        if(control.value != ""){
+            saveBtn.removeAttribute('disabled');
+        }else{
+            saveBtn.setAttribute('disabled',true);
+        }
+    }
+
+    $(function () {
+        $("input[name='periodRadio']").click(function () {
+            if ($("#durationValue").is(":checked")) {
+                $("#durationBox").removeAttr("disabled");
+                $("#durationUnitBox").removeAttr("disabled");
+                $("#dateTimeBox").attr("disabled", "disabled");
+                $("#durationBox").focus();
+            } else {
+                $("#durationBox").attr("disabled", "disabled");
+                $("#durationUnitBox").attr("disabled", "disabled");
+                $("#dateTimeBox").removeAttr("disabled");
+                $("#dateTimeBox").focus();
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='purposeCheckboxInput']").click(function () {
+            if ($("#purposeCheckbox").is(":checked")) {
+                $("#purposeInput").removeAttr("disabled");
+                $("#purposeInput").focus();
+            } else {
+                $("#purposeInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='locationCheckboxInput']").click(function () {
+            if ($("#locationCheckbox").is(":checked")) {
+               // $("#locationInput").removeAttr("style");
+                $("#locationInput").removeAttr("disabled");
+                $("#locationInput").focus();
+            } else {
+                // $("#locationInput").attr("style", "visibility: hidden");
+                $("#locationInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='systemCheckboxInput']").click(function () {
+            if ($("#systemCheckbox").is(":checked")) {
+                $("#systemInput").removeAttr("disabled");
+                $("#systemInput").focus();
+            } else {
+                $("#systemInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='eventCheckboxInput']").click(function () {
+            if ($("#eventCheckbox").is(":checked")) {
+                $("#eventInput").removeAttr("disabled");
+                $("#eventInput").focus();
+            } else {
+                $("#eventInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='timeIntervalCheckboxInput']").click(function () {
+            if ($("#timeIntervalCheckbox").is(":checked")) {
+                $("#startTimeInput").removeAttr("disabled");
+                $("#endTimeInput").removeAttr("disabled");
+            } else {
+                $("#startTimeInput").attr("disabled", "disabled");
+                $("#endTimeInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='paymentCheckboxInput']").click(function () {
+            if ($("#paymentCheckbox").is(":checked")) {
+                $("#paymentValueInput").removeAttr("disabled");
+                $("#paymentValueInput").focus();
+                $("#paymentContractInput").removeAttr("disabled");
+            } else {
+                $("#paymentValueInput").attr("disabled", "disabled");
+                $("#paymentContractInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+	// permission start time picker
+    $('input[id="permissionStartTime"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "startDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New start time selected: ' + start.toISOString());
+    });
+
+    	// prohibition start time picker
+    $('input[id="prohibitionStartTime"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "startDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New start time selected: ' + start.toISOString());
+    });
+
+    	//start time picker in complex policy
+    $('input[id="startTimeInput"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "startDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New start time selected: ' + start.toISOString());
+    });
+
+	//permission end time picker
+    $('input[id="permissionEndTime"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "endDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New end time selected: ' + end.toISOString());
+    });
+
+    	//prohibition end time picker
+    $('input[id="prohibitionEndTime"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "endDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New end time selected: ' + end.toISOString());
+    });
+
+	//end time picker of complex policy
+    $('input[id="endTimeInput"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "endDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New end time selected: ' + end.toISOString());
+    });
+
+	// date time picker
+    $('input[id="dateTimeBox"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": true,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "dateTime": Date.now()
+    }, function(start, end, label) {
+      console.log('New end time selected: ' + end.toISOString());
+    });
+
+</script>
+</div>

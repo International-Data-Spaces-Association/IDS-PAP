@@ -1,0 +1,53 @@
+<form  th:action="@{/policy/JsonOrdlPolicyMAYDATA}" th:object="${jsonOdrlPolicy}" method="post">
+  <div class="row">
+    <div class="col-md-6"><span style="font-size: x-large;">ODRL</span> <textarea id="jsonString" style=" height: 80vh;" name="jsonString">[[${odrlPolicy}]]</textarea><p><button id="saveBtn" class="btn btn-primary" type="submit">Transfer</button></p></div> <!-- 50% -->
+    <div class="col-md-6" th:if="${technologyDependentPolicyFragment}"><span style="font-size: x-large;">Technology Dependent Policy (e.g., MYDATA)</span> <textarea id="technologyDependentPolicy" style=" height: 80vh;">[[${technologyDependentPolicy}]]</textarea><p><button id="exportPolicyBtn" onclick="JavaScript:exportTechnologyDependentPolicy()" class="btn btn-primary" type="button">Export</button></p></div> <!-- 50% -->
+  </div>
+</form>
+<script type="text/javascript">
+var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("jsonString"), {
+                        lineNumbers: true,
+                        lineWrapping: true,
+                        readOnly: false,
+                        theme: "neo",
+                        matchBrackets: true,
+                        matchTags: true,
+                        autoCloseBrackets: true,
+                        autoCloseTags: true,
+                        foldCode: true,
+                        foldGutter: true,
+                        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
+                        mode: "application/ld+json",
+                        lint: true
+                    });
+    myCodeMirror.setSize("auto", "auto");
+</script>
+ <script type="text/javascript">
+			var myCodeMirror = CodeMirror.fromTextArea(document
+					.getElementById("technologyDependentPolicy"), {
+				lineNumbers : true,
+				lineWrapping: true,
+				readOnly : false,
+				theme : "neo",
+				matchBrackets : true,
+				matchTags : true,
+				autoCloseBrackets : true,
+				autoCloseTags : true,
+				foldCode : true,
+				foldGutter : true,
+				gutters : [ "CodeMirror-linenumbers", "CodeMirror-foldgutter",
+						"CodeMirror-lint-markers" ],
+				mode : "application/xml",
+				lint : true
+			});
+			myCodeMirror.setSize("auto", "auto");
+</script>
+<script type="text/javascript">
+  function exportTechnologyDependentPolicy() {
+    var blob = new Blob([document.getElementById("technologyDependentPolicy").value], {type: 'application/xml'});
+    var a = document.createElement('a');
+    a.href = window.URL.createObjectURL(blob);
+    a.download = 'mydatapolicyexport-' + Math.round(new Date().getTime()/1000) + '.xml';
+    a.dispatchEvent(new MouseEvent('click'));
+  }
+</script>

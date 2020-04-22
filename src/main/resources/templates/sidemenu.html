@@ -1,0 +1,71 @@
+
+<div xmlns:th="http://www.w3.org/1999/xhtml"
+	class="col-md-3 left_col ">
+	<div class="left_col scroll-view">
+
+		<div class="navbar nav_title" style="border: 0;">
+			<a href="/" class="site_title1">
+				<i>
+					<img src="../images/ind2uce.png" style="height:40px; width:182px;" />
+				</i>
+			</a>
+		</div>
+
+		<div class="clearfix"></div>
+
+
+
+		<div id="sidebar-menu" class="main_menu_side hidden-print main_menu"
+			style="padding-top: 20px">
+			<div id="sidebar" class="menu_section">
+				<h3>ODRL Policy Editors</h3>
+				<ul class="nav side-menu">
+					<li><a href="/policy/InterpretOdrlPolicy" id="interpret_policy"><i class="fas fa-list-ul fa-4x" ></i>Interpret an ODRL Policy</a></li>
+					<li><a href="/policy/ComplexPolicyForm" id="complex_policy"><i class="fas fa-list-alt fa-4x" ></i>Create Complex Policy</a></li>
+					<li><a href="/policy/ProvideAccessPolicyForm" id="provide_access"><i class="fas fa-lock-open fa-4x" ></i>Provide Access</a>
+						<ul>
+							<li><a href="/policy/SpecificLocationPolicyForm" id="provide_specific_location"><i class="fas fa-map-marker-alt fa-4x" ></i>Specific Location</a></li>
+							<li><a href="/policy/SpecificSystemPolicyForm" id="provide_specific_system"><i class="fas fa-users-cog fa-4x" ></i>Specific System</a></li>
+							<li><a href="/policy/SpecificPurposePolicyForm" id="provide_specific_purpose"><i class="fas fa-bullseye fa-4x" ></i>Specific Purpose</a></li>
+							<li><a href="/policy/SpecificEventPolicyForm" id="provide_specific_event"><i class="fas fa-calendar-check fa-4x" ></i>Specific Event</a></li>
+							<li><a href="/policy/ReadDataIntervalPolicyForm" id="provide_read_data_interval"><i class="fas fa-clock fa-4x" ></i>Read for Interval</a></li>
+							<li><a href="/policy/ReadAfterPaymentPolicyForm" id="provide_read_after_payment"><i class="fas fa-file-invoice-dollar fa-4x" ></i>Read after payment</a></li>
+						</ul>
+					</li>
+
+				<!--	<li><a href="/policy/InhibitAccessPolicyForm" id="inhibit_access"><i class="fas fa-lock fa-4x" ></i>Inhibit Access</a>
+						<ul>
+							<li><a href="/policy/InhibitSpecificLocationPolicyForm" id="inhibit_specific_location"><i class="fas fa-map-marker-alt fa-4x" ></i>Specific Location</a></li>
+							<li><a href="/policy/InhibitSpecificSystemPolicyForm" id="inhibit_specific_system"><i class="fas fa-users-cog fa-4x" ></i>Specific System</a></li>
+							<li><a href="/policy/InhibitSpecificPurposePolicyForm" id="inhibit_specific_purpose"><i class="fas fa-bullseye fa-4x" ></i>Specific Purpose</a></li>
+							<li><a href="/policy/InhibitSpecificEventPolicyForm" id="inhibit_specific_event"><i class="fas fa-calendar-check fa-4x" ></i>Specific Event</a></li>
+							<li><a href="/policy/InhibitReadDataIntervalPolicyForm" id="inhibit_read_data_interval"><i class="fas fa-clock fa-4x" ></i>Read for Interval</a></li>
+						</ul>
+					</li>-->
+
+					<li><a href="/policy/CountAccessPolicyForm" id="count_access"><i class="fas fa-sort-amount-down fa-4x" ></i>Count Access</a></li>
+					<li><a id="policy_delete_after"><i class="fas fa-trash-alt fa-4x" ></i>Delete Data After</a>
+						<ul>
+							<li><a href="/policy/DeleteAfterUsagePolicyForm" id="policy_delete_after_each_usage"><i class="fas fa-trash-alt fa-4x" ></i>Each Usage</a></li>
+							<li><a href="/policy/DeleteAfterUsagePeriodPolicyForm" id="policy_delete_after_usage_period"><i class="fas fa-trash-alt fa-4x" ></i>A Usage Period</a></li>
+						</ul>
+					</li>
+					<li><a href="/policy/AnonymizeInRestPolicyForm" id="policy_anonymize_rest"><i class="fas fa-edit fa-4x" ></i>Anonymize in Rest</a></li>
+					<li><a href="/policy/AnonymizeInTransitPolicyForm" id="policy_anonymize_transit"><i class="fas fa-edit fa-4x" ></i>Anonymize in Transit</a></li>
+					<li><a href="/policy/LogAccessPolicyForm" id="policy_log_access"><i class="fas fa-info-circle fa-4x"></i>Log Access</a></li>
+					<li><a href="/policy/InformPolicyForm" id="inform_party"><i class="fas fa-bell fa-4x"></i>Inform Party</a></li>
+					<li><a id="policy_distribute_data"><i class="fas fa-share-alt-square fa-4x" ></i>Distribute Data</a>
+						<ul>
+							<li><a href="/policy/EncodingPolicyForm" id="policy_distribute_data_if_encrypted"><i class="fas fa-share-alt-square fa-4x" ></i>If Encrypted</a></li>
+							<li><a href="/policy/DistributeToThirdPartyPolicyForm" id="policy_distribute_data_third_party"><i class="fas fa-share-alt-square fa-4x" ></i>To Third Party</a></li>
+						</ul>
+					</li>
+<!--					<li><a href="/policy/PrintPolicyForm" id="inhibit_print"><i class="fas fa-print fa-4x" ></i>Inhibit Print</a></li>-->
+				</ul>
+			</div>
+		</div>
+		<div class="sidebar-footer hidden-small">
+			&copy; <script>document.write(new Date().getFullYear())</script> Fraunhofer IESE<br/>
+        </div>
+	</div>
+</div>

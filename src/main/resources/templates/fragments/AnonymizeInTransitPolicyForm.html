@@ -1,0 +1,52 @@
+<form th:action="@{/policy/ODRLCreator}" th:object="${odrlPolicy}" method="post">
+  <input type="hidden" th:field="*{policyId}" />
+  <input type="hidden" th:field="*{consumer.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.useAction.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.operator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.leftOperand}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.rightOperand.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.type}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.operator}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.leftOperand}" />
+  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.rightOperand.id}" />
+
+  <div>
+    <p>
+    <h3><img src="../images/transit.png" style="height:60px;" /><br/>
+      This policy gives permission to a specified IDS data consumer to read your data. <br/>
+      But data must be anonymized in transit before it is sent. <br/>
+      Using jsonPath left operand, you define which part of your data must be anonymized.</h3>
+    </p>
+  </div>
+
+  <p>Policy Type*:
+    <select id="policyType" th:field="*{type}" onchange="typeOnChanges(this)" required="required">
+      <option value="AGREEMENT">Agreement</option>
+      <option value="OFFER">Offer</option>
+      <option value="REQUEST">Request</option>
+    </select>
+  </p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{target}" /></p>
+  <p id="provider" >Data Provider*: <input  id="providerInput" required="required" type="text" size="40" value="My party"></p>
+  <p id="consumer" >Data Consumer*:
+    <div id="consumerDiv" class="form-group blu-margin">
+      <select id="consumerInput" class="form-control" th:field="*{consumer.uri}" required="required">
+        <option value="http://example.com/party/consumer-party" selected>Consumer party</option>
+      </select>
+    </div>
+  </p>
+<!--  <p id="dutyAction" >Duty Action to anonymize data*:
+  <div class="form-group blu-margin">
+    <select id="dutyActionInput" class="form-control" th:field="*{dutyAction}" required="required">
+      <option value="ROUND" selected>Round Action</option>
+    </select>
+  </div>-->
+  </p>
+  <!--<p>Enter a value for <i>ids:digit</i>*: <input required="required" type="text" size="40" placeholder=" e.g. -6" th:field="*{digit}" /></p>-->
+  <p>Enter the field (<i>ids:jsonPath</i>) that you want to modify*: <input required="required" type="text" size="40" placeholder=" e.g. budget" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.rightOperand.value}" /></p>
+
+  <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+</form>

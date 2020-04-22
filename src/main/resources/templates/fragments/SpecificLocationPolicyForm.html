@@ -1,0 +1,57 @@
+<form th:action="@{/policy/ODRLCreator}" th:object="${odrlPolicy}" method="post">
+  <input type="hidden" th:field="*{policyId}" />
+  <input type="hidden" th:field="*{consumer.type}" />
+
+  <div th:if="${odrlPolicy?.permissionRuleUseAction != null}">
+    <input type="hidden" th:field="*{permissionRuleUseAction.type}" />
+    <input type="hidden" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.type}" />
+    <input type="hidden" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.operator}" />
+    <input type="hidden" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.leftOperand}" />
+    <input type="hidden" th:field="*{permissionRuleUseAction.useAction.type}" />
+    <input type="hidden" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.rightOperand.type}" />
+    <p>
+    <h3><img src="../images/provide_access.png" style="height:60px;" />  <img src="../images/purpose.png" style="height:60px;" /><br/>
+      This policy gives permission to a specified IDS data consumer to use your data for a specified purpose.</h3>
+    </p>
+  </div>
+
+  <div th:if="${odrlPolicy?.prohibitionRuleUseAction != null}">
+    <input type="hidden" th:field="*{prohibitionRuleUseAction.type}" />
+    <input type="hidden" th:field="*{prohibitionRuleUseAction.absoluteSpatialPositionConstraint.type}" />
+    <input type="hidden" th:field="*{prohibitionRuleUseAction.absoluteSpatialPositionConstraint.operator}" />
+    <input type="hidden" th:field="*{prohibitionRuleUseAction.absoluteSpatialPositionConstraint.leftOperand}" />
+    <input type="hidden" th:field="*{prohibitionRuleUseAction.useAction.type}" />
+    <input type="hidden" th:field="*{prohibitionRuleUseAction.absoluteSpatialPositionConstraint.rightOperand.type}" />
+    <p>
+    <h3><img src="../images/inhibit_access.png" style="height:60px;" />  <img src="../images/purpose.png" style="height:60px;" /><br/>
+      This policy prohibits a specified IDS data consumer to read your data for a specified purpose.</h3>
+    </p>
+  </div>
+
+  <p>Policy Type*:
+    <select id="policyType" th:field="*{type}" onchange="typeOnChanges(this)" required="required">
+      <option value="AGREEMENT">Agreement</option>
+      <option value="OFFER">Offer</option>
+      <option value="REQUEST">Request</option>
+    </select>
+  </p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{target}" /></p>
+  <p id="provider" >Data Provider*: <input  id="providerInput" required="required" type="text" size="40" value="My party"></p>
+  <p id="consumer" >Data Consumer*:
+    <div id="consumerDiv" class="form-group blu-margin">
+      <select id="consumerInput" class="form-control" th:field="*{consumer.uri}" required="required">
+        <option value="http://example.com/party/consumer-party" selected>Consumer party</option>
+      </select>
+    </div>
+  </p>
+
+  <div th:if="${odrlPolicy?.permissionRuleUseAction != null}">
+    <p>Location*:  <br/><input required="required" type="text" size="40" placeholder=" e.g. http://ontologi.es/place/DE" th:field="*{permissionRuleUseAction.absoluteSpatialPositionConstraint.rightOperand.value}" /></p>
+  </div>
+
+  <div th:if="${odrlPolicy?.prohibitionRuleUseAction != null}">
+    <p>Location*:  <br/><input required="required" type="text" size="40" placeholder=" e.g. http://ontologi.es/place/DE" th:field="*{prohibitionRuleUseAction.absoluteSpatialPositionConstraint.rightOperand.value}" /></p>
+  </div>
+
+  <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+</form>
