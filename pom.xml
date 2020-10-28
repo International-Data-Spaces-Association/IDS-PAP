@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.fraunhofer.iese.ids.odrl</groupId>
@@ -14,7 +15,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 
 		<start-class>de.fraunhofer.iese.ids.odrl.pap.OdrlPapApplication</start-class>
 
@@ -33,6 +34,16 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>de.fraunhofer.iese.ids.odrl</groupId>
+			<artifactId>mydata-translator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.fraunhofer.iese.ids.odrl</groupId>
+			<artifactId>policy-library</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
@@ -48,17 +59,14 @@
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>2.0.1.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>6.1.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -70,12 +78,21 @@
 			<artifactId>jsonld-java</artifactId>
 			<version>0.13.0</version>
 		</dependency>
-
-        <dependency>
-            <groupId>net.rakugakibox.spring.boot</groupId>
-            <artifactId>logback-access-spring-boot-starter</artifactId>
-            <version>2.7.1</version>
-        </dependency>
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>retrofit</artifactId>
+			<version>2.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>converter-gson</artifactId>
+			<version>2.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.rakugakibox.spring.boot</groupId>
+			<artifactId>logback-access-spring-boot-starter</artifactId>
+			<version>2.7.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>

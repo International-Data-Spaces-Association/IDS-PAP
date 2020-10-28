@@ -1,17 +1,10 @@
 <form th:action="@{/policy/ODRLCreator}" th:object="${odrlPolicy}" method="post">
   <input type="hidden" th:field="*{policyId}" />
   <input type="hidden" th:field="*{consumer.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.useAction.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.operator}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.leftOperand}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.rightOperand.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.operator}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.leftOperand}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.rightOperand.id}" />
+  <input type="hidden" th:field="*{rules[0].type}" />
+  <input type="hidden" th:field="*{rules[0].action.type}" />
+  <input type="hidden" th:field="*{rules[0].preobligations[0].type}" />
+  <input type="hidden" th:field="*{rules[0].preobligations[0].action.type}" />
 
   <div>
     <p>
@@ -29,7 +22,7 @@
       <option value="REQUEST">Request</option>
     </select>
   </p>
-  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{target}" /></p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data/production-plan" th:field="*{target}" /></p>
   <p id="provider" >Data Provider*: <input  id="providerInput" required="required" type="text" size="40" value="My party"></p>
   <p id="consumer" >Data Consumer*:
     <div id="consumerDiv" class="form-group blu-margin">
@@ -46,7 +39,29 @@
   </div>-->
   </p>
   <!--<p>Enter a value for <i>ids:digit</i>*: <input required="required" type="text" size="40" placeholder=" e.g. -6" th:field="*{digit}" /></p>-->
-  <p>Enter the field (<i>ids:jsonPath</i>) that you want to modify*: <input required="required" type="text" size="40" placeholder=" e.g. budget" th:field="*{permissionRuleUseAction.anonymizeDutyAction.jsonPathRefinement.rightOperand.value}" /></p>
+
+  <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].preobligations[0] != null ) and (odrlPolicy?.rules[0].preobligations[0].action.refinements != null )}">
+    <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].preobligations[0].action.refinements}">
+      <div th:if="${(condition?.leftOperand?.name() == 'MODIFICATIONMETHOD')}">
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].type}" />
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].operator}" />
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].leftOperand}" />
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].rightOperand.type}" />
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].replaceWith.type}" />
+
+        <p>The modification method defines specific changes to be applied on a field of data. <br/>
+        <div class="form-group blu-margin">
+          <select class="form-control" onchange="methodOnChanges(this)" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].rightOperand.value}" required="required">
+            <option value="http://example.com/anonymize/replace">Replace modification method</option>
+            <option value="http://example.com/anonymize/delete" selected>Delete modification method</option>
+          </select>
+        </div>
+        </p>
+        <p id="replaceWith">Enter the value that you want to replace the field with*: <input id="replaceWithField" required="required" type="text" size="40" placeholder=" e.g. XXXX" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].replaceWith.value}" /></p>
+        <p>Enter the field (<i>ids:jsonPath</i>) that you want to modify*: <input required="required" type="text" size="40" placeholder=" e.g. $.name" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].jsonPath}" /></p>
+      </div>
+    </th:block>
+  </div>
 
   <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
 </form>

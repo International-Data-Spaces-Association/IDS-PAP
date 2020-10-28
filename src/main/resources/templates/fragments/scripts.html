@@ -81,6 +81,42 @@
     });
 
     $(function () {
+        $("input[name='permissionPeriodRadio']").click(function () {
+            if ($("#permissionDurationValue").is(":checked")) {
+                $("#permissionDurationBox").removeAttr("disabled");
+                $("#permissionDurationUnitBox").removeAttr("disabled");
+                $("#permissionStartTime").attr("disabled", "disabled");
+                $("#permissionEndTime").attr("disabled", "disabled");
+                $("#permissionDurationBox").focus();
+            } else if ($("#permissionTimeValue").is(":checked")) {
+                $("#permissionDurationBox").attr("disabled", "disabled");
+                $("#permissionDurationUnitBox").attr("disabled", "disabled");
+                $("#permissionStartTime").removeAttr("disabled");
+                $("#permissionEndTime").removeAttr("disabled");
+                $("#permissionStartTime").focus();
+            }
+        });
+    });
+
+    $(function () {
+        $("input[name='prohibitionPeriodRadio']").click(function () {
+            if ($("#prohibitionDurationValue").is(":checked")) {
+                $("#prohibitionDurationBox").removeAttr("disabled");
+                $("#prohibitionDurationUnitBox").removeAttr("disabled");
+                $("#prohibitionStartTime").attr("disabled", "disabled");
+                $("#prohibitionEndTime").attr("disabled", "disabled");
+                $("#ProhibitionDurationBox").focus();
+            } else {
+                $("#prohibitionDurationBox").attr("disabled", "disabled");
+                $("#prohibitionDurationUnitBox").attr("disabled", "disabled");
+                $("#prohibitionStartTime").removeAttr("disabled");
+                $("#prohibitionEndTime").removeAttr("disabled");
+                $("#prohibitionStartTime").focus();
+            }
+        });
+    });
+
+    $(function () {
         $("input[name='purposeCheckboxInput']").click(function () {
             if ($("#purposeCheckbox").is(":checked")) {
                 $("#purposeInput").removeAttr("disabled");
@@ -248,6 +284,21 @@
     }, function(start, end, label) {
       console.log('New end time selected: ' + end.toISOString());
     });
+
+    function methodOnChanges(control)	{
+
+        var replaceWith = document.getElementById('replaceWith');
+        var replaceWithField = document.getElementById('replaceWithField');
+
+        if (control.value == 'http://example.com/anonymize/delete') {
+            replaceWith.style.display = 'none';
+            replaceWithField.removeAttribute("required");
+        } else if (control.value == 'http://example.com/anonymize/replace'){
+            replaceWith.style.display = 'block';
+            replaceWithField.setAttribute('required', '');
+
+        }
+    }
 
 </script>
 </div>

@@ -1,13 +1,10 @@
 <form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/ODRLCreator}" th:object="${odrlPolicy}" method="post">
   <input type="hidden" th:field="*{policyId}" />
   <input type="hidden" th:field="*{consumer.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.useAction.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.deleteDutyAction.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.type}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.operator}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.leftOperand}" />
-  <input type="hidden" th:field="*{permissionRuleUseAction.eventDutyConstraint.rightOperand.id}" />
+  <input type="hidden" th:field="*{rules[0].type}" />
+  <input type="hidden" th:field="*{rules[0].action.type}" />
+  <input type="hidden" th:field="*{rules[0].postobligations[0].type}" />
+  <input type="hidden" th:field="*{rules[0].postobligations[0].action.type}" />
 
   <div>
     <p>
@@ -23,7 +20,7 @@
       <option value="REQUEST">Request</option>
     </select>
   </p>
-  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{target}" /></p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data/production-plan" th:field="*{target}" /></p>
   <p id="provider" >Data Provider*: <input id="providerInput" required="required" type="text" size="40" value="My party"/></p>
   <p id="consumer" >Data Consumer*:
     <div id="consumerDiv" class="form-group blu-margin">

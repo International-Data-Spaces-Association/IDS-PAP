@@ -1,31 +1,17 @@
 <form id="demo-form2" class="form-horizontal form-label-left" th:action="@{/policy/ODRLCreator}" th:object="${odrlPolicy}" method="post">
   <input type="hidden" th:field="*{policyId}" />
   <input type="hidden" th:field="*{consumer.type}" />
+  <input type="hidden" th:field="*{rules[0].type}" />
+  <input type="hidden" th:field="*{rules[0].action.type}" />
 
-  <div th:if="${odrlPolicy?.permissionRuleUseAction != null}">
-    <input type="hidden" th:field="*{permissionRuleUseAction.type}" />
-    <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.type}" />
-    <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.operator}" />
-    <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.secondOperator}" />
-    <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.leftOperand}" />
-    <input type="hidden" th:field="*{permissionRuleUseAction.useAction.type}" />
-    <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.rightOperand.type}" />
-    <input type="hidden" th:field="*{permissionRuleUseAction.timeIntervalConstraint.secondRightOperand.type}" />
+  <div th:if="${(odrlPolicy?.rules[0]?.type?.name() == 'PERMISSION') and (odrlPolicy?.rules[0]?.action?.type?.name() == 'USE')}">
     <p>
     <h3><img src="../images/provide_access.png" style="height:60px;" />  <img src="../images/interval.png" style="height:60px;" /><br/>
       This policy gives permission to a specified IDS data consumer to use your data in a specified time interval.</h3>
     </p>
   </div>
 
-  <div th:if="${odrlPolicy?.prohibitionRuleUseAction != null}">
-    <input type="hidden" th:field="*{prohibitionRuleUseAction.type}" />
-    <input type="hidden" th:field="*{prohibitionRuleUseAction.timeIntervalConstraint.type}" />
-    <input type="hidden" th:field="*{prohibitionRuleUseAction.timeIntervalConstraint.operator}" />
-    <input type="hidden" th:field="*{prohibitionRuleUseAction.timeIntervalConstraint.secondOperator}" />
-    <input type="hidden" th:field="*{prohibitionRuleUseAction.timeIntervalConstraint.leftOperand}" />
-    <input type="hidden" th:field="*{prohibitionRuleUseAction.useAction.type}" />
-    <input type="hidden" th:field="*{prohibitionRuleUseAction.timeIntervalConstraint.rightOperand.type}" />
-    <input type="hidden" th:field="*{prohibitionRuleUseAction.timeIntervalConstraint.secondRightOperand.type}" />
+  <div th:if="${(odrlPolicy?.rules[0]?.type?.name() == 'PROHIBITION') and (odrlPolicy?.rules[0]?.action?.type?.name() == 'USE')}">
     <p>
     <h3><img src="../images/inhibit_access.png" style="height:60px;" />  <img src="../images/interval.png" style="height:60px;" /><br/>
       This policy prohibits a specified IDS data consumer to read your data in a specified time interval.</h3>
@@ -39,7 +25,7 @@
       <option value="REQUEST">Request</option>
     </select>
   </p>
-  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{target}" /></p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data/production-plan" th:field="*{target}" /></p>
   <p id="provider" >Data Provider*: <input id="providerInput" required="required" type="text" size="40" value="My party"/></p>
   <p id="consumer" >Data Consumer*:
   <div id="consumerDiv" class="form-group blu-margin">
@@ -49,15 +35,36 @@
   </div>
   </p>
 
-  <div th:if="${odrlPolicy?.permissionRuleUseAction != null}">
-    <p>Start Time*: <input id="permissionStartTime" required="required" type="text" th:field="*{permissionRuleUseAction.timeIntervalConstraint.rightOperand.value}"/></p>
-    <p>End Time*: <input id="permissionEndTime" required="required" type="text" th:field="*{permissionRuleUseAction.timeIntervalConstraint.secondRightOperand.value}" /></p>
+  <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].constraints != null )}">
+    <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].constraints}">
+      <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].type}" />
+      <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].operator}" />
+      <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].leftOperand}" />
+      <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.type}" />
+        <fieldset id="permissionPeriodRadio">
+          <div th:if="${(condition?.leftOperand?.name() == 'DATETIME')}">
+            <input type="radio" id="permissionTimeValue" name="permissionPeriodRadio" checked> Specify exact starting and ending date and time that the data can be used:<br>
+            <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeOperator}" />
+            <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeRightOperand.type}" />
+            <p>Start Time*: <input id="permissionStartTime" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" /></p>
+            <p>End Time*: <input id="permissionEndTime" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeRightOperand.value}" /></p>
+          </div>
+          <div th:if="${(condition?.leftOperand?.name() == 'ELAPSEDTIME')}">
+            <input type="radio" id="permissionDurationValue" name="permissionPeriodRadio"> Specify a time duration that the data can be used:<br>
+            <p>Duration value*:<input id="permissionDurationBox" type="text" required="required" size="5" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" disabled="disabled" />
+              <select id="permissionDurationUnitBox" th:field="*{rules[0].constraints[__${itemStat.index}__].timeUnit}" disabled="disabled">
+                <option
+                        th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit).values()}"
+                        th:value="${dropdownValue}"
+                        th:text="${dropdownValue}" ></option>
+              </select>
+            </p>
+          </div>
+        </fieldset>
+
+    </th:block>
   </div>
 
-  <div th:if="${odrlPolicy?.prohibitionRuleUseAction != null}">
-    <p>Start Time*: <input id="prohibitionStartTime" required="required" type="text" th:field="*{prohibitionRuleUseAction.timeIntervalConstraint.rightOperand.value}"/></p>
-    <p>End Time*: <input  id="prohibitionEndTime" required="required" type="text" th:field="*{prohibitionRuleUseAction.timeIntervalConstraint.secondRightOperand.value}" /></p>
-  </div>
 
 <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
   <p/>

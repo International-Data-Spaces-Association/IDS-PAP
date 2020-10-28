@@ -3,25 +3,36 @@
  */
 package de.fraunhofer.iese.ids.odrl.pap.controller;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.OdrlModel.*;
-import de.fraunhofer.iese.ids.odrl.pap.model.OdrlModel.OdrlCondition.*;
-import de.fraunhofer.iese.ids.odrl.pap.model.OdrlModel.UseAction;
-import de.fraunhofer.iese.ids.odrl.pap.util.*;
-import de.fraunhofer.iese.ids.odrl.pap.model.*;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.github.jsonldjava.utils.JsonUtils;
+
+import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
+import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
+import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.util.UcAppService;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ConditionType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LeftOperand;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.Operator;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PartyType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PolicyType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RightOperandType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.IdsOdrlUtil;
 
 @Controller
 public class OdrlPapUiController {
@@ -36,26 +47,31 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/ProvideAccessPolicyForm")
 	public String accessPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		UseAction useAction = new UseAction();
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access"));
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
 
 	@RequestMapping("/policy/InhibitAccessPolicyForm")
 	public String inhibitPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		UseAction useAction = new UseAction();
-		ProhibitionRuleUseAction prohibitionRuleUseAction = new ProhibitionRuleUseAction(useAction);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
+
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setProhibitionRuleUseAction(prohibitionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access"));
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
@@ -64,15 +80,19 @@ public class OdrlPapUiController {
 	  public String providePurposePolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		  RightOperand rightOperand = new RightOperand();
 		  rightOperand.setType(RightOperandType.ANYURI);
-		  PurposeCondition purposeConstraint = new PurposeCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		  UseAction useAction = new UseAction();
-		  PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		  permissionRuleUseAction.setPurposeConstraint(purposeConstraint);
+		  Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQUALS, rightOperand, "");
+		  List<Condition> constraints = new ArrayList<>();
+		  constraints.add(purposeConstraint);
+		  Action useAction = new Action(ActionType.USE);
+		  Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		  rule.setConstraints(constraints);
+		  List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		  Party consumer = new Party();
 		  consumer.setType(PartyType.CONSUMER);
 		  odrlPolicy.setConsumer(consumer);
-		  odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-purpose"));
+		  odrlPolicy.setRules(rules);
+		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-purpose"));
 		  model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
 	    return "index";
 	  }
@@ -81,15 +101,19 @@ public class OdrlPapUiController {
 	public String inhibitPurposePolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		PurposeCondition purposeConstraint = new PurposeCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		ProhibitionRuleUseAction prohibitionRuleUseAction = new ProhibitionRuleUseAction(useAction);
-		prohibitionRuleUseAction.setPurposeConstraint(purposeConstraint);
+		Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(purposeConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setProhibitionRuleUseAction(prohibitionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-purpose"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-purpose"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
 		return "index";
 	}
@@ -98,15 +122,19 @@ public class OdrlPapUiController {
 	public String provideSystemPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		SystemCondition systemConstraint = new SystemCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setSystemConstraint(systemConstraint);
+		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(systemConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-system"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-system"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificSystemPolicyForm");
 		return "index";
 	}
@@ -115,15 +143,19 @@ public class OdrlPapUiController {
 	public String inhibitSystemPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		SystemCondition systemConstraint = new SystemCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		ProhibitionRuleUseAction prohibitionRuleUseAction = new ProhibitionRuleUseAction(useAction);
-		prohibitionRuleUseAction.setSystemConstraint(systemConstraint);
+		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(systemConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setProhibitionRuleUseAction(prohibitionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-system"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-system"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificSystemPolicyForm");
 		return "index";
 	}
@@ -132,15 +164,19 @@ public class OdrlPapUiController {
 	public String provideLocationPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		AbsoluteSpatialPositionCondition locationConstraint = new AbsoluteSpatialPositionCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setAbsoluteSpatialPositionConstraint(locationConstraint);
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(locationConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-location"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-location"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificLocationPolicyForm");
 		return "index";
 	}
@@ -149,15 +185,19 @@ public class OdrlPapUiController {
 	public String inhibitLocationPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		AbsoluteSpatialPositionCondition locationConstraint = new AbsoluteSpatialPositionCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		ProhibitionRuleUseAction prohibitionRuleUseAction = new ProhibitionRuleUseAction(useAction);
-		prohibitionRuleUseAction.setAbsoluteSpatialPositionConstraint(locationConstraint);
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(locationConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setProhibitionRuleUseAction(prohibitionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-location"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-location"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificLocationPolicyForm");
 		return "index";
 	}
@@ -167,15 +207,19 @@ public class OdrlPapUiController {
 
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		EventCondition eventConstraint = new EventCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setEventConstraint(eventConstraint);
+		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(eventConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-event"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-event"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
 		return "index";
 	}
@@ -184,15 +228,19 @@ public class OdrlPapUiController {
 	public String inhibitEventPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		EventCondition eventConstraint = new EventCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		ProhibitionRuleUseAction prohibitionRuleUseAction = new ProhibitionRuleUseAction(useAction);
-		prohibitionRuleUseAction.setEventConstraint(eventConstraint);
+		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(eventConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setProhibitionRuleUseAction(prohibitionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-event"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-event"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
 		return "index";
 	}
@@ -201,59 +249,72 @@ public class OdrlPapUiController {
 	  public String deletePolicyAfterUsagePeriod(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		  RightOperand delayPeriodRightOperand = new RightOperand();
 		  delayPeriodRightOperand.setType(RightOperandType.DURATION);
-		  DelayPeriodCondition delayPeriodRefinement = new DelayPeriodCondition(ConditionType.REFINEMENT, delayPeriodRightOperand, null,TimeUnit.HOURS);
+		  Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAYPERIOD, Operator.EQUALS, delayPeriodRightOperand, "");
+		  delayPeriodRefinement.setTimeUnit(TimeUnit.HOURS);
 		  RightOperand dateTimeRightOperand = new RightOperand();
 		  dateTimeRightOperand.setType(RightOperandType.DATETIME);
-		  DateTimeCondition dateTimeRefinement = new DateTimeCondition(ConditionType.REFINEMENT, dateTimeRightOperand, null);
-		  DeleteAction deleteAction = new DeleteAction();
-		  deleteAction.setDelayPeriodRefinement(delayPeriodRefinement);
-		  deleteAction.setDateTimeRefinement(dateTimeRefinement);
-		  ObligationRuleDeleteAction obligationRuleDeleteAction = new ObligationRuleDeleteAction(deleteAction);
+		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATETIME, Operator.EQUALS, dateTimeRightOperand, "");
+		  List<Condition> refinements = new ArrayList<>();
+		  refinements.add(delayPeriodRefinement);
+		  refinements.add(dateTimeRefinement);
+		  Action deleteAction = new Action(ActionType.DELETE);
+		  deleteAction.setRefinements(refinements);
+		  Rule rule = new Rule(RuleType.OBLIGATION, deleteAction);
+		  List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		  Party consumer = new Party();
 		  consumer.setType(PartyType.CONSUMER);
 		  odrlPolicy.setConsumer(consumer);
-		  odrlPolicy.setObligationRuleDeleteAction(obligationRuleDeleteAction);
-		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy:delete-data"));
+		  odrlPolicy.setRules(rules);
+		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy/delete-data"));
 	  	model.addAttribute(POLICY_FRAGMENT, "DeleteAfterUsagePeriodPolicyForm");
 	    return "index";
 	  }
 
 	@RequestMapping("/policy/DeleteAfterUsagePolicyForm")
 	public String deletePolicyAfterUsage(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		RightOperand rightOperand = new RightOperand();
-		rightOperand.setId(RightOperandId.POLICYUSAGE);
-		EventCondition eventDutyConstraint = new EventCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		eventDutyConstraint.setOperator(Operator.GREATER);
-
-		UseAction useAction = new UseAction();
-		DeleteAction deleteDutyAction = new DeleteAction();
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setDeleteDutyAction(deleteDutyAction);
-		permissionRuleUseAction.setEventDutyConstraint(eventDutyConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Action deleteDutyAction = new Action(ActionType.DELETE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, deleteDutyAction);
+		List<Rule> postobligations = new ArrayList<>();
+		postobligations.add(postobligation);
+		rule.setPostobligations(postobligations);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:delete-after-usage"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/delete-after-usage"));
 		model.addAttribute(POLICY_FRAGMENT, "DeleteAfterUsagePolicyForm");
 		return "index";
 	}
 
 	  @RequestMapping("/policy/ReadDataIntervalPolicyForm")
 	  public String provideInterval(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
+		  RightOperand elapsedTimeRightOperand = new RightOperand();
+		  elapsedTimeRightOperand.setType(RightOperandType.DURATION);
+		  Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSEDTIME, Operator.EQUALS, elapsedTimeRightOperand, "");
+		  elapsedTimeConstraint.setTimeUnit(TimeUnit.HOURS);
 		  RightOperand rightOperand = new RightOperand();
 		  rightOperand.setType(RightOperandType.DATETIME);
 		  RightOperand secondRightOperand = new RightOperand();
 		  secondRightOperand.setType(RightOperandType.DATETIME);
-		  TimeIntervalCondition timeIntervalCondition = new TimeIntervalCondition(ConditionType.CONSTRAINT, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand, null);
-		  UseAction useAction = new UseAction();
-		  PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		  permissionRuleUseAction.setTimeIntervalConstraint(timeIntervalCondition);
+		  Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand, "");
+		  List<Condition> constraints = new ArrayList<>();
+		  constraints.add(elapsedTimeConstraint);
+		  constraints.add(timeIntervalCondition);
+		  Action useAction = new Action(ActionType.USE);
+		  Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		  rule.setConstraints(constraints);
+		  List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		  Party consumer = new Party();
 		  consumer.setType(PartyType.CONSUMER);
 		  odrlPolicy.setConsumer(consumer);
-		  odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-interval"));
+		  odrlPolicy.setRules(rules);
+		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-interval"));
 		  model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 	    return "index";
 	  }
@@ -264,15 +325,19 @@ public class OdrlPapUiController {
 		rightOperand.setType(RightOperandType.DATETIME);
 		RightOperand secondRightOperand = new RightOperand();
 		secondRightOperand.setType(RightOperandType.DATETIME);
-		TimeIntervalCondition timeIntervalCondition = new TimeIntervalCondition(ConditionType.CONSTRAINT, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand, null);
-		UseAction useAction = new UseAction();
-		ProhibitionRuleUseAction prohibitionRuleUseAction = new ProhibitionRuleUseAction(useAction);
-		prohibitionRuleUseAction.setTimeIntervalConstraint(timeIntervalCondition);
+		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.GREATER_EQUAL, rightOperand, Operator.LESS_EQUAL, secondRightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(timeIntervalCondition);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setProhibitionRuleUseAction(prohibitionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-interval"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-interval"));
 		model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 		return "index";
 	}
@@ -281,15 +346,20 @@ public class OdrlPapUiController {
 	public String provideAfterPayment(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DECIMAL);
-		PaymentCondition paymentCondition = new PaymentCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setPaymentConstraint(paymentCondition);
+		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAYAMOUNT, Operator.EQUALS, rightOperand, "");
+		paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(paymentCondition);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:provide-access-after-payment"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/provide-access-after-payment"));
 		model.addAttribute(POLICY_FRAGMENT, "ReadAfterPaymentPolicyForm");
 		return "index";
 	}
@@ -298,18 +368,24 @@ public class OdrlPapUiController {
 	public String logPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		SystemDeviceCondition SystemDeviceRefinement = new SystemDeviceCondition(ConditionType.REFINEMENT, rightOperand, null);
-
-		UseAction useAction = new UseAction();
-		LogAction logDutyAction = new LogAction();
-		logDutyAction.setSystemDeviceRefinement(SystemDeviceRefinement);
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setLogDutyAction(logDutyAction);
+		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEMDEVICE, Operator.EQUALS, rightOperand, "");
+		List<Condition> refinements = new ArrayList<>();
+		refinements.add(systemDeviceRefinement);
+		Action useAction = new Action(ActionType.USE);
+		Action logDutyAction = new Action(ActionType.LOG);
+		logDutyAction.setRefinements(refinements);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, logDutyAction);
+		List<Rule> postobligations = new ArrayList<>();
+		postobligations.add(postobligation);
+		rule.setPostobligations(postobligations);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:log-access"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/log-access"));
 		model.addAttribute(POLICY_FRAGMENT, "LogAccessPolicyForm");
 		return "index";
 	}
@@ -318,82 +394,104 @@ public class OdrlPapUiController {
 	public String encodingPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		EncodingCondition encodingConstraint = new EncodingCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		DistributeAction distributeAction = new DistributeAction();
-		PermissionRuleDistributeAction permissionRuleDistributeAction = new PermissionRuleDistributeAction(distributeAction);
-		permissionRuleDistributeAction.setEncodingConstraint(encodingConstraint);
+		Condition encodingConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ENCODING, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(encodingConstraint);
+		Action distributeAction = new Action(ActionType.DISTRIBUTE);
+		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleDistributeAction(permissionRuleDistributeAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-access-encoding"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-encoding"));
 		model.addAttribute(POLICY_FRAGMENT, "EncodingPolicyForm");
 		return "index";
 	}
 
 	@RequestMapping("/policy/DistributeToThirdPartyPolicyForm")
 	public String distributeToThirdPartyPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		DistributeAction distributeAction = new DistributeAction();
-		NextPolicyAction nextPolicyDutyAction = new NextPolicyAction();
-		PermissionRuleDistributeAction permissionRuleDistributeAction = new PermissionRuleDistributeAction(distributeAction);
-		permissionRuleDistributeAction.setNextPolicyDutyAction(nextPolicyDutyAction);
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.ANYURI);
+		Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGETPOLICY, Operator.EQUALS, rightOperand, "");
+		List<Condition> refinements = new ArrayList<>();
+		refinements.add(thirdPartyRefinement);
+		Action distributeAction = new Action(ActionType.DISTRIBUTE);
+		Action nextPolicyDutyAction = new Action(ActionType.NEXTPOLICY);
+		nextPolicyDutyAction.setRefinements(refinements);
+		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
+		Rule preobligation = new Rule(RuleType.PREOBLIGATION, nextPolicyDutyAction);
+		List<Rule> preobligations = new ArrayList<>();
+		preobligations.add(preobligation);
+		rule.setPreobligations(preobligations);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleDistributeAction(permissionRuleDistributeAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:distribute-policy"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/distribute-policy"));
 		model.addAttribute(POLICY_FRAGMENT, "DistributeToThirdPartyPolicyForm");
 		return "index";
 	}
 
 	@RequestMapping("/policy/PrintPolicyForm")
 	public String inhibitPrintPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		PrintAction printAction = new PrintAction();
-		ProhibitionRulePrintAction prohibitionRulePrintAction = new ProhibitionRulePrintAction(printAction);
+		Action printAction = new Action(ActionType.PRINT);
+		Rule rule = new Rule(RuleType.PROHIBITION, printAction);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setProhibitionRulePrintAction(prohibitionRulePrintAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:restrict-print"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-print"));
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
 
 	@RequestMapping("/policy/AnonymizeInRestPolicyForm")
 	public String anonymizeInRestolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		AnonymizeAction anonymizeAction = new AnonymizeAction();
-		ObligationRuleAnonymizeAction obligationRuleAnonymizeAction = new ObligationRuleAnonymizeAction(anonymizeAction);
-		Party consumer = new Party();
+		Action anonymizeAction = new Action(ActionType.ANONYMIZE);
+		Rule rule = new Rule(RuleType.OBLIGATION, anonymizeAction);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
+	  	Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setObligationRuleAnonymizeAction(obligationRuleAnonymizeAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:anonymize-in-rest"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/anonymize-in-rest"));
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
 
 	@RequestMapping("/policy/AnonymizeInTransitPolicyForm")
 	public String anonymizeTransitPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		RightOperand EventRightOperand = new RightOperand();
-		EventRightOperand.setId(RightOperandId.POLICYUSAGE);
-		EventCondition eventDutyConstraint = new EventCondition(ConditionType.CONSTRAINT, EventRightOperand, null);
-		eventDutyConstraint.setOperator(Operator.LESS);
-
-		RightOperand jsonPathRightOperand = new RightOperand();
-		jsonPathRightOperand.setType(RightOperandType.STRING);
-		JsonPathCondition JsonPathRefinement = new JsonPathCondition(ConditionType.REFINEMENT, jsonPathRightOperand, null);
-
-		UseAction useAction = new UseAction();
-		AnonymizeAction anonymizeAction = new AnonymizeAction();
-		anonymizeAction.setJsonPathRefinement(JsonPathRefinement);
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setAnonymizeDutyAction(anonymizeAction);
-		permissionRuleUseAction.setEventDutyConstraint(eventDutyConstraint);
+		ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter();
+		replaceWithParameter.setType(RightOperandType.STRING);
+		RightOperand modificationMethodRightOperand = new RightOperand();
+		modificationMethodRightOperand.setType(RightOperandType.ANYURI);
+		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD, Operator.EQUALS, modificationMethodRightOperand, "");
+		modificationMethodRefinement.setReplaceWith(replaceWithParameter);
+		List<Condition> refinements = new ArrayList<>();
+		refinements.add(modificationMethodRefinement);
+		Action useAction = new Action(ActionType.USE);
+		Action anonymizeDutyAction = new Action(ActionType.ANONYMIZE);
+		anonymizeDutyAction.setRefinements(refinements);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		Rule preobligation = new Rule(RuleType.PREOBLIGATION, anonymizeDutyAction);
+		List<Rule> preobligations = new ArrayList<>();
+		preobligations.add(preobligation);
+		rule.setPreobligations(preobligations);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:anonymize-in-transit"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/anonymize-in-transit"));
 		model.addAttribute(POLICY_FRAGMENT, "AnonymizeInTransitPolicyForm");
 		return "index";
 	}
@@ -402,32 +500,46 @@ public class OdrlPapUiController {
 	public String countPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DECIMAL);
-		CountCondition countCondition = new CountCondition(ConditionType.CONSTRAINT, rightOperand, null);
-		UseAction useAction = new UseAction();
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setCountConstraint(countCondition);
+		Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.EQUALS, rightOperand, "");
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(countCondition);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:provide-access-after-payment"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/count-access"));
 		model.addAttribute(POLICY_FRAGMENT, "CountAccessPolicyForm");
 		return "index";
 	}
 
 	@RequestMapping("/policy/InformPolicyForm")
 	public String policy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		UseAction useAction = new UseAction();
-		InformAction informDutyAction = new InformAction();
-		Party informedParty = new Party(PartyType.INFORMEDPARTY, URI.create("http://example.com/party/my-party"));
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-		permissionRuleUseAction.setInformDutyAction(informDutyAction);
-		permissionRuleUseAction.setInformedParty(informedParty);
+	  	RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.ANYURI);
+		rightOperand.setValue("http://example.com/party/my-party");
+		Condition informedPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.INFORMEDPARTY, Operator.EQUALS, rightOperand, "");
+		List<Condition> refinements = new ArrayList<>();
+		refinements.add(informedPartyRefinement);
+		Action useAction = new Action(ActionType.USE);
+		Action informDutyAction = new Action(ActionType.INFORM);
+		informDutyAction.setRefinements(refinements);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, informDutyAction);
+		List<Rule> postobligations = new ArrayList<>();
+		postobligations.add(postobligation);
+		rule.setPostobligations(postobligations);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:notify"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/notify"));
 		model.addAttribute(POLICY_FRAGMENT, "InformPolicyForm");
 		return "index";
 	}
@@ -436,45 +548,49 @@ public class OdrlPapUiController {
 	public String complexPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand locationRightOperand = new RightOperand();
 		locationRightOperand.setType(RightOperandType.ANYURI);
-		AbsoluteSpatialPositionCondition locationConstraint = new AbsoluteSpatialPositionCondition(ConditionType.CONSTRAINT, locationRightOperand, null);
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQUALS, locationRightOperand, "");
 
 		RightOperand systemRightOperand = new RightOperand();
 		systemRightOperand.setType(RightOperandType.ANYURI);
-		SystemCondition systemConstraint = new SystemCondition(ConditionType.CONSTRAINT, systemRightOperand, null);
+		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQUALS, systemRightOperand, "");
 
 		RightOperand purposeRightOperand = new RightOperand();
 		purposeRightOperand.setType(RightOperandType.ANYURI);
-		PurposeCondition purposeConstraint = new PurposeCondition(ConditionType.CONSTRAINT, purposeRightOperand, null);
+		Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQUALS, purposeRightOperand, "");
 
 		RightOperand eventRightOperand = new RightOperand();
 		eventRightOperand.setType(RightOperandType.ANYURI);
-		EventCondition eventConstraint = new EventCondition(ConditionType.CONSTRAINT, eventRightOperand, null);
+		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, eventRightOperand, "");
 
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DATETIME);
 		RightOperand secondRightOperand = new RightOperand();
 		secondRightOperand.setType(RightOperandType.DATETIME);
-		TimeIntervalCondition timeIntervalCondition = new TimeIntervalCondition(ConditionType.CONSTRAINT, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand, null);
+		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand, "");
 
 		RightOperand paymentRightOperand = new RightOperand();
 		paymentRightOperand.setType(RightOperandType.DECIMAL);
-		PaymentCondition paymentCondition = new PaymentCondition(ConditionType.CONSTRAINT, paymentRightOperand, null);
+		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAYAMOUNT, Operator.EQUALS, paymentRightOperand, "");
+		paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
 
-		UseAction useAction = new UseAction();
-		PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction(useAction);
-
-		permissionRuleUseAction.setAbsoluteSpatialPositionConstraint(locationConstraint);
-		permissionRuleUseAction.setSystemConstraint(systemConstraint);
-		permissionRuleUseAction.setPurposeConstraint(purposeConstraint);
-		permissionRuleUseAction.setEventConstraint(eventConstraint);
-		permissionRuleUseAction.setTimeIntervalConstraint(timeIntervalCondition);
-		permissionRuleUseAction.setPaymentConstraint(paymentCondition);
+		List<Condition> constraints = new ArrayList<>();
+		constraints.add(locationConstraint);
+		constraints.add(systemConstraint);
+		constraints.add(purposeConstraint);
+		constraints.add(eventConstraint);
+		constraints.add(timeIntervalCondition);
+		constraints.add(paymentCondition);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
 
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
-		odrlPolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy:complex-policy"));
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/complex-policy"));
 
 		model.addAttribute(POLICY_FRAGMENT, "ComplexPolicyForm");
 		return "index";
@@ -497,26 +613,25 @@ public class OdrlPapUiController {
 	}
 
 	 @SuppressWarnings("rawtypes")
-	@RequestMapping("/policy/JsonOrdlPolicyMAYDATA")
+	@RequestMapping(value="/policy/JsonOrdlPolicyMAYDATA", params="action=transfer")
 	  public String policy(@ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
-		  Map map = null;
-			try {
-				Object o = JsonUtils.fromString(jsonOdrlPolicy.getJsonString());
-				if (o instanceof Map) {
-					map  = (Map) o;
-				}
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonOdrlPolicy.getJsonString());
 		model.addAttribute("odrlFragment", "true");
 		model.addAttribute("odrlPolicy", jsonOdrlPolicy.getJsonString());
 		model.addAttribute("technologyDependentPolicyFragment", "true");
 		boolean tempProviderSide = true;
-		model.addAttribute("technologyDependentPolicy", TransformPolicy.createTechnologyDependentPolicy(map, tempProviderSide));
+		model.addAttribute("technologyDependentPolicy", TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide));
+	    return "index";
+	  }
+	 
+	 @SuppressWarnings("rawtypes")
+	 @RequestMapping(value="/policy/JsonOrdlPolicyMAYDATA", params="action=send")
+	  public String sendPolicy(@ModelAttribute JsonOdrlPolicy jsonOdrlPolicy,  Model model) {
+		String returnedPolicy = UcAppService.sendPolicy(jsonOdrlPolicy);
+		model.addAttribute("odrlFragment", "true");
+		model.addAttribute("odrlPolicy", jsonOdrlPolicy.getJsonString());
+		model.addAttribute("technologyDependentPolicyFragment", "true");
+		model.addAttribute("technologyDependentPolicy", returnedPolicy);
 	    return "index";
 	  }
 
@@ -532,12 +647,13 @@ public class OdrlPapUiController {
 	public String interpretPolicy(@ModelAttribute JsonOdrlPolicy odrlPolicy, Model model) throws MalformedURLException, URISyntaxException {
 	  	OdrlPolicy basePolicy = new OdrlPolicy();
 	  	basePolicy.setType(PolicyType.OFFER);
-	  	UseAction useAction = new UseAction();
-	  	PermissionRuleUseAction permissionRuleUseAction = new PermissionRuleUseAction();
-	  	permissionRuleUseAction.setUseAction(useAction);
-	  	basePolicy.setPermissionRuleUseAction(permissionRuleUseAction);
-	  	basePolicy.setPolicyId(URI.create("http://example.com/policy:sample"));
-	  	basePolicy.setTarget(URI.create("http://example.com/ids-data:sample"));
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		List<Rule> rules = new ArrayList<>();
+		rules.add(rule);
+	  	basePolicy.setRules(rules);
+	  	basePolicy.setPolicyId(URI.create("http://example.com/policy/sample"));
+	  	basePolicy.setTarget(URI.create("http://example.com/ids-data/sample"));
 	  	basePolicy.setProvider(new Party(PartyType.PROVIDER, URI.create(("http://example.com/party/my-party"))));
 	  	basePolicy.setProviderSide(true);
 		OdrlCreator.createODRL(basePolicy);

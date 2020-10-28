@@ -1,9 +1,10 @@
 <form th:action="@{/policy/ODRLCreator}" th:object="${odrlPolicy}" method="post">
   <input type="hidden" th:field="*{policyId}" />
   <input type="hidden" th:field="*{consumer.type}" />
-  <input type="hidden" th:field="*{permissionRuleDistributeAction.type}" />
-  <input type="hidden" th:field="*{permissionRuleDistributeAction.distributeAction.type}" />
-  <input type="hidden" th:field="*{permissionRuleDistributeAction.nextPolicyDutyAction.type}" />
+  <input type="hidden" th:field="*{rules[0].type}" />
+  <input type="hidden" th:field="*{rules[0].action.type}" />
+  <input type="hidden" th:field="*{rules[0].preobligations[0].type}" />
+  <input type="hidden" th:field="*{rules[0].preobligations[0].action.type}" />
 
   <div>
     <p>
@@ -19,7 +20,7 @@
       <option value="REQUEST">Request</option>
     </select>
   </p>
-  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data:production-plan" th:field="*{target}" /></p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data/production-plan" th:field="*{target}" /></p>
   <p id="provider" >Data Provider*: <input  id="providerInput" required="required" type="text" size="40" value="My party"></p>
   <p id="consumer" >Data Consumer*:
     <div id="consumerDiv"  class="form-group blu-margin">
@@ -28,7 +29,18 @@
       </select>
     </div>
   </p>
-  <p>Policy to be sent to the third party*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/policy:third-party-policy" th:field="*{permissionRuleDistributeAction.nextPolicyTarget}" /></p>
+
+  <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].preobligations[0] != null ) and (odrlPolicy?.rules[0].preobligations[0].action.refinements != null )}">
+    <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].preobligations[0].action.refinements}">
+      <div th:if="${(condition?.leftOperand?.name() == 'TARGETPOLICY')}">
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].type}" />
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].operator}" />
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].leftOperand}" />
+        <input type="hidden" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].rightOperand.type}" />
+        <p>Policy to be sent to the third party*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/policy/third-party-policy" th:field="*{rules[0].preobligations[0].action.refinements[__${itemStat.index}__].rightOperand.value}" /></p>
+      </div>
+    </th:block>
+  </div>
 
   <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
 </form>

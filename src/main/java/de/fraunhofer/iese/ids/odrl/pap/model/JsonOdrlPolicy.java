@@ -14,11 +14,11 @@ import lombok.Data;
 @Data
 public class JsonOdrlPolicy {
 	String jsonString;
+    String ucAppUrl;
 
-
-	public String getJsonString() {
-		return jsonString;
-	}
+//	public String getJsonString() {
+//		return jsonString;
+//	}
 }
 
 

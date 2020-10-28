@@ -1,15 +1,20 @@
 package de.fraunhofer.iese.ids.odrl.pap.util;
 
-import de.fraunhofer.iese.ids.odrl.pap.model.*;
-import de.fraunhofer.iese.ids.odrl.pap.model.OdrlModel.RuleType;
-import de.fraunhofer.iese.ids.odrl.pap.model.Policy.IPolicy;
-import de.fraunhofer.iese.ids.odrl.pattern.Utils;
-
 import java.util.Map;
+
+import de.fraunhofer.iese.ids.odrl.mydata.translator.util.BuildMydataPolicyUtils;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.Duration;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.Operator;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.interfaces.IPolicy;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.PatternUtil;
 
 
 public class OdrlTranslator {
-	
+
 	public static String translate(Map map, Boolean providerSide, IPolicy defaultPolicy){
 
 		IPolicy policy = null;
@@ -21,7 +26,7 @@ public class OdrlTranslator {
 			{
 				providerSide = true;
 			}
-			policy = Utils.getPolicy(map, providerSide);
+			policy = PatternUtil.getPolicy(map, providerSide);
 		}
 
 
@@ -61,335 +66,178 @@ public class OdrlTranslator {
 			translation = translation.concat("\n");
 
 			// USE ACTION
-			if(null != policy.getPermissionRuleUseAction())
+			if(null != policy.getRules())
 			{
-				ActionType action = policy.getPermissionRuleUseAction().getUseAction().getType();
-				RuleType decision = policy.getPermissionRuleUseAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
+				RuleType decision = policy.getRules().get(0).getType();
+				if(policy.getRules().get(0).getType().equals(RuleType.PERMISSION)){
+					ActionType action = policy.getRules().get(0).getAction().getType();
+					translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
+							decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
+					translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
 
-				if(null != policy.getPermissionRuleUseAction().getEventConstraint())
-				{
-					String event = policy.getPermissionRuleUseAction().getEventConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific event; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the " +
-							getLastSplitElement(event) + " event has been triggered.\n\n");
-				}
-				if(null != policy.getPermissionRuleUseAction().getPurposeConstraint())
-				{
-					String purpose = policy.getPermissionRuleUseAction().getPurposeConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific purpose; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset for " +
-							getLastSplitElement(purpose) + " purpose.\n\n");
-				}
-				if(null != policy.getPermissionRuleUseAction().getSystemConstraint())
-				{
-					String system = policy.getPermissionRuleUseAction().getSystemConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific system; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the system which will process the data is " +
-							getLastSplitElement(system) +".\n\n");
-				}
-				if(null != policy.getPermissionRuleUseAction().getAbsoluteSpatialPositionConstraint())
-				{
-					String location = policy.getPermissionRuleUseAction().getAbsoluteSpatialPositionConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific location; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +
-							getLastElement(location) +".\n\n");
+					if(null != policy.getRules().get(0).getConstraints()) {
+						for (Condition constraint : policy.getRules().get(0).getConstraints()) {
+							String rightOperandValue = constraint.getRightOperand().getValue();
+							switch (constraint.getLeftOperand()) {
+								case EVENT:
+									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific event; the Data Consumer is " +
+											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the " +
+											getLastSplitElement(rightOperandValue) + " event has been triggered.\n\n");
+									break;
+								case PURPOSE:
+									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific purpose; the Data Consumer is " +
+											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset for " +
+											getLastSplitElement(rightOperandValue) + " purpose.\n\n");
+									break;
+								case SYSTEM:
+									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific system; the Data Consumer is " +
+											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the system which will process the data is " +
+											getLastSplitElement(rightOperandValue) + ".\n\n");
+									break;
+								case ABSOLUTESPATIALPOSITION:
+									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific location; the Data Consumer is " +
+											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +
+											getLastElement(rightOperandValue) + ".\n\n");
+									break;
+								case PAYAMOUNT:
+									String contract = ((Condition) constraint).getContract();
+									String unit = ((Condition) constraint).getUnit();
+									translation = translation.concat("In this policy, the " + provider + " party announces the Data " + getLastElement(contract) +
+											" under specific condition; the Data Consumer is only allowed to " + ActionType.USE.toString().toLowerCase() +
+											" the data after paying " + rightOperandValue + " " + getLastElement(unit) + ".\n\n");
+									break;
+								case DATETIME:
+									if (!constraint.getOperator().equals(Operator.EQUALS)) {
+										String end = ((Condition) constraint).getSecondDateTimeRightOperand().getValue();
+										translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific time interval; the Data Consumer is " +
+												decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data from " + rightOperandValue + " to " + end + ".\n");
+										break;
+									}
+								case ELAPSEDTIME:
+									Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(rightOperandValue);
+									translation = translation.concat("The Data Consumer can use the data for the duration of " + d.getValue() + " " +
+											d.getTimeUnit().toString().toLowerCase() + "(from the data that the agreement policy was issued!).\n");
+									break;
+								case COUNT:
+									translation = translation.concat("This policy specifies that the Data Consumer is " + decision.getMydataDecision() + "ed to " +
+											action.toString().toLowerCase() + " the data asset (not more than) " + rightOperandValue + " times.\n\n");
+									break;
+								case ENCODING:
+									translation = translation.concat("The data asset must be encoded (compressed or encrypted) before it is distributed.\n\n");
+									break;
+							}
+						}
+					}
 
-				}
-				if(null != policy.getPermissionRuleUseAction().getPaymentConstraint())
-				{
-					String value = policy.getPermissionRuleUseAction().getPaymentConstraint().getRightOperand().getValue();
-					String contract = policy.getPermissionRuleUseAction().getPaymentConstraint().getContract();
-					String unit = policy.getPermissionRuleUseAction().getPaymentConstraint().getUnit();
-					translation = translation.concat("In this policy, the " + provider + " party announces the Data " + getLastElement(contract) +
-							" under specific condition; the Data Consumer is only allowed to " + ActionType.USE.toString().toLowerCase() +
-							" the data after paying " + value + " " +  getLastElement(unit) +".\n\n");
-				}
-				if(null != policy.getPermissionRuleUseAction().getTimeIntervalConstraint() && null != policy.getPermissionRuleUseAction().getTimeIntervalConstraint().getRightOperand() )
-				{
-					// get and set datetimes
-					String start = policy.getPermissionRuleUseAction().getTimeIntervalConstraint().getRightOperand().getValue();
-					String end = policy.getPermissionRuleUseAction().getTimeIntervalConstraint().getSecondRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific time interval; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data from " + start + " to " + end + ".\n");
-				}
-				if(null != policy.getPermissionRuleUseAction().getCountConstraint())
-				{
-					String count = policy.getPermissionRuleUseAction().getCountConstraint().getRightOperand().getValue();
-					translation = translation.concat("This policy specifies that the Data Consumer is " + decision.getMydataDecision() + "ed to " +
-							action.toString().toLowerCase() + " the data asset (not more than) " +  count + " times.\n\n");
-				}
-				if(null != policy.getPermissionRuleUseAction().getDeleteDutyAction() && null != policy.getPermissionRuleUseAction().getEventDutyConstraint())
-				{
-					ActionType dutyAction = policy.getPermissionRuleUseAction().getDeleteDutyAction().getType();
-						translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
-								dutyAction.toString().toLowerCase() + "s the data asset right after it is used.\n\n");
+					Action dutyAction = null;
+					if(null != policy.getRules().get(0).getPreobligations() && policy.getRules().get(0).getPreobligations().size() > 0)
+					{
+						dutyAction = (Action) policy.getRules().get(0).getPreobligations().get(0).getAction();
+					}
 
-				}
-				if(null != policy.getPermissionRuleUseAction().getAnonymizeDutyAction() && null != policy.getPermissionRuleUseAction().getEventDutyConstraint())
-				{
-					String jsonPath = policy.getPermissionRuleUseAction().getAnonymizeDutyAction().getJsonPathRefinement().getRightOperand().getValue();
-					ActionType dutyAction = policy.getPermissionRuleUseAction().getAnonymizeDutyAction().getType();
-					translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
-							+ dutyAction.toString().toLowerCase() + " the " + jsonPath + " field in the data asset.\n");
-				}
-				if(null != policy.getPermissionRuleUseAction().getLogDutyAction())
-				{
-					String systemDevice = policy.getPermissionRuleUseAction().getLogDutyAction().getSystemDeviceRefinement().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party demands that the Data Consumer logs the information about the data usage in " +
-							getLastSplitElement(systemDevice) + " system.\n\n");
-				}
-				if(null != policy.getPermissionRuleUseAction().getInformDutyAction())
-				{
-					String informedPartyValue = policy.getPermissionRuleUseAction().getInformedParty().getName();
-					translation = translation.concat("The " + provider + " party demands that the Data Consumer informs the " +
-							getLastSplitElement(informedPartyValue) + " party about the usage of data.\n\n");
+					if(null != policy.getRules().get(0).getPostobligations() && policy.getRules().get(0).getPostobligations().size() > 0)
+					{
+						dutyAction = (Action) policy.getRules().get(0).getPostobligations().get(0).getAction();
+					}
 
-				}
-			}
-			if(null != policy.getProhibitionRuleUseAction())
-			{
-				ActionType action = policy.getProhibitionRuleUseAction().getUseAction().getType();
-				RuleType decision = policy.getProhibitionRuleUseAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
+					if(null != dutyAction) {
+						ActionType actionType = dutyAction.getType();
+						switch (actionType) {
+							case DELETE:
+								translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
+										actionType.toString().toLowerCase() + "s the data asset right after it is used.\n\n");
+								break;
+							case ANONYMIZE:
+								translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
+										+ actionType.toString().toLowerCase() + " the data.\n");
+								if (null != dutyAction.getRefinements()) {
+									for (Condition refinement : dutyAction.getRefinements()) {
+										switch (refinement.getLeftOperand()) {
+											case MODIFICATIONMETHOD:
+												String jsonPath = refinement.getJsonPath();
+												translation = translation.concat("The " + jsonPath + " field of the data asset (given as jsonPathQuery) is requested to be modified.\n");
+												break;
+										}
+									}
+								}
+								break;
+							case LOG:
+								translation = translation.concat("The " + provider + " party demands that the Data Consumer logs the information about the data usage. \n");
+								if (null != dutyAction.getRefinements()) {
+									for (Condition refinement : dutyAction.getRefinements()) {
+										switch (refinement.getLeftOperand()) {
+											case SYSTEMDEVICE:
+												String systemDevice = refinement.getRightOperand().getValue();
+												translation = translation.concat("The location to store the logs is " + getLastSplitElement(systemDevice) + " system.\n\n");
+												break;
+										}
+									}
+								}
+								break;
+							case INFORM:
+								translation = translation.concat("The " + provider + " party demands that the Data Consumer informs a party about the usage of data.\n\n");
 
-				if(null != policy.getProhibitionRuleUseAction().getEventConstraint())
-				{
-					String event = policy.getProhibitionRuleUseAction().getEventConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific event; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the " +
-							getLastSplitElement(event) + " event has been triggered.\n\n");
-				}
-				if(null != policy.getProhibitionRuleUseAction().getPurposeConstraint())
-				{
-					String purpose = policy.getProhibitionRuleUseAction().getPurposeConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific purpose; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset for " +
-							getLastSplitElement(purpose) + " purpose.\n\n");
-				}
-				if(null != policy.getProhibitionRuleUseAction().getSystemConstraint())
-				{
-					String system = policy.getProhibitionRuleUseAction().getSystemConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific system; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the system which will process the data is " +
-							getLastSplitElement(system) +".\n\n");
-				}
-				if(null != policy.getProhibitionRuleUseAction().getAbsoluteSpatialPositionConstraint())
-				{
-					String location = policy.getProhibitionRuleUseAction().getAbsoluteSpatialPositionConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific location; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +
-							getLastElement(location) +".\n\n");
-				}
-				if(null != policy.getProhibitionRuleUseAction().getTimeIntervalConstraint())
-				{
-					//TODO
-				}
-			}
-			/*if(null != policy.getObligationRuleUseAction())
-			{
-				ActionType action = policy.getObligationRuleUseAction().getUseAction().getType();
-				RuleType decision = policy.getObligationRuleUseAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule demands the Data Consumer to " +
-						action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-			}*/
+								if (null != dutyAction.getRefinements()) {
+									for (Condition refinement : dutyAction.getRefinements()) {
+										switch (refinement.getLeftOperand()) {
+											case INFORMEDPARTY:
+												String informedPartyValue = refinement.getRightOperand().getValue();
+												translation = translation.concat("This policy specifies that the informed party is " +
+														getLastSplitElement(informedPartyValue) + " .\n\n");
+												break;
+										}
+									}
+								}
+								break;
+							case NEXTPOLICY:
+								translation = translation.concat("The next policy action expresses the allowable usages by third-parties; " +
+										"it is demanded that the usage of the data asset by the third party has to be limited to the conditions that are specified in the target policy.\n\n");
 
-			//READ ACTION
-			if(null != policy.getPermissionRuleReadAction())
-			{
-				ActionType action = policy.getPermissionRuleReadAction().getReadAction().getType();
-				RuleType decision = policy.getPermissionRuleReadAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
+								if (null != dutyAction.getRefinements()) {
+									for (Condition refinement : dutyAction.getRefinements()) {
+										switch (refinement.getLeftOperand()) {
+											case TARGETPOLICY:
+												String thirdPartyValue = refinement.getRightOperand().getValue();
+												translation = translation.concat("This policy specifies that the policy to be sent to the third party is " +
+														getLastSplitElement(thirdPartyValue) + " .\n\n");
+												break;
+										}
+									}
+								}
+								break;
+							}
+						}
+				}else if(policy.getRules().get(0).getType().equals(RuleType.OBLIGATION)){
+					ActionType action = policy.getRules().get(0).getAction().getType();
+					switch (action){
+						case ANONYMIZE:
+							translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule demands the Data Consumer to " +
+									action.toString().toLowerCase() + " the target asset.\n");
+							translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
+							break;
+						case DELETE:
+							translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
+									action.toString().toLowerCase() + "s the data asset at a specified date and time.\n");
 
-				if(null != policy.getPermissionRuleReadAction().getEventConstraint())
-				{
-					String event = policy.getPermissionRuleReadAction().getEventConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific event; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the " +
-							getLastSplitElement(event) + " event has been triggered.\n\n");
-				}
-				if(null != policy.getPermissionRuleReadAction().getPurposeConstraint())
-				{
-					String purpose = policy.getPermissionRuleReadAction().getPurposeConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific purpose; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset for " +
-							getLastSplitElement(purpose) + " purpose.\n\n");
-				}
-				if(null != policy.getPermissionRuleReadAction().getSystemConstraint())
-				{
-					String system = policy.getPermissionRuleReadAction().getSystemConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific system; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the system which will process the data is " +
-							getLastSplitElement(system) +".\n\n");
-				}
-				if(null != policy.getPermissionRuleReadAction().getAbsoluteSpatialPositionConstraint())
-				{
-					String location = policy.getPermissionRuleReadAction().getAbsoluteSpatialPositionConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific location; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +
-							getLastElement(location) +".\n\n");
-				}
-				if(null != policy.getPermissionRuleReadAction().getPaymentConstraint())
-				{
-					String value = policy.getPermissionRuleReadAction().getPaymentConstraint().getRightOperand().getValue();
-					String contract = policy.getPermissionRuleReadAction().getPaymentConstraint().getContract();
-					String unit = policy.getPermissionRuleReadAction().getPaymentConstraint().getUnit();
-					translation = translation.concat("In this policy, the " + provider + " party announces the Data " + getLastElement(contract) +
-							" under specific condition; the Data Consumer is only allowed to " + ActionType.USE.toString().toLowerCase() +
-							" the data after paying " + value + " " +  getLastElement(unit) +".\n\n");
-				}
-				if(null != policy.getPermissionRuleReadAction().getTimeIntervalConstraint() && null != policy.getPermissionRuleReadAction().getTimeIntervalConstraint().getRightOperand() )
-				{
-					//TODO
-				}
-				if(null != policy.getPermissionRuleReadAction().getCountConstraint())
-				{
-					String count = policy.getPermissionRuleReadAction().getCountConstraint().getRightOperand().getValue();
-					translation = translation.concat("This policy specifies that the Data Consumer is " + decision.getMydataDecision() + "ed to " +
-							action.toString().toLowerCase() + " the data asset (not more than) " +  count + " times.\n\n");
+							if (null != policy.getRules().get(0).getAction().getRefinements()) {
+								for (Condition refinement : policy.getRules().get(0).getAction().getRefinements()) {
+									switch (refinement.getLeftOperand()) {
+										case DELAYPERIOD:
+											String delayPeriod = ((Condition) refinement).getRightOperand().getValue();
+											Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(delayPeriod);
+											translation = translation.concat("The Data Consumer has to wait " + d.getValue() + " " +
+													d.getTimeUnit().toString().toLowerCase() + ", before exercising the duty (the Data Provider's demand).\n");
+											break;
+										case DATETIME:
+											String dateTimeRefinement = ((Condition) refinement).getRightOperand().getValue();
+											translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider at " + dateTimeRefinement + ".\n");
+											break;
+									}
+								}
+							}
+							break;
+					}
 
-				}
-			}
-			if(null != policy.getProhibitionRuleReadAction())
-			{
-				ActionType action = policy.getProhibitionRuleReadAction().getReadAction().getType();
-				RuleType decision = policy.getProhibitionRuleReadAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-
-				if(null != policy.getProhibitionRuleReadAction().getEventConstraint())
-				{
-					String event = policy.getProhibitionRuleReadAction().getEventConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific event; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the " +
-							getLastSplitElement(event) + " event has been triggered.\n\n");
-				}
-				if(null != policy.getProhibitionRuleReadAction().getPurposeConstraint())
-				{
-					String purpose = policy.getProhibitionRuleReadAction().getPurposeConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific purpose; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset for " +
-							getLastSplitElement(purpose) + " purpose.\n\n");
-				}
-				if(null != policy.getProhibitionRuleReadAction().getSystemConstraint())
-				{
-					String system = policy.getProhibitionRuleReadAction().getSystemConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific system; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the system which will process the data is " +
-							getLastSplitElement(system) +".\n\n");
-				}
-				if(null != policy.getProhibitionRuleReadAction().getAbsoluteSpatialPositionConstraint())
-				{
-					String location = policy.getProhibitionRuleReadAction().getAbsoluteSpatialPositionConstraint().getRightOperand().getValue();
-					translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific location; the Data Consumer is " +
-							decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +
-							getLastElement(location) +".\n\n");
-				}
-				if(null != policy.getProhibitionRuleReadAction().getTimeIntervalConstraint())
-				{
-					//TODO
-				}
-			}
-
-			//ANONYMIZE ACTION
-			/*if(null != policy.getPermissionRuleAnonymizeAction())
-			{
-				ActionType action = policy.getPermissionRuleAnonymizeAction().getAnonymizeAction().getType();
-				RuleType decision = policy.getPermissionRuleAnonymizeAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-					decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-
-			}
-			if(null != policy.getProhibitionRuleAnonymizeAction())
-			{
-				ActionType action = policy.getProhibitionRuleAnonymizeAction().getAnonymizeAction().getType();
-				RuleType decision = policy.getProhibitionRuleAnonymizeAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-			}*/
-			if(null != policy.getObligationRuleAnonymizeAction())
-			{
-				ActionType action = policy.getObligationRuleAnonymizeAction().getAnonymizeAction().getType();
-				RuleType decision = policy.getObligationRuleAnonymizeAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule demands the Data Consumer to " +
-						action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-			}
-
-			//PRINT ACTION
-			if(null != policy.getPermissionRulePrintAction())
-			{
-				ActionType action = policy.getPermissionRulePrintAction().getPrintAction().getType();
-				RuleType decision = policy.getPermissionRulePrintAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-			}
-			if(null != policy.getProhibitionRulePrintAction())
-			{
-				ActionType action = policy.getProhibitionRulePrintAction().getPrintAction().getType();
-				RuleType decision = policy.getProhibitionRulePrintAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-			}
-
-			//DISTRIBUTE ACTION
-			if(null != policy.getPermissionRuleDistributeAction())
-			{
-				ActionType action = policy.getPermissionRuleDistributeAction().getDistributeAction().getType();
-				RuleType decision = policy.getPermissionRuleDistributeAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-				if(null != policy.getPermissionRuleDistributeAction().getEncodingConstraint())
-				{
-					translation = translation.concat("The data asset must be encoded (compressed or encrypted) before it is distributed.\n\n");
-				}if(null != policy.getPermissionRuleDistributeAction().getNextPolicyDutyAction())
-				{
-					translation = translation.concat("The next policy action expresses the allowable usages by third-parties; it is demanded that the usage of the data asset by the third party has to be limited to the conditions that are specified in the target policy.\n\n");
-
-				}
-			}
-			if(null != policy.getProhibitionRuleDistributeAction())
-			{
-				ActionType action = policy.getProhibitionRuleDistributeAction().getDistributeAction().getType();
-				RuleType decision = policy.getProhibitionRuleDistributeAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
-						decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-			}
-
-			//DELETE ACTION
-			if(null != policy.getObligationRuleDeleteAction())
-			{
-				ActionType action = policy.getObligationRuleDeleteAction().getDeleteAction().getType();
-				RuleType decision = policy.getObligationRuleDeleteAction().getType();
-				translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule demands the Data Consumer to " +
-						action.toString().toLowerCase() + " the target asset.\n");
-				translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
-				translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
-						action.toString().toLowerCase() + "s the data asset at a specified date and time.\n");
-				if(null != policy.getObligationRuleDeleteAction().getDeleteAction().getDelayPeriodRefinement())
-				{
-					String delayPeriod = policy.getObligationRuleDeleteAction().getDeleteAction().getDelayPeriodRefinement().getRightOperand().getValue();
-					Duration d = BuildMydataPolicyUtils.getDurationFromDelayPeriodValue(delayPeriod);
-					translation = translation.concat("The Data Consumer has to wait " + d.getValue() + " " +
-							d.getTimeUnit().toString().toLowerCase() + ", before exercising the duty (the Data Provider's demand).\n");
-				}if(null != policy.getObligationRuleDeleteAction().getDeleteAction().getDateTimeRefinement())
-				{
-					String dateTimeRefinement = policy.getObligationRuleDeleteAction().getDeleteAction().getDateTimeRefinement().getRightOperand().getValue();
-					translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider at " + dateTimeRefinement + ".\n");
 				}
 			}
 
@@ -404,7 +252,7 @@ public class OdrlTranslator {
 
 	}
 
-	 private static String getLastSplitElement(String url) {
+	private static String getLastSplitElement(String url) {
 		String value;
 		String[] bits = url.split(":");
 		value = bits[bits.length-1];
