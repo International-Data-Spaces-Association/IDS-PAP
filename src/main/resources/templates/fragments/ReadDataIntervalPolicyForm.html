@@ -44,21 +44,40 @@
         <fieldset id="permissionPeriodRadio">
           <div th:if="${(condition?.leftOperand?.name() == 'DATETIME')}">
             <input type="radio" id="permissionTimeValue" name="permissionPeriodRadio" checked> Specify exact starting and ending date and time that the data can be used:<br>
-            <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeOperator}" />
-            <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeRightOperand.type}" />
-            <p>Start Time*: <input id="permissionStartTime" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" /></p>
-            <p>End Time*: <input id="permissionEndTime" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeRightOperand.value}" /></p>
+            <div th:if="${(condition?.rightOperand?.entities != null )}">
+            <th:block th:each="entity, iStat : ${condition?.rightOperand?.entities}">
+              <div th:if="${(entity?.entityType?.name() == 'BEGIN')}">
+                <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].entityType}" />
+                <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].dataType}" />
+                <p>Start Time*: <input id="permissionStartTime" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].value}" /></p>
+              </div>
+              <div th:if="${(entity?.entityType?.name() == 'END')}">
+                <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].entityType}" />
+                <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].dataType}" />
+                <p>End Time*: <input id="permissionEndTime" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].value}" /></p>
+              </div>
+            </th:block>
+            </div>
           </div>
           <div th:if="${(condition?.leftOperand?.name() == 'ELAPSEDTIME')}">
             <input type="radio" id="permissionDurationValue" name="permissionPeriodRadio"> Specify a time duration that the data can be used:<br>
-            <p>Duration value*:<input id="permissionDurationBox" type="text" required="required" size="5" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" disabled="disabled" />
-              <select id="permissionDurationUnitBox" th:field="*{rules[0].constraints[__${itemStat.index}__].timeUnit}" disabled="disabled">
-                <option
-                        th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit).values()}"
-                        th:value="${dropdownValue}"
-                        th:text="${dropdownValue}" ></option>
-              </select>
-            </p>
+
+            <div th:if="${(condition?.rightOperand?.entities != null )}">
+              <th:block th:each="entity, iStat : ${condition?.rightOperand?.entities}">
+                <div th:if="${(entity?.entityType?.name() == 'DURATION')}">
+                  <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].entityType}" />
+                  <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].dataType}" />
+                  <p>Duration value*:<input id="permissionDurationBox" type="text" required="required" size="5" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].value}" disabled="disabled" />
+                    <select id="permissionDurationUnitBox" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].timeUnit}" disabled="disabled">
+                      <option
+                              th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit).values()}"
+                              th:value="${dropdownValue}"
+                              th:text="${dropdownValue}" ></option>
+                    </select>
+                  </p>                </div>
+              </th:block>
+            </div>
+
           </div>
         </fieldset>
 

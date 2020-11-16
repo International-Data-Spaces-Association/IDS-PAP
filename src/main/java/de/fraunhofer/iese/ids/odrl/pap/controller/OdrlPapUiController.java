@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.fraunhofer.iese.ids.odrl.policy.library.model.*;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,15 +24,6 @@ import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.UcAppService;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ConditionType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.Operator;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PartyType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PolicyType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RightOperandType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.IdsOdrlUtil;
 
 @Controller
@@ -55,7 +47,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access"));
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
@@ -71,7 +63,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access"));
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
@@ -92,7 +84,7 @@ public class OdrlPapUiController {
 		  consumer.setType(PartyType.CONSUMER);
 		  odrlPolicy.setConsumer(consumer);
 		  odrlPolicy.setRules(rules);
-		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-purpose"));
+		  odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-purpose"));
 		  model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
 	    return "index";
 	  }
@@ -113,7 +105,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-purpose"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-purpose"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificPurposePolicyForm");
 		return "index";
 	}
@@ -134,7 +126,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-system"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-system"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificSystemPolicyForm");
 		return "index";
 	}
@@ -155,7 +147,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-system"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-system"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificSystemPolicyForm");
 		return "index";
 	}
@@ -176,7 +168,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-location"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-location"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificLocationPolicyForm");
 		return "index";
 	}
@@ -197,7 +189,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-location"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-location"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificLocationPolicyForm");
 		return "index";
 	}
@@ -219,7 +211,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-event"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-event"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
 		return "index";
 	}
@@ -240,7 +232,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-event"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-event"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificEventPolicyForm");
 		return "index";
 	}
@@ -250,7 +242,8 @@ public class OdrlPapUiController {
 		  RightOperand delayPeriodRightOperand = new RightOperand();
 		  delayPeriodRightOperand.setType(RightOperandType.DURATION);
 		  Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAYPERIOD, Operator.EQUALS, delayPeriodRightOperand, "");
-		  delayPeriodRefinement.setTimeUnit(TimeUnit.HOURS);
+		  //TODO
+		  //delayPeriodRefinement.setTimeUnit(TimeUnit.HOURS);
 		  RightOperand dateTimeRightOperand = new RightOperand();
 		  dateTimeRightOperand.setType(RightOperandType.DATETIME);
 		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATETIME, Operator.EQUALS, dateTimeRightOperand, "");
@@ -266,7 +259,7 @@ public class OdrlPapUiController {
 		  consumer.setType(PartyType.CONSUMER);
 		  odrlPolicy.setConsumer(consumer);
 		  odrlPolicy.setRules(rules);
-		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy/delete-data"));
+		  odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/delete-data"));
 	  	model.addAttribute(POLICY_FRAGMENT, "DeleteAfterUsagePeriodPolicyForm");
 	    return "index";
 	  }
@@ -286,7 +279,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/delete-after-usage"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/delete-after-usage"));
 		model.addAttribute(POLICY_FRAGMENT, "DeleteAfterUsagePolicyForm");
 		return "index";
 	}
@@ -294,14 +287,30 @@ public class OdrlPapUiController {
 	  @RequestMapping("/policy/ReadDataIntervalPolicyForm")
 	  public String provideInterval(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		  RightOperand elapsedTimeRightOperand = new RightOperand();
-		  elapsedTimeRightOperand.setType(RightOperandType.DURATION);
-		  Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSEDTIME, Operator.EQUALS, elapsedTimeRightOperand, "");
-		  elapsedTimeConstraint.setTimeUnit(TimeUnit.HOURS);
+		  elapsedTimeRightOperand.setType(RightOperandType.IDS_DURATION);
+		  RightOperandEntity hasDurationEntity = new RightOperandEntity();
+		  hasDurationEntity.setEntityType(EntityType.DURATION);
+		  hasDurationEntity.setDataType(RightOperandType.DURATION);
+		  hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
+		  ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
+		  durationEntities.add(hasDurationEntity);
+		  elapsedTimeRightOperand.setEntities(durationEntities);
+		  Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSEDTIME, Operator.LESS_EQUAL, elapsedTimeRightOperand, "");
+
 		  RightOperand rightOperand = new RightOperand();
-		  rightOperand.setType(RightOperandType.DATETIME);
-		  RightOperand secondRightOperand = new RightOperand();
-		  secondRightOperand.setType(RightOperandType.DATETIME);
-		  Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand, "");
+		  rightOperand.setType(RightOperandType.IDS_INTERVAL);
+		  RightOperandEntity beginEntity = new RightOperandEntity();
+		  beginEntity.setEntityType(EntityType.BEGIN);
+		  beginEntity.setDataType(RightOperandType.DATETIME);
+		  RightOperandEntity endEntity = new RightOperandEntity();
+		  endEntity.setEntityType(EntityType.END);
+		  endEntity.setDataType(RightOperandType.DATETIME);
+		  ArrayList<RightOperandEntity> entities = new ArrayList<>();
+		  entities.add(beginEntity);
+		  entities.add(endEntity);
+		  rightOperand.setEntities(entities);
+
+		  Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.EQUALS, rightOperand, "");
 		  List<Condition> constraints = new ArrayList<>();
 		  constraints.add(elapsedTimeConstraint);
 		  constraints.add(timeIntervalCondition);
@@ -314,7 +323,7 @@ public class OdrlPapUiController {
 		  consumer.setType(PartyType.CONSUMER);
 		  odrlPolicy.setConsumer(consumer);
 		  odrlPolicy.setRules(rules);
-		  odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-interval"));
+		  odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-interval"));
 		  model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 	    return "index";
 	  }
@@ -323,9 +332,7 @@ public class OdrlPapUiController {
 	public String inhibitInterval(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DATETIME);
-		RightOperand secondRightOperand = new RightOperand();
-		secondRightOperand.setType(RightOperandType.DATETIME);
-		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.GREATER_EQUAL, rightOperand, Operator.LESS_EQUAL, secondRightOperand, "");
+		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.EQUALS, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(timeIntervalCondition);
 		Action useAction = new Action(ActionType.USE);
@@ -337,7 +344,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-interval"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-interval"));
 		model.addAttribute(POLICY_FRAGMENT, "ReadDataIntervalPolicyForm");
 		return "index";
 	}
@@ -359,7 +366,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/provide-access-after-payment"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/provide-access-after-payment"));
 		model.addAttribute(POLICY_FRAGMENT, "ReadAfterPaymentPolicyForm");
 		return "index";
 	}
@@ -385,7 +392,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/log-access"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/log-access"));
 		model.addAttribute(POLICY_FRAGMENT, "LogAccessPolicyForm");
 		return "index";
 	}
@@ -406,7 +413,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-access-encoding"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-encoding"));
 		model.addAttribute(POLICY_FRAGMENT, "EncodingPolicyForm");
 		return "index";
 	}
@@ -432,7 +439,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/distribute-policy"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/distribute-policy"));
 		model.addAttribute(POLICY_FRAGMENT, "DistributeToThirdPartyPolicyForm");
 		return "index";
 	}
@@ -447,7 +454,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/restrict-print"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-print"));
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
@@ -462,7 +469,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/anonymize-in-rest"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/anonymize-in-rest"));
 		model.addAttribute(POLICY_FRAGMENT, "BasePolicyForm");
 		return "index";
 	}
@@ -491,7 +498,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/anonymize-in-transit"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/anonymize-in-transit"));
 		model.addAttribute(POLICY_FRAGMENT, "AnonymizeInTransitPolicyForm");
 		return "index";
 	}
@@ -512,7 +519,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/count-access"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/count-access"));
 		model.addAttribute(POLICY_FRAGMENT, "CountAccessPolicyForm");
 		return "index";
 	}
@@ -539,7 +546,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/notify"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/notify"));
 		model.addAttribute(POLICY_FRAGMENT, "InformPolicyForm");
 		return "index";
 	}
@@ -564,9 +571,7 @@ public class OdrlPapUiController {
 
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DATETIME);
-		RightOperand secondRightOperand = new RightOperand();
-		secondRightOperand.setType(RightOperandType.DATETIME);
-		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand, "");
+		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.EQUALS, rightOperand, "");
 
 		RightOperand paymentRightOperand = new RightOperand();
 		paymentRightOperand.setType(RightOperandType.DECIMAL);
@@ -590,7 +595,7 @@ public class OdrlPapUiController {
 		consumer.setType(PartyType.CONSUMER);
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create("http://example.com/policy/complex-policy"));
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/complex-policy"));
 
 		model.addAttribute(POLICY_FRAGMENT, "ComplexPolicyForm");
 		return "index";
@@ -652,7 +657,7 @@ public class OdrlPapUiController {
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 	  	basePolicy.setRules(rules);
-	  	basePolicy.setPolicyId(URI.create("http://example.com/policy/sample"));
+	  	basePolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/sample"));
 	  	basePolicy.setTarget(URI.create("http://example.com/ids-data/sample"));
 	  	basePolicy.setProvider(new Party(PartyType.PROVIDER, URI.create(("http://example.com/party/my-party"))));
 	  	basePolicy.setProviderSide(true);

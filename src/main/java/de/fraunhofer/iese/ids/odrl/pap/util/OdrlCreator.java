@@ -4,6 +4,8 @@ package de.fraunhofer.iese.ids.odrl.pap.util;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperandEntity;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.EntityType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LeftOperand;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
@@ -22,40 +24,7 @@ public class OdrlCreator {
 		{
 			if(null != odrlPolicy.getRules().get(0).getAction().getRefinements()) {
 				for (Condition refinement : odrlPolicy.getRules().get(0).getAction().getRefinements()) {
-					if (refinement.getLeftOperand().equals(LeftOperand.DELAYPERIOD)) {
-						if (null != refinement.getRightOperand().getValue()) {
-							String value = refinement.getRightOperand().getValue();
-							if(value != "")
-							{
-								RightOperand updatedRightOperand = refinement.getRightOperand();
-								String timeUnit = "";
-								String xsdPrefix = "";
-
-								switch(refinement.getTimeUnit()) {
-									case HOURS:
-										timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
-										xsdPrefix = "T";
-										break;
-
-									case DAYS:
-										timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
-										break;
-
-									case MONTHS:
-										timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
-										break;
-
-									case YEARS:
-										timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
-										break;
-
-								}
-								updatedRightOperand.setValue("P" + xsdPrefix + value + timeUnit);
-								refinement.setRightOperand(updatedRightOperand);
-
-							}
-						}
-					}
+					updateTimeUnitValue(refinement, LeftOperand.DELAYPERIOD);
 				}
 			}
 		}
@@ -64,38 +33,7 @@ public class OdrlCreator {
 		{
 			if(null != odrlPolicy.getRules().get(0).getConstraints()) {
 				for (Condition constraint : odrlPolicy.getRules().get(0).getConstraints()) {
-					if (constraint.getLeftOperand().equals(LeftOperand.ELAPSEDTIME)) {
-						if (null != constraint.getRightOperand().getValue()) {
-							String value = constraint.getRightOperand().getValue();
-							if (value != "") {
-								RightOperand updatedRightOperand = constraint.getRightOperand();
-								String timeUnit = "";
-								String xsdPrefix = "";
-
-								switch ((constraint).getTimeUnit()) {
-									case HOURS:
-										timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
-										xsdPrefix = "T";
-										break;
-
-									case DAYS:
-										timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
-										break;
-
-									case MONTHS:
-										timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
-										break;
-
-									case YEARS:
-										timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
-										break;
-
-								}
-								updatedRightOperand.setValue("P" + xsdPrefix + value + timeUnit);
-								constraint.setRightOperand(updatedRightOperand);
-							}
-						}
-					}
+					updateTimeUnitValue(constraint, LeftOperand.ELAPSEDTIME);
 				}
 			}
 		}
@@ -103,6 +41,44 @@ public class OdrlCreator {
 
 
 		return odrlPolicy;
+	}
+
+	private static void updateTimeUnitValue(Condition refinement, LeftOperand delayperiod) {
+		if (refinement.getLeftOperand().equals(delayperiod)) {
+			if (null != refinement.getRightOperand().getEntities()) {
+				for (RightOperandEntity entity : refinement.getRightOperand().getEntities()) {
+					if (entity.getEntityType().equals(EntityType.DURATION)) {
+						String value = entity.getValue();
+						if (value != null && !value.isEmpty()) {
+							String timeUnit = "";
+							String xsdPrefix = "";
+
+							switch (entity.getTimeUnit()) {
+								case HOURS:
+									timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
+									xsdPrefix = "T";
+									break;
+
+								case DAYS:
+									timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
+									break;
+
+								case MONTHS:
+									timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
+									break;
+
+								case YEARS:
+									timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
+									break;
+
+							}
+							entity.setValue("P" + xsdPrefix + value + timeUnit);
+						}
+					}
+				}
+
+			}
+		}
 	}
 
 }

@@ -108,9 +108,10 @@ public class OdrlTranslator {
 									break;
 								case DATETIME:
 									if (!constraint.getOperator().equals(Operator.EQUALS)) {
-										String end = ((Condition) constraint).getSecondDateTimeRightOperand().getValue();
-										translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific time interval; the Data Consumer is " +
-												decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data from " + rightOperandValue + " to " + end + ".\n");
+										//TODO
+										//String end = ((Condition) constraint).getSecondDateTimeRightOperand().getValue();
+										//translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific time interval; the Data Consumer is " +
+												//decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data from " + rightOperandValue + " to " + end + ".\n");
 										break;
 									}
 								case ELAPSEDTIME:
