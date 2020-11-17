@@ -2,10 +2,14 @@ package de.fraunhofer.iese.ids.odrl.pap.util;
 
 import java.util.Map;
 
+import de.fraunhofer.iese.ids.odrl.mydata.translator.model.Parameter;
+import de.fraunhofer.iese.ids.odrl.mydata.translator.model.ParameterType;
+import de.fraunhofer.iese.ids.odrl.mydata.translator.model.Timer;
 import de.fraunhofer.iese.ids.odrl.mydata.translator.util.BuildMydataPolicyUtils;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Duration;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperandEntity;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.Operator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
@@ -99,22 +103,26 @@ public class OdrlTranslator {
 											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +
 											getLastElement(rightOperandValue) + ".\n\n");
 									break;
-								case PAYAMOUNT:
+								case PAY_AMOUNT:
 									String contract = ((Condition) constraint).getContract();
 									String unit = ((Condition) constraint).getUnit();
 									translation = translation.concat("In this policy, the " + provider + " party announces the Data " + getLastElement(contract) +
 											" under specific condition; the Data Consumer is only allowed to " + ActionType.USE.toString().toLowerCase() +
 											" the data after paying " + rightOperandValue + " " + getLastElement(unit) + ".\n\n");
 									break;
-								case DATETIME:
-									if (!constraint.getOperator().equals(Operator.EQUALS)) {
-										//TODO
-										//String end = ((Condition) constraint).getSecondDateTimeRightOperand().getValue();
-										//translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific time interval; the Data Consumer is " +
-												//decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data from " + rightOperandValue + " to " + end + ".\n");
-										break;
+								case POLICY_EVALUATION_TIME:
+									for(RightOperandEntity entity: constraint.getRightOperand().getEntities())
+									{
+										switch (entity.getEntityType()) {
+											case END:
+												String end = entity.getValue();
+												translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific time interval; the Data Consumer is " +
+														decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data from " + rightOperandValue + " to " + end + ".\n");
+												break;
+										}
 									}
-								case ELAPSEDTIME:
+									break;
+								case ELAPSED_TIME:
 									Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(rightOperandValue);
 									translation = translation.concat("The Data Consumer can use the data for the duration of " + d.getValue() + " " +
 											d.getTimeUnit().toString().toLowerCase() + "(from the data that the agreement policy was issued!).\n");
@@ -190,7 +198,7 @@ public class OdrlTranslator {
 									}
 								}
 								break;
-							case NEXTPOLICY:
+							case NEXT_POLICY:
 								translation = translation.concat("The next policy action expresses the allowable usages by third-parties; " +
 										"it is demanded that the usage of the data asset by the third party has to be limited to the conditions that are specified in the target policy.\n\n");
 
@@ -223,13 +231,13 @@ public class OdrlTranslator {
 							if (null != policy.getRules().get(0).getAction().getRefinements()) {
 								for (Condition refinement : policy.getRules().get(0).getAction().getRefinements()) {
 									switch (refinement.getLeftOperand()) {
-										case DELAYPERIOD:
+										case DELAY:
 											String delayPeriod = ((Condition) refinement).getRightOperand().getValue();
 											Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(delayPeriod);
 											translation = translation.concat("The Data Consumer has to wait " + d.getValue() + " " +
 													d.getTimeUnit().toString().toLowerCase() + ", before exercising the duty (the Data Provider's demand).\n");
 											break;
-										case DATETIME:
+										case DATE_TIME:
 											String dateTimeRefinement = ((Condition) refinement).getRightOperand().getValue();
 											translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider at " + dateTimeRefinement + ".\n");
 											break;

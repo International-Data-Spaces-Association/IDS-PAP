@@ -24,7 +24,7 @@ public class OdrlCreator {
 		{
 			if(null != odrlPolicy.getRules().get(0).getAction().getRefinements()) {
 				for (Condition refinement : odrlPolicy.getRules().get(0).getAction().getRefinements()) {
-					updateTimeUnitValue(refinement, LeftOperand.DELAYPERIOD);
+					updateTimeUnitValue(refinement, LeftOperand.DELAY);
 				}
 			}
 		}
@@ -33,7 +33,7 @@ public class OdrlCreator {
 		{
 			if(null != odrlPolicy.getRules().get(0).getConstraints()) {
 				for (Condition constraint : odrlPolicy.getRules().get(0).getConstraints()) {
-					updateTimeUnitValue(constraint, LeftOperand.ELAPSEDTIME);
+					updateTimeUnitValue(constraint, LeftOperand.ELAPSED_TIME);
 				}
 			}
 		}
@@ -47,7 +47,7 @@ public class OdrlCreator {
 		if (refinement.getLeftOperand().equals(delayperiod)) {
 			if (null != refinement.getRightOperand().getEntities()) {
 				for (RightOperandEntity entity : refinement.getRightOperand().getEntities()) {
-					if (entity.getEntityType().equals(EntityType.DURATION)) {
+					if (entity.getEntityType().equals(EntityType.HASDURATION)) {
 						String value = entity.getValue();
 						if (value != null && !value.isEmpty()) {
 							String timeUnit = "";

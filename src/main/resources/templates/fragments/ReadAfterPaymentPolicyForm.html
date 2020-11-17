@@ -30,7 +30,7 @@
 
   <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].constraints != null )}">
     <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].constraints}">
-      <div th:if="${(condition?.leftOperand?.name() == 'PAYAMOUNT')}">
+      <div th:if="${(condition?.leftOperand?.name() == 'PAY_AMOUNT')}">
         <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].type}" />
         <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].operator}" />
         <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].unit}" />

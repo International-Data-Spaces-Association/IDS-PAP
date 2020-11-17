@@ -240,13 +240,18 @@ public class OdrlPapUiController {
 	  @RequestMapping("/policy/DeleteAfterUsagePeriodPolicyForm")
 	  public String deletePolicyAfterUsagePeriod(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		  RightOperand delayPeriodRightOperand = new RightOperand();
-		  delayPeriodRightOperand.setType(RightOperandType.DURATION);
-		  Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAYPERIOD, Operator.EQUALS, delayPeriodRightOperand, "");
-		  //TODO
-		  //delayPeriodRefinement.setTimeUnit(TimeUnit.HOURS);
+		  delayPeriodRightOperand.setType(RightOperandType.DURATIONENTITY);
+		  RightOperandEntity hasDurationEntity = new RightOperandEntity();
+		  hasDurationEntity.setEntityType(EntityType.HASDURATION);
+		  hasDurationEntity.setDataType(RightOperandType.DURATION);
+		  hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
+		  ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
+		  durationEntities.add(hasDurationEntity);
+		  delayPeriodRightOperand.setEntities(durationEntities);
+		  Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.EQUALS, delayPeriodRightOperand, "");
 		  RightOperand dateTimeRightOperand = new RightOperand();
-		  dateTimeRightOperand.setType(RightOperandType.DATETIME);
-		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATETIME, Operator.EQUALS, dateTimeRightOperand, "");
+		  dateTimeRightOperand.setType(RightOperandType.DATETIMESTAMP);
+		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.EQUALS, dateTimeRightOperand, "");
 		  List<Condition> refinements = new ArrayList<>();
 		  refinements.add(delayPeriodRefinement);
 		  refinements.add(dateTimeRefinement);
@@ -287,30 +292,30 @@ public class OdrlPapUiController {
 	  @RequestMapping("/policy/ReadDataIntervalPolicyForm")
 	  public String provideInterval(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		  RightOperand elapsedTimeRightOperand = new RightOperand();
-		  elapsedTimeRightOperand.setType(RightOperandType.IDS_DURATION);
+		  elapsedTimeRightOperand.setType(RightOperandType.DURATIONENTITY);
 		  RightOperandEntity hasDurationEntity = new RightOperandEntity();
-		  hasDurationEntity.setEntityType(EntityType.DURATION);
+		  hasDurationEntity.setEntityType(EntityType.HASDURATION);
 		  hasDurationEntity.setDataType(RightOperandType.DURATION);
 		  hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
 		  ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
 		  durationEntities.add(hasDurationEntity);
 		  elapsedTimeRightOperand.setEntities(durationEntities);
-		  Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSEDTIME, Operator.LESS_EQUAL, elapsedTimeRightOperand, "");
+		  Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.LESS_EQUAL, elapsedTimeRightOperand, "");
 
 		  RightOperand rightOperand = new RightOperand();
-		  rightOperand.setType(RightOperandType.IDS_INTERVAL);
+		  rightOperand.setType(RightOperandType.INTERVAL);
 		  RightOperandEntity beginEntity = new RightOperandEntity();
 		  beginEntity.setEntityType(EntityType.BEGIN);
-		  beginEntity.setDataType(RightOperandType.DATETIME);
+		  beginEntity.setDataType(RightOperandType.DATETIMESTAMP);
 		  RightOperandEntity endEntity = new RightOperandEntity();
 		  endEntity.setEntityType(EntityType.END);
-		  endEntity.setDataType(RightOperandType.DATETIME);
+		  endEntity.setDataType(RightOperandType.DATETIMESTAMP);
 		  ArrayList<RightOperandEntity> entities = new ArrayList<>();
 		  entities.add(beginEntity);
 		  entities.add(endEntity);
 		  rightOperand.setEntities(entities);
 
-		  Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.EQUALS, rightOperand, "");
+		  Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQUALS, rightOperand, "");
 		  List<Condition> constraints = new ArrayList<>();
 		  constraints.add(elapsedTimeConstraint);
 		  constraints.add(timeIntervalCondition);
@@ -331,8 +336,8 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/InhibitReadDataIntervalPolicyForm")
 	public String inhibitInterval(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
-		rightOperand.setType(RightOperandType.DATETIME);
-		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.EQUALS, rightOperand, "");
+		rightOperand.setType(RightOperandType.DATETIMESTAMP);
+		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQUALS, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(timeIntervalCondition);
 		Action useAction = new Action(ActionType.USE);
@@ -352,8 +357,8 @@ public class OdrlPapUiController {
 	@RequestMapping("/policy/ReadAfterPaymentPolicyForm")
 	public String provideAfterPayment(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
-		rightOperand.setType(RightOperandType.DECIMAL);
-		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAYAMOUNT, Operator.EQUALS, rightOperand, "");
+		rightOperand.setType(RightOperandType.DOUBLE);
+		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQUALS, rightOperand, "");
 		paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(paymentCondition);
@@ -426,7 +431,7 @@ public class OdrlPapUiController {
 		List<Condition> refinements = new ArrayList<>();
 		refinements.add(thirdPartyRefinement);
 		Action distributeAction = new Action(ActionType.DISTRIBUTE);
-		Action nextPolicyDutyAction = new Action(ActionType.NEXTPOLICY);
+		Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
 		nextPolicyDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
 		Rule preobligation = new Rule(RuleType.PREOBLIGATION, nextPolicyDutyAction);
@@ -570,12 +575,22 @@ public class OdrlPapUiController {
 		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, eventRightOperand, "");
 
 		RightOperand rightOperand = new RightOperand();
-		rightOperand.setType(RightOperandType.DATETIME);
-		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.EQUALS, rightOperand, "");
+		rightOperand.setType(RightOperandType.INTERVAL);
+		RightOperandEntity beginEntity = new RightOperandEntity();
+		beginEntity.setEntityType(EntityType.BEGIN);
+		beginEntity.setDataType(RightOperandType.DATETIMESTAMP);
+		RightOperandEntity endEntity = new RightOperandEntity();
+		endEntity.setEntityType(EntityType.END);
+		endEntity.setDataType(RightOperandType.DATETIMESTAMP);
+		ArrayList<RightOperandEntity> entities = new ArrayList<>();
+		entities.add(beginEntity);
+		entities.add(endEntity);
+		rightOperand.setEntities(entities);
+		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQUALS, rightOperand, "");
 
 		RightOperand paymentRightOperand = new RightOperand();
 		paymentRightOperand.setType(RightOperandType.DECIMAL);
-		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAYAMOUNT, Operator.EQUALS, paymentRightOperand, "");
+		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQUALS, paymentRightOperand, "");
 		paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
 
 		List<Condition> constraints = new ArrayList<>();
