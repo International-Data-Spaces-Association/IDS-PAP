@@ -85,12 +85,14 @@
             if ($("#permissionDurationValue").is(":checked")) {
                 $("#permissionDurationBox").removeAttr("disabled");
                 $("#permissionDurationUnitBox").removeAttr("disabled");
+                $("#permissionBeginTime").removeAttr("disabled");
                 $("#permissionStartTime").attr("disabled", "disabled");
                 $("#permissionEndTime").attr("disabled", "disabled");
                 $("#permissionDurationBox").focus();
             } else if ($("#permissionTimeValue").is(":checked")) {
                 $("#permissionDurationBox").attr("disabled", "disabled");
                 $("#permissionDurationUnitBox").attr("disabled", "disabled");
+                $("#permissionBeginTime").attr("disabled", "disabled");
                 $("#permissionStartTime").removeAttr("disabled");
                 $("#permissionEndTime").removeAttr("disabled");
                 $("#permissionStartTime").focus();
@@ -163,6 +165,20 @@
     });
 
     $(function () {
+        $("input[name='elapsedTimeCheckboxInput']").click(function () {
+            if ($("#elapsedTimeCheckbox").is(":checked")) {
+                $("#beginTimeInput").removeAttr("disabled");
+                $("#durationInput").removeAttr("disabled");
+                $("#timeUnitInput").removeAttr("disabled");
+            } else {
+                $("#beginTimeInput").attr("disabled", "disabled");
+                $("#durationInput").attr("disabled", "disabled");
+                $("#timeUnitInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
         $("input[name='timeIntervalCheckboxInput']").click(function () {
             if ($("#timeIntervalCheckbox").is(":checked")) {
                 $("#startTimeInput").removeAttr("disabled");
@@ -173,6 +189,7 @@
             }
         });
     });
+
 
     $(function () {
         $("input[name='paymentCheckboxInput']").click(function () {
@@ -185,6 +202,34 @@
                 $("#paymentContractInput").attr("disabled", "disabled");
             }
         });
+    });
+
+	// permission duration begin time picker
+    $('input[id="permissionBeginTime"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": false,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "startDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New start time selected: ' + start.toISOString());
+    });
+
+    	// Complex policy duration begin time picker
+    $('input[id="beginTimeInput"]').daterangepicker({
+        "singleDatePicker": true,
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "autoApply": false,
+        locale: {
+            format: 'YYYY-MM-DDTHH:mm:ss'
+            },
+        "startDate": Date.now()
+    }, function(start, end, label) {
+      console.log('New start time selected: ' + start.toISOString());
     });
 
 	// permission start time picker
@@ -242,6 +287,7 @@
     }, function(start, end, label) {
       console.log('New end time selected: ' + end.toISOString());
     });
+
 
     	//prohibition end time picker
     $('input[id="prohibitionEndTime"]').daterangepicker({

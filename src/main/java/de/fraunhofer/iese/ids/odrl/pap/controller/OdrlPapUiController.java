@@ -293,25 +293,29 @@ public class OdrlPapUiController {
 	  public String provideInterval(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		  RightOperand elapsedTimeRightOperand = new RightOperand();
 		  elapsedTimeRightOperand.setType(RightOperandType.DURATIONENTITY);
+		  RightOperandEntity beginEntity = new RightOperandEntity();
+		  beginEntity.setEntityType(EntityType.BEGIN);
+		  beginEntity.setDataType(RightOperandType.DATETIMESTAMP);
 		  RightOperandEntity hasDurationEntity = new RightOperandEntity();
 		  hasDurationEntity.setEntityType(EntityType.HASDURATION);
 		  hasDurationEntity.setDataType(RightOperandType.DURATION);
 		  hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
 		  ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
+		  durationEntities.add(beginEntity);
 		  durationEntities.add(hasDurationEntity);
 		  elapsedTimeRightOperand.setEntities(durationEntities);
 		  Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.LESS_EQUAL, elapsedTimeRightOperand, "");
 
 		  RightOperand rightOperand = new RightOperand();
 		  rightOperand.setType(RightOperandType.INTERVAL);
-		  RightOperandEntity beginEntity = new RightOperandEntity();
-		  beginEntity.setEntityType(EntityType.BEGIN);
-		  beginEntity.setDataType(RightOperandType.DATETIMESTAMP);
+		  RightOperandEntity startEntity = new RightOperandEntity();
+		  startEntity.setEntityType(EntityType.BEGIN);
+		  startEntity.setDataType(RightOperandType.DATETIMESTAMP);
 		  RightOperandEntity endEntity = new RightOperandEntity();
 		  endEntity.setEntityType(EntityType.END);
 		  endEntity.setDataType(RightOperandType.DATETIMESTAMP);
 		  ArrayList<RightOperandEntity> entities = new ArrayList<>();
-		  entities.add(beginEntity);
+		  entities.add(startEntity);
 		  entities.add(endEntity);
 		  rightOperand.setEntities(entities);
 
@@ -574,16 +578,31 @@ public class OdrlPapUiController {
 		eventRightOperand.setType(RightOperandType.ANYURI);
 		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, eventRightOperand, "");
 
-		RightOperand rightOperand = new RightOperand();
-		rightOperand.setType(RightOperandType.INTERVAL);
+		RightOperand elapsedTimeRightOperand = new RightOperand();
+		elapsedTimeRightOperand.setType(RightOperandType.DURATIONENTITY);
 		RightOperandEntity beginEntity = new RightOperandEntity();
 		beginEntity.setEntityType(EntityType.BEGIN);
 		beginEntity.setDataType(RightOperandType.DATETIMESTAMP);
+		RightOperandEntity hasDurationEntity = new RightOperandEntity();
+		hasDurationEntity.setEntityType(EntityType.HASDURATION);
+		hasDurationEntity.setDataType(RightOperandType.DURATION);
+		hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
+		ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
+		durationEntities.add(beginEntity);
+		durationEntities.add(hasDurationEntity);
+		elapsedTimeRightOperand.setEntities(durationEntities);
+		Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.LESS_EQUAL, elapsedTimeRightOperand, "");
+
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.INTERVAL);
+		RightOperandEntity startEntity = new RightOperandEntity();
+		startEntity.setEntityType(EntityType.BEGIN);
+		startEntity.setDataType(RightOperandType.DATETIMESTAMP);
 		RightOperandEntity endEntity = new RightOperandEntity();
 		endEntity.setEntityType(EntityType.END);
 		endEntity.setDataType(RightOperandType.DATETIMESTAMP);
 		ArrayList<RightOperandEntity> entities = new ArrayList<>();
-		entities.add(beginEntity);
+		entities.add(startEntity);
 		entities.add(endEntity);
 		rightOperand.setEntities(entities);
 		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQUALS, rightOperand, "");
@@ -600,6 +619,7 @@ public class OdrlPapUiController {
 		constraints.add(eventConstraint);
 		constraints.add(timeIntervalCondition);
 		constraints.add(paymentCondition);
+		constraints.add(elapsedTimeConstraint);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(constraints);
