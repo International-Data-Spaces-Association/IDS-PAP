@@ -204,6 +204,32 @@
         });
     });
 
+    $(function () {
+        $("input[name='specifyBeginComplexCheckboxInput']").click(function () {
+            if ($("#specifyBeginComplexCheckbox").is(":checked")) {
+                $("#beginTimeInput").removeAttr("disabled");
+                $("#beginTimeInput").attr("type", "text");
+            } else {
+                $("#beginTimeInput").attr("disabled", "disabled");
+                $("#beginTimeInput").attr("type", "hidden");
+            }
+        });
+    });
+
+
+    $(function () {
+        $("input[name='specifyBeginTimeCheckboxInput']").click(function () {
+            if ($("#specifyBeginTimeCheckbox").is(":checked")) {
+                $("#permissionBeginTime").removeAttr("disabled");
+                $("#permissionBeginTime").attr("type", "text");
+            } else {
+                $("#permissionBeginTime").attr("disabled", "disabled");
+                $("#permissionBeginTime").attr("type", "hidden");
+            }
+        });
+    });
+
+
 	// permission duration begin time picker
     $('input[id="permissionBeginTime"]').daterangepicker({
         "singleDatePicker": true,
@@ -213,7 +239,7 @@
         locale: {
             format: 'YYYY-MM-DDTHH:mm:ss'
             },
-        "startDate": Date.now()
+        //"startDate": Date.now()
     }, function(start, end, label) {
       console.log('New start time selected: ' + start.toISOString());
     });
