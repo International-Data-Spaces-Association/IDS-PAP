@@ -72,7 +72,7 @@ public class OdrlPapUiController {
 	  public String providePurposePolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		  RightOperand rightOperand = new RightOperand();
 		  rightOperand.setType(RightOperandType.ANYURI);
-		  Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQUALS, rightOperand, "");
+		  Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQ, rightOperand, "");
 		  List<Condition> constraints = new ArrayList<>();
 		  constraints.add(purposeConstraint);
 		  Action useAction = new Action(ActionType.USE);
@@ -93,7 +93,7 @@ public class OdrlPapUiController {
 	public String inhibitPurposePolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQUALS, rightOperand, "");
+		Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(purposeConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -114,7 +114,7 @@ public class OdrlPapUiController {
 	public String provideSystemPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQUALS, rightOperand, "");
+		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(systemConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -135,7 +135,7 @@ public class OdrlPapUiController {
 	public String inhibitSystemPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQUALS, rightOperand, "");
+		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(systemConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -156,7 +156,7 @@ public class OdrlPapUiController {
 	public String provideLocationPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQUALS, rightOperand, "");
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(locationConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -177,7 +177,7 @@ public class OdrlPapUiController {
 	public String inhibitLocationPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQUALS, rightOperand, "");
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(locationConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -199,7 +199,7 @@ public class OdrlPapUiController {
 
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, rightOperand, "");
+		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(eventConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -220,7 +220,7 @@ public class OdrlPapUiController {
 	public String inhibitEventPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, rightOperand, "");
+		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(eventConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -248,10 +248,10 @@ public class OdrlPapUiController {
 		  ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
 		  durationEntities.add(hasDurationEntity);
 		  delayPeriodRightOperand.setEntities(durationEntities);
-		  Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.EQUALS, delayPeriodRightOperand, "");
+		  Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, delayPeriodRightOperand, "");
 		  RightOperand dateTimeRightOperand = new RightOperand();
 		  dateTimeRightOperand.setType(RightOperandType.DATETIMESTAMP);
-		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.EQUALS, dateTimeRightOperand, "");
+		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.TEMPORAL_EQUALS, dateTimeRightOperand, "");
 		  List<Condition> refinements = new ArrayList<>();
 		  refinements.add(delayPeriodRefinement);
 		  refinements.add(dateTimeRefinement);
@@ -304,7 +304,7 @@ public class OdrlPapUiController {
 		  durationEntities.add(beginEntity);
 		  durationEntities.add(hasDurationEntity);
 		  elapsedTimeRightOperand.setEntities(durationEntities);
-		  Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.LESS_EQUAL, elapsedTimeRightOperand, "");
+		  Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.SHORTER_EQ, elapsedTimeRightOperand, "");
 
 		  RightOperand rightOperand = new RightOperand();
 		  rightOperand.setType(RightOperandType.INTERVAL);
@@ -318,8 +318,7 @@ public class OdrlPapUiController {
 		  entities.add(startEntity);
 		  entities.add(endEntity);
 		  rightOperand.setEntities(entities);
-
-		  Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQUALS, rightOperand, "");
+		  Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.TEMPORAL_EQUALS, rightOperand, "");
 		  List<Condition> constraints = new ArrayList<>();
 		  constraints.add(elapsedTimeConstraint);
 		  constraints.add(timeIntervalCondition);
@@ -341,7 +340,7 @@ public class OdrlPapUiController {
 	public String inhibitInterval(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DATETIMESTAMP);
-		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQUALS, rightOperand, "");
+		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(timeIntervalCondition);
 		Action useAction = new Action(ActionType.USE);
@@ -362,7 +361,7 @@ public class OdrlPapUiController {
 	public String provideAfterPayment(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DOUBLE);
-		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQUALS, rightOperand, "");
+		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQ, rightOperand, "");
 		paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(paymentCondition);
@@ -384,7 +383,7 @@ public class OdrlPapUiController {
 	public String logPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEMDEVICE, Operator.EQUALS, rightOperand, "");
+		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEMDEVICE, Operator.EQ, rightOperand, "");
 		List<Condition> refinements = new ArrayList<>();
 		refinements.add(systemDeviceRefinement);
 		Action useAction = new Action(ActionType.USE);
@@ -410,7 +409,7 @@ public class OdrlPapUiController {
 	public String encodingPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition encodingConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ENCODING, Operator.EQUALS, rightOperand, "");
+		Condition encodingConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ENCODING, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(encodingConstraint);
 		Action distributeAction = new Action(ActionType.DISTRIBUTE);
@@ -431,7 +430,7 @@ public class OdrlPapUiController {
 	public String distributeToThirdPartyPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGETPOLICY, Operator.EQUALS, rightOperand, "");
+		Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGETPOLICY, Operator.EQ, rightOperand, "");
 		List<Condition> refinements = new ArrayList<>();
 		refinements.add(thirdPartyRefinement);
 		Action distributeAction = new Action(ActionType.DISTRIBUTE);
@@ -489,7 +488,7 @@ public class OdrlPapUiController {
 		replaceWithParameter.setType(RightOperandType.STRING);
 		RightOperand modificationMethodRightOperand = new RightOperand();
 		modificationMethodRightOperand.setType(RightOperandType.ANYURI);
-		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD, Operator.EQUALS, modificationMethodRightOperand, "");
+		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD, Operator.EQ, modificationMethodRightOperand, "");
 		modificationMethodRefinement.setReplaceWith(replaceWithParameter);
 		List<Condition> refinements = new ArrayList<>();
 		refinements.add(modificationMethodRefinement);
@@ -516,7 +515,7 @@ public class OdrlPapUiController {
 	public String countPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DECIMAL);
-		Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.EQUALS, rightOperand, "");
+		Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.EQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(countCondition);
 		Action useAction = new Action(ActionType.USE);
@@ -538,7 +537,7 @@ public class OdrlPapUiController {
 	  	RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		rightOperand.setValue("http://example.com/party/my-party");
-		Condition informedPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.INFORMEDPARTY, Operator.EQUALS, rightOperand, "");
+		Condition informedPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.INFORMEDPARTY, Operator.EQ, rightOperand, "");
 		List<Condition> refinements = new ArrayList<>();
 		refinements.add(informedPartyRefinement);
 		Action useAction = new Action(ActionType.USE);
@@ -564,19 +563,19 @@ public class OdrlPapUiController {
 	public String complexPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand locationRightOperand = new RightOperand();
 		locationRightOperand.setType(RightOperandType.ANYURI);
-		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQUALS, locationRightOperand, "");
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQ, locationRightOperand, "");
 
 		RightOperand systemRightOperand = new RightOperand();
 		systemRightOperand.setType(RightOperandType.ANYURI);
-		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQUALS, systemRightOperand, "");
+		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ, systemRightOperand, "");
 
 		RightOperand purposeRightOperand = new RightOperand();
 		purposeRightOperand.setType(RightOperandType.ANYURI);
-		Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQUALS, purposeRightOperand, "");
+		Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQ, purposeRightOperand, "");
 
 		RightOperand eventRightOperand = new RightOperand();
 		eventRightOperand.setType(RightOperandType.ANYURI);
-		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, eventRightOperand, "");
+		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQ, eventRightOperand, "");
 
 		RightOperand elapsedTimeRightOperand = new RightOperand();
 		elapsedTimeRightOperand.setType(RightOperandType.DURATIONENTITY);
@@ -591,7 +590,7 @@ public class OdrlPapUiController {
 		durationEntities.add(beginEntity);
 		durationEntities.add(hasDurationEntity);
 		elapsedTimeRightOperand.setEntities(durationEntities);
-		Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.LESS_EQUAL, elapsedTimeRightOperand, "");
+		Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.SHORTER_EQ, elapsedTimeRightOperand, "");
 
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.INTERVAL);
@@ -605,11 +604,11 @@ public class OdrlPapUiController {
 		entities.add(startEntity);
 		entities.add(endEntity);
 		rightOperand.setEntities(entities);
-		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQUALS, rightOperand, "");
+		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.TEMPORAL_EQUALS, rightOperand, "");
 
 		RightOperand paymentRightOperand = new RightOperand();
 		paymentRightOperand.setType(RightOperandType.DECIMAL);
-		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQUALS, paymentRightOperand, "");
+		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQ, paymentRightOperand, "");
 		paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
 
 		List<Condition> constraints = new ArrayList<>();
