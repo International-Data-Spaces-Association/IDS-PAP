@@ -139,14 +139,14 @@ public class OdrlTranslator {
 					}
 
 					Action dutyAction = null;
-					if(null != policy.getRules().get(0).getPreobligations() && policy.getRules().get(0).getPreobligations().size() > 0)
+					if(null != policy.getRules().get(0).getPreduties() && policy.getRules().get(0).getPreduties().size() > 0)
 					{
-						dutyAction = (Action) policy.getRules().get(0).getPreobligations().get(0).getAction();
+						dutyAction = (Action) policy.getRules().get(0).getPreduties().get(0).getAction();
 					}
 
-					if(null != policy.getRules().get(0).getPostobligations() && policy.getRules().get(0).getPostobligations().size() > 0)
+					if(null != policy.getRules().get(0).getPostduties() && policy.getRules().get(0).getPostduties().size() > 0)
 					{
-						dutyAction = (Action) policy.getRules().get(0).getPostobligations().get(0).getAction();
+						dutyAction = (Action) policy.getRules().get(0).getPostduties().get(0).getAction();
 					}
 
 					if(null != dutyAction) {

@@ -30,6 +30,7 @@
 
   <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].constraints != null )}">
     <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].constraints}">
+      <hr>
       <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].type}" />
       <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].operator}" />
       <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].leftOperand}" />

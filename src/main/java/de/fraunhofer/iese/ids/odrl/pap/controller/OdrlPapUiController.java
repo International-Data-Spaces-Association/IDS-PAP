@@ -274,10 +274,10 @@ public class OdrlPapUiController {
 		Action useAction = new Action(ActionType.USE);
 		Action deleteDutyAction = new Action(ActionType.DELETE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, deleteDutyAction);
+		Rule postobligation = new Rule(RuleType.POSTDUTY, deleteDutyAction);
 		List<Rule> postobligations = new ArrayList<>();
 		postobligations.add(postobligation);
-		rule.setPostobligations(postobligations);
+		rule.setPostduties(postobligations);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -390,10 +390,10 @@ public class OdrlPapUiController {
 		Action logDutyAction = new Action(ActionType.LOG);
 		logDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, logDutyAction);
+		Rule postobligation = new Rule(RuleType.POSTDUTY, logDutyAction);
 		List<Rule> postobligations = new ArrayList<>();
 		postobligations.add(postobligation);
-		rule.setPostobligations(postobligations);
+		rule.setPostduties(postobligations);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -437,10 +437,10 @@ public class OdrlPapUiController {
 		Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
 		nextPolicyDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
-		Rule preobligation = new Rule(RuleType.PREOBLIGATION, nextPolicyDutyAction);
+		Rule preobligation = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
 		List<Rule> preobligations = new ArrayList<>();
 		preobligations.add(preobligation);
-		rule.setPreobligations(preobligations);
+		rule.setPreduties(preobligations);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -496,10 +496,10 @@ public class OdrlPapUiController {
 		Action anonymizeDutyAction = new Action(ActionType.ANONYMIZE);
 		anonymizeDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule preobligation = new Rule(RuleType.PREOBLIGATION, anonymizeDutyAction);
+		Rule preobligation = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
 		List<Rule> preobligations = new ArrayList<>();
 		preobligations.add(preobligation);
-		rule.setPreobligations(preobligations);
+		rule.setPreduties(preobligations);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -515,12 +515,19 @@ public class OdrlPapUiController {
 	public String countPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DECIMAL);
-		Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.EQ, rightOperand, "");
+		Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ, rightOperand, "");
 		List<Condition> constraints = new ArrayList<>();
 		constraints.add(countCondition);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(constraints);
+
+		Action countDutyAction = new Action(ActionType.COUNT);
+		Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
+		List<Rule> postobligations = new ArrayList<>();
+		postobligations.add(postobligation);
+		rule.setPostduties(postobligations);
+
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -544,10 +551,10 @@ public class OdrlPapUiController {
 		Action informDutyAction = new Action(ActionType.INFORM);
 		informDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, informDutyAction);
+		Rule postobligation = new Rule(RuleType.POSTDUTY, informDutyAction);
 		List<Rule> postobligations = new ArrayList<>();
 		postobligations.add(postobligation);
-		rule.setPostobligations(postobligations);
+		rule.setPostduties(postobligations);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
