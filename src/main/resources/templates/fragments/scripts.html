@@ -154,6 +154,17 @@
     });
 
     $(function () {
+        $("input[name='countCheckboxInput']").click(function () {
+            if ($("#countCheckbox").is(":checked")) {
+                $("#countInput").removeAttr("disabled");
+                $("#countInput").focus();
+            } else {
+                $("#countInput").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $(function () {
         $("input[name='eventCheckboxInput']").click(function () {
             if ($("#eventCheckbox").is(":checked")) {
                 $("#eventInput").removeAttr("disabled");

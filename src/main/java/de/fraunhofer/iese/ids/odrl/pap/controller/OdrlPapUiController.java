@@ -613,6 +613,10 @@ public class OdrlPapUiController {
 		rightOperand.setEntities(entities);
 		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.TEMPORAL_EQUALS, rightOperand, "");
 
+		RightOperand countRightOperand = new RightOperand();
+		countRightOperand.setType(RightOperandType.DECIMAL);
+		Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ, countRightOperand, "");
+
 		RightOperand paymentRightOperand = new RightOperand();
 		paymentRightOperand.setType(RightOperandType.DECIMAL);
 		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQ, paymentRightOperand, "");
@@ -623,6 +627,7 @@ public class OdrlPapUiController {
 		constraints.add(systemConstraint);
 		constraints.add(purposeConstraint);
 		constraints.add(eventConstraint);
+		constraints.add(countCondition);
 		constraints.add(timeIntervalCondition);
 		constraints.add(paymentCondition);
 		constraints.add(elapsedTimeConstraint);

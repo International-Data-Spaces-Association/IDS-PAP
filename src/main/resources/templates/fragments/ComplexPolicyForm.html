@@ -63,6 +63,11 @@
         <p id="event">Event*: <input id="eventInput" required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-event:exhibition" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" disabled="disabled"/></p>
       </div>
 
+      <div th:if="${(condition?.leftOperand?.name() == 'COUNT')}">
+        <input type="checkbox" id="countCheckbox" name="countCheckboxInput"> Restrict Number of Usage <br>
+        <p>Count*: <input id="countInput" required="required" type="text" size="40" placeholder=" e.g. 10" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" disabled="disabled"/></p>
+      </div>
+
       <div th:if="${(condition?.leftOperand?.name() == 'POLICY_EVALUATION_TIME')}">
         <input type="checkbox" id="timeIntervalCheckbox" name="timeIntervalCheckboxInput"> Restrict Time Interval<br>
         <div th:if="${(condition?.rightOperand?.entities != null )}">
