@@ -275,9 +275,9 @@ public class OdrlPapUiController {
 		Action deleteDutyAction = new Action(ActionType.DELETE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, deleteDutyAction);
-		List<Rule> postobligations = new ArrayList<>();
-		postobligations.add(postobligation);
-		rule.setPostduties(postobligations);
+		List<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		rule.setPostduties(postDuties);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -391,9 +391,9 @@ public class OdrlPapUiController {
 		logDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, logDutyAction);
-		List<Rule> postobligations = new ArrayList<>();
-		postobligations.add(postobligation);
-		rule.setPostduties(postobligations);
+		List<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		rule.setPostduties(postDuties);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -437,10 +437,10 @@ public class OdrlPapUiController {
 		Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
 		nextPolicyDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
-		Rule preobligation = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
-		List<Rule> preobligations = new ArrayList<>();
-		preobligations.add(preobligation);
-		rule.setPreduties(preobligations);
+		Rule preDuties = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
+		List<Rule> preDutiess = new ArrayList<>();
+		preDutiess.add(preDuties);
+		rule.setPreduties(preDutiess);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -496,10 +496,10 @@ public class OdrlPapUiController {
 		Action anonymizeDutyAction = new Action(ActionType.ANONYMIZE);
 		anonymizeDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule preobligation = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
-		List<Rule> preobligations = new ArrayList<>();
-		preobligations.add(preobligation);
-		rule.setPreduties(preobligations);
+		Rule preDuties = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
+		List<Rule> preDutiess = new ArrayList<>();
+		preDutiess.add(preDuties);
+		rule.setPreduties(preDutiess);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
@@ -524,9 +524,9 @@ public class OdrlPapUiController {
 
 		Action countDutyAction = new Action(ActionType.COUNT);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
-		List<Rule> postobligations = new ArrayList<>();
-		postobligations.add(postobligation);
-		rule.setPostduties(postobligations);
+		List<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		rule.setPostduties(postDuties);
 
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
@@ -552,9 +552,9 @@ public class OdrlPapUiController {
 		informDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, informDutyAction);
-		List<Rule> postobligations = new ArrayList<>();
-		postobligations.add(postobligation);
-		rule.setPostduties(postobligations);
+		List<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		rule.setPostduties(postDuties);
 		List<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
