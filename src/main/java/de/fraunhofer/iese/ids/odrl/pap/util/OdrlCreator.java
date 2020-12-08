@@ -36,6 +36,15 @@ public class OdrlCreator {
 					updateTimeUnitValue(constraint, LeftOperand.ELAPSED_TIME);
 				}
 			}
+			if(null != odrlPolicy.getRules().get(0).getPostduties())
+			{
+				if(null != odrlPolicy.getRules().get(0).getPostduties().get(0).getAction().getRefinements())
+				{
+					for (Condition refinement : odrlPolicy.getRules().get(0).getPostduties().get(0).getAction().getRefinements()) {
+						updateTimeUnitValue(refinement, LeftOperand.DELAY);
+					}
+				}
+			}
 		}
 
 

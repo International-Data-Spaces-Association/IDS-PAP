@@ -251,7 +251,7 @@ public class OdrlPapUiController {
 		  Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, delayPeriodRightOperand, "");
 		  RightOperand dateTimeRightOperand = new RightOperand();
 		  dateTimeRightOperand.setType(RightOperandType.DATETIMESTAMP);
-		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.TEMPORAL_EQUALS, dateTimeRightOperand, "");
+		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.BEFORE, dateTimeRightOperand, "");
 		  List<Condition> refinements = new ArrayList<>();
 		  refinements.add(delayPeriodRefinement);
 		  refinements.add(dateTimeRefinement);
@@ -259,7 +259,7 @@ public class OdrlPapUiController {
 		  deleteAction.setRefinements(refinements);
 		  Rule rule = new Rule(RuleType.OBLIGATION, deleteAction);
 		  List<Rule> rules = new ArrayList<>();
-		rules.add(rule);
+		  rules.add(rule);
 		  Party consumer = new Party();
 		  consumer.setType(PartyType.CONSUMER);
 		  odrlPolicy.setConsumer(consumer);
@@ -271,8 +271,26 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/DeleteAfterUsagePolicyForm")
 	public String deletePolicyAfterUsage(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		Action useAction = new Action(ActionType.USE);
+		RightOperand delayPeriodRightOperand = new RightOperand();
+		delayPeriodRightOperand.setType(RightOperandType.DURATIONENTITY);
+		RightOperandEntity hasDurationEntity = new RightOperandEntity();
+		hasDurationEntity.setEntityType(EntityType.HASDURATION);
+		hasDurationEntity.setDataType(RightOperandType.DURATION);
+		hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
+		ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
+		durationEntities.add(hasDurationEntity);
+		delayPeriodRightOperand.setEntities(durationEntities);
+		Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, delayPeriodRightOperand, "");
+		RightOperand dateTimeRightOperand = new RightOperand();
+		dateTimeRightOperand.setType(RightOperandType.DATETIMESTAMP);
+		Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.BEFORE, dateTimeRightOperand, "");
+		List<Condition> refinements = new ArrayList<>();
+		refinements.add(delayPeriodRefinement);
+		refinements.add(dateTimeRefinement);
+
+	  	Action useAction = new Action(ActionType.USE);
 		Action deleteDutyAction = new Action(ActionType.DELETE);
+		deleteDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, deleteDutyAction);
 		List<Rule> postDuties = new ArrayList<>();
