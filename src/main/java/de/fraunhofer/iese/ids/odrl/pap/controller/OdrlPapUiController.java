@@ -41,7 +41,7 @@ public class OdrlPapUiController {
 	public String accessPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -57,7 +57,7 @@ public class OdrlPapUiController {
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
 
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -73,12 +73,12 @@ public class OdrlPapUiController {
 		  RightOperand rightOperand = new RightOperand();
 		  rightOperand.setType(RightOperandType.ANYURI);
 		  Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQ, rightOperand, "");
-		  List<Condition> constraints = new ArrayList<>();
+		  ArrayList<Condition> constraints = new ArrayList<>();
 		  constraints.add(purposeConstraint);
 		  Action useAction = new Action(ActionType.USE);
 		  Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		  rule.setConstraints(constraints);
-		  List<Rule> rules = new ArrayList<>();
+		  ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		  Party consumer = new Party();
 		  consumer.setType(PartyType.CONSUMER);
@@ -94,12 +94,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(purposeConstraint);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -115,12 +115,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(systemConstraint);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -136,12 +136,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(systemConstraint);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -157,12 +157,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(locationConstraint);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -178,12 +178,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(locationConstraint);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -200,12 +200,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(eventConstraint);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -221,12 +221,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(eventConstraint);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -252,13 +252,13 @@ public class OdrlPapUiController {
 		  RightOperand dateTimeRightOperand = new RightOperand();
 		  dateTimeRightOperand.setType(RightOperandType.DATETIMESTAMP);
 		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.BEFORE, dateTimeRightOperand, "");
-		  List<Condition> refinements = new ArrayList<>();
+		  ArrayList<Condition> refinements = new ArrayList<>();
 		  refinements.add(delayPeriodRefinement);
 		  refinements.add(dateTimeRefinement);
 		  Action deleteAction = new Action(ActionType.DELETE);
 		  deleteAction.setRefinements(refinements);
 		  Rule rule = new Rule(RuleType.OBLIGATION, deleteAction);
-		  List<Rule> rules = new ArrayList<>();
+		  ArrayList<Rule> rules = new ArrayList<>();
 		  rules.add(rule);
 		  Party consumer = new Party();
 		  consumer.setType(PartyType.CONSUMER);
@@ -284,7 +284,7 @@ public class OdrlPapUiController {
 		RightOperand dateTimeRightOperand = new RightOperand();
 		dateTimeRightOperand.setType(RightOperandType.DATETIMESTAMP);
 		Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.BEFORE, dateTimeRightOperand, "");
-		List<Condition> refinements = new ArrayList<>();
+		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(delayPeriodRefinement);
 		refinements.add(dateTimeRefinement);
 
@@ -293,10 +293,10 @@ public class OdrlPapUiController {
 		deleteDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, deleteDutyAction);
-		List<Rule> postDuties = new ArrayList<>();
+		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
 		rule.setPostduties(postDuties);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -337,13 +337,13 @@ public class OdrlPapUiController {
 		  entities.add(endEntity);
 		  rightOperand.setEntities(entities);
 		  Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.TEMPORAL_EQUALS, rightOperand, "");
-		  List<Condition> constraints = new ArrayList<>();
+		  ArrayList<Condition> constraints = new ArrayList<>();
 		  constraints.add(elapsedTimeConstraint);
 		  constraints.add(timeIntervalCondition);
 		  Action useAction = new Action(ActionType.USE);
 		  Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		  rule.setConstraints(constraints);
-		  List<Rule> rules = new ArrayList<>();
+		  ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		  Party consumer = new Party();
 		  consumer.setType(PartyType.CONSUMER);
@@ -359,12 +359,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DATETIMESTAMP);
 		Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.POLICY_EVALUATION_TIME, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(timeIntervalCondition);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PROHIBITION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -381,12 +381,12 @@ public class OdrlPapUiController {
 		rightOperand.setType(RightOperandType.DOUBLE);
 		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQ, rightOperand, "");
 		paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(paymentCondition);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -399,20 +399,26 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/LogAccessPolicyForm")
 	public String logPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
+		RightOperand logLevelRightOperand = new RightOperand();
+		logLevelRightOperand.setType(RightOperandType.STRING);
+		logLevelRightOperand.setValue(LogLevelType.DEBUG_LEVEL_LOGGING.toString());
+		//logLevelRightOperand.setLogLevelType(LogLevelType.DEBUG_LEVEL_LOGGING);
+		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.EQUALS, logLevelRightOperand, "");
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEMDEVICE, Operator.EQ, rightOperand, "");
-		List<Condition> refinements = new ArrayList<>();
+		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEM_DEVICE, Operator.SAME_AS, rightOperand, "");
+		ArrayList<Condition> refinements = new ArrayList<>();
+		refinements.add(logLevelRefinement);
 		refinements.add(systemDeviceRefinement);
 		Action useAction = new Action(ActionType.USE);
 		Action logDutyAction = new Action(ActionType.LOG);
 		logDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, logDutyAction);
-		List<Rule> postDuties = new ArrayList<>();
+		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
 		rule.setPostduties(postDuties);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -428,12 +434,12 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		Condition encodingConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ENCODING, Operator.EQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(encodingConstraint);
 		Action distributeAction = new Action(ActionType.DISTRIBUTE);
 		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -448,18 +454,18 @@ public class OdrlPapUiController {
 	public String distributeToThirdPartyPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGETPOLICY, Operator.EQ, rightOperand, "");
-		List<Condition> refinements = new ArrayList<>();
+		Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY, Operator.EQ, rightOperand, "");
+		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(thirdPartyRefinement);
 		Action distributeAction = new Action(ActionType.DISTRIBUTE);
 		Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
 		nextPolicyDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
 		Rule preDuties = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
-		List<Rule> preDutiess = new ArrayList<>();
+		ArrayList<Rule> preDutiess = new ArrayList<>();
 		preDutiess.add(preDuties);
 		rule.setPreduties(preDutiess);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -474,7 +480,7 @@ public class OdrlPapUiController {
 	public String inhibitPrintPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		Action printAction = new Action(ActionType.PRINT);
 		Rule rule = new Rule(RuleType.PROHIBITION, printAction);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -489,7 +495,7 @@ public class OdrlPapUiController {
 	public String anonymizeInRestolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		Action anonymizeAction = new Action(ActionType.ANONYMIZE);
 		Rule rule = new Rule(RuleType.OBLIGATION, anonymizeAction);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 	  	Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -508,17 +514,17 @@ public class OdrlPapUiController {
 		modificationMethodRightOperand.setType(RightOperandType.ANYURI);
 		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD, Operator.EQ, modificationMethodRightOperand, "");
 		modificationMethodRefinement.setReplaceWith(replaceWithParameter);
-		List<Condition> refinements = new ArrayList<>();
+		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(modificationMethodRefinement);
 		Action useAction = new Action(ActionType.USE);
 		Action anonymizeDutyAction = new Action(ActionType.ANONYMIZE);
 		anonymizeDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule preDuties = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
-		List<Rule> preDutiess = new ArrayList<>();
+		ArrayList<Rule> preDutiess = new ArrayList<>();
 		preDutiess.add(preDuties);
 		rule.setPreduties(preDutiess);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -534,7 +540,7 @@ public class OdrlPapUiController {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.DECIMAL);
 		Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ, rightOperand, "");
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(countCondition);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
@@ -542,11 +548,11 @@ public class OdrlPapUiController {
 
 		Action countDutyAction = new Action(ActionType.COUNT);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
-		List<Rule> postDuties = new ArrayList<>();
+		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
 		rule.setPostduties(postDuties);
 
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -563,17 +569,17 @@ public class OdrlPapUiController {
 		rightOperand.setType(RightOperandType.ANYURI);
 		rightOperand.setValue("http://example.com/party/my-party");
 		Condition informedPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.INFORMEDPARTY, Operator.EQ, rightOperand, "");
-		List<Condition> refinements = new ArrayList<>();
+		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(informedPartyRefinement);
 		Action useAction = new Action(ActionType.USE);
 		Action informDutyAction = new Action(ActionType.INFORM);
 		informDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, informDutyAction);
-		List<Rule> postDuties = new ArrayList<>();
+		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
 		rule.setPostduties(postDuties);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 		Party consumer = new Party();
 		consumer.setType(PartyType.CONSUMER);
@@ -640,7 +646,7 @@ public class OdrlPapUiController {
 		Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQ, paymentRightOperand, "");
 		paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
 
-		List<Condition> constraints = new ArrayList<>();
+		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(locationConstraint);
 		constraints.add(systemConstraint);
 		constraints.add(purposeConstraint);
@@ -652,7 +658,7 @@ public class OdrlPapUiController {
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(constraints);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 
 		Party consumer = new Party();
@@ -718,7 +724,7 @@ public class OdrlPapUiController {
 	  	basePolicy.setType(PolicyType.OFFER);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		List<Rule> rules = new ArrayList<>();
+		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 	  	basePolicy.setRules(rules);
 	  	basePolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/sample"));

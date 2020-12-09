@@ -5,10 +5,7 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperandEntity;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.EntityType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.*;
 
 public class OdrlCreator {
 	
@@ -24,7 +21,7 @@ public class OdrlCreator {
 		{
 			if(null != odrlPolicy.getRules().get(0).getAction().getRefinements()) {
 				for (Condition refinement : odrlPolicy.getRules().get(0).getAction().getRefinements()) {
-					updateTimeUnitValue(refinement, LeftOperand.DELAY);
+					updateToIDSValue(refinement);
 				}
 			}
 		}
@@ -33,7 +30,7 @@ public class OdrlCreator {
 		{
 			if(null != odrlPolicy.getRules().get(0).getConstraints()) {
 				for (Condition constraint : odrlPolicy.getRules().get(0).getConstraints()) {
-					updateTimeUnitValue(constraint, LeftOperand.ELAPSED_TIME);
+					updateToIDSValue(constraint);
 				}
 			}
 			if(null != odrlPolicy.getRules().get(0).getPostduties())
@@ -41,7 +38,7 @@ public class OdrlCreator {
 				if(null != odrlPolicy.getRules().get(0).getPostduties().get(0).getAction().getRefinements())
 				{
 					for (Condition refinement : odrlPolicy.getRules().get(0).getPostduties().get(0).getAction().getRefinements()) {
-						updateTimeUnitValue(refinement, LeftOperand.DELAY);
+						updateToIDSValue(refinement);
 					}
 				}
 			}
@@ -52,8 +49,8 @@ public class OdrlCreator {
 		return odrlPolicy;
 	}
 
-	private static void updateTimeUnitValue(Condition refinement, LeftOperand delayperiod) {
-		if (refinement.getLeftOperand().equals(delayperiod)) {
+	private static void updateToIDSValue(Condition refinement) {
+		if (refinement.getLeftOperand().equals(LeftOperand.DELAY) || refinement.getLeftOperand().equals(LeftOperand.ELAPSED_TIME) ) {
 			if (null != refinement.getRightOperand().getEntities()) {
 				for (RightOperandEntity entity : refinement.getRightOperand().getEntities()) {
 					if (entity.getEntityType().equals(EntityType.HASDURATION)) {
@@ -86,6 +83,12 @@ public class OdrlCreator {
 					}
 				}
 
+			}
+		}else if (refinement.getLeftOperand().equals(LeftOperand.LOG_LEVEL))
+		{
+			String value = refinement.getRightOperand().getValue();
+			if (value != null && !value.isEmpty()) {
+				refinement.getRightOperand().setValue(LogLevelType.valueOf(value).getType());
 			}
 		}
 	}

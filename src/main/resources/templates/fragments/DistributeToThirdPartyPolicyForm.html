@@ -32,7 +32,7 @@
 
   <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].preduties[0] != null ) and (odrlPolicy?.rules[0].preduties[0].action.refinements != null )}">
     <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].preduties[0].action.refinements}">
-      <div th:if="${(condition?.leftOperand?.name() == 'TARGETPOLICY')}">
+      <div th:if="${(condition?.leftOperand?.name() == 'TARGET_POLICY')}">
         <input type="hidden" th:field="*{rules[0].preduties[0].action.refinements[__${itemStat.index}__].type}" />
         <input type="hidden" th:field="*{rules[0].preduties[0].action.refinements[__${itemStat.index}__].operator}" />
         <input type="hidden" th:field="*{rules[0].preduties[0].action.refinements[__${itemStat.index}__].leftOperand}" />

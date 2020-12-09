@@ -175,7 +175,7 @@ public class OdrlTranslator {
 								if (null != dutyAction.getRefinements()) {
 									for (Condition refinement : dutyAction.getRefinements()) {
 										switch (refinement.getLeftOperand()) {
-											case SYSTEMDEVICE:
+											case SYSTEM_DEVICE:
 												String systemDevice = refinement.getRightOperand().getValue();
 												translation = translation.concat("The location to store the logs is " + getLastSplitElement(systemDevice) + " system.\n\n");
 												break;
@@ -205,7 +205,7 @@ public class OdrlTranslator {
 								if (null != dutyAction.getRefinements()) {
 									for (Condition refinement : dutyAction.getRefinements()) {
 										switch (refinement.getLeftOperand()) {
-											case TARGETPOLICY:
+											case TARGET_POLICY:
 												String thirdPartyValue = refinement.getRightOperand().getValue();
 												translation = translation.concat("This policy specifies that the policy to be sent to the third party is " +
 														getLastSplitElement(thirdPartyValue) + " .\n\n");
