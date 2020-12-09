@@ -49,10 +49,10 @@ public class OdrlCreator {
 		return odrlPolicy;
 	}
 
-	private static void updateToIDSValue(Condition refinement) {
-		if (refinement.getLeftOperand().equals(LeftOperand.DELAY) || refinement.getLeftOperand().equals(LeftOperand.ELAPSED_TIME) ) {
-			if (null != refinement.getRightOperand().getEntities()) {
-				for (RightOperandEntity entity : refinement.getRightOperand().getEntities()) {
+	private static void updateToIDSValue(Condition condition) {
+		if (condition.getLeftOperand().equals(LeftOperand.DELAY) || condition.getLeftOperand().equals(LeftOperand.ELAPSED_TIME) ) {
+			if (null != condition.getRightOperand().getEntities()) {
+				for (RightOperandEntity entity : condition.getRightOperand().getEntities()) {
 					if (entity.getEntityType().equals(EntityType.HASDURATION)) {
 						String value = entity.getValue();
 						if (value != null && !value.isEmpty()) {
@@ -84,11 +84,11 @@ public class OdrlCreator {
 				}
 
 			}
-		}else if (refinement.getLeftOperand().equals(LeftOperand.LOG_LEVEL))
+		}else if (condition.getLeftOperand().equals(LeftOperand.LOG_LEVEL) || condition.getLeftOperand().equals(LeftOperand.NOTIFICATION_LEVEL))
 		{
-			String value = refinement.getRightOperand().getValue();
+			String value = condition.getRightOperand().getValue();
 			if (value != null && !value.isEmpty()) {
-				refinement.getRightOperand().setValue(LogLevelType.valueOf(value).getType());
+				condition.getRightOperand().setValue(LogLevelType.valueOf(value).getType());
 			}
 		}
 	}

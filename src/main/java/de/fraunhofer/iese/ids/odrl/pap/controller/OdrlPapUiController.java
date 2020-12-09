@@ -401,8 +401,7 @@ public class OdrlPapUiController {
 	public String logPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand logLevelRightOperand = new RightOperand();
 		logLevelRightOperand.setType(RightOperandType.STRING);
-		logLevelRightOperand.setValue(LogLevelType.DEBUG_LEVEL_LOGGING.toString());
-		//logLevelRightOperand.setLogLevelType(LogLevelType.DEBUG_LEVEL_LOGGING);
+		logLevelRightOperand.setValue(LogLevelType.DEBUG_LEVEL.toString());
 		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.EQUALS, logLevelRightOperand, "");
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
@@ -565,17 +564,22 @@ public class OdrlPapUiController {
 
 	@RequestMapping("/policy/InformPolicyForm")
 	public String policy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
+		RightOperand notificationLevelRightOperand = new RightOperand();
+		notificationLevelRightOperand.setType(RightOperandType.STRING);
+		notificationLevelRightOperand.setValue(LogLevelType.DEBUG_LEVEL.toString());
+		Condition notificationLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.NOTIFICATION_LEVEL, Operator.EQUALS, notificationLevelRightOperand, "");
 	  	RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		rightOperand.setValue("http://example.com/party/my-party");
-		Condition informedPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.INFORMEDPARTY, Operator.EQ, rightOperand, "");
+		Condition recipientRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.RECIPIENT, Operator.EQUALS, rightOperand, "");
 		ArrayList<Condition> refinements = new ArrayList<>();
-		refinements.add(informedPartyRefinement);
+		refinements.add(notificationLevelRefinement);
+		refinements.add(recipientRefinement);
 		Action useAction = new Action(ActionType.USE);
-		Action informDutyAction = new Action(ActionType.INFORM);
-		informDutyAction.setRefinements(refinements);
+		Action notifyDutyAction = new Action(ActionType.NOTIFY);
+		notifyDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule postobligation = new Rule(RuleType.POSTDUTY, informDutyAction);
+		Rule postobligation = new Rule(RuleType.POSTDUTY, notifyDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
 		rule.setPostduties(postDuties);
