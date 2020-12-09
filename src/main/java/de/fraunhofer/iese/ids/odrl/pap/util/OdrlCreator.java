@@ -90,6 +90,12 @@ public class OdrlCreator {
 			if (value != null && !value.isEmpty()) {
 				condition.getRightOperand().setValue(LogLevelType.valueOf(value).getType());
 			}
+		}else if (condition.getLeftOperand().equals(LeftOperand.ARTIFACT_STATE))
+		{
+			String value = condition.getRightOperand().getValue();
+			if (value != null && !value.isEmpty()) {
+				condition.getRightOperand().setValue(ArtifactStateType.valueOf(value).getType());
+			}
 		}
 	}
 

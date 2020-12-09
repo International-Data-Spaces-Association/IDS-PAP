@@ -36,9 +36,9 @@ input[type=text], select {
 					<div th:if="${policyFragment == 'SpecificPurposePolicyForm'}" th:include="fragments/SpecificPurposePolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificLocationPolicyForm'}" th:include="fragments/SpecificLocationPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'SpecificEventPolicyForm'}" th:include="fragments/SpecificEventPolicyForm" th:remove="tag"></div>
-					<div th:if="${policyFragment == 'EncodingPolicyForm'}" th:include="fragments/EncodingPolicyForm" th:remove="tag"></div>
-					<div th:if="${policyFragment == 'DistributeToThirdPartyPolicyForm'}" th:include="fragments/DistributeToThirdPartyPolicyForm" th:remove="tag"></div>
-					<div th:if="${policyFragment == 'DeleteAfterUsagePeriodPolicyForm'}" th:include="fragments/DeleteAfterUsagePeriodPolicyForm" th:remove="tag"></div>
+					<div th:if="${policyFragment == 'DistributeDataPolicyForm'}" th:include="fragments/DistributeDataPolicyForm" th:remove="tag"></div>
+<!--					<div th:if="${policyFragment == 'DistributeToThirdPartyPolicyForm'}" th:include="fragments/DistributeToThirdPartyPolicyForm" th:remove="tag"></div>-->
+<!--					<div th:if="${policyFragment == 'DeleteAfterUsagePeriodPolicyForm'}" th:include="fragments/DeleteAfterUsagePeriodPolicyForm" th:remove="tag"></div>-->
 					<div th:if="${policyFragment == 'DeleteAfterUsagePolicyForm'}" th:include="fragments/DeleteAfterUsagePolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'ReadDataIntervalPolicyForm'}" th:include="fragments/ReadDataIntervalPolicyForm" th:remove="tag"></div>
 					<div th:if="${policyFragment == 'ReadAfterPaymentPolicyForm'}" th:include="fragments/ReadAfterPaymentPolicyForm" th:remove="tag"></div>

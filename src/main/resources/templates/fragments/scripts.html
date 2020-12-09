@@ -375,6 +375,7 @@
 
         if (control.value == 'http://example.com/anonymize/delete') {
             replaceWith.style.display = 'none';
+            replaceWithField.value = '';
             replaceWithField.removeAttribute("required");
         } else if (control.value == 'http://example.com/anonymize/replace'){
             replaceWith.style.display = 'block';

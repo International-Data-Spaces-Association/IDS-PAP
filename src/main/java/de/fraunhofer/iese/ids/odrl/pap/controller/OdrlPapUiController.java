@@ -237,7 +237,7 @@ public class OdrlPapUiController {
 		return "index";
 	}
 
-	  @RequestMapping("/policy/DeleteAfterUsagePeriodPolicyForm")
+	/*  @RequestMapping("/policy/DeleteAfterUsagePeriodPolicyForm")
 	  public String deletePolicyAfterUsagePeriod(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		  RightOperand delayPeriodRightOperand = new RightOperand();
 		  delayPeriodRightOperand.setType(RightOperandType.DURATIONENTITY);
@@ -267,7 +267,7 @@ public class OdrlPapUiController {
 		  odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/delete-data"));
 	  	model.addAttribute(POLICY_FRAGMENT, "DeleteAfterUsagePeriodPolicyForm");
 	    return "index";
-	  }
+	  }*/
 
 	@RequestMapping("/policy/DeleteAfterUsagePolicyForm")
 	public String deletePolicyAfterUsage(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
@@ -428,15 +428,28 @@ public class OdrlPapUiController {
 		return "index";
 	}
 
-	@RequestMapping("/policy/EncodingPolicyForm")
+	@RequestMapping("/policy/DistributeDataPolicyForm")
 	public String encodingPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
+		RightOperand dutyRightOperand = new RightOperand();
+		dutyRightOperand.setType(RightOperandType.ANYURI);
+		Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY, Operator.SAME_AS, dutyRightOperand, "");
+		ArrayList<Condition> dutyRefinements = new ArrayList<>();
+		dutyRefinements.add(thirdPartyRefinement);
+
 		RightOperand rightOperand = new RightOperand();
-		rightOperand.setType(RightOperandType.ANYURI);
-		Condition encodingConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ENCODING, Operator.EQ, rightOperand, "");
+		rightOperand.setType(RightOperandType.STRING);
+		rightOperand.setValue(ArtifactStateType.ENCRYPTED.toString());
+		Condition artifactStateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ARTIFACT_STATE, Operator.EQUALS, rightOperand, "");
 		ArrayList<Condition> constraints = new ArrayList<>();
-		constraints.add(encodingConstraint);
+		constraints.add(artifactStateConstraint);
 		Action distributeAction = new Action(ActionType.DISTRIBUTE);
+		Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
+		nextPolicyDutyAction.setRefinements(dutyRefinements);
 		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
+		Rule preDuties = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
+		ArrayList<Rule> preDutiess = new ArrayList<>();
+		preDutiess.add(preDuties);
+		rule.setPreduties(preDutiess);
 		rule.setConstraints(constraints);
 		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
@@ -445,11 +458,11 @@ public class OdrlPapUiController {
 		odrlPolicy.setConsumer(consumer);
 		odrlPolicy.setRules(rules);
 		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-encoding"));
-		model.addAttribute(POLICY_FRAGMENT, "EncodingPolicyForm");
+		model.addAttribute(POLICY_FRAGMENT, "DistributeDataPolicyForm");
 		return "index";
 	}
 
-	@RequestMapping("/policy/DistributeToThirdPartyPolicyForm")
+/*	@RequestMapping("/policy/DistributeToThirdPartyPolicyForm")
 	public String distributeToThirdPartyPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
@@ -473,7 +486,7 @@ public class OdrlPapUiController {
 		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/distribute-policy"));
 		model.addAttribute(POLICY_FRAGMENT, "DistributeToThirdPartyPolicyForm");
 		return "index";
-	}
+	}*/
 
 	@RequestMapping("/policy/PrintPolicyForm")
 	public String inhibitPrintPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
