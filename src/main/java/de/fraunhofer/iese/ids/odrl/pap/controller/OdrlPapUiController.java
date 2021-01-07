@@ -7,11 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import de.fraunhofer.iese.ids.odrl.policy.library.model.*;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,6 +21,26 @@ import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.UcAppService;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.ModificationMethodParameter;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.Party;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperandEntity;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.Rule;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ArtifactStateType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ConditionType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.EntityType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LeftOperand;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LogLevelType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.Operator;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PartyType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PolicyType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RightOperandType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.IdsOdrlUtil;
 
 @Controller
