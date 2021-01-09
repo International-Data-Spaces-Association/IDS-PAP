@@ -3,8 +3,8 @@
   <input type="hidden" th:field="*{consumer.type}" />
   <input type="hidden" th:field="*{rules[0].type}" />
   <input type="hidden" th:field="*{rules[0].action.type}" />
-  <input type="hidden" th:field="*{rules[0].postobligations[0].type}" />
-  <input type="hidden" th:field="*{rules[0].postobligations[0].action.type}" />
+  <input type="hidden" th:field="*{rules[0].postduties[0].type}" />
+  <input type="hidden" th:field="*{rules[0].postduties[0].action.type}" />
 
   <div>
     <p>
@@ -30,15 +30,26 @@
     </div>
   </p>
 
-  <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].postobligations[0] != null ) and (odrlPolicy?.rules[0].postobligations[0].action.refinements != null )}">
-    <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].postobligations[0].action.refinements}">
-      <div th:if="${(condition?.leftOperand?.name() == 'SYSTEMDEVICE')}">
-        <input type="hidden" th:field="*{rules[0].postobligations[0].action.refinements[__${itemStat.index}__].type}" />
-        <input type="hidden" th:field="*{rules[0].postobligations[0].action.refinements[__${itemStat.index}__].operator}" />
-        <input type="hidden" th:field="*{rules[0].postobligations[0].action.refinements[__${itemStat.index}__].leftOperand}" />
-        <input type="hidden" th:field="*{rules[0].postobligations[0].action.refinements[__${itemStat.index}__].rightOperand.type}" />
-        <p>System Device*: <input type="text" size="40" required="required" placeholder=" e.g. http://example.com/system:ESN-database" th:field="*{rules[0].postobligations[0].action.refinements[__${itemStat.index}__].rightOperand.value}" /></p>
+  <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].postduties[0] != null ) and (odrlPolicy?.rules[0].postduties[0].action.refinements != null )}">
+    <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].postduties[0].action.refinements}">
+      <input type="hidden" th:field="*{rules[0].postduties[0].action.refinements[__${itemStat.index}__].type}" />
+      <input type="hidden" th:field="*{rules[0].postduties[0].action.refinements[__${itemStat.index}__].operator}" />
+      <input type="hidden" th:field="*{rules[0].postduties[0].action.refinements[__${itemStat.index}__].leftOperand}" />
+      <input type="hidden" th:field="*{rules[0].postduties[0].action.refinements[__${itemStat.index}__].rightOperand.type}" />
+      <div th:if="${(condition?.leftOperand?.name() == 'SYSTEM_DEVICE')}">
+        <p>System Device*: <input type="text" size="40" required="required" placeholder=" e.g. http://example.com/system:ESN-database" th:field="*{rules[0].postduties[0].action.refinements[__${itemStat.index}__].rightOperand.value}" /></p>
 
+      </div>
+
+      <div th:if="${(condition?.leftOperand?.name() == 'LOG_LEVEL')}">
+        <p>Log level*:
+          <select id="logLevelBox" th:field="*{rules[0].postduties[0].action.refinements[__${itemStat.index}__].rightOperand.value}">
+            <option
+                    th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LogLevelType).values()}"
+                    th:value="${dropdownValue}"
+                    th:text="${dropdownValue}" ></option>
+          </select>
+        </p>
       </div>
     </th:block>
   </div>

@@ -4,9 +4,8 @@ package de.fraunhofer.iese.ids.odrl.pap.util;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperandEntity;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.*;
 
 public class OdrlCreator {
 	
@@ -22,40 +21,7 @@ public class OdrlCreator {
 		{
 			if(null != odrlPolicy.getRules().get(0).getAction().getRefinements()) {
 				for (Condition refinement : odrlPolicy.getRules().get(0).getAction().getRefinements()) {
-					if (refinement.getLeftOperand().equals(LeftOperand.DELAYPERIOD)) {
-						if (null != refinement.getRightOperand().getValue()) {
-							String value = refinement.getRightOperand().getValue();
-							if(value != "")
-							{
-								RightOperand updatedRightOperand = refinement.getRightOperand();
-								String timeUnit = "";
-								String xsdPrefix = "";
-
-								switch(refinement.getTimeUnit()) {
-									case HOURS:
-										timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
-										xsdPrefix = "T";
-										break;
-
-									case DAYS:
-										timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
-										break;
-
-									case MONTHS:
-										timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
-										break;
-
-									case YEARS:
-										timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
-										break;
-
-								}
-								updatedRightOperand.setValue("P" + xsdPrefix + value + timeUnit);
-								refinement.setRightOperand(updatedRightOperand);
-
-							}
-						}
-					}
+					updateToIDSValue(refinement);
 				}
 			}
 		}
@@ -64,37 +30,15 @@ public class OdrlCreator {
 		{
 			if(null != odrlPolicy.getRules().get(0).getConstraints()) {
 				for (Condition constraint : odrlPolicy.getRules().get(0).getConstraints()) {
-					if (constraint.getLeftOperand().equals(LeftOperand.ELAPSEDTIME)) {
-						if (null != constraint.getRightOperand().getValue()) {
-							String value = constraint.getRightOperand().getValue();
-							if (value != "") {
-								RightOperand updatedRightOperand = constraint.getRightOperand();
-								String timeUnit = "";
-								String xsdPrefix = "";
-
-								switch ((constraint).getTimeUnit()) {
-									case HOURS:
-										timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
-										xsdPrefix = "T";
-										break;
-
-									case DAYS:
-										timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
-										break;
-
-									case MONTHS:
-										timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
-										break;
-
-									case YEARS:
-										timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
-										break;
-
-								}
-								updatedRightOperand.setValue("P" + xsdPrefix + value + timeUnit);
-								constraint.setRightOperand(updatedRightOperand);
-							}
-						}
+					updateToIDSValue(constraint);
+				}
+			}
+			if(null != odrlPolicy.getRules().get(0).getPostduties())
+			{
+				if(null != odrlPolicy.getRules().get(0).getPostduties().get(0).getAction().getRefinements())
+				{
+					for (Condition refinement : odrlPolicy.getRules().get(0).getPostduties().get(0).getAction().getRefinements()) {
+						updateToIDSValue(refinement);
 					}
 				}
 			}
@@ -103,6 +47,56 @@ public class OdrlCreator {
 
 
 		return odrlPolicy;
+	}
+
+	private static void updateToIDSValue(Condition condition) {
+		if (condition.getLeftOperand().equals(LeftOperand.DELAY) || condition.getLeftOperand().equals(LeftOperand.ELAPSED_TIME) ) {
+			if (null != condition.getRightOperand().getEntities()) {
+				for (RightOperandEntity entity : condition.getRightOperand().getEntities()) {
+					if (entity.getEntityType().equals(EntityType.HASDURATION)) {
+						String value = entity.getValue();
+						if (value != null && !value.isEmpty()) {
+							String timeUnit = "";
+							String xsdPrefix = "";
+
+							switch (entity.getTimeUnit()) {
+								case HOURS:
+									timeUnit = TimeUnit.HOURS.getOdrlXsdDuration();
+									xsdPrefix = "T";
+									break;
+
+								case DAYS:
+									timeUnit = TimeUnit.DAYS.getOdrlXsdDuration();
+									break;
+
+								case MONTHS:
+									timeUnit = TimeUnit.MONTHS.getOdrlXsdDuration();
+									break;
+
+								case YEARS:
+									timeUnit = TimeUnit.YEARS.getOdrlXsdDuration();
+									break;
+
+							}
+							entity.setValue("P" + xsdPrefix + value + timeUnit);
+						}
+					}
+				}
+
+			}
+		}else if (condition.getLeftOperand().equals(LeftOperand.LOG_LEVEL) || condition.getLeftOperand().equals(LeftOperand.NOTIFICATION_LEVEL))
+		{
+			String value = condition.getRightOperand().getValue();
+			if (value != null && !value.isEmpty()) {
+				condition.getRightOperand().setValue(LogLevelType.valueOf(value).getType());
+			}
+		}else if (condition.getLeftOperand().equals(LeftOperand.ARTIFACT_STATE))
+		{
+			String value = condition.getRightOperand().getValue();
+			if (value != null && !value.isEmpty()) {
+				condition.getRightOperand().setValue(ArtifactStateType.valueOf(value).getType());
+			}
+		}
 	}
 
 }

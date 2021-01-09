@@ -30,6 +30,7 @@
 
   <div th:if="${(odrlPolicy?.rules != null) and (odrlPolicy?.rules[0].constraints != null )}">
     <th:block th:each="condition, itemStat : ${odrlPolicy?.rules[0].constraints}">
+      <hr>
       <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].type}" />
       <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].operator}" />
       <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].leftOperand}" />
@@ -62,15 +63,56 @@
         <p id="event">Event*: <input id="eventInput" required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-event:exhibition" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" disabled="disabled"/></p>
       </div>
 
-      <div th:if="${(condition?.leftOperand?.name() == 'DATETIME')}">
-        <input type="checkbox" id="timeIntervalCheckbox" name="timeIntervalCheckboxInput"> Restrict Time Interval<br>
-        <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeOperator}" />
-        <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeRightOperand.type}" />
-        <p id="startTime">Start Time*: <input id="startTimeInput" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" disabled="disabled"/></p>
-        <p id="endTime">End Time*: <input id="endTimeInput" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].secondDateTimeRightOperand.value}" disabled="disabled"/></p>
+      <div th:if="${(condition?.leftOperand?.name() == 'COUNT')}">
+        <input type="checkbox" id="countCheckbox" name="countCheckboxInput"> Restrict Number of Usage <br>
+        <p>Count*: <input id="countInput" required="required" type="text" size="40" placeholder=" e.g. 10" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.value}" disabled="disabled"/></p>
       </div>
 
-      <div th:if="${(condition?.leftOperand?.name() == 'PAYAMOUNT')}">
+      <div th:if="${(condition?.leftOperand?.name() == 'POLICY_EVALUATION_TIME')}">
+        <input type="checkbox" id="timeIntervalCheckbox" name="timeIntervalCheckboxInput"> Restrict Time Interval<br>
+        <div th:if="${(condition?.rightOperand?.entities != null )}">
+          <th:block th:each="entity, iStat : ${condition?.rightOperand?.entities}">
+            <div th:if="${(entity?.entityType?.name() == 'BEGIN')}">
+              <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].entityType}" />
+              <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].dataType}" />
+              <p>Start Time*: <input id="startTimeInput" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].value}" disabled="disabled"/></p>
+            </div>
+            <div th:if="${(entity?.entityType?.name() == 'END')}">
+              <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].entityType}" />
+              <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].dataType}" />
+              <p>End Time*: <input id="endTimeInput" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].value}" disabled="disabled"/></p>
+            </div>
+          </th:block>
+        </div>
+      </div>
+
+      <div th:if="${(condition?.leftOperand?.name() == 'ELAPSED_TIME')}">
+        <input type="checkbox" id="elapsedTimeCheckbox" name="elapsedTimeCheckboxInput" > Restrict Time Duration<br>
+        <div th:if="${(condition?.rightOperand?.entities != null )}">
+          <th:block th:each="entity, iStat : ${condition?.rightOperand?.entities}">
+            <div th:if="${(entity?.entityType?.name() == 'BEGIN')}">
+              <input type="checkbox" id="specifyBeginComplexCheckbox" name="specifyBeginComplexCheckboxInput" checked> Specify a begin time<br>
+              <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].entityType}" />
+              <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].dataType}" />
+              <p><input id="beginTimeInput" required="required" type="text" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].value}" disabled="disabled"/></p>
+            </div>
+            <div th:if="${(entity?.entityType?.name() == 'HASDURATION')}">
+              <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].entityType}" />
+              <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].dataType}" />
+              <p>Duration value*:<input id="durationInput" type="text" required="required" size="5" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].value}" disabled="disabled" />
+                <select id="timeUnitInput" th:field="*{rules[0].constraints[__${itemStat.index}__].rightOperand.entities[__${iStat.index}__].timeUnit}" disabled="disabled">
+                  <option
+                          th:each="dropdownValue: ${T(de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit).values()}"
+                          th:value="${dropdownValue}"
+                          th:text="${dropdownValue}" ></option>
+                </select>
+              </p>                </div>
+          </th:block>
+        </div>
+
+      </div>
+
+      <div th:if="${(condition?.leftOperand?.name() == 'PAY_AMOUNT')}">
         <input type="checkbox" id="paymentCheckbox" name="paymentCheckboxInput"> After Payment<br>
         <input type="hidden" th:field="*{rules[0].constraints[__${itemStat.index}__].unit}" />
         <p id="payment" >Payment (Euro)*:<br/>
