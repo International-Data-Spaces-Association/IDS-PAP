@@ -8,9 +8,8 @@ export const time_units = [
 
 export const purpose_list = [
   { id: "", value: "" },
-  { id: "Marketing", value: "Marketing" },
-  { id: "Offer", value: "Offer" },
-  { id: "Risk Management", value: "Risk Management" },
+  { id: "Marketing", value: "http://example.com/ids-purpose:Marketing" },
+  { id: "Risk Management", value: "Risk http://example.com/ids-purpose:Risk_Management" },
 ];
 export const sale_rent_list = [
   { id: "", value: "" },
@@ -29,5 +28,24 @@ export const policy_types = [
   { id: "Offer", value: "Offer" },
   { id: "Request", value: "Request" },
 ];
+
+export const log_level_list = [
+  { id: "OFF", value: "OFF" },
+  { id: "ALL", value: "ALL" },
+  { id: "INFO_LEVEL", value: "INFO_LEVEL" },
+  { id: "DEBUG_LEVEL", value: "DEBUG_LEVEL" },
+  { id: "ON_DENY", value: "ON_DENY" },
+  { id: "ON_ALLOW", value: "ON_ALLOW" },
+  { id: "ON_DUTY_EXERCISED", value: "ON_DUTY_EXERCISED" },
+  { id: "ON_ACTION_OPERATED", value: "ON_ACTION_OPERATED" },
+]
+
+export const artifact_state_list = [
+  { id: "ANONYMIZED", value: "ANONYMIZED" },
+  { id: "PSEUDONYMIZED", value: "PSEUDONYMIZED" },
+  { id: "ENCRYPTED", value: "ENCRYPTED" },
+  { id: "COMBINED", value: "COMBINED" },
+];
+
 export const data_consumers = [{ id: "Consumer Party", value: "http://example.com/party/consumer-party" }];
 

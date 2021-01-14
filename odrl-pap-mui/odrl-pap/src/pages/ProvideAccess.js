@@ -1,23 +1,22 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  Menu,
-  MenuItem,
-  Button,
-} from "@material-ui/core";
+import { Grid, Menu, MenuItem, Button } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import { useStyle } from "../components/Style";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import Input from "../components/controls/Input";
 import ItemPicker from "../components/controls/ItemPicker";
-import {useHistory} from 'react-router-dom';
-import {purpose_list, sale_rent_list} from "../components/controls/InitialFieldListValues"
-import Form from '../components/controls/Form';
-import IdentifyPolicy from '../components/controls/IdentifyPolicy';
-import {OdrlPolicy} from '../components/backend/OdrlPolicy';
-import Submit from '../components/backend/Submit';
-import Remove from '../components/controls/Remove';
-
+import { useHistory } from "react-router-dom";
+import {
+  purpose_list,
+  sale_rent_list,
+} from "../components/controls/InitialFieldListValues";
+import Form from "../components/controls/Form";
+import IdentifyPolicy from "../components/controls/IdentifyPolicy";
+import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+import Submit from "../components/backend/Submit";
+import Remove from "../components/controls/Remove";
+import Date from "../components/controls/Date";
+import { time_units } from "../components/controls/InitialFieldListValues";
 const selected_components = {
   location: false,
   system: false,
@@ -56,9 +55,13 @@ export default function ProvideAccess() {
     values.system = "";
     values.purpose = "";
     values.event = "";
-    values.interval = "";
+    values.restrictTimeIntervalStart = "";
+    values.restrictTimeIntervalEnd = "";
     values.payment = "";
     values.price = "";
+    values.specifyBeginTime = "";
+    values.restrictTimeDuration = "";
+    values.restrictTimeDurationUnit = "";
   };
   const handleSelectedClose = (e) => {
     selectedComponents[e.target.id] = true;
@@ -67,9 +70,16 @@ export default function ProvideAccess() {
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-  
+
   const handleSubmit = (e) => {
-    Submit("/policy/ProvideAccess", values, selectedComponents, setErrors, history ,e)
+    Submit(
+      "/policy/ProvideAccess",
+      values,
+      selectedComponents,
+      setErrors,
+      history,
+      e
+    );
   };
 
   return (
@@ -85,6 +95,7 @@ export default function ProvideAccess() {
             handleInputChange={handleInputChange}
             errors={errors}
           />
+
           {selectedComponents.location ? (
             <>
               <Grid item xs={11}>
@@ -100,6 +111,7 @@ export default function ProvideAccess() {
               <Remove onClick={resetStates} />
             </>
           ) : null}
+
           {selectedComponents.system ? (
             <>
               <Grid item xs={11}>
@@ -115,6 +127,7 @@ export default function ProvideAccess() {
               <Remove onClick={resetStates} />
             </>
           ) : null}
+
           {selectedComponents.purpose ? (
             <>
               <Grid item xs={11}>
@@ -130,6 +143,7 @@ export default function ProvideAccess() {
               <Remove onClick={resetStates} />
             </>
           ) : null}
+
           {selectedComponents.event ? (
             <>
               <Grid item xs={11}>
@@ -145,21 +159,72 @@ export default function ProvideAccess() {
               <Remove onClick={resetStates} />
             </>
           ) : null}
-          {selectedComponents.interval ? (
+
+          {selectedComponents.restrictTimeDuration ? (
             <>
               <Grid item xs={11}>
-                <Input
-                  name="interval"
-                  label="Interval*"
-                  value={values.interval}
-                  placeholder="e.g. http://ontologi.es/place/DE"
+                <Date
+                  name="specifyBeginTime"
+                  label="Begin Time (Optional)"
+                  value={values.specifyBeginTime}
                   onChange={handleInputChange}
-                  error={errors.interval}
+                  error={errors.specifyBeginTime}
                 />
               </Grid>
-              <Remove onClick={resetStates} />
+              <Grid item xs={11} sm={5}>
+                <Input
+                  name="restrictTimeDuration"
+                  label="Duration Value (Optional)"
+                  value={values.restrictTimeDuration}
+                  placeholder="e.g. 10"
+                  onChange={handleInputChange}
+                  error={errors.restrictTimeDuration}
+                />
+              </Grid>
+              <Grid item xs={11} sm={1} />
+              <Grid item xs={11} sm={5}>
+                <ItemPicker
+                  name="restrictTimeDurationUnit"
+                  label="Unit"
+                  defaultValue=""
+                  ItemList={time_units}
+                  onChange={handleInputChange}
+                  error={errors.restrictTimeDurationUnit}
+                />
+              </Grid>
+              <Grid item xs={1}>
+                <Remove onClick={resetStates} />
+              </Grid>
             </>
           ) : null}
+
+          {selectedComponents.interval ? (
+            <>
+              <Grid item xs={11} sm={5}>
+                <Date
+                  name="restrictTimeIntervalStart"
+                  label="Start Time*"
+                  value={values.restrictTimeIntervalStart}
+                  onChange={handleInputChange}
+                  error={errors.restrictTimeIntervalStart}
+                />
+              </Grid>
+              <Grid item xs={11} sm={1} />
+              <Grid item xs={11} sm={5}>
+                <Date
+                  name="restrictTimeIntervalEnd"
+                  label="End Time*"
+                  value={values.restrictTimeIntervalEnd}
+                  onChange={handleInputChange}
+                  error={errors.restrictTimeIntervalEnd}
+                />
+              </Grid>
+              <Grid item xs={1}>
+                <Remove onClick={resetStates} />
+              </Grid>
+            </>
+          ) : null}
+
           {selectedComponents.payment ? (
             <>
               <Grid item xs={11} sm={5}>
@@ -172,7 +237,7 @@ export default function ProvideAccess() {
                   error={errors.price}
                 />
               </Grid>
-              <Grid item xs={11} sm={1}/>
+              <Grid item xs={11} sm={1} />
               <Grid item xs={11} sm={5}>
                 <ItemPicker
                   name="payment"
@@ -187,7 +252,7 @@ export default function ProvideAccess() {
             </>
           ) : null}
 
-          {Object.values(selectedComponents).every((x) => x === false) ?(
+          {Object.values(selectedComponents).every((x) => x === false) ? (
             <Grid item xs={12} container justify="center">
               <Grid item xs={2}>
                 <Button
@@ -225,6 +290,12 @@ export default function ProvideAccess() {
                 <MenuItem onClick={handleSelectedClose} id="payment">
                   Payment
                 </MenuItem>
+                <MenuItem
+                  onClick={handleSelectedClose}
+                  id="restrictTimeDuration"
+                >
+                  Specify a begin time
+                </MenuItem>
               </Menu>
             </Grid>
           ) : null}
@@ -236,7 +307,6 @@ export default function ProvideAccess() {
               className={classes.saveBtn}
               type="submit"
             >
-              
               Save
             </Button>
           </Grid>

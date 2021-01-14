@@ -23,10 +23,14 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.ModificationMethodParameter;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Party;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperandEntity;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Rule;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ArtifactStateType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ConditionType;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.EntityType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LeftOperand;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LogLevelType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.Operator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PartyType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PolicyType;
@@ -40,297 +44,253 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 @RestController()
 @CrossOrigin
 public class OdrlPapRestController {
-	
-	
+	String baseUid = "https://w3id.org/idsa/autogen/contract/";
+
 	@PostMapping("/policy/ProvideAccess")
-	public String accessPolicy(@RequestBody RecievedOdrlPolicy recievedPolicy) {	
-		List<Condition> constraints = new ArrayList<>();
-		String uid = "http://example.com/policy/restrict-access";
-		if (recievedPolicy.getLocation() != "") {
-			RightOperand locationRightOperand = new RightOperand(recievedPolicy.getLocation(), RightOperandType.ANYURI);
-			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQUALS, locationRightOperand, "");
-			constraints.add(locationConstraint);
-			uid = "http://example.com/policy/restrict-access-location";
+	public String accessPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = baseUid + "restrict-access";
+		if (rp.addLocationCondition()) {
+			uid =  baseUid + "restrict-access-location";
+		} else if (rp.addSystemCondition()) {
+			uid =  baseUid + "restrict-access-system";
+		} else if (rp.addPurposeCondition()) {
+			uid =  baseUid + "restrict-access-purpose";
+		} else if (rp.addEventCondition()) {
+			uid =  baseUid + "restrict-access-event";
+		} else if (rp.addRestrictTimeIntervalCondition()) {
+			uid =  baseUid + "restrict-access-interval";
+		} else if (rp.addPaymentCondition()) {
+			uid =  baseUid + "provide-access-after-payment";
+		} else if (rp.addElapsedTimeRightOperand()) {
+			uid =  baseUid + "restrict-access-interval";
 		}
-		if (recievedPolicy.getSystem() != "") {
-			RightOperand systemRightOperand = new RightOperand(recievedPolicy.getSystem(), RightOperandType.ANYURI);
-			systemRightOperand.setType(RightOperandType.ANYURI);
-			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQUALS, systemRightOperand, "");		
-			constraints.add(systemConstraint);
-			uid = "http://example.com/policy/restrict-access-system";
-		}
-		if (recievedPolicy.getPurpose() != "") {
-			RightOperand purposeRightOperand = new RightOperand(recievedPolicy.getPurpose(), RightOperandType.ANYURI);
-			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQUALS, purposeRightOperand, "");
-			constraints.add(purposeConstraint);
-			uid = "http://example.com/policy/restrict-access-purpose";
-		}
-		if (recievedPolicy.getEvent() != "") {
-			RightOperand eventRightOperand = new RightOperand(recievedPolicy.getEvent(), RightOperandType.ANYURI);
-			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, eventRightOperand, "");
-			constraints.add(eventConstraint);
-			uid = "http://example.com/policy/restrict-access-event";
-		}
-		if (recievedPolicy.getRestrictTimeIntervalStart() != "") {
-			RightOperand rightOperand = new RightOperand(recievedPolicy.getRestrictTimeIntervalStart(),RightOperandType.DATETIME);
-			RightOperand secondRightOperand = new RightOperand(recievedPolicy.getRestrictTimeIntervalEnd(),RightOperandType.DATETIME);
-			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand,"");
-			constraints.add(timeIntervalCondition);
-			uid = "http://example.com/policy/restrict-access-interval";
-		}
-		if (recievedPolicy.getPayment() != "") {
-			RightOperand paymentRightOperand = new RightOperand(String.valueOf(recievedPolicy.getPrice()), RightOperandType.DECIMAL);
-			Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAYAMOUNT, Operator.EQUALS, paymentRightOperand, "");
-			paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
-			paymentCondition.setContract(recievedPolicy.getPayment());
-			constraints.add(paymentCondition);
-			uid = "http://example.com/policy/restrict-access-after-payment";
-		}
-		
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		rule.setConstraints(constraints);
-		
-		String s = addHeaderAndCreatePolicy( recievedPolicy, rule, uid);
-		return s;
+		rule.setConstraints(rp.getConstraints());
+		return rp.createPolicy(uid, rule);
 	}
-	
+
 	@PostMapping("/policy/ComplexPolicyForm")
-	public String complexPolicy(@RequestBody RecievedOdrlPolicy recievedPolicy) {
-		List<Condition> constraints = new ArrayList<>();
-
-		if (recievedPolicy.getLocation() != "") {
-			RightOperand locationRightOperand = new RightOperand(recievedPolicy.getLocation(), RightOperandType.ANYURI);
-			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQUALS, locationRightOperand, "");
-			constraints.add(locationConstraint);
-		}
-		if (recievedPolicy.getSystem() != "") {
-			RightOperand systemRightOperand = new RightOperand(recievedPolicy.getSystem(), RightOperandType.ANYURI);
-			systemRightOperand.setType(RightOperandType.ANYURI);
-			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQUALS, systemRightOperand, "");
-			constraints.add(systemConstraint);
-		}
-		if (recievedPolicy.getPurpose() != "") {
-			RightOperand purposeRightOperand = new RightOperand("http://example.com/ids-purpose:" + recievedPolicy.getPurpose(), RightOperandType.ANYURI);
-			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQUALS, purposeRightOperand, "");
-			constraints.add(purposeConstraint);
-		}
-		if (recievedPolicy.getEvent() != "") {
-			RightOperand eventRightOperand = new RightOperand(recievedPolicy.getEvent(), RightOperandType.ANYURI);
-			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQUALS, eventRightOperand, "");
-			constraints.add(eventConstraint);
-		}
-		if (recievedPolicy.getRestrictTimeIntervalStart() != "") {
-			RightOperand rightOperand = new RightOperand(recievedPolicy.getRestrictTimeIntervalStart(),RightOperandType.DATETIME);
-			RightOperand secondRightOperand = new RightOperand(recievedPolicy.getRestrictTimeIntervalEnd(),RightOperandType.DATETIME);
-			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATETIME, Operator.GREATER, rightOperand, Operator.LESS, secondRightOperand,"");
-			constraints.add(timeIntervalCondition);
-		}
-		if (recievedPolicy.getPayment() != "") {
-			RightOperand paymentRightOperand = new RightOperand(String.valueOf(recievedPolicy.getPrice()), RightOperandType.DECIMAL);
-			Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAYAMOUNT, Operator.EQUALS, paymentRightOperand, "");
-			paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
-			paymentCondition.setContract(recievedPolicy.getPayment());
-			constraints.add(paymentCondition);
-		}
-		
+	public String complexPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = baseUid + "complex-policy-access";
+		rp.addLocationCondition();
+		rp.addSystemCondition();
+		rp.addPurposeCondition();
+		rp.addEventCondition();
+		rp.addCounterCondition();
+		rp.addRestrictTimeIntervalCondition();
+		rp.addPaymentCondition();
+		rp.addElapsedTimeRightOperand();
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		rule.setConstraints(constraints);
-		String s = addHeaderAndCreatePolicy( recievedPolicy, rule, "http://example.com/policy/complex-policy");
-		return s;
+		rule.setConstraints(rp.getConstraints());
+		return rp.createPolicy(uid, rule);
 	}
-	
+
 	@PostMapping("/policy/CountAccessPolicyForm")
-	public String countPolicy(@RequestBody RecievedOdrlPolicy recievedPolicy) {
-
-		RightOperand rightOperand = new RightOperand(Integer.toString(recievedPolicy.getCounter()), RightOperandType.DECIMAL);
-		Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.EQUALS, rightOperand, "");
-		
-		List<Condition> constraints = new ArrayList<>();
-		constraints.add(countCondition);
+	public String countPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = baseUid + "count-access";
+		rp.addCounterCondition();
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		rule.setConstraints(constraints);
-		String s = addHeaderAndCreatePolicy( recievedPolicy, rule, "http://example.com/policy/count-access");
-		return s;
+		rule.setConstraints(rp.getConstraints());
+		return rp.createPolicy(uid, rule);
 	}
-	
-	@PostMapping("/policy/deletePolicyAfterUsage")
-	public String deletePolicyAfterUsage(@RequestBody RecievedOdrlPolicy recievedPolicy) {
 
-		List<Condition> refinements = new ArrayList<>();
-		if (recievedPolicy.getTimeAndDate() != "") {
-			RightOperand dateTimeRightOperand = new RightOperand(recievedPolicy.getTimeAndDate(), RightOperandType.DATETIME);
-			Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATETIME, Operator.EQUALS, dateTimeRightOperand, "");
+//	@PostMapping("/policy/deletePolicyAfterUsage")
+//	public String deletePolicyAfterUsage(@RequestBody RecievedOdrlPolicy rp) {
+//		String uid = "http://example.com/policy/count-access";
+//
+//		ArrayList<Condition> refinements = new ArrayList<>();
+//		if (rp.getTimeAndDate() != "") {
+//			RightOperand dateTimeRightOperand = new RightOperand(rp.getTimeAndDate(), RightOperandType.DATETIMESTAMP);
+//			Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.EQUALS, dateTimeRightOperand, "");
+//			refinements.add(dateTimeRefinement);
+//		}
+//		if (rp.getTime() != "") {
+//			RightOperand delayPeriodRightOperand = new RightOperand(rp.getTime(), RightOperandType.DURATION);
+//			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.EQUALS, delayPeriodRightOperand, "");
+//			delayPeriodRefinement.setUnit(TimeUnit.valueOf(rp.getTimeUnit()).toString());
+//			refinements.add(delayPeriodRefinement);
+//		}
+//		Action deleteAction = new Action(ActionType.DELETE);
+//		deleteAction.setRefinements(refinements);
+//		Rule rule = new Rule(RuleType.OBLIGATION, deleteAction);
+//		String s = addHeaderAndCreatePolicy( rp, rule, "http://example.com/policy/delete-data");
+//		return rp.cratePolicy(uid, ActionType.USE, RuleType.PERMISSION);
+//
+//	}
+	@PostMapping("/policy/deletePolicyAfterUsage")
+	public String deletePolicyAfterUsage(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = "";
+		ArrayList<Condition> refinements = new ArrayList<>();
+		if (rp.getTimeAndDate() != "") {
+			RightOperand dateTimeRightOperand = new RightOperand(rp.getTimeAndDate(), RightOperandType.DATETIMESTAMP);
+			Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.BEFORE, dateTimeRightOperand, "");
 			refinements.add(dateTimeRefinement);
 		}
-		if (recievedPolicy.getTime() != "") {
-			RightOperand delayPeriodRightOperand = new RightOperand(recievedPolicy.getTime(), RightOperandType.DURATION);
-			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAYPERIOD, Operator.EQUALS, delayPeriodRightOperand, "");
-			delayPeriodRefinement.setTimeUnit(TimeUnit.valueOf(recievedPolicy.getTimeUnit()));
+		else if (rp.getTime() != "") {
+			uid = baseUid + "delete-after-usage";
+			RightOperand delayPeriodRightOperand = new RightOperand();
+			delayPeriodRightOperand.setType(RightOperandType.DURATIONENTITY);
+			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, rp.getTime(), RightOperandType.DURATION);
+			hasDurationEntity.setTimeUnit(TimeUnit.valueOf(rp.getTimeUnit()));
+			ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
+			durationEntities.add(hasDurationEntity);
+			delayPeriodRightOperand.setEntities(durationEntities);
+			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, delayPeriodRightOperand, "");
 			refinements.add(delayPeriodRefinement);
+		} else {
+			return "";
 		}
-		Action deleteAction = new Action(ActionType.DELETE);
-		deleteAction.setRefinements(refinements);
-		Rule rule = new Rule(RuleType.OBLIGATION, deleteAction);
-		String s = addHeaderAndCreatePolicy( recievedPolicy, rule, "http://example.com/policy/delete-data");
-		return s;
+
+	  	Action useAction = new Action(ActionType.USE);
+		Action deleteDutyAction = new Action(ActionType.DELETE);
+		deleteDutyAction.setRefinements(refinements);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		Rule postobligation = new Rule(RuleType.POSTDUTY, deleteDutyAction);
+		ArrayList<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		rule.setPostduties(postDuties);
+		return rp.createPolicy(uid, rule);
 	}
-	
+
 	@PostMapping("/policy/deletePolicyAfterUsagePeriod")
-	public String deletePolicyAfterUsagePeriod(@RequestBody RecievedOdrlPolicy recievedPolicy) {		
-		Action useAction = new Action(ActionType.USE);
+	public String deletePolicyAfterUsagePeriod(@RequestBody RecievedOdrlPolicy rp) {	
+		String uid = baseUid + "delete-after-usage";
+	  	Action useAction = new Action(ActionType.USE);
 		Action deleteDutyAction = new Action(ActionType.DELETE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, deleteDutyAction);
-		List<Rule> postobligations = new ArrayList<>();
-		postobligations.add(postobligation);
-		rule.setPostobligations(postobligations);
-		String s = addHeaderAndCreatePolicy( recievedPolicy, rule, "http://example.com/policy/delete-after-usage");
-		return s;
+		Rule postobligation = new Rule(RuleType.POSTDUTY, deleteDutyAction);
+		ArrayList<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		rule.setPostduties(postDuties);
+		return rp.createPolicy(uid, rule);
 	}
 	
 	@PostMapping("/policy/AnonymizeInRestPolicyForm")
-	public String anonymizeInRestolicy(@RequestBody RecievedOdrlPolicy recievedPolicy) {
-
+	public String anonymizeInRestolicy(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = baseUid + "anonymize-in-rest";
 		Action anonymizeAction = new Action(ActionType.ANONYMIZE);
 		Rule rule = new Rule(RuleType.OBLIGATION, anonymizeAction);
-		String s = addHeaderAndCreatePolicy( recievedPolicy, rule, "http://example.com/policy/anonymize-in-rest");
-		return s;
+		return rp.createPolicy(uid, rule);
 	}
-	
-	@PostMapping("/policy/AnonymizeInTransitPolicyForm")
-	public String anonymizeTransitPolicy(@RequestBody RecievedOdrlPolicy recievedPolicy) {
-		List<Condition> refinements = new ArrayList<>();
-		
 
-		RightOperand modificationMethodRightOperand = new RightOperand(recievedPolicy.getModificator() ,RightOperandType.ANYURI);
-		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD, Operator.EQUALS, modificationMethodRightOperand, "");
-		if (recievedPolicy.getFieldToChange() != "") {
-			modificationMethodRefinement.setJsonPath(recievedPolicy.getFieldToChange());
-		}
-		ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter(recievedPolicy.getValueToChange(),RightOperandType.STRING);
+	@PostMapping("/policy/AnonymizeInTransitPolicyForm")
+	public String anonymizeTransitPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = baseUid + "anonymize-in-transit";
+		ArrayList<Condition> refinements = new ArrayList<>();
+		RightOperand modificationMethodRightOperand = new RightOperand(rp.getModificator(), RightOperandType.ANYURI);
+		ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter(rp.getValueToChange(),
+				RightOperandType.STRING);
+		replaceWithParameter.setType(RightOperandType.STRING);
+		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD,
+				Operator.EQ, modificationMethodRightOperand, "");
 		modificationMethodRefinement.setReplaceWith(replaceWithParameter);
-		
+		if (rp.getFieldToChange() != "") {
+			modificationMethodRefinement.setJsonPath(rp.getFieldToChange());
+		}
 		refinements.add(modificationMethodRefinement);
-		
 		Action useAction = new Action(ActionType.USE);
 		Action anonymizeDutyAction = new Action(ActionType.ANONYMIZE);
 		anonymizeDutyAction.setRefinements(refinements);
-		
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule preobligation = new Rule(RuleType.PREOBLIGATION, anonymizeDutyAction);
-		List<Rule> preobligations = new ArrayList<>();
-		preobligations.add(preobligation);
-		rule.setPreobligations(preobligations);
-		String s = addHeaderAndCreatePolicy(recievedPolicy, rule, "http://example.com/policy/anonymize-in-transit");
-		return s;
+		Rule preDuties = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
+		ArrayList<Rule> preDutiess = new ArrayList<>();
+		preDutiess.add(preDuties);
+		rule.setPreduties(preDutiess);
+
+		return rp.createPolicy(uid, rule);
 	}
-	
+
 	@PostMapping("/policy/LogAccessPolicyForm")
-	public String logPolicy(@RequestBody RecievedOdrlPolicy recievedPolicy) {
-		RightOperand rightOperand = new RightOperand(recievedPolicy.getSystemDevice(), RightOperandType.ANYURI);
-		rightOperand.setType(RightOperandType.ANYURI);
-		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEMDEVICE, Operator.EQUALS, rightOperand, "");
-		List<Condition> refinements = new ArrayList<>();
+	public String logPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = baseUid + "log-access";
+		RightOperand logLevelRightOperand = new RightOperand();
+		logLevelRightOperand.setType(RightOperandType.STRING);
+		logLevelRightOperand.setValue(rp.getLogLevel());
+		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.EQUALS,
+				logLevelRightOperand, "");
+
+		RightOperand rightOperand = new RightOperand(rp.getSystemDevice(), RightOperandType.ANYURI);
+		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEM_DEVICE,
+				Operator.SAME_AS, rightOperand, "");
+
+		ArrayList<Condition> refinements = new ArrayList<>();
+		refinements.add(logLevelRefinement);
 		refinements.add(systemDeviceRefinement);
 		Action useAction = new Action(ActionType.USE);
 		Action logDutyAction = new Action(ActionType.LOG);
 		logDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, logDutyAction);
-		List<Rule> postobligations = new ArrayList<>();
-		postobligations.add(postobligation);
-		rule.setPostobligations(postobligations);
-		String s = addHeaderAndCreatePolicy(recievedPolicy, rule, "http://example.com/policy/log-access");
-		return s;
+		Rule postobligation = new Rule(RuleType.POSTDUTY, logDutyAction);
+		ArrayList<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		rule.setPostduties(postDuties);
+		return rp.createPolicy(uid, rule);
 	}
-	
+
 	@PostMapping("/policy/InformPolicyForm")
-	public String policy(@RequestBody RecievedOdrlPolicy recievedPolicy) {
-	  	RightOperand rightOperand = new RightOperand(recievedPolicy.getInformedParty(), RightOperandType.ANYURI);
-		rightOperand.setValue("http://example.com/party/my-party");
-		Condition informedPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.INFORMEDPARTY, Operator.EQUALS, rightOperand, "");
-		List<Condition> refinements = new ArrayList<>();
-		refinements.add(informedPartyRefinement);
+	public String policy(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = baseUid + "notify";
+		RightOperand notificationLevelRightOperand = new RightOperand();
+		notificationLevelRightOperand.setType(RightOperandType.STRING);
+		notificationLevelRightOperand.setValue("http://example.com/party/" + rp.getNotificationLevel());
+		Condition notificationLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.NOTIFICATION_LEVEL,
+				Operator.EQUALS, notificationLevelRightOperand, "");
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.ANYURI);
+		rightOperand.setValue(rp.getInformedParty());
+		Condition recipientRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.RECIPIENT, Operator.EQUALS,
+				rightOperand, "");
+		ArrayList<Condition> refinements = new ArrayList<>();
+		refinements.add(notificationLevelRefinement);
+		refinements.add(recipientRefinement);
 		Action useAction = new Action(ActionType.USE);
-		Action informDutyAction = new Action(ActionType.INFORM);
-		informDutyAction.setRefinements(refinements);
+		Action notifyDutyAction = new Action(ActionType.NOTIFY);
+		notifyDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule postobligation = new Rule(RuleType.POSTOBLIGATION, informDutyAction);
-		List<Rule> postobligations = new ArrayList<>();
-		postobligations.add(postobligation);
-		rule.setPostobligations(postobligations);
-		String s = addHeaderAndCreatePolicy(recievedPolicy, rule, "http://example.com/policy/notify");
-		return s;
+		Rule postobligation = new Rule(RuleType.POSTDUTY, notifyDutyAction);
+		ArrayList<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		rule.setPostduties(postDuties);
+		return rp.createPolicy(uid, rule);
 	}
-	
+
 	@PostMapping("/policy/DistributePolicyForm")
-	public String encodingPolicy(@RequestBody RecievedOdrlPolicy recievedPolicy) {
-		if (recievedPolicy.getEncoding() != "") {
-			List<Condition> constraints = new ArrayList<>();
-			RightOperand rightOperand = new RightOperand(recievedPolicy.getEncoding(), RightOperandType.ANYURI);
-			Condition encodingConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ENCODING, Operator.EQUALS, rightOperand, "");
-			constraints.add(encodingConstraint);
-			Action distributeAction = new Action(ActionType.DISTRIBUTE);
-			Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
-			rule.setConstraints(constraints);
-			String s = addHeaderAndCreatePolicy(recievedPolicy, rule, "http://example.com/policy/restrict-access-encoding");
-			return s;
-		} else {
-			RightOperand rightOperand = new RightOperand(recievedPolicy.getPolicy(), RightOperandType.ANYURI);
-			Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGETPOLICY, Operator.EQUALS, rightOperand, "");
-			List<Condition> refinements = new ArrayList<>();
-			refinements.add(thirdPartyRefinement);
-			Action distributeAction = new Action(ActionType.DISTRIBUTE);
-			Action nextPolicyDutyAction = new Action(ActionType.NEXTPOLICY);
-			nextPolicyDutyAction.setRefinements(refinements);
-			Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
-			Rule preobligation = new Rule(RuleType.PREOBLIGATION, nextPolicyDutyAction);
-			List<Rule> preobligations = new ArrayList<>();
-			preobligations.add(preobligation);
-			rule.setPreobligations(preobligations);
-			String s = addHeaderAndCreatePolicy(recievedPolicy, rule, "http://example.com/policy/distribute-policy");
-			return s;
-		}
+	public String encodingPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		String uid = baseUid + "restrict-access-encoding";
+		RightOperand dutyRightOperand = new RightOperand();
+		dutyRightOperand.setType(RightOperandType.ANYURI);
+		dutyRightOperand.setValue(rp.getPolicy());
+		Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY,
+				Operator.SAME_AS, dutyRightOperand, "");
+		ArrayList<Condition> dutyRefinements = new ArrayList<>();
+		dutyRefinements.add(thirdPartyRefinement);
+
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.STRING);
+		rightOperand.setValue(rp.getArtifactState());
+		Condition artifactStateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ARTIFACT_STATE,
+				Operator.EQUALS, rightOperand, "");
+		ArrayList<Condition> constraints = new ArrayList<>();
+		constraints.add(artifactStateConstraint);
+		Action distributeAction = new Action(ActionType.DISTRIBUTE);
+		Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
+		nextPolicyDutyAction.setRefinements(dutyRefinements);
+		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
+		Rule preDuties = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
+		ArrayList<Rule> preDutiess = new ArrayList<>();
+		preDutiess.add(preDuties);
+		rule.setPreduties(preDutiess);
+		rule.setConstraints(constraints);
+		return rp.createPolicy(uid, rule);
 	}
-	
+
 	@PostMapping("/policy/JsonOdrlPolicyMYDATA")
 	public String policy(@RequestBody String jsonPolicy) {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 		boolean tempProviderSide = true;
 		return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
 	}
-
-	
-	private String addHeaderAndCreatePolicy(RecievedOdrlPolicy recievedPolicy, Rule rule, String uri) {
-		OdrlPolicy odrlPolicy = new OdrlPolicy();
-		List<Rule> rules = new ArrayList<>();
-		rules.add(rule);
-		
-		odrlPolicy.setConsumer(createConsumer(recievedPolicy));
-		odrlPolicy.setRules(rules);
-		odrlPolicy.setPolicyId(URI.create(uri));
-		odrlPolicy.setType(PolicyType.getFromIdsString("ids:Contract"+recievedPolicy.getPolicyType()));
-		odrlPolicy.setTarget(URI.create(recievedPolicy.getTarget()));
-		//odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI .create(recievedPolicy.getProvider())));
-		String jsonPolicy = OdrlCreator.createODRL(odrlPolicy);
-		String dtPolicy = policy(jsonPolicy);
-		String policies = jsonPolicy + "DTPOLICY:"+ dtPolicy;
-		return policies;
-
-	}
-	
-	private Party createConsumer(RecievedOdrlPolicy recievedPolicy) {
-		Party consumer = null;
-		try {
-			consumer = new Party(PartyType.CONSUMER, new URI(recievedPolicy.getConsumer()));
-			consumer.setType(PartyType.CONSUMER);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return consumer;
-	}
-	
 }

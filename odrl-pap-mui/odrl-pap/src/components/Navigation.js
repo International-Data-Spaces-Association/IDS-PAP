@@ -179,7 +179,7 @@ export default function Navigation() {
           </Grid>
 
           <Divider />
-          <Typography variant="h6"className={classes.drawerTitle}> ODRL POLICY EDITORS</Typography>
+          <Typography variant="h6"className={classes.drawerTitle}> IDS POLICY EDITORS</Typography>
           <List>
             <ListItem
               button
@@ -208,6 +208,8 @@ export default function Navigation() {
               </ListItemIcon>
               <ListItemText>Create Complex policy</ListItemText>
             </ListItem>
+            
+            <Divider />
 
             <ListItem
               button

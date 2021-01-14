@@ -4,6 +4,7 @@ const BASE_URL = 'http://localhost:9090';
 export default function Submit(url, values, states, setErrors, history ,e) {
   e.preventDefault();
   if (Validation(values, states, setErrors)) {
+    console.log(values)
     axios.post(BASE_URL + url, values)
     .then((response) => {
       let policies = response.data.split('DTPOLICY:');
@@ -58,6 +59,12 @@ function Validation(values, states, setErrors) {
     temp.encoding = states.encoding? isValidUrl(values.encoding):"";
     temp.policy = states.policy? isValidUrl(values.policy):"";
     temp.timeAndDate = states.timeDate ? isValidDate(values.timeAndDate):"";
+    temp.specifyBeginTime = states.specifyBeginTime ? isValidDate(values.specifyBeginTime): "";
+    temp.logLevel = states.logLevel ? notEmpty(values.logLevel):"";
+    temp.notificationLevel = states.notificationLevel ? notEmpty(values.notificationLevel):"";
+    temp.artifactState = states.artifactState ? notEmpty(values.artifactState):"";
+    temp.restrictTimeDuration = states.restrictTimeDuration? notEmpty(values.restrictTimeDuration):"";
+    temp.restrictTimeDurationUnit = states.restrictTimeDuration? notEmpty(values.restrictTimeDurationUnit):"";
     setErrors({
       ...temp,
     });

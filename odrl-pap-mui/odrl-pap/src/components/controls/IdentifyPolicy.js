@@ -20,7 +20,7 @@ export default function IdentifyPolicy(props) {
         <ItemPicker
           name="policyType"
           label="Policy Type*"
-          defaultValue=""
+          defaultValue="Agreement"
           ItemList={policy_types}
           onChange={handleInputChangeLocal}
           error={errors.policyType}

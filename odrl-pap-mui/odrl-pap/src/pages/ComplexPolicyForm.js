@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import {
   purpose_list,
   sale_rent_list,
+  time_units,
 } from "../components/controls/InitialFieldListValues";
 import Date from "../components/controls/Date";
 import PageHeader from "../components/PageHeader";
@@ -59,7 +60,7 @@ export default function ComplexPolicyForm() {
   };
 
   const removeEnteredData = (id1, id2) => {
-    setValues({ ...values, [id1]:"", [id2]:"" });
+    setValues({ ...values, [id1]: "", [id2]: "" });
   };
 
   return (
@@ -179,7 +180,7 @@ export default function ComplexPolicyForm() {
                     error={errors.restrictTimeIntervalStart}
                   />
                 </Grid>
-                <Grid item xs={11} sm={1}/>
+                <Grid item xs={11} sm={1} />
                 <Grid item xs={11} sm={5}>
                   <Date
                     name="restrictTimeIntervalEnd"
@@ -192,7 +193,10 @@ export default function ComplexPolicyForm() {
                 <Grid item xs={1}>
                   <Remove
                     onClick={() => {
-                      removeEnteredData("restrictTimeIntervalEnd","restrictTimeIntervalStart");
+                      removeEnteredData(
+                        "restrictTimeIntervalEnd",
+                        "restrictTimeIntervalStart"
+                      );
                       removeComponent("interval");
                     }}
                   />
@@ -212,7 +216,7 @@ export default function ComplexPolicyForm() {
                     error={errors.price}
                   />
                 </Grid>
-                <Grid item xs={11} sm={1}/>
+                <Grid item xs={11} sm={1} />
                 <Grid item xs={11} sm={5}>
                   <ItemPicker
                     name="payment"
@@ -221,6 +225,85 @@ export default function ComplexPolicyForm() {
                     ItemList={sale_rent_list}
                     onChange={handleInputChange}
                     error={errors.payment}
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  <Remove
+                    onClick={() => {
+                      removeEnteredData("price", "payment");
+                      removeComponent("payment");
+                    }}
+                  />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.counter ? (
+              <>
+                <Grid item xs={11}>
+                  <Input
+                    name="counter"
+                    label="Count*"
+                    value={values.counter}
+                    placeholder="e.g. 10"
+                    onChange={handleInputChange}
+                    error={errors.counter}
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  <Remove
+                    onClick={() => {
+                      removeComponent("counter");
+                      removeEnteredData("counter");
+                    }}
+                  />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.specifyBeginTime ? (
+              <>
+                  <Grid item xs={11}>
+                    <Date
+                      name="specifyBeginTime"
+                      label="Begin Time*"
+                      value={values.specifyBeginTime}
+                      onChange={handleInputChange}
+                      error={errors.specifyBeginTime}
+                    />
+                  </Grid>
+                  <Grid item xs={1}>
+                    <Remove
+                      onClick={() => {
+                        removeEnteredData("specifyBeginTime");
+                        removeComponent("specifyBeginTime");
+                      }}
+                    />
+                  </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.restrictTimeDuration ? (
+              <>
+                <Grid item xs={11} sm={5}>
+                  <Input
+                    name="restrictTimeDuration"
+                    label="Duration Value*"
+                    value={values.restrictTimeDuration}
+                    placeholder="e.g. 10"
+                    onChange={handleInputChange}
+                    error={errors.restrictTimeDuration}
+                  />
+                </Grid>
+                <Grid item xs={11} sm={1} />
+                <Grid item xs={11} sm={5}>
+                  <ItemPicker
+                    name="restrictTimeDurationUnit"
+                    label="Unit*"
+                    defaultValue=""
+                    ItemList={time_units}
+                    onChange={handleInputChange}
+                    error={errors.restrictTimeDurationUnit}
                   />
                 </Grid>
                 <Grid item xs={1}>
@@ -311,6 +394,7 @@ export default function ComplexPolicyForm() {
                         Restrict Time Interval
                       </MenuItem>
                     ) : null}
+
                     {!selectedComponents.payment ? (
                       <MenuItem
                         onClick={() => {
@@ -322,10 +406,47 @@ export default function ComplexPolicyForm() {
                         Restrict Payment
                       </MenuItem>
                     ) : null}
+
+                    {!selectedComponents.counter ? (
+                      <MenuItem
+                        onClick={() => {
+                          selectedComponents.counter = true;
+                          setAnchorEl(null);
+                        }}
+                        id="umberOfUsage"
+                      >
+                        Restrict Number of Usage
+                      </MenuItem>
+                    ) : null}
+
+                    {!selectedComponents.restrictTimeDuration ? (
+                      <MenuItem
+                        onClick={() => {
+                          selectedComponents.restrictTimeDuration = true;
+                          setAnchorEl(null);
+                        }}
+                        id="restrictTimeDuration"
+                      >
+                        Restrict Time Duration
+                      </MenuItem>
+                    ) : null}
+
+                    {!selectedComponents.specifyBeginTime ? (
+                      <MenuItem
+                        onClick={() => {
+                          selectedComponents.specifyBeginTime = true;
+                          setAnchorEl(null);
+                        }}
+                        id="restrictTimeDuration"
+                      >
+                        Specify a begin time
+                      </MenuItem>
+                    ) : null}
                   </Menu>
                 </Grid>
               </>
             ) : null}
+
             <Grid item xs={12}>
               <Grid item xs={2}>
                 <Button

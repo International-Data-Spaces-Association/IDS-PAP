@@ -7,9 +7,12 @@ import Input from "../components/controls/Input";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import {OdrlPolicy} from '../components/backend/OdrlPolicy';
+import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
-
+import ItemPicker from "../components/controls/ItemPicker";
+import {
+  log_level_list
+} from "../components/controls/InitialFieldListValues";
 const selected_components = {
   logAccess: true,
 };
@@ -19,9 +22,7 @@ export default function LogAccess() {
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(
-    selected_components
-  );
+  const [selectedComponents] = useState(selected_components);
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -50,6 +51,17 @@ export default function LogAccess() {
             handleInputChange={handleInputChange}
             errors={errors}
           />
+
+          <Grid item xs={11}>
+            <ItemPicker
+              name="logLevel"
+              label="Log Level*"
+              defaultValue=""
+              ItemList={log_level_list}
+              onChange={handleInputChange}
+              error={errors.logLevel}
+            />
+          </Grid>
 
           <Grid item xs={11} lg={11}>
             <Input

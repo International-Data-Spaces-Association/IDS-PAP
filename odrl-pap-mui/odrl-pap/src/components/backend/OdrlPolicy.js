@@ -1,6 +1,6 @@
 export const OdrlPolicy = {
     id: 0,
-    policyType: "",
+    policyType: "Agreement",
     target: "",
     provider: "My party",
     consumer: "",
@@ -24,4 +24,10 @@ export const OdrlPolicy = {
     fieldToChange: "",
     restrictTimeIntervalStart:"",
     restrictTimeIntervalEnd: "",
+    specifyBeginTime:"",
+    restrictTimeDuration:"",
+    restrictTimeDurationUnit:"",
+    logLevel:"",
+    notificationLevel:"",
+    artifactState:"",
   };
