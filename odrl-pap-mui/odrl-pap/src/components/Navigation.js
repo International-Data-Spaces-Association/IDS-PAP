@@ -13,7 +13,7 @@ import {
   ListItemText,
   Avatar,
   CssBaseline,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import logo from "../logo.png";
@@ -33,7 +33,7 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import ShareIcon from "@material-ui/icons/Share";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import MenuIcon from "@material-ui/icons/Menu";
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 const drawerWidth = 280;
 
@@ -64,57 +64,62 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: theme.spacing(0, 1),
   },
-  drawerTitle:{
-    marginTop:'1em',
+  drawerTitle: {
     marginLeft: "auto",
     marginRight: "auto",
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-  drawerFooter:{
-    position:"absolute",
-    left:'50%',
-    marginLeft:'-80px',
-    width:'200px',
-    bottom:'10px'
+  drawerFooter: {
+    position: "absolute",
+    left: "50%",
+    marginLeft: "-80px",
+    width: "200px",
+    bottom: "10px",
   },
-  listItemSelected:{
+  listItemSelected: {
     backgroundColor: "#ff0000",
   },
-  loginBtn:{
-    marginLeft:'0.5em',
+  loginBtn: {
+    marginLeft: "0.5em",
   },
-  profileImg:{
-    marginLeft: '0.5em',
+  divider: {
+    marginTop: "0.5em",
+    marginBottom: "0.5em",
+    background: "rgb(23,156,125,0.4)",
+    height: "2px",
+  },
+  profileImg: {
+    marginLeft: "0.5em",
     width: theme.spacing(6),
     height: theme.spacing(6),
   },
-  accountInformation:{
+  accountInformation: {
     height: theme.spacing(12),
-  }
+  },
 }));
 
 const ListItem = withStyles((theme) => ({
   root: {
     "&$selected": {
       backgroundColor: "red",
-      color: "white"
+      color: "white",
     },
     "&$selected:hover": {
       backgroundColor: theme.palette.primary.main,
-      color: "white"
+      color: "white",
     },
     "&:hover": {
       backgroundColor: theme.palette.primary.main,
-      color: "white"
-    }
+      color: "white",
+    },
   },
-  selected: {}
+  selected: {},
 }))(MuiListItem);
 
 export default function Navigation() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  
+  const [logedIn, setLogedIn] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
@@ -161,170 +166,207 @@ export default function Navigation() {
             paper: classes.drawerPaper,
           }}
         >
-
-          <Grid container spacing={3} className={classes.accountInformation} alignItems="center" justify="center">
-            <Grid item xs={2} >
-              <Avatar src={profile_img} className={classes.profileImg}/>
-            </Grid>
-            <Grid item xs={10}>
-              <IconButton color="inherit" aria-label="open drawer" edge="start" className={classes.loginBtn}               component={Link}
-              to="/account"
-              onClick={() => {
-                setOpen(!open);
-              }}>
-                <Typography variant="h6"> John Voss</Typography>
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            </Grid>
+          <Grid
+            container
+            spacing={3}
+            className={classes.accountInformation}
+            alignItems="center"
+            justify="center"
+          >
+            {logedIn ? (
+              <>
+                <Grid item xs={2}>
+                  <Avatar src={profile_img} className={classes.profileImg} />
+                </Grid>
+                <Grid item xs={10}>
+                  <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    className={classes.loginBtn}
+                    component={Link}
+                    to="/account"
+                    onClick={() => {
+                      setOpen(!open);
+                    }}
+                  >
+                    <Typography variant="h6"> John Voss</Typography>
+                    <KeyboardArrowDownIcon />
+                  </IconButton>
+                </Grid>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to="/login"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  Sign in
+                </Button>
+              </>
+            )}
           </Grid>
 
-          <Divider />
-          <Typography variant="h6"className={classes.drawerTitle}> IDS POLICY EDITORS</Typography>
-          <List>
-            <ListItem
-              button
-              component={Link}
-              to="/policy/InterpretOdrlPolicy"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <SwapHorizIcon />
-              </ListItemIcon>
-              <ListItemText>Interprete an ODRL Policy </ListItemText>
-            </ListItem>
+          {logedIn ? (
+            <>
+              <Divider className={classes.divider} />
+              <Typography variant="h6" className={classes.drawerTitle}>
+                {" "}
+                IDS POLICY EDITORS
+              </Typography>
+              <List>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/InterpretOdrlPolicy"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <SwapHorizIcon />
+                  </ListItemIcon>
+                  <ListItemText>Interprete an ODRL Policy </ListItemText>
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/ComplexPolicyForm"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <PostAddIcon />
-              </ListItemIcon>
-              <ListItemText>Create Complex policy</ListItemText>
-            </ListItem>
-            
-            <Divider />
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/ComplexPolicyForm"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <PostAddIcon />
+                  </ListItemIcon>
+                  <ListItemText>Create Complex policy</ListItemText>
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/ProvideAccessPolicyForm"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <LockOpenIcon />
-              </ListItemIcon>
-              <ListItemText>Provide Access</ListItemText>
-            </ListItem>
+                <Divider className={classes.divider} />
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/CountAccessPolicyForm"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <EqualizerIcon />
-              </ListItemIcon>
-              <ListItemText>Count Access</ListItemText>
-            </ListItem>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/ProvideAccessPolicyForm"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <LockOpenIcon />
+                  </ListItemIcon>
+                  <ListItemText>Provide Access</ListItemText>
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/DeletData"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <DeleteIcon />
-              </ListItemIcon>
-              <ListItemText>Delete Data After</ListItemText>
-            </ListItem>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/CountAccessPolicyForm"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <EqualizerIcon />
+                  </ListItemIcon>
+                  <ListItemText>Count Access</ListItemText>
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/AnonymizeInRestPolicyForm"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <EnhancedEncryptionIcon />
-              </ListItemIcon>
-              <ListItemText>Anonymize in Rest</ListItemText>
-            </ListItem>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/DeletData"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <DeleteIcon />
+                  </ListItemIcon>
+                  <ListItemText>Delete Data After</ListItemText>
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/AnonymizeInTransitPolicyForm"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <EnhancedEncryptionIcon />
-              </ListItemIcon>
-              <ListItemText>Anonymize in Transit</ListItemText>
-            </ListItem>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/AnonymizeInRestPolicyForm"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <EnhancedEncryptionIcon />
+                  </ListItemIcon>
+                  <ListItemText>Anonymize in Rest</ListItemText>
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/LogAccessPolicyForm"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <AssignmentIcon />
-              </ListItemIcon>
-              <ListItemText>Log Access</ListItemText>
-            </ListItem>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/AnonymizeInTransitPolicyForm"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <EnhancedEncryptionIcon />
+                  </ListItemIcon>
+                  <ListItemText>Anonymize in Transit</ListItemText>
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/InformPolicyForm"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <NotificationsActiveIcon />
-              </ListItemIcon>
-              <ListItemText>Inform Party</ListItemText>
-            </ListItem>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/LogAccessPolicyForm"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <AssignmentIcon />
+                  </ListItemIcon>
+                  <ListItemText>Log Access</ListItemText>
+                </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to="/policy/DistributeData"
-              onClick={() => {
-                setOpen(!open);
-              }}
-            >
-              <ListItemIcon>
-                <ShareIcon />
-              </ListItemIcon>
-              <ListItemText>Distribute Data</ListItemText>
-            </ListItem>
-          </List>
-          <Typography variant="body2" className={classes.drawerFooter}> © 2020 Fraunhofer IESE </Typography>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/InformPolicyForm"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <NotificationsActiveIcon />
+                  </ListItemIcon>
+                  <ListItemText>Inform Party</ListItemText>
+                </ListItem>
 
+                <ListItem
+                  button
+                  component={Link}
+                  to="/policy/DistributeData"
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                >
+                  <ListItemIcon>
+                    <ShareIcon />
+                  </ListItemIcon>
+                  <ListItemText>Distribute Data</ListItemText>
+                </ListItem>
+              </List>
+              <Typography variant="body2" className={classes.drawerFooter}>
+                © {new Date().getFullYear()} Fraunhofer IESE
+              </Typography>
+            </>
+          ) : null}
         </DrawerMui>
       </div>
     </ClickAwayListener>

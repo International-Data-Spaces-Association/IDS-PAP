@@ -291,6 +291,7 @@ public class OdrlPapRestController {
 	public String policy(@RequestBody String jsonPolicy) {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 		boolean tempProviderSide = true;
+		
 		return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
 	}
 }

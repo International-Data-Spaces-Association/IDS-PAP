@@ -10,9 +10,8 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import ItemPicker from "../components/controls/ItemPicker";
-import {
-  log_level_list
-} from "../components/controls/InitialFieldListValues";
+import Title from "../components/controls/Title";
+import { log_level_list } from "../components/controls/InitialFieldListValues";
 const selected_components = {
   logAccess: true,
 };
@@ -45,17 +44,17 @@ export default function LogAccess() {
           title="This policy gives permission to a specified IDS data consumer to use your data and requests to log the usage information on a specified system device."
           icon={<AssignmentIcon />}
         />
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <IdentifyPolicy
             values={values}
             handleInputChange={handleInputChange}
             errors={errors}
           />
 
-          <Grid item xs={11}>
+          <Grid container>
+            <Title label="Log Level" />
             <ItemPicker
               name="logLevel"
-              label="Log Level*"
               defaultValue=""
               ItemList={log_level_list}
               onChange={handleInputChange}
@@ -63,10 +62,10 @@ export default function LogAccess() {
             />
           </Grid>
 
-          <Grid item xs={11} lg={11}>
+          <Grid container>
+            <Title label="System Device" />
             <Input
               name="systemDevice"
-              label="System Device*"
               value={values.systemDevice}
               placeholder="e.g. http://example.com/system:ESN-database"
               onChange={handleInputChange}

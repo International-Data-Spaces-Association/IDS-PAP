@@ -13,6 +13,7 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import Remove from "../components/controls/Remove";
+import Title from "../components/controls/Title";
 
 const selected_components = {
   time: false,
@@ -24,9 +25,7 @@ export default function DeleteDataAfter() {
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(
-    selected_components
-  );
+  const [selectedComponents] = useState(selected_components);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -42,10 +41,7 @@ export default function DeleteDataAfter() {
         selectedComponents[key] = false;
       }
     }
-    setValues({...values,
-    "time": "",
-    "timeAndDate":"",
-    "timeUnit" :"",});
+    setValues({ ...values, time: "", timeAndDate: "", timeUnit: "" });
   };
   const handleSelectedClose = (e) => {
     selectedComponents[e.target.id] = true;
@@ -99,7 +95,7 @@ export default function DeleteDataAfter() {
             icon={<DeleteIcon />}
           />
         ) : null}
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <IdentifyPolicy
             values={values}
             handleInputChange={handleInputChange}
@@ -108,7 +104,8 @@ export default function DeleteDataAfter() {
 
           {selectedComponents.time ? (
             <>
-              <Grid item xs={5}>
+              <Grid container>
+                <Title label="Specify a time duration that the application has to wait before deleting the data" />
                 <Input
                   name="time"
                   label="Duration value*"
@@ -116,25 +113,30 @@ export default function DeleteDataAfter() {
                   placeholder="1"
                   onChange={handleInputChange}
                   error={errors.time}
+                  xs={11}
+                  sm={5}
                 />
-              </Grid>
-              <Grid item xs={5}>
+                <Grid sm={1} />
+
                 <ItemPicker
                   name="timeUnit"
-                  label=""
+                  label="Unit"
                   defaultValue=""
                   ItemList={time_units}
                   onChange={handleInputChange}
                   error={errors.timeUnit}
+                  xs={11}
+                  sm={5}
                 />
+                <Remove onClick={resetStates} />
               </Grid>
-              <Remove onClick={resetStates} />
             </>
           ) : null}
 
           {selectedComponents.timeDate ? (
             <>
-              <Grid item xs={10} sm={5}>
+              <Grid container>
+                <Title label="Specify an exact date and time to delete the data:" />
                 <Date
                   name="timeAndDate"
                   label="Date and Time*"
@@ -142,8 +144,8 @@ export default function DeleteDataAfter() {
                   onChange={handleInputChange}
                   error={errors.timeAndDate}
                 />
+                <Remove onClick={resetStates} />
               </Grid>
-              <Remove onClick={resetStates} />
             </>
           ) : null}
           {Object.values(selectedComponents).every((x) => x === false) ? (

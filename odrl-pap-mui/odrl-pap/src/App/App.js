@@ -4,6 +4,7 @@ import {
   makeStyles,
   Paper,
   ThemeProvider,
+  AppBar,
   unstable_createMuiStrictModeTheme as createMuiTheme ,
 } from "@material-ui/core";
 import Navigation from "../components/Navigation";
@@ -23,19 +24,19 @@ const useStyles = makeStyles((theme) => ({
   ...theme.mixins.toolbar,
   },
   content: {
-    marginTop: '1em',
-    marginLeft: '1em',
-    marginRight:'1em',
-  }
+    width:"95%",
+    margin: "auto",
+    minHeight:"98vh",
+  },
 }));
 
 function App() {
   const classes = useStyles();
-
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <Navigation />
+        <AppBar position="fixed" />
         <Paper className={classes.content}>
           <div className={classes.seperator}/>
           <RouteToPage />

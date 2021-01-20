@@ -3,8 +3,12 @@ package de.fraunhofer.iese.ids.odrl.pap.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Map;
+
+import com.github.jsonldjava.utils.JsonUtils;
 
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
+import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Party;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
@@ -370,8 +374,10 @@ public class RecievedOdrlPolicy {
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
 		String jsonPolicy = OdrlCreator.createODRL(odrlPolicy);
-		// String dtPolicy = policy(jsonPolicy);
-		String dtPolicy = "dd";
+		Map map = null;
+		boolean tempProviderSide = true;
+		String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
+		//String dtPolicy = policy(jsonPolicy);
 		String policies = jsonPolicy + "DTPOLICY:" + dtPolicy;
 		return policies;
 	}

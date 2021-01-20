@@ -10,9 +10,8 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import ItemPicker from "../components/controls/ItemPicker";
-import {
-  log_level_list
-} from "../components/controls/InitialFieldListValues";
+import Title from "../components/controls/Title";
+import { log_level_list } from "../components/controls/InitialFieldListValues";
 
 const selected_components = {
   informedParty: true,
@@ -45,16 +44,16 @@ export default function LogAccess() {
           title="This policy allows a specified IDS data consumer to use your data and requests notifications on each data usage."
           icon={<NotificationsActiveIcon />}
         />
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <IdentifyPolicy
             values={values}
             handleInputChange={handleInputChange}
             errors={errors}
           />
-          <Grid item xs={11}>
+          <Grid container>
+            <Title label="Notification Level" />
             <ItemPicker
               name="notificationLevel"
-              label="Notification Level*"
               defaultValue=""
               ItemList={log_level_list}
               onChange={handleInputChange}
@@ -62,10 +61,10 @@ export default function LogAccess() {
             />
           </Grid>
 
-          <Grid item xs={12} lg={11}>
+          <Grid container>
+            <Title label="Informed Party (by default, you are the party who gets the notification)" />
             <Input
               name="informedParty"
-              label="Informed Party (by default, you are the party who gets the notification)*"
               value={values.informedParty}
               placeholder="My Party"
               onChange={handleInputChange}

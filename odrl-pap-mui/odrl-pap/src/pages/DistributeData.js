@@ -10,10 +10,10 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import ItemPicker from "../components/controls/ItemPicker";
+import Title from "../components/controls/Title";
 import { artifact_state_list } from "../components/controls/InitialFieldListValues";
 
-const selected_components = {
-};
+const selected_components = {};
 
 export default function DistributeData() {
   const classes = useStyle();
@@ -26,14 +26,14 @@ export default function DistributeData() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
-      Submit(
-        "/policy/DistributePolicyForm",
-        values,
-        selectedComponents,
-        setErrors,
-        history,
-        e
-      );
+    Submit(
+      "/policy/DistributePolicyForm",
+      values,
+      selectedComponents,
+      setErrors,
+      history,
+      e
+    );
   };
   return (
     <div className={classes.page}>
@@ -43,17 +43,17 @@ export default function DistributeData() {
           icon={<ShareIcon />}
         />
 
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <IdentifyPolicy
             values={values}
             handleInputChange={handleInputChange}
             errors={errors}
           />
 
-          <Grid item xs={11}>
+          <Grid container>
+            <Title label="Artifact State" />
             <ItemPicker
               name="artifactState"
-              label="Artifact State*"
               defaultValue=""
               ItemList={artifact_state_list}
               onChange={handleInputChange}
@@ -61,10 +61,10 @@ export default function DistributeData() {
             />
           </Grid>
 
-          <Grid item xs={11}>
+          <Grid container>
+            <Title label="Policy to be sent to the third party" />
             <Input
               name="policy"
-              label="Policy to be sent to the third party*"
               value={values.policy}
               placeholder="e.g. http://example.com/policy/third-party-policy"
               onChange={handleInputChange}

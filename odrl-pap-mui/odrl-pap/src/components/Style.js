@@ -22,6 +22,16 @@ export const useStyle = makeStyles((theme) => ({
     "& .MuiTypography-h5": {
       marginBottom: "1em",
     },
+    "& .extraSpaceAfterTitle":{
+      marginBottom:"1em",
+    },
+    "& .gridSubItemWithLine": {
+      borderTop: "2px solid rgb(23,156,125,0.4)",
+      paddingTop:theme.spacing(1),
+    },
+    "& .MuiGrid-container":{
+      marginBottom: theme.spacing(2),
+    },
   },
   page: {
     marginLeft: "2em",

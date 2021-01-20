@@ -38,7 +38,7 @@ export default function AnonymizeInRest() {
                 This policy requests a specified IDS data consumer to anonymize your stored data."
           icon={<EnhancedEncryptionIcon />}
         />
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <IdentifyPolicy
             values={values}
             handleInputChange={handleInputChange}

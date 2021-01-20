@@ -13,6 +13,10 @@ import DeleteDataAfter from "../pages/DeleteDataAfter";
 import InterpretOdrlPolicy from "../pages/InterpretOdrlPolicy";
 import ODRLCreator from "../pages/ODRLCreator";
 import Account from "../pages/Account";
+import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
+import ForgotPassword from "../pages/ForgotPassword";
+
 export default function RouteToPage() {
   return (
     <Switch>
@@ -63,7 +67,16 @@ export default function RouteToPage() {
         <ODRLCreator/>
       </Route>
       <Route exact path="/account">
-        <Account/>
+        <SignUp/>
+      </Route>
+      <Route exact path="/login">
+        <SignIn/>
+      </Route>
+      <Route exact path="/register">
+        <SignUp/>
+      </Route>
+      <Route exact path="/ForgotPassword">
+        <ForgotPassword/>
       </Route>
     </Switch>
   );

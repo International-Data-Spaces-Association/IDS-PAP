@@ -34,7 +34,7 @@ const useStyle = makeStyles((theme) => ({
 
 const defaultTranslation =
   "The provider is an IDS party that is issuing the rule. Here the provider is the my-party party. This party is either the Data Owner or the Data Provider of the specified data asset in the IDS context.In this Policy OFFER example, the permission rule allows the Data Consumer to use the target asset.The identifier of this policy and the target asset are http://example.com/policy/sample and http://example.com/ids-data/sample, respectively.";
-const defaultPolicy ='{\n \t"@context": "http://www.w3.org/ns/odrl.jsonld",\n \t"@type": "ids:ContractOffer",\n \t"uid": "http://example.com/policy/sample",\n \t"profile": "http://example.com/ids-profile",\n \t"target": "http://example.com/ids-data/sample",\n \t"provider": "http://example.com/party/my-party",\n \t"permission": [{\n \t\t    "action": "ids:use"\n \t}] \n } \n'
+const defaultPolicy ='{\n \t "@context": {\n \t\t"ids":"https://w3id.org/idsa/core/",\n \t \t"idsc" : "https://w3id.org/idsa/code/"\n \t },    \n \t "@type": "ids:ContractOffer",\n \t "@id": "https://w3id.org/idsa/autogen/contract/sample",\n \t "profile": "http://example.com/ids-profile", \n \t "ids:target": {\n \t\t "@id":"http://example.com/ids-data/sample"\n \t }, \n \t "ids:provider": "http://example.com/party/my-party", \n \t "ids:permission": [{ \n \t "ids:action": [{\n \t\t "@id":"idsc:USE"\n \t \t}]\n \t }] \n  }'
 export default function InterpretOdrlPolicy() {
   const [policy, setPolicy] = useState(defaultPolicy);
   const [dtPolicy, setDtPolicy] = useState(defaultTranslation);
@@ -45,7 +45,7 @@ export default function InterpretOdrlPolicy() {
   }
   return (
     <div className={classes.page}>
-      <Grid container spacing={3}>
+      <Grid container spacing={1}>
         <Grid item xs={12} md={6}>
           <Grid item xs={12}>
             <Typography variant="h5">Copy your ODRL policy here:</Typography>

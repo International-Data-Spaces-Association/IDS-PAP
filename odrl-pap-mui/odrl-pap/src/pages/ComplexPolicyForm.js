@@ -17,14 +17,18 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import Remove from "../components/controls/Remove";
-
+import Title from "../components/controls/Title";
+import DeleteIcon from "@material-ui/icons/Delete";
 const selected_components = {
   location: false,
   system: false,
   event: false,
   interval: false,
   payment: false,
+  counter: false,
   purpose: false,
+  restrictTimeDuration: false,
+  specifyBeginTime: false,
 };
 
 export default function ComplexPolicyForm() {
@@ -55,6 +59,20 @@ export default function ComplexPolicyForm() {
     );
   };
 
+  const resetStates = () => {
+    setValues({...OdrlPolicy});
+    setSelectedComponents({  location: false,
+      system: false,
+      event: false,
+      interval: false,
+      payment: false,
+      counter: false,
+      purpose: false,
+      restrictTimeDuration: false,
+      specifyBeginTime: false,});
+    
+  };
+
   const removeComponent = (id) => {
     setSelectedComponents({ ...selectedComponents, [id]: false });
   };
@@ -71,7 +89,7 @@ export default function ComplexPolicyForm() {
             title="This policy gives permission to a specified IDS data consumer to use your data."
             icon={<PostAddIcon />}
           />
-          <Grid container spacing={3}>
+          <Grid container>
             <IdentifyPolicy
               values={values}
               handleInputChange={handleInputChange}
@@ -79,17 +97,15 @@ export default function ComplexPolicyForm() {
             />
             {selectedComponents.location ? (
               <>
-                <Grid item xs={11}>
+                <Grid container>
+                  <Title label="Restrict Location" />
                   <Input
                     name="location"
-                    label="Location*"
                     value={values.location}
                     placeholder="e.g. https://wikidata.org/wiki/Q136218 (ZIP)"
                     onChange={handleInputChange}
                     error={errors.location}
                   />
-                </Grid>
-                <Grid item xs={1}>
                   <Remove
                     onClick={() => {
                       removeComponent("location");
@@ -102,17 +118,15 @@ export default function ComplexPolicyForm() {
 
             {selectedComponents.system ? (
               <>
-                <Grid item xs={11}>
+                <Grid container>
+                  <Title label="Restrict System" />
                   <Input
                     name="system"
-                    label="System*"
                     value={values.system}
                     placeholder="e.g. https://wikidata.org/wiki/Q136218 (ZIP)"
                     onChange={handleInputChange}
                     error={errors.system}
                   />
-                </Grid>
-                <Grid item xs={1}>
                   <Remove
                     onClick={() => {
                       removeComponent("system");
@@ -125,17 +139,18 @@ export default function ComplexPolicyForm() {
 
             {selectedComponents.purpose ? (
               <>
-                <Grid item xs={11}>
+                <Grid container>
+                  <Title
+                    label="Restrict Purpose"
+                    subtitle="Any certified application in the market place uses the data for a specified purpose. \n You can restrict the usage of your data to specific applications by choosing your intended purpose from the list below*:"
+                  />
                   <ItemPicker
                     name="purpose"
-                    label="Restrict the usage of your data to specific applications*"
                     defaultValue=""
                     ItemList={purpose_list}
                     onChange={handleInputChange}
                     error={errors.purpose}
                   />
-                </Grid>
-                <Grid item xs={1}>
                   <Remove
                     onClick={() => {
                       removeComponent("purpose");
@@ -148,17 +163,15 @@ export default function ComplexPolicyForm() {
 
             {selectedComponents.event ? (
               <>
-                <Grid item xs={11}>
+                <Grid container>
+                  <Title label="Restrict Event" />
                   <Input
                     name="event"
-                    label="Event*"
                     value={values.event}
                     placeholder="e.g. https://wikidata.org/wiki/Q136218 (ZIP)"
                     onChange={handleInputChange}
                     error={errors.event}
                   />
-                </Grid>
-                <Grid item xs={1}>
                   <Remove
                     onClick={() => {
                       removeComponent("event");
@@ -171,26 +184,27 @@ export default function ComplexPolicyForm() {
 
             {selectedComponents.interval ? (
               <>
-                <Grid item xs={11} sm={5}>
+                <Grid container>
+                  <Title label="Restrict Time Interval" />
                   <Date
                     name="restrictTimeIntervalStart"
                     label="Start Time*"
                     value={values.restrictTimeIntervalStart}
                     onChange={handleInputChange}
                     error={errors.restrictTimeIntervalStart}
+                    xs={11}
+                    sm={5}
                   />
-                </Grid>
-                <Grid item xs={11} sm={1} />
-                <Grid item xs={11} sm={5}>
+                  <Grid item sm={1} />
                   <Date
                     name="restrictTimeIntervalEnd"
                     label="End Time*"
                     value={values.restrictTimeIntervalEnd}
                     onChange={handleInputChange}
                     error={errors.restrictTimeIntervalEnd}
+                    xs={11}
+                    sm={5}
                   />
-                </Grid>
-                <Grid item xs={1}>
                   <Remove
                     onClick={() => {
                       removeEnteredData(
@@ -206,7 +220,8 @@ export default function ComplexPolicyForm() {
 
             {selectedComponents.payment ? (
               <>
-                <Grid item xs={11} sm={5}>
+                <Grid container>
+                  <Title label="Restrict Time Interval" />
                   <Input
                     name="price"
                     label="Payment (Euro)*"
@@ -214,10 +229,10 @@ export default function ComplexPolicyForm() {
                     placeholder="e.g. 10"
                     onChange={handleInputChange}
                     error={errors.price}
+                    xs={11}
+                    sm={5}
                   />
-                </Grid>
-                <Grid item xs={11} sm={1} />
-                <Grid item xs={11} sm={5}>
+                  <Grid item sm={1} />
                   <ItemPicker
                     name="payment"
                     label="For Sale or Rent*"
@@ -225,9 +240,9 @@ export default function ComplexPolicyForm() {
                     ItemList={sale_rent_list}
                     onChange={handleInputChange}
                     error={errors.payment}
+                    xs={11}
+                    sm={5}
                   />
-                </Grid>
-                <Grid item xs={1}>
                   <Remove
                     onClick={() => {
                       removeEnteredData("price", "payment");
@@ -240,17 +255,15 @@ export default function ComplexPolicyForm() {
 
             {selectedComponents.counter ? (
               <>
-                <Grid item xs={11}>
+                <Grid container>
+                  <Title label="Restrict Number of Usage" />
                   <Input
                     name="counter"
-                    label="Count*"
                     value={values.counter}
                     placeholder="e.g. 10"
                     onChange={handleInputChange}
                     error={errors.counter}
                   />
-                </Grid>
-                <Grid item xs={1}>
                   <Remove
                     onClick={() => {
                       removeComponent("counter");
@@ -263,29 +276,28 @@ export default function ComplexPolicyForm() {
 
             {selectedComponents.specifyBeginTime ? (
               <>
-                  <Grid item xs={11}>
-                    <Date
-                      name="specifyBeginTime"
-                      label="Begin Time*"
-                      value={values.specifyBeginTime}
-                      onChange={handleInputChange}
-                      error={errors.specifyBeginTime}
-                    />
-                  </Grid>
-                  <Grid item xs={1}>
-                    <Remove
-                      onClick={() => {
-                        removeEnteredData("specifyBeginTime");
-                        removeComponent("specifyBeginTime");
-                      }}
-                    />
-                  </Grid>
+                <Grid container>
+                  <Title label="Specify a begin time" />
+                  <Date
+                    name="specifyBeginTime"
+                    value={values.specifyBeginTime}
+                    onChange={handleInputChange}
+                    error={errors.specifyBeginTime}
+                  />
+                  <Remove
+                    onClick={() => {
+                      removeEnteredData("specifyBeginTime");
+                      removeComponent("specifyBeginTime");
+                    }}
+                  />
+                </Grid>
               </>
             ) : null}
 
             {selectedComponents.restrictTimeDuration ? (
               <>
-                <Grid item xs={11} sm={5}>
+                <Grid container>
+                  <Title label="Restrict Time Duration" />
                   <Input
                     name="restrictTimeDuration"
                     label="Duration Value*"
@@ -293,10 +305,11 @@ export default function ComplexPolicyForm() {
                     placeholder="e.g. 10"
                     onChange={handleInputChange}
                     error={errors.restrictTimeDuration}
+                    xs={11}
+                    sm={5}
                   />
-                </Grid>
-                <Grid item xs={11} sm={1} />
-                <Grid item xs={11} sm={5}>
+                  <Grid item sm={1} />
+
                   <ItemPicker
                     name="restrictTimeDurationUnit"
                     label="Unit*"
@@ -304,13 +317,17 @@ export default function ComplexPolicyForm() {
                     ItemList={time_units}
                     onChange={handleInputChange}
                     error={errors.restrictTimeDurationUnit}
+                    xs={11}
+                    sm={5}
                   />
-                </Grid>
-                <Grid item xs={1}>
+
                   <Remove
                     onClick={() => {
-                      removeEnteredData("price", "payment");
-                      removeComponent("payment");
+                      removeEnteredData(
+                        "restrictTimeDuration",
+                        "restrictTimeDurationUnit"
+                      );
+                      removeComponent("restrictTimeDuration");
                     }}
                   />
                 </Grid>
@@ -442,13 +459,30 @@ export default function ComplexPolicyForm() {
                         Specify a begin time
                       </MenuItem>
                     ) : null}
+                    <MenuItem
+                      onClick={() => {
+                        selectedComponents.location = true;
+                        selectedComponents.system = true;
+                        selectedComponents.event = true;
+                        selectedComponents.interval = true;
+                        selectedComponents.payment = true;
+                        selectedComponents.counter = true;
+                        selectedComponents.purpose = true;
+                        selectedComponents.restrictTimeDuration = true;
+                        selectedComponents.specifyBeginTime = true;
+                        setAnchorEl(null);
+                      }}
+                      id="all"
+                    >
+                      All
+                    </MenuItem>
                   </Menu>
                 </Grid>
               </>
             ) : null}
 
-            <Grid item xs={12}>
-              <Grid item xs={2}>
+            <Grid container>
+              <Grid item xs={2} xm={1}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -456,6 +490,18 @@ export default function ComplexPolicyForm() {
                   type="submit"
                 >
                   Save
+                </Button>
+              </Grid>
+              <Grid item xs={7} xm={9} />
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.saveBtn}
+                  onClick={resetStates}
+                >
+                  <DeleteIcon />
                 </Button>
               </Grid>
             </Grid>

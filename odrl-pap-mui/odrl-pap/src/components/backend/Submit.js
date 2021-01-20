@@ -4,7 +4,9 @@ const BASE_URL = 'http://localhost:9090';
 export default function Submit(url, values, states, setErrors, history ,e) {
   e.preventDefault();
   if (Validation(values, states, setErrors)) {
-    console.log(values)
+    for (var key in states) {
+      states[key] = false;
+  }
     axios.post(BASE_URL + url, values)
     .then((response) => {
       let policies = response.data.split('DTPOLICY:');

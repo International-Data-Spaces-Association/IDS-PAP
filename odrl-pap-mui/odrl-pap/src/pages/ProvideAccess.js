@@ -89,7 +89,7 @@ export default function ProvideAccess() {
           title="This policy gives permission to a specified IDS data consumer to use your data."
           icon={<LockOpenIcon />}
         />
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
           <IdentifyPolicy
             values={values}
             handleInputChange={handleInputChange}

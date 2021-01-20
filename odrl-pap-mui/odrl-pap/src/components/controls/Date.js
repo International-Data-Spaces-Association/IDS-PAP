@@ -1,19 +1,22 @@
-import React from 'react'
-import {TextField} from "@material-ui/core";
+import React from "react";
+import { TextField, Grid } from "@material-ui/core";
 
 export default function Date(props) {
-    const {name, label, value, error=null, onChange} = props;
-    return (
+  const { name,label, value, error = null, onChange, xs=11, sm=11} = props;
+  return (
+    <>
+      <Grid item xs={xs} sm={sm}>
         <TextField
-            label={label}
-            name={name}
-            value={value}
-            type="datetime-local"
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            onChange={onChange}
-            {...(error && {error:true, helperText:error})}
+          name={name}
+          value={value}
+          label={label}
+          type="datetime-local"
+          variant="outlined"
+          InputLabelProps={{ shrink: true }}
+          onChange={onChange}
+          {...(error && { error: true, helperText: error })}
         />
-    )
+      </Grid>
+    </>
+  );
 }
-
