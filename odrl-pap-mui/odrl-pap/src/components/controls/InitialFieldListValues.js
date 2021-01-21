@@ -9,18 +9,27 @@ export const time_units = [
 export const purpose_list = [
   { id: "", value: "" },
   { id: "Marketing", value: "http://example.com/ids-purpose:Marketing" },
-  { id: "Risk Management", value: "Risk http://example.com/ids-purpose:Risk_Management" },
+  {
+    id: "Risk Management",
+    value: "Risk http://example.com/ids-purpose:Risk_Management",
+  },
 ];
 export const sale_rent_list = [
   { id: "", value: "" },
   { id: "Rent", value: "http://dbpedia.org/page/Rent" },
-  { id: "Sale", value: "http://dbpedia.org/page/Sale" }
+  { id: "Sale", value: "http://dbpedia.org/page/Sale" },
 ];
 
 export const modificator_list = [
   { id: "", value: "" },
-  { id: "Replace modification method", value: "http://example.com/anonymize/replace" },
-  { id: "Delete modification method", value: "http://example.com/anonymize/delete" },
+  {
+    id: "Replace modification method",
+    value: "http://example.com/anonymize/replace",
+  },
+  {
+    id: "Delete modification method",
+    value: "http://example.com/anonymize/delete",
+  },
 ];
 
 export const policy_types = [
@@ -38,7 +47,7 @@ export const log_level_list = [
   { id: "ON_ALLOW", value: "ON_ALLOW" },
   { id: "ON_DUTY_EXERCISED", value: "ON_DUTY_EXERCISED" },
   { id: "ON_ACTION_OPERATED", value: "ON_ACTION_OPERATED" },
-]
+];
 
 export const artifact_state_list = [
   { id: "ANONYMIZED", value: "ANONYMIZED" },
@@ -47,5 +56,7 @@ export const artifact_state_list = [
   { id: "COMBINED", value: "COMBINED" },
 ];
 
-export const data_consumers = [{ id: "Consumer Party", value: "http://example.com/party/consumer-party" }];
-
+export const data_consumers = [
+  { id: "", value: "" },
+  { id: "Consumer Party", value: "http://example.com/party/consumer-party" },
+];

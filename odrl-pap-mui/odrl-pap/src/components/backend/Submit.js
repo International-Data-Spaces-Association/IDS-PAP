@@ -7,6 +7,7 @@ export default function Submit(url, values, states, setErrors, history ,e) {
     for (var key in states) {
       states[key] = false;
   }
+  console.log(values)
     axios.post(BASE_URL + url, values)
     .then((response) => {
       let policies = response.data.split('DTPOLICY:');

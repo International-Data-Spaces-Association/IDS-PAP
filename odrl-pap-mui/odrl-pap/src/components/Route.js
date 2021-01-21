@@ -67,7 +67,7 @@ export default function RouteToPage() {
         <ODRLCreator/>
       </Route>
       <Route exact path="/account">
-        <SignUp/>
+        <Account/>
       </Route>
       <Route exact path="/login">
         <SignIn/>

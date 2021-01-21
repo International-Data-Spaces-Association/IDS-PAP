@@ -122,7 +122,7 @@ public class OdrlPapRestController {
 //	}
 	@PostMapping("/policy/deletePolicyAfterUsage")
 	public String deletePolicyAfterUsage(@RequestBody RecievedOdrlPolicy rp) {
-		String uid = "";
+		String uid = baseUid + "delete-after-usage";
 		ArrayList<Condition> refinements = new ArrayList<>();
 		if (rp.getTimeAndDate() != "") {
 			RightOperand dateTimeRightOperand = new RightOperand(rp.getTimeAndDate(), RightOperandType.DATETIMESTAMP);
@@ -130,7 +130,6 @@ public class OdrlPapRestController {
 			refinements.add(dateTimeRefinement);
 		}
 		else if (rp.getTime() != "") {
-			uid = baseUid + "delete-after-usage";
 			RightOperand delayPeriodRightOperand = new RightOperand();
 			delayPeriodRightOperand.setType(RightOperandType.DURATIONENTITY);
 			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, rp.getTime(), RightOperandType.DURATION);
@@ -235,7 +234,7 @@ public class OdrlPapRestController {
 		String uid = baseUid + "notify";
 		RightOperand notificationLevelRightOperand = new RightOperand();
 		notificationLevelRightOperand.setType(RightOperandType.STRING);
-		notificationLevelRightOperand.setValue("http://example.com/party/" + rp.getNotificationLevel());
+		notificationLevelRightOperand.setValue(rp.getNotificationLevel());
 		Condition notificationLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.NOTIFICATION_LEVEL,
 				Operator.EQUALS, notificationLevelRightOperand, "");
 		RightOperand rightOperand = new RightOperand();
