@@ -5,11 +5,14 @@ import {
   Paper,
   ThemeProvider,
   AppBar,
-  unstable_createMuiStrictModeTheme as createMuiTheme ,
+  unstable_createMuiStrictModeTheme as createMuiTheme,
 } from "@material-ui/core";
 import Navigation from "../components/Navigation";
 import { BrowserRouter as Router } from "react-router-dom";
 import RouteToPage from "../components/Route";
+import clsx from "clsx";
+
+const drawerWidth = 280;
 
 const theme = createMuiTheme({
   palette: {
@@ -20,27 +23,47 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles((theme) => ({
-  seperator:{
-  ...theme.mixins.toolbar,
+  seperator: {
+    ...theme.mixins.toolbar,
   },
   content: {
-    width:"95%",
+    width: "100%",
     margin: "auto",
-    minHeight:"98vh",
+    minHeight: "100vh",
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeIn,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  appBar: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
 }));
 
 function App() {
+  const [open, setOpen] = React.useState(true);
   const classes = useStyles();
+
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Navigation />
+        <Navigation open={open} setOpen={setOpen} />
         <AppBar position="fixed" />
-        <Paper className={classes.content}>
-          <div className={classes.seperator}/>
-          <RouteToPage />
-        </Paper>
+        <div className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}>
+          <Paper className={classes.content}>
+            <div className={classes.seperator} />
+            <RouteToPage />
+          </Paper>
+        </div>
       </Router>
     </ThemeProvider>
   );

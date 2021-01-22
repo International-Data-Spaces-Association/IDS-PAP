@@ -35,9 +35,19 @@ import EqualizerIcon from "@material-ui/icons/Equalizer";
 import MenuIcon from "@material-ui/icons/Menu";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
-const drawerWidth = 280;
+var drawerWidth = 280;
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+  "& .appBarShift": {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
@@ -116,16 +126,16 @@ const ListItem = withStyles((theme) => ({
   selected: {},
 }))(MuiListItem);
 
-export default function Navigation() {
+export default function Navigation(props) {
+  const { open, setOpen } = props;
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
   const [logedIn, setLogedIn] = React.useState(true);
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
 
   const handleClickAway = () => {
-    setOpen(false);
+    //setOpen(false);
   };
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -187,7 +197,7 @@ export default function Navigation() {
                     component={Link}
                     to="/account"
                     onClick={() => {
-                      setOpen(!open);
+                      //setOpen(!open);
                     }}
                   >
                     <Typography variant="h6"> John Voss</Typography>
@@ -203,7 +213,7 @@ export default function Navigation() {
                   component={Link}
                   to="/login"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   Sign in
@@ -225,7 +235,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/InterpretOdrlPolicy"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -239,7 +249,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/ComplexPolicyForm"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -255,7 +265,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/ProvideAccessPolicyForm"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -269,7 +279,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/CountAccessPolicyForm"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -283,7 +293,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/DeletData"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -297,7 +307,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/AnonymizeInRestPolicyForm"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -311,7 +321,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/AnonymizeInTransitPolicyForm"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -325,7 +335,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/LogAccessPolicyForm"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -339,7 +349,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/InformPolicyForm"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>
@@ -353,7 +363,7 @@ export default function Navigation() {
                   component={Link}
                   to="/policy/DistributeData"
                   onClick={() => {
-                    setOpen(!open);
+                    //setOpen(!open);
                   }}
                 >
                   <ListItemIcon>

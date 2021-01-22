@@ -32,7 +32,7 @@ export const useStyle = makeStyles((theme) => ({
     "& .MuiGrid-container":{
       marginBottom: theme.spacing(2),
     },
-  },
+},
   page: {
     marginLeft: "2em",
     marginRight: "2em",
