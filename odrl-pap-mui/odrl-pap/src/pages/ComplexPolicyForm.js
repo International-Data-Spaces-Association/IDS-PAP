@@ -5,8 +5,10 @@ import Input from "../components/controls/Input";
 import ItemPicker from "../components/controls/ItemPicker";
 import { useHistory } from "react-router-dom";
 import {
+  event_list,
   purpose_list,
   sale_rent_list,
+  system_list,
   time_units,
 } from "../components/controls/InitialFieldListValues";
 import Date from "../components/controls/Date";
@@ -120,6 +122,14 @@ export default function ComplexPolicyForm() {
               <>
                 <Grid container>
                   <Title label="Restrict System" />
+                  <ItemPicker
+                    name="system"
+                    defaultValue=""
+                    ItemList={system_list}
+                    onChange={handleInputChange}
+                    error={errors.system}
+                  />
+                  {/*
                   <Input
                     name="system"
                     value={values.system}
@@ -127,6 +137,7 @@ export default function ComplexPolicyForm() {
                     onChange={handleInputChange}
                     error={errors.system}
                   />
+                  */}
                   <Remove
                     onClick={() => {
                       removeComponent("system");
@@ -165,6 +176,15 @@ export default function ComplexPolicyForm() {
               <>
                 <Grid container>
                   <Title label="Restrict Event" />
+
+                  <ItemPicker
+                    name="event"
+                    defaultValue=""
+                    ItemList={event_list}
+                    onChange={handleInputChange}
+                    error={errors.event}
+                  />
+                  {/*
                   <Input
                     name="event"
                     value={values.event}
@@ -172,6 +192,8 @@ export default function ComplexPolicyForm() {
                     onChange={handleInputChange}
                     error={errors.event}
                   />
+                  */}
+
                   <Remove
                     onClick={() => {
                       removeComponent("event");

@@ -106,6 +106,9 @@ const useStyles = makeStyles((theme) => ({
   accountInformation: {
     height: theme.spacing(12),
   },
+  toolbar: {
+    widows:"100%",
+  }
 }));
 
 const ListItem = withStyles((theme) => ({
@@ -134,6 +137,14 @@ export default function Navigation(props) {
     setOpen(!open);
   };
 
+  React.useEffect(() => {
+    function handleResize() {
+      console.log('resized to: ', window.innerWidth, 'x', window.innerHeight)
+      setOpen(window.innerWidth > 600)
+    }
+
+    window.addEventListener('resize', handleResize)
+  })
   const handleClickAway = () => {
     //setOpen(false);
   };
@@ -153,7 +164,7 @@ export default function Navigation(props) {
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
+              className={clsx(classes.menuButton, open && classes.hide), classes.toolbar}
             >
               <MenuIcon />
             </Button>
@@ -162,6 +173,7 @@ export default function Navigation(props) {
               color="primary"
               component={Link}
               to="/"
+              className={classes.toolbar}
               startIcon={<img src={logo} alt="" />}
             />
           </Toolbar>

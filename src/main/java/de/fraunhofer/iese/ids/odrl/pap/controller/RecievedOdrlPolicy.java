@@ -201,7 +201,7 @@ public class RecievedOdrlPolicy {
 		if (location != "") {
 			RightOperand locationRightOperand = new RightOperand(location, RightOperandType.ANYURI);
 			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION,
-					Operator.EQ, locationRightOperand, "");
+					Operator.EQ, locationRightOperand, null);
 			constraints.add(locationConstraint);
 			return true;
 		}
@@ -213,7 +213,7 @@ public class RecievedOdrlPolicy {
 			RightOperand systemRightOperand = new RightOperand(system, RightOperandType.ANYURI);
 			systemRightOperand.setType(RightOperandType.ANYURI);
 			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ,
-					systemRightOperand, "");
+					systemRightOperand, null);
 			constraints.add(systemConstraint);
 			return true;
 		}
@@ -224,7 +224,7 @@ public class RecievedOdrlPolicy {
 		if (purpose != "") {
 			RightOperand purposeRightOperand = new RightOperand(purpose, RightOperandType.ANYURI);
 			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQ,
-					purposeRightOperand, "");
+					purposeRightOperand, null);
 			constraints.add(purposeConstraint);
 			return true;
 		}
@@ -235,7 +235,7 @@ public class RecievedOdrlPolicy {
 		if (event != "") {
 			RightOperand eventRightOperand = new RightOperand(event, RightOperandType.ANYURI);
 			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQ,
-					eventRightOperand, "");
+					eventRightOperand, null);
 			constraints.add(eventConstraint);
 			return true;
 		}
@@ -257,7 +257,7 @@ public class RecievedOdrlPolicy {
 			entities.add(endEntity);
 			rightOperand.setEntities(entities);
 			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT,
-					LeftOperand.POLICY_EVALUATION_TIME, Operator.TEMPORAL_EQUALS, rightOperand, "");
+					LeftOperand.POLICY_EVALUATION_TIME, Operator.TEMPORAL_EQUALS, rightOperand, null);
 			constraints.add(timeIntervalCondition);
 			return true;
 		}
@@ -268,7 +268,7 @@ public class RecievedOdrlPolicy {
 		if (payment != "") {
 			RightOperand paymentRightOperand = new RightOperand(String.valueOf(price), RightOperandType.DOUBLE);
 			Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQ,
-					paymentRightOperand, "");
+					paymentRightOperand, null);
 			paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
 			paymentCondition.setContract(payment);
 			constraints.add(paymentCondition);
@@ -294,7 +294,7 @@ public class RecievedOdrlPolicy {
 		}
 		if (durationEntities.size() >0) {
 			elapsedTimeRightOperand.setEntities(durationEntities);
-			Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.SHORTER_EQ, elapsedTimeRightOperand, "");
+			Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.SHORTER_EQ, elapsedTimeRightOperand, null);
 			constraints.add(elapsedTimeConstraint);
 			return true;
 		}return false;
@@ -304,7 +304,7 @@ public class RecievedOdrlPolicy {
 	public boolean addCounterCondition() {
 		if (counter != "") {
 			RightOperand rightOperand = new RightOperand(counter, RightOperandType.DECIMAL);
-			Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ, rightOperand, "");
+			Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ, rightOperand, null);
 			constraints.add(countCondition);
 			return true;
 		}
@@ -315,7 +315,7 @@ public class RecievedOdrlPolicy {
 		if (timeAndDate != "") {
 			RightOperand dateTimeRightOperand = new RightOperand(timeAndDate, RightOperandType.DATETIMESTAMP);
 			Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME,
-					Operator.BEFORE, dateTimeRightOperand, "");
+					Operator.BEFORE, dateTimeRightOperand, null);
 			constraints.add(dateTimeRefinement);
 			return true;
 		}
@@ -326,7 +326,7 @@ public class RecievedOdrlPolicy {
 		if (time != "") {
 			RightOperand delayPeriodRightOperand = new RightOperand(time, RightOperandType.DURATION);
 			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY,
-					Operator.DURATION_EQ, delayPeriodRightOperand, "");
+					Operator.DURATION_EQ, delayPeriodRightOperand, null);
 			delayPeriodRefinement.setUnit(TimeUnit.valueOf(timeUnit).toString());
 			constraints.add(delayPeriodRefinement);
 			return true;

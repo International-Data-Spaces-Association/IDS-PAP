@@ -6,6 +6,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.modelmbean.ModelMBeanOperationInfo;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -91,8 +93,15 @@ public class OdrlPapRestController {
 	public String countPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "count-access";
 		rp.addCounterCondition();
+		
+		Action countDutyAction = new Action(ActionType.COUNT);
+		Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
+		ArrayList<Rule> postDuties = new ArrayList<>();
+		postDuties.add(postobligation);
+		
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setPostduties(postDuties);
 		rule.setConstraints(rp.getConstraints());
 		return rp.createPolicy(uid, rule);
 	}
@@ -179,12 +188,16 @@ public class OdrlPapRestController {
 	public String anonymizeTransitPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "anonymize-in-transit";
 		ArrayList<Condition> refinements = new ArrayList<>();
-		RightOperand modificationMethodRightOperand = new RightOperand(rp.getModificator(), RightOperandType.ANYURI);
-		ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter(rp.getValueToChange(),
-				RightOperandType.STRING);
+		RightOperand modificationMethodRightOperand = new RightOperand();
+		modificationMethodRightOperand.setValue(rp.getModificator());
+		modificationMethodRightOperand.setType(RightOperandType.ANYURI);
+		//ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter(rp.getValueToChange(),
+		//		RightOperandType.STRING);
+		ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter();
+		replaceWithParameter.setValue(rp.getValueToChange());
 		replaceWithParameter.setType(RightOperandType.STRING);
 		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD,
-				Operator.EQ, modificationMethodRightOperand, "");
+				Operator.EQ, modificationMethodRightOperand, null);
 		modificationMethodRefinement.setReplaceWith(replaceWithParameter);
 		if (rp.getFieldToChange() != "") {
 			modificationMethodRefinement.setJsonPath(rp.getFieldToChange());

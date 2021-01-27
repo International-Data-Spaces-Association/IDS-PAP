@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(window.innerWidth > 600);
   const classes = useStyles();
 
   return (

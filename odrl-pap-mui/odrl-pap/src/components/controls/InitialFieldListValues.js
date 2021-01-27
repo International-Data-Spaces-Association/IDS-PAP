@@ -38,6 +38,16 @@ export const policy_types = [
   { id: "Request", value: "Request" },
 ];
 
+export const system_list = [
+  { id: "", value: "" },
+  { id: "http://example.com/ids-app/risk-management-system", value: "http://example.com/ids-app/risk-management-system" },
+];
+
+export const event_list = [
+  { id: "", value: "" },
+  { id: "http://example.com/ids-event:exhibition", value: "http://example.com/ids-event:exhibition" },
+];
+
 export const log_level_list = [
   { id: "OFF", value: "OFF" },
   { id: "ALL", value: "ALL" },
