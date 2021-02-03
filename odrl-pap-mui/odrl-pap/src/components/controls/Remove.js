@@ -1,4 +1,6 @@
-import CloseIcon from '@material-ui/icons/Close';import React from 'react'
+import React from 'react'
+import DeleteIcon from "@material-ui/icons/Delete";
+
 import { Grid } from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
 
@@ -7,7 +9,7 @@ export default function Remove(props) {
     return (
         <Grid item xs={1}>
           <IconButton color="secondary" onClick={onClick}>
-            <CloseIcon />
+            <DeleteIcon />
           </IconButton>
         </Grid>
       );

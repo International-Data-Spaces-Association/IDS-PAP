@@ -9,6 +9,8 @@ import { useHistory } from "react-router-dom";
 import {
   purpose_list,
   sale_rent_list,
+  system_list,
+  event_list,
 } from "../components/controls/InitialFieldListValues";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
@@ -16,6 +18,7 @@ import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import Remove from "../components/controls/Remove";
 import Date from "../components/controls/Date";
+import Title from "../components/controls/Title";
 import { time_units } from "../components/controls/InitialFieldListValues";
 const selected_components = {
   location: false,
@@ -98,80 +101,86 @@ export default function ProvideAccess() {
 
           {selectedComponents.location ? (
             <>
-              <Grid item xs={11}>
+              <Grid container>
+                <Title label="Restrict Location" />
                 <Input
                   name="location"
-                  label="Location"
                   value={values.location}
                   placeholder="e.g. http://ontologi.es/place/DE"
                   onChange={handleInputChange}
                   error={errors.location}
                 />
+                <Remove onClick={resetStates} />
               </Grid>
-              <Remove onClick={resetStates} />
             </>
           ) : null}
 
           {selectedComponents.system ? (
             <>
-              <Grid item xs={11}>
-                <Input
+              <Grid container>
+                <Title label="Restrict System" />
+                <ItemPicker
                   name="system"
-                  label="System"
-                  value={values.system}
-                  placeholder="e.g. http://ontologi.es/place/DE"
+                  defaultValue=""
+                  ItemList={system_list}
                   onChange={handleInputChange}
                   error={errors.system}
                 />
+                <Remove onClick={resetStates} />
               </Grid>
-              <Remove onClick={resetStates} />
             </>
           ) : null}
 
           {selectedComponents.purpose ? (
             <>
-              <Grid item xs={11}>
+              <Grid container>
+                <Title
+                  label="Restrict Purpose"
+                  subtitle="Any certified application in the market place uses the data for a specified purpose. \n You can restrict the usage of your data to specific applications by choosing your intended purpose from the list below*:"
+                />
                 <ItemPicker
                   name="purpose"
-                  label="Restrict the usage of your data to specific applications*"
-                  defaultValue="Marketing"
+                  defaultValue=""
                   ItemList={purpose_list}
                   onChange={handleInputChange}
                   error={errors.purpose}
                 />
+                <Remove onClick={resetStates} />
               </Grid>
-              <Remove onClick={resetStates} />
             </>
           ) : null}
 
           {selectedComponents.event ? (
             <>
-              <Grid item xs={11}>
-                <Input
+              <Grid container>
+                <Title label="Restrict Event" />
+
+                <ItemPicker
                   name="event"
-                  label="Event*"
-                  value={values.event}
-                  placeholder="e.g. http://ontologi.es/place/DE"
+                  defaultValue=""
+                  ItemList={event_list}
                   onChange={handleInputChange}
                   error={errors.event}
                 />
+                <Remove onClick={resetStates} />
               </Grid>
-              <Remove onClick={resetStates} />
             </>
           ) : null}
 
           {selectedComponents.restrictTimeDuration ? (
             <>
-              <Grid item xs={11}>
+              <Grid container>
+                <Title label="Restrict Time Duration" />
                 <Date
                   name="specifyBeginTime"
                   label="Begin Time (Optional)"
                   value={values.specifyBeginTime}
                   onChange={handleInputChange}
                   error={errors.specifyBeginTime}
+                  sm={11}
+                  md={3}
                 />
-              </Grid>
-              <Grid item xs={11} sm={5}>
+                <Grid item sm={1} />
                 <Input
                   name="restrictTimeDuration"
                   label="Duration Value (Optional)"
@@ -179,10 +188,10 @@ export default function ProvideAccess() {
                   placeholder="e.g. 10"
                   onChange={handleInputChange}
                   error={errors.restrictTimeDuration}
+                  sm={11}
+                  md={3}
                 />
-              </Grid>
-              <Grid item xs={11} sm={1} />
-              <Grid item xs={11} sm={5}>
+                <Grid item sm={1} />
                 <ItemPicker
                   name="restrictTimeDurationUnit"
                   label="Unit"
@@ -190,9 +199,9 @@ export default function ProvideAccess() {
                   ItemList={time_units}
                   onChange={handleInputChange}
                   error={errors.restrictTimeDurationUnit}
+                  sm={11}
+                  md={3}
                 />
-              </Grid>
-              <Grid item xs={1}>
                 <Remove onClick={resetStates} />
               </Grid>
             </>
@@ -200,26 +209,27 @@ export default function ProvideAccess() {
 
           {selectedComponents.interval ? (
             <>
-              <Grid item xs={11} sm={5}>
+              <Grid container>
+                <Title label="Restrict Time Interval" />
                 <Date
                   name="restrictTimeIntervalStart"
                   label="Start Time*"
                   value={values.restrictTimeIntervalStart}
                   onChange={handleInputChange}
                   error={errors.restrictTimeIntervalStart}
+                  xs={11}
+                  sm={5}
                 />
-              </Grid>
-              <Grid item xs={11} sm={1} />
-              <Grid item xs={11} sm={5}>
+                <Grid item sm={1} />
                 <Date
                   name="restrictTimeIntervalEnd"
                   label="End Time*"
                   value={values.restrictTimeIntervalEnd}
                   onChange={handleInputChange}
                   error={errors.restrictTimeIntervalEnd}
+                  xs={11}
+                  sm={5}
                 />
-              </Grid>
-              <Grid item xs={1}>
                 <Remove onClick={resetStates} />
               </Grid>
             </>
@@ -227,7 +237,8 @@ export default function ProvideAccess() {
 
           {selectedComponents.payment ? (
             <>
-              <Grid item xs={11} sm={5}>
+              <Grid container>
+                <Title label="Restrict Time Interval" />
                 <Input
                   name="price"
                   label="Payment (Euro)*"
@@ -235,10 +246,10 @@ export default function ProvideAccess() {
                   placeholder="150"
                   onChange={handleInputChange}
                   error={errors.price}
+                  xs={11}
+                  sm={5}
                 />
-              </Grid>
-              <Grid item xs={11} sm={1} />
-              <Grid item xs={11} sm={5}>
+                <Grid item sm={1} />
                 <ItemPicker
                   name="payment"
                   label="For Sale or Rend?*"
@@ -246,9 +257,11 @@ export default function ProvideAccess() {
                   ItemList={sale_rent_list}
                   onChange={handleInputChange}
                   error={errors.payment}
+                  xs={11}
+                  sm={5}
                 />
+                <Remove onClick={resetStates} />
               </Grid>
-              <Remove onClick={resetStates} />
             </>
           ) : null}
 

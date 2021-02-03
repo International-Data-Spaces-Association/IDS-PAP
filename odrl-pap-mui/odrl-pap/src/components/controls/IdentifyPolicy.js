@@ -33,7 +33,7 @@ export default function IdentifyPolicy(props) {
         <Input
           name="target"
           value={values.target}
-          placeholder="e.g. http://ontologi.es/place/DE"
+          placeholder="e.g. http://example.com/ids-data/production-plan"
           onChange={handleInputChange}
           error={errors.target}
         />

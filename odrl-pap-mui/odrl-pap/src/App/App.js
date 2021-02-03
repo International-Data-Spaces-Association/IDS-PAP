@@ -35,14 +35,10 @@ const useStyles = makeStyles((theme) => ({
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
     transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeIn,
-      duration: theme.transitions.duration.enteringScreen,
     }),
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
     }),
   },
 }));
