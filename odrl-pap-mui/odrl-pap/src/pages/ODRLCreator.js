@@ -26,7 +26,7 @@ const useStyle = makeStyles((theme) => ({
       width: "100%",
     },
     "& .MuiButtonBase-root": {},
-  },
+  }, 
   page: {
     marginLeft: "2em",
     marginRight: "2em",
@@ -80,6 +80,7 @@ export default function ODRLCreator() {
                 className={classes.translateBtn}
                 variant="contained"
                 color="primary"
+                id="Transfer"
                 onClick={transfer}
               >
                 Transfer

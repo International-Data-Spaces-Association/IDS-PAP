@@ -20,6 +20,7 @@ import Remove from "../components/controls/Remove";
 import Date from "../components/controls/Date";
 import Title from "../components/controls/Title";
 import { time_units } from "../components/controls/InitialFieldListValues";
+
 const selected_components = {
   location: false,
   system: false,
@@ -30,6 +31,8 @@ const selected_components = {
 };
 
 export default function ProvideAccess() {
+  document.title = 'Provide Access'
+
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
@@ -87,6 +90,8 @@ export default function ProvideAccess() {
 
   return (
     <div className={classes.page}>
+
+
       <Form onSubmit={handleSubmit}>
         <PageHeader
           title="This policy gives permission to a specified IDS data consumer to use your data."
@@ -273,6 +278,7 @@ export default function ProvideAccess() {
                   aria-controls="simple-menu"
                   aria-haspopup="true"
                   onClick={handleClick}
+                  id="Add Component"
                   className={classes.addBtn}
                 >
                   Add Component
@@ -319,6 +325,7 @@ export default function ProvideAccess() {
               color="primary"
               className={classes.saveBtn}
               type="submit"
+              id="Save"
             >
               Save
             </Button>

@@ -62,8 +62,9 @@ export default function ComplexPolicyForm() {
   };
 
   const resetStates = () => {
-    setValues({...OdrlPolicy, ["consumer"]: values["consumer"]});
-    setSelectedComponents({  location: false,
+    setValues({ ...OdrlPolicy, ["consumer"]: values["consumer"] });
+    setSelectedComponents({
+      location: false,
       system: false,
       event: false,
       interval: false,
@@ -71,8 +72,8 @@ export default function ComplexPolicyForm() {
       counter: false,
       purpose: false,
       restrictTimeDuration: false,
-      specifyBeginTime: false,});
-    
+      specifyBeginTime: false,
+    });
   };
 
   const removeComponent = (id) => {
@@ -492,7 +493,7 @@ export default function ComplexPolicyForm() {
                         selectedComponents.purpose = true;
                         selectedComponents.restrictTimeDuration = true;
                         selectedComponents.specifyBeginTime = true;
-                        
+
                         setAnchorEl(null);
                       }}
                       id="all"

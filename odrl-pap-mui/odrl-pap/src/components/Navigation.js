@@ -289,6 +289,7 @@ export default function Navigation(props) {
                 <ListItem
                   button
                   component={Link}
+                  id="CountAccess"
                   to="/policy/CountAccessPolicyForm"
                   onClick={() => {
                     //setOpen(!open);

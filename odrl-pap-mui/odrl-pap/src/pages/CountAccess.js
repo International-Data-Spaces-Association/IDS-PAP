@@ -16,6 +16,7 @@ const selected_components = {
 };
 
 export default function CountAccess() {
+  document.title = 'Count Access'
   const classes = useStyle();
   const [errors, setErrors] = useState({});
   const [values, setValues] = useState(OdrlPolicy);
