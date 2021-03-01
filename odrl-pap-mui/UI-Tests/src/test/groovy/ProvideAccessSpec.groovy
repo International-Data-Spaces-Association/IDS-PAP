@@ -89,6 +89,30 @@ class ProvideAccessSpec extends GebReportingSpec{
         at ProvideAccess
 
     }
+
+    def "Provide Access with Application Component"() {
+        given: "You are on the provide access page"
+        to ProvideAccess
+        report("Provide Access Page")
+
+        ProvideAccess provideAccess = at ProvideAccess
+        String application = "http://example.com/ids-app/data-app"
+        provideAccess.chooseSelectedField("mui-component-select-consumer", "Consumer Party")
+        provideAccess.setInputField("target", "http://example.com")
+        provideAccess.addComponent("application")
+        provideAccess.chooseSelectedField("mui-component-select-application", application)
+        report("Enter some test values")
+
+        when: "You press save"
+        provideAccess.clickOnSave()
+
+        then: "Check if the generated policy is correct"
+        provideAccess.checkPolicy('"ids:rightOperand": { "@value": "'+application+'",')
+
+        at ProvideAccess
+
+    }
+
     def "Provide Access with Purpose Component"() {
         given: "You are on the provide access page"
         to ProvideAccess

@@ -45,6 +45,7 @@ function Validation(values, states, setErrors) {
     checkHeader(temp, values)
     temp.location = states.location ? isValidUrl(values.location) : "";
     temp.system = states.system ? isValidUrl(values.system) : "";
+    temp.application = states.application ? isValidUrl(values.application) : "";
     temp.event = states.event ? isValidUrl(values.event) : "";
     temp.purpose = states.purpose ? notEmpty(values.purpose) : "";
     temp.restrictTimeIntervalStart = states.interval ? isValidDate(values.restrictTimeIntervalStart): "";

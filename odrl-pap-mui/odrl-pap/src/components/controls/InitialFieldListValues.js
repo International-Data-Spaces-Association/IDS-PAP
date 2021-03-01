@@ -38,9 +38,9 @@ export const policy_types = [
   { id: "Request", value: "Request" },
 ];
 
-export const system_list = [
+export const application_list = [
   { id: "", value: "" },
-  { id: "http://example.com/ids-app/risk-management-system", value: "http://example.com/ids-app/risk-management-system" },
+  { id: "http://example.com/ids-app/data_app", value: "http://example.com/ids-app/data-app" },
 ];
 
 export const event_list = [

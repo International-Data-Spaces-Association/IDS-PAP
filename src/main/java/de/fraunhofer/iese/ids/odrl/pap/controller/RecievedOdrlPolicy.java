@@ -37,6 +37,7 @@ public class RecievedOdrlPolicy {
 	private String consumer;
 	private String location;
 	private String system;
+	private String application;
 	private String purpose;
 	private String event;
 	private String interval;
@@ -90,6 +91,10 @@ public class RecievedOdrlPolicy {
 
 	public String getSystem() {
 		return system;
+	}
+
+	public String getApplication() {
+		return application;
 	}
 
 	public String getPurpose() {
@@ -215,6 +220,18 @@ public class RecievedOdrlPolicy {
 			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ,
 					systemRightOperand, null);
 			constraints.add(systemConstraint);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addApplicationCondition() {
+		if (application != "") {
+			RightOperand applicationRightOperand = new RightOperand(application, RightOperandType.ANYURI);
+			applicationRightOperand.setType(RightOperandType.ANYURI);
+			Condition applicationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.APPLICATION, Operator.EQ,
+					applicationRightOperand, null);
+			constraints.add(applicationConstraint);
 			return true;
 		}
 		return false;

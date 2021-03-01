@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import {
   purpose_list,
   sale_rent_list,
-  system_list,
+  application_list,
   event_list,
 } from "../components/controls/InitialFieldListValues";
 import Form from "../components/controls/Form";
@@ -23,7 +23,8 @@ import { time_units } from "../components/controls/InitialFieldListValues";
 
 const selected_components = {
   location: false,
-  system: false,
+  /*system: false,*/
+  application: false,
   purpose: false,
   event: false,
   interval: false,
@@ -51,14 +52,14 @@ export default function ProvideAccess() {
   const resetStates = () => {
     setSelectedComponents({
       location: false,
-      system: false,
+      application: false,
       purpose: false,
       event: false,
       interval: false,
       payment: false,
     });
     values.location = "";
-    values.system = "";
+    values.application = "";
     values.purpose = "";
     values.event = "";
     values.restrictTimeIntervalStart = "";
@@ -120,21 +121,21 @@ export default function ProvideAccess() {
             </>
           ) : null}
 
-          {selectedComponents.system ? (
-            <>
-              <Grid container>
-                <Title label="Restrict System" />
-                <ItemPicker
-                  name="system"
-                  defaultValue=""
-                  ItemList={system_list}
-                  onChange={handleInputChange}
-                  error={errors.system}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
+          {selectedComponents.application ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict Application" />
+                  <ItemPicker
+                    name="application"
+                    defaultValue=""
+                    ItemList={application_list}
+                    onChange={handleInputChange}
+                    error={errors.application}
+                  />
+                  <Remove onClick={resetStates} />
+                </Grid>
+              </>
+            ) : null}
 
           {selectedComponents.purpose ? (
             <>
@@ -294,8 +295,8 @@ export default function ProvideAccess() {
                 <MenuItem onClick={handleSelectedClose} id="location">
                   Location
                 </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="system">
-                  System
+                <MenuItem onClick={handleSelectedClose} id="application">
+                  Application
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="purpose">
                   Purpose
