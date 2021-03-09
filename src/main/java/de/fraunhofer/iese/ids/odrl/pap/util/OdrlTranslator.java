@@ -44,12 +44,6 @@ public class OdrlTranslator {
 				policyType = policy.getType().name();
 			}
 
-			//set target
-			String target = "";
-			if(null != policy.getTarget()) {
-				target = policy.getTarget().toString();
-			}
-
 			//set pid
 			String pid = "";
 			if(null != policy.getPolicyId()) {
@@ -74,6 +68,11 @@ public class OdrlTranslator {
 			{
 				RuleType decision = policy.getRules().get(0).getType();
 				if(policy.getRules().get(0).getType().equals(RuleType.PERMISSION)){
+					//set target
+					String target = "";
+					if(null != policy.getRules().get(0).getTarget()) {
+						target = policy.getRules().get(0).getTarget().toString();
+					}
 					ActionType action = policy.getRules().get(0).getAction().getType();
 					translation = translation.concat("In this Policy " + policyType + " example, the " + decision.getOdrlRuleType() + " rule " +
 							decision.getMydataDecision() + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
@@ -222,6 +221,11 @@ public class OdrlTranslator {
 							}
 						}
 				}else if(policy.getRules().get(0).getType().equals(RuleType.OBLIGATION)){
+					//set target
+					String target = "";
+					if(null != policy.getRules().get(0).getTarget()) {
+						target = policy.getRules().get(0).getTarget().toString();
+					}
 					ActionType action = policy.getRules().get(0).getAction().getType();
 					switch (action){
 						case ANONYMIZE:

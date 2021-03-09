@@ -53,7 +53,7 @@
       <option value="REQUEST">Request</option>
     </select>
   </p>
-  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data/production-plan" th:field="*{target}" /></p>
+  <p>Data URI*: <input required="required" type="text" size="40" placeholder=" e.g. http://example.com/ids-data/production-plan" th:field="*{rules[0].target}" /></p>
   <p id="provider" >Data Provider*: <input id="providerInput" required="required" type="text" size="40" value="My party"/></p>
   <!--<p id="consumer" >consumer*: <input id="consumerInput" required="required"  type="text" size="40" placeholder=" e.g. http://example.com/ids-party:consumer-party" th:field="*{consumer}" /></p>-->
   <p id="consumer" >Data Consumer*:

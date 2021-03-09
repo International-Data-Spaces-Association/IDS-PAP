@@ -779,11 +779,11 @@ public class OdrlPapUiController {
 	  	basePolicy.setType(PolicyType.OFFER);
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setTarget(URI.create("http://example.com/ids-data/sample"));
 		ArrayList<Rule> rules = new ArrayList<>();
 		rules.add(rule);
 	  	basePolicy.setRules(rules);
 	  	basePolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/sample"));
-	  	basePolicy.setTarget(URI.create("http://example.com/ids-data/sample"));
 	  	basePolicy.setProvider(new Party(PartyType.PROVIDER, URI.create(("http://example.com/party/my-party"))));
 	  	basePolicy.setProviderSide(true);
 		OdrlCreator.createODRL(basePolicy);

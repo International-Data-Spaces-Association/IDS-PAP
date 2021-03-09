@@ -49,10 +49,6 @@ export const event_list = [
 ];
 
 export const log_level_list = [
-  { id: "OFF", value: "OFF" },
-  { id: "ALL", value: "ALL" },
-  { id: "INFO_LEVEL", value: "INFO_LEVEL" },
-  { id: "DEBUG_LEVEL", value: "DEBUG_LEVEL" },
   { id: "ON_DENY", value: "ON_DENY" },
   { id: "ON_ALLOW", value: "ON_ALLOW" },
   { id: "ON_DUTY_EXERCISED", value: "ON_DUTY_EXERCISED" },

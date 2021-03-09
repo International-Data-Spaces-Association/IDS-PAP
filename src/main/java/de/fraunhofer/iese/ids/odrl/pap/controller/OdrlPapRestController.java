@@ -69,6 +69,7 @@ public class OdrlPapRestController {
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(rp.getConstraints());
+		rule.setTarget(URI.create(rp.getTarget()));
 		return rp.createPolicy(uid, rule);
 	}
 
@@ -86,6 +87,7 @@ public class OdrlPapRestController {
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(rp.getConstraints());
+		rule.setTarget(URI.create(rp.getTarget()));
 		return rp.createPolicy(uid, rule);
 	}
 
@@ -103,6 +105,7 @@ public class OdrlPapRestController {
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setPostduties(postDuties);
 		rule.setConstraints(rp.getConstraints());
+		rule.setTarget(URI.create(rp.getTarget()));
 		return rp.createPolicy(uid, rule);
 	}
 
@@ -160,6 +163,7 @@ public class OdrlPapRestController {
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
 		rule.setPostduties(postDuties);
+		rule.setTarget(URI.create(rp.getTarget()));
 		return rp.createPolicy(uid, rule);
 	}
 
@@ -173,6 +177,7 @@ public class OdrlPapRestController {
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
 		rule.setPostduties(postDuties);
+		rule.setTarget(URI.create(rp.getTarget()));
 		return rp.createPolicy(uid, rule);
 	}
 	
@@ -181,6 +186,7 @@ public class OdrlPapRestController {
 		String uid = baseUid + "anonymize-in-rest";
 		Action anonymizeAction = new Action(ActionType.ANONYMIZE);
 		Rule rule = new Rule(RuleType.OBLIGATION, anonymizeAction);
+		rule.setTarget(URI.create(rp.getTarget()));
 		return rp.createPolicy(uid, rule);
 	}
 
@@ -207,6 +213,7 @@ public class OdrlPapRestController {
 		Action anonymizeDutyAction = new Action(ActionType.ANONYMIZE);
 		anonymizeDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setTarget(URI.create(rp.getTarget()));
 		Rule preDuties = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
 		ArrayList<Rule> preDutiess = new ArrayList<>();
 		preDutiess.add(preDuties);
@@ -235,6 +242,7 @@ public class OdrlPapRestController {
 		Action logDutyAction = new Action(ActionType.LOG);
 		logDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setTarget(URI.create(rp.getTarget()));
 		Rule postobligation = new Rule(RuleType.POSTDUTY, logDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
@@ -262,6 +270,7 @@ public class OdrlPapRestController {
 		Action notifyDutyAction = new Action(ActionType.NOTIFY);
 		notifyDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setTarget(URI.create(rp.getTarget()));
 		Rule postobligation = new Rule(RuleType.POSTDUTY, notifyDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
@@ -291,6 +300,7 @@ public class OdrlPapRestController {
 		Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
 		nextPolicyDutyAction.setRefinements(dutyRefinements);
 		Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
+		rule.setTarget(URI.create(rp.getTarget()));
 		Rule preDuties = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
 		ArrayList<Rule> preDutiess = new ArrayList<>();
 		preDutiess.add(preDuties);

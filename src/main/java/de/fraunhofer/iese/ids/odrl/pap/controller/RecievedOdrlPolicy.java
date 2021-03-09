@@ -387,7 +387,7 @@ public class RecievedOdrlPolicy {
 		odrlPolicy.setRules(rules);
 		odrlPolicy.setPolicyId(URI.create(policyUID));
 		odrlPolicy.setType(PolicyType.getFromIdsString("ids:Contract" + policyType));
-		odrlPolicy.setTarget(URI.create(target));
+		//odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
 		String jsonPolicy = OdrlCreator.createODRL(odrlPolicy);
