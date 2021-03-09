@@ -439,7 +439,7 @@ public class OdrlPapUiController {
 	public String logPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand logLevelRightOperand = new RightOperand();
 		logLevelRightOperand.setType(RightOperandType.STRING);
-		logLevelRightOperand.setValue(LogLevelType.DEBUG_LEVEL.toString());
+		logLevelRightOperand.setValue(LogLevelType.ON_ALLOW.toString());
 		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.DEFINES_AS, logLevelRightOperand, "");
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
@@ -617,7 +617,7 @@ public class OdrlPapUiController {
 	public String policy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand notificationLevelRightOperand = new RightOperand();
 		notificationLevelRightOperand.setType(RightOperandType.STRING);
-		notificationLevelRightOperand.setValue(LogLevelType.DEBUG_LEVEL.toString());
+		notificationLevelRightOperand.setValue(LogLevelType.ON_ALLOW.toString());
 		Condition notificationLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.NOTIFICATION_LEVEL, Operator.EQUALS, notificationLevelRightOperand, "");
 	  	RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
