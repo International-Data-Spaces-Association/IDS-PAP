@@ -440,10 +440,10 @@ public class OdrlPapUiController {
 		RightOperand logLevelRightOperand = new RightOperand();
 		logLevelRightOperand.setType(RightOperandType.STRING);
 		logLevelRightOperand.setValue(LogLevelType.DEBUG_LEVEL.toString());
-		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.EQUALS, logLevelRightOperand, "");
+		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.DEFINES_AS, logLevelRightOperand, "");
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEM_DEVICE, Operator.SAME_AS, rightOperand, "");
+		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEM_DEVICE, Operator.DEFINES_AS, rightOperand, "");
 		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(logLevelRefinement);
 		refinements.add(systemDeviceRefinement);

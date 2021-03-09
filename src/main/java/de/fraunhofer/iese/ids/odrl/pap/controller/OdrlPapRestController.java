@@ -221,12 +221,12 @@ public class OdrlPapRestController {
 		RightOperand logLevelRightOperand = new RightOperand();
 		logLevelRightOperand.setType(RightOperandType.STRING);
 		logLevelRightOperand.setValue(rp.getLogLevel());
-		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.EQUALS,
+		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.DEFINES_AS,
 				logLevelRightOperand, "");
 
 		RightOperand rightOperand = new RightOperand(rp.getSystemDevice(), RightOperandType.ANYURI);
 		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEM_DEVICE,
-				Operator.SAME_AS, rightOperand, "");
+				Operator.DEFINES_AS, rightOperand, "");
 
 		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(logLevelRefinement);
