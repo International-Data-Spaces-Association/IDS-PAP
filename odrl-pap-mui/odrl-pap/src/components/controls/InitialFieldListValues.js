@@ -11,7 +11,7 @@ export const purpose_list = [
   { id: "Marketing", value: "http://example.com/ids-purpose:Marketing" },
   {
     id: "Risk Management",
-    value: "Risk http://example.com/ids-purpose:Risk_Management",
+    value: "http://example.com/ids-purpose:Risk_Management",
   },
 ];
 export const sale_rent_list = [
