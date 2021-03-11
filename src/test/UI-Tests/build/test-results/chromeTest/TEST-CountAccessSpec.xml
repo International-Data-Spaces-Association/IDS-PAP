@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CountAccessSpec" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-03-11T11:53:37" hostname="DESKTOP-6EHOESE" time="14.711">
+  <properties/>
+  <testcase name="Count Access Agreement with count value" classname="CountAccessSpec" time="8.869"/>
+  <testcase name="Count Access Offer with count value" classname="CountAccessSpec" time="2.665"/>
+  <testcase name="Count Access Request with count value" classname="CountAccessSpec" time="3.177"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Starting ChromeDriver 2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91) on port 40573
+Only local connections are allowed.
+März 11, 2021 12:53:41 PM org.openqa.selenium.remote.ProtocolHandshake createSession
+INFO: Detected dialect: OSS
+]]></system-err>
+</testsuite>
