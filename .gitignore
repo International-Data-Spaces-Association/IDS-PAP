@@ -116,3 +116,6 @@ fabric.properties
 .classpath
 .settings
 .project
+
+# Ignore node modules
+/node_modules/

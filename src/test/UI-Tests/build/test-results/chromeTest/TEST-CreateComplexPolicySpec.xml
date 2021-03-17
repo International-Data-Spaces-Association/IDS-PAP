@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="CreateComplexPolicySpec" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-03-11T11:53:52" hostname="DESKTOP-6EHOESE" time="39.948">
-  <properties/>
-  <testcase name="Create Complex Policy Agreement with all Components" classname="CreateComplexPolicySpec" time="13.517"/>
-  <testcase name="Create Complex Policy Offer with all Components" classname="CreateComplexPolicySpec" time="13.075"/>
-  <testcase name="Create Complex Policy Request with all Components" classname="CreateComplexPolicySpec" time="13.356"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
