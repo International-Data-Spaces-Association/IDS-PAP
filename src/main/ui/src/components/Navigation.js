@@ -8,143 +8,114 @@ import {
   Drawer as DrawerMui,
   List,
   IconButton,
-  Divider,
   Typography,
   ListItemText,
   Avatar,
   CssBaseline,
-  withStyles,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import logo from "../logo.png";
+import logo from "../images/fhg.svg";
 import profile_img from "../images/John.jpg";
-import MuiListItem from "@material-ui/core/ListItem";
-import { Grid } from "@material-ui/core";
 
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EnhancedEncryptionIcon from "@material-ui/icons/EnhancedEncryption";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import ShareIcon from "@material-ui/icons/Share";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
-import MenuIcon from "@material-ui/icons/Menu";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import MenuItem from "@material-ui/core/MenuItem";
 
-var drawerWidth = 280;
+import iconSet from "../icons/selection.json";
+import IcomoonReact from "icomoon-react";
+import "../index.css";
+var drawerWidth = 324;
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  "& .appBarShift": {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+  rightToolbar: {
+    marginLeft: "auto",
+    marginRight: -12,
   },
+  leftToolbar: {
+    marginLeft: "120px",
   },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+  drawerPaper: {
+    width: drawerWidth,
+    marginTop: "80px",
+    backgroundColor: theme.palette.primary.main,
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
   },
-  drawerPaper: {
-    width: drawerWidth,
+  navigation: {
+    fontSize: "19px",
+    fontFamily: "FrutigerLTComBold",
   },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
+  logo: {
+    width: "205px",
+    height: "auto",
+    verticalAlign: "middle",
   },
-  drawerTitle: {
-    marginLeft: "auto",
-    marginRight: "auto",
-    fontWeight: "bold",
+  listitemicon: {
+    marginLeft: "30px",
+    marginRight: "30px",
+    width: "30px",
+    height: "30px",
   },
-  drawerFooter: {
-    position: "absolute",
-    left: "50%",
-    marginLeft: "-80px",
-    width: "200px",
-    bottom: "10px",
+  logoPosition: {
+    marginLeft: "60px",
   },
-  listItemSelected: {
-    backgroundColor: "#ff0000",
-  },
-  loginBtn: {
-    marginLeft: "0.5em",
-  },
-  divider: {
-    marginTop: "0.5em",
-    marginBottom: "0.5em",
-    background: "rgb(23,156,125,0.4)",
-    height: "2px",
-  },
-  profileImg: {
-    marginLeft: "0.5em",
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-  },
-  accountInformation: {
-    height: theme.spacing(12),
-  },
-  toolbar: {
-    widows:"100%",
-  }
-}));
-
-const ListItem = withStyles((theme) => ({
   root: {
-    "&$selected": {
-      backgroundColor: "red",
-      color: "white",
+    "& .MuiIconButton-root": {
+      width: "55px",
+      height: "55px",
     },
-    "&$selected:hover": {
-      backgroundColor: theme.palette.primary.main,
-      color: "white",
+    "& .MuiToolbar-root": {
+      height: "80px",
+      backgroundColor: theme.palette.background.main,
     },
-    "&:hover": {
-      backgroundColor: theme.palette.primary.main,
-      color: "white",
+    "& .MuiToolbar-gutters": {
+      paddingLeft: "0px",
+    },
+    "& .MuiListItem-root": {
+      height: "80px",
+      color: theme.palette.primary.light,
+      fontFamily: "FrutigerLTComBold",
+      fontSize: "1rem",
+    },
+    "& .MuiListItem-root.Mui-selected": {
+      backgroundColor: theme.palette.primary.light,
+      color: theme.palette.secondary.main,
+    },
+    "& .MuiListItem-root.Mui-selected:hover": {
+      backgroundColor: theme.palette.primary.light,
+      color: theme.palette.secondary.main,
     },
   },
-  selected: {},
-}))(MuiListItem);
+}));
 
 export default function Navigation(props) {
   const { open, setOpen } = props;
   const classes = useStyles();
   const [logedIn, setLogedIn] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(!open);
+  const [selected, setSelected] = React.useState({ selected: null });
+
+  const updateSelected = (selectedIndex) => {
+    setSelected({ selected: selectedIndex });
   };
 
   React.useEffect(() => {
     function handleResize() {
-      console.log('resized to: ', window.innerWidth, 'x', window.innerHeight)
-      setOpen(window.innerWidth > 600)
+      console.log("resized to: ", window.innerWidth, "x", window.innerHeight);
+      setOpen(window.innerWidth > 600);
     }
 
-    window.addEventListener('resize', handleResize)
-  })
+    window.addEventListener("resize", handleResize);
+  });
   const handleClickAway = () => {
     //setOpen(false);
   };
@@ -160,22 +131,34 @@ export default function Navigation(props) {
         >
           <Toolbar>
             <Button
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, open && classes.hide), classes.toolbar}
-            >
-              <MenuIcon />
-            </Button>
-            <Button
               variant="text"
               color="primary"
+              onClick={() => updateSelected("")}
               component={Link}
               to="/"
-              className={classes.toolbar}
-              startIcon={<img src={logo} alt="" />}
+              className={classes.logoPosition}
+              startIcon={<img src={logo} alt="" className={classes.logo} />}
             />
+            <section className={classes.leftToolbar}>
+              <Typography variant="h1"> {selected.selected} </Typography>
+            </section>
+
+            <section className={classes.rightToolbar}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={() => updateSelected("")}
+                edge="start"
+                className={classes.loginBtn}
+                component={Link}
+                to="/account"
+              >
+                <Avatar src={profile_img} className={classes.profileImg} />
+              </IconButton>
+              <IconButton>
+                <IcomoonReact iconSet={iconSet} color="#444" icon="ausloggen" />
+              </IconButton>
+            </section>
           </Toolbar>
         </AppBarMui>
 
@@ -188,206 +171,152 @@ export default function Navigation(props) {
             paper: classes.drawerPaper,
           }}
         >
-          <Grid
-            container
-            spacing={3}
-            className={classes.accountInformation}
-            alignItems="center"
-            justify="center"
-          >
-            {logedIn ? (
-              <>
-                <Grid item xs={2}>
-                  <Avatar src={profile_img} className={classes.profileImg} />
-                </Grid>
-                <Grid item xs={10}>
-                  <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    className={classes.loginBtn}
-                    component={Link}
-                    to="/account"
-                    onClick={() => {
-                      //setOpen(!open);
-                    }}
-                  >
-                    <Typography variant="h6"> John Voss</Typography>
-                    <KeyboardArrowDownIcon />
-                  </IconButton>
-                </Grid>
-              </>
-            ) : (
-              <>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={Link}
-                  to="/login"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
-                >
-                  Sign in
-                </Button>
-              </>
-            )}
-          </Grid>
-
           {logedIn ? (
             <>
-              <Divider className={classes.divider} />
-              <Typography variant="h6" className={classes.drawerTitle}>
-                {" "}
-                IDS POLICY EDITORS
-              </Typography>
               <List>
-                <ListItem
+                <MenuItem
                   button
                   component={Link}
                   to="/policy/InterpretOdrlPolicy"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Interprete an ODRL Policy")}
+                  selected={selected.selected === "Interprete an ODRL Policy"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <SwapHorizIcon />
-                  </ListItemIcon>
-                  <ListItemText>Interprete an ODRL Policy </ListItemText>
-                </ListItem>
+                  <SwapHorizIcon className={classes.listitemicon} />
 
-                <ListItem
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Interprete Policy
+                  </ListItemText>
+                </MenuItem>
+
+                <MenuItem
                   button
                   component={Link}
                   to="/policy/ComplexPolicyForm"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Create Policy")}
+                  selected={selected.selected === "Create Policy"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <PostAddIcon />
-                  </ListItemIcon>
-                  <ListItemText>Create Policy</ListItemText>
-                </ListItem>
+                  <PostAddIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Create Policy
+                  </ListItemText>
+                </MenuItem>
 
-                <Divider className={classes.divider} />
-
-                <ListItem
+                <MenuItem
                   button
                   component={Link}
                   to="/policy/ProvideAccessPolicyForm"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Provide Access")}
+                  selected={selected.selected === "Provide Access"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <LockOpenIcon />
-                  </ListItemIcon>
-                  <ListItemText>Provide Access</ListItemText>
-                </ListItem>
+                  <LockOpenIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Provide Access
+                  </ListItemText>
+                </MenuItem>
 
-                <ListItem
+                <MenuItem
                   button
                   component={Link}
                   id="CountAccess"
                   to="/policy/CountAccessPolicyForm"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Count Access")}
+                  selected={selected.selected === "Count Access"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <EqualizerIcon />
-                  </ListItemIcon>
-                  <ListItemText>Count Access</ListItemText>
-                </ListItem>
+                  <EqualizerIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Count Access
+                  </ListItemText>
+                </MenuItem>
 
-                <ListItem
+                <MenuItem
                   button
                   component={Link}
                   to="/policy/DeletData"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Delete Data After")}
+                  selected={selected.selected === "Delete Data After"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <DeleteIcon />
-                  </ListItemIcon>
-                  <ListItemText>Delete Data After</ListItemText>
-                </ListItem>
+                  <DeleteIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Delete Data After
+                  </ListItemText>
+                </MenuItem>
 
-                <ListItem
+                <MenuItem
                   button
                   component={Link}
                   to="/policy/AnonymizeInRestPolicyForm"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Anonymize in Rest")}
+                  selected={selected.selected === "Anonymize in Rest"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <EnhancedEncryptionIcon />
-                  </ListItemIcon>
-                  <ListItemText>Anonymize in Rest</ListItemText>
-                </ListItem>
+                  <EnhancedEncryptionIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Anonymize in Rest
+                  </ListItemText>
+                </MenuItem>
 
-                <ListItem
+                <MenuItem
                   button
                   component={Link}
                   to="/policy/AnonymizeInTransitPolicyForm"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Anonymize in Transit")}
+                  selected={selected.selected === "Anonymize in Transit"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <EnhancedEncryptionIcon />
-                  </ListItemIcon>
-                  <ListItemText>Anonymize in Transit</ListItemText>
-                </ListItem>
+                  <EnhancedEncryptionIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Anonymize in Transit
+                  </ListItemText>
+                </MenuItem>
 
-                <ListItem
+                <MenuItem
                   button
                   component={Link}
                   to="/policy/LogAccessPolicyForm"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Log Access")}
+                  selected={selected.selected === "Log Access"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <AssignmentIcon />
-                  </ListItemIcon>
-                  <ListItemText>Log Access</ListItemText>
-                </ListItem>
+                  <AssignmentIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Log Access
+                  </ListItemText>
+                </MenuItem>
 
-                <ListItem
-                  button
+                <MenuItem
+                  button536
+                  fahrenh
                   component={Link}
                   to="/policy/InformPolicyForm"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Inform Party")}
+                  selected={selected.selected === "Inform Party"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <NotificationsActiveIcon />
-                  </ListItemIcon>
-                  <ListItemText>Inform Party</ListItemText>
-                </ListItem>
+                  <NotificationsActiveIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Inform Party
+                  </ListItemText>
+                </MenuItem>
 
-                <ListItem
+                <MenuItem
                   button
                   component={Link}
                   to="/policy/DistributeData"
-                  onClick={() => {
-                    //setOpen(!open);
-                  }}
+                  onClick={() => updateSelected("Distribute Data")}
+                  selected={selected.selected === "Distribute Data"}
+                  className={classes.menuItem}
                 >
-                  <ListItemIcon>
-                    <ShareIcon />
-                  </ListItemIcon>
-                  <ListItemText>Distribute Data</ListItemText>
-                </ListItem>
+                  <ShareIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Distribute Data
+                  </ListItemText>
+                </MenuItem>
               </List>
-              <Typography variant="body2" className={classes.drawerFooter}>
-                © {new Date().getFullYear()} Fraunhofer IESE
-              </Typography>
             </>
           ) : null}
         </DrawerMui>

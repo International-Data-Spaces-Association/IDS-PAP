@@ -14,7 +14,7 @@ export default function PageHeader(props) {
       
       <div>
         <Typography variant="h5" component="div" id="Title">
-        {icon}{title}
+        {}{title}
         </Typography>
       </div>
     </div>

@@ -102,7 +102,7 @@ export default function InterpretOdrlPolicy() {
           <Button
             className={classes.translateBtn}
             variant="contained"
-            color="primary"
+            color="secondary"
             onClick={transfer}
           >
             Translate

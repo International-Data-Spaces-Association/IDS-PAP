@@ -2,7 +2,7 @@ export const time_units = [
   { id: "", value: "" },
   { id: "Hours", value: "HOURS" },
   { id: "Days", value: "DAYS" },
-  { id: "Months", value: "MONTH" },
+  { id: "Months", value: "MONTHS" },
   { id: "Years", value: "YEARS" },
 ];
 

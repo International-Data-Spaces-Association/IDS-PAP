@@ -53,17 +53,23 @@ public class OdrlPapRestController {
 		String uid = baseUid + "restrict-access";
 		if (rp.addLocationCondition()) {
 			uid =  baseUid + "restrict-access-location";
-		} else if (rp.addApplicationCondition()) {
+		} 
+		if (rp.addApplicationCondition()) {
 			uid =  baseUid + "restrict-access-application";
-		}else if (rp.addPurposeCondition()) {
+		}
+		if (rp.addPurposeCondition()) {
 			uid =  baseUid + "restrict-access-purpose";
-		} else if (rp.addEventCondition()) {
+		} 
+		if (rp.addEventCondition()) {
 			uid =  baseUid + "restrict-access-event";
-		} else if (rp.addRestrictTimeIntervalCondition()) {
+		} 
+		if (rp.addRestrictTimeIntervalCondition()) {
 			uid =  baseUid + "restrict-access-interval";
-		} else if (rp.addPaymentCondition()) {
+		} 
+		if (rp.addPaymentCondition()) {
 			uid =  baseUid + "provide-access-after-payment";
-		} else if (rp.addElapsedTimeRightOperand()) {
+		} 
+		if (rp.addElapsedTimeRightOperand()) {
 			uid =  baseUid + "restrict-access-interval";
 		}
 		Action useAction = new Action(ActionType.USE);

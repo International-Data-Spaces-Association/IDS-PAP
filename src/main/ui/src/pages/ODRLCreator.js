@@ -18,7 +18,6 @@ require("codemirror/theme/eclipse.css");
 const useStyle = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: "3em",
     "& .MuiFormControl-root": {
       width: "100%",
     },
@@ -27,10 +26,6 @@ const useStyle = makeStyles((theme) => ({
     },
     "& .MuiButtonBase-root": {},
   }, 
-  page: {
-    marginLeft: "2em",
-    marginRight: "2em",
-  },
   translateBtn: {
     height: "100%",
     width: "100%",

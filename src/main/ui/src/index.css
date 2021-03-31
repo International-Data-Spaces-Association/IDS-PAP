@@ -12,3 +12,12 @@ code {
     monospace;
 }
 
+@font-face {
+  font-family: 'FrutigerLTComBold';
+  src: local('FrutigerLTComBold'), url("./fonts/Frutiger-LT-Com-65-Bold.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'PTSerif';
+  src: local('PTSerif'), url("./fonts/PTSerif-Regular.ttf") format('truetype');
+}

@@ -65,7 +65,7 @@ export default function ProvideAccess() {
     values.restrictTimeIntervalEnd = "";
     values.payment = "";
     values.price = "";
-    values.beginAndDuration = "";
+    values.specifyBeginTime = "";
     values.restrictTimeDuration = "";
     values.restrictTimeDurationUnit = "";
   };
@@ -177,11 +177,11 @@ export default function ProvideAccess() {
               <Grid container>
                 <Title label="Restrict Time Duration" />
                 <Date
-                  name="beginAndDuration"
+                  name="specifyBeginTime"
                   label="Begin Time (Optional)"
-                  value={values.beginAndDuration}
+                  value={values.specifyBeginTime}
                   onChange={handleInputChange}
-                  error={errors.beginAndDuration}
+                  error={errors.specifyBeginTime}
                   sm={11}
                   md={3}
                 />
@@ -322,7 +322,7 @@ export default function ProvideAccess() {
           <Grid item xs={2}>
             <Button
               variant="contained"
-              color="primary"
+              color="secondary"
               className={classes.saveBtn}
               type="submit"
               id="Save"

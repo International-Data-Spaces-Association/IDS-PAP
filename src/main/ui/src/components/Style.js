@@ -3,8 +3,7 @@ import { makeStyles } from "@material-ui/core";
 export const useStyle = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width: "80%",
-    marginTop: "1.5em",
+    width: "90%",
     marginLeft: "auto",
     marginRight: "auto",
     "& .MuiFormControl-root": {
@@ -34,10 +33,6 @@ export const useStyle = makeStyles((theme) => ({
       marginBottom: theme.spacing(2),
     },
 },
-  page: {
-    marginLeft: "2em",
-    marginRight: "2em",
-  },
   saveBtn: {
     height: "100%",
     width: "100%",

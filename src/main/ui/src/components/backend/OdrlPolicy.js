@@ -24,7 +24,7 @@ export const OdrlPolicy = {
     fieldToChange: "",
     restrictTimeIntervalStart:"",
     restrictTimeIntervalEnd: "",
-    beginAndDuration:"",
+    specifyBeginTime:"",
     restrictTimeDuration:"",
     restrictTimeDurationUnit:"",
     logLevel:"",

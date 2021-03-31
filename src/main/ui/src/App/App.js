@@ -11,35 +11,56 @@ import Navigation from "../components/Navigation";
 import { BrowserRouter as Router } from "react-router-dom";
 import RouteToPage from "../components/Route";
 import clsx from "clsx";
+import CssBaseline from '@material-ui/core/CssBaseline';
 
-const drawerWidth = 280;
+const drawerWidth = 324;
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#179c7d",
+      main: "#239b7e",
+      light: "#E8F5F2",
     },
+    secondary: {
+      main: "#E96A22",
+    },
+    background: {
+      main: "#F2F2F2",
+    },
+    text: {
+      primary: "#808080",
+    },
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: 100,
+        "&:hover": {
+          color: "#F7C7AC",
+        },
+      },
+    },
+    MuiTypography: {
+      subtitle2: {
+        color: "#808080",
+      },
+      h1: {
+        color: "#E96A22",
+        fontFamily: "FrutigerLTComBold",
+        fontSize: "27px",
+      },
+    },
+
   },
 });
 
 const useStyles = makeStyles((theme) => ({
-  seperator: {
-    ...theme.mixins.toolbar,
-  },
   content: {
-    width: "100%",
-    margin: "auto",
-    minHeight: "100vh",
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-    }),
-  },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-    }),
+    paddingTop: 35,
+    marginLeft: drawerWidth + 35,
+    marginTop: 80 + 35,
+    paddingBottom: 35,
+    minHeight: "calc(100vh - 115px)",
   },
 }));
 
@@ -50,13 +71,16 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+        <CssBaseline />
+
         <Navigation open={open} setOpen={setOpen} />
         <AppBar position="fixed" />
-        <div className={clsx(classes.appBar, {
+        <div
+          className={clsx(classes.appBar, {
             [classes.appBarShift]: open,
-          })}>
+          })}
+        >
           <Paper className={classes.content}>
-            <div className={classes.seperator} />
             <RouteToPage />
           </Paper>
         </div>

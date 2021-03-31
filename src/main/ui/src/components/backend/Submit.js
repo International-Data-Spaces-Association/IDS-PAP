@@ -62,7 +62,7 @@ function Validation(values, states, setErrors) {
     temp.encoding = states.encoding? isValidUrl(values.encoding):"";
     temp.policy = states.policy? isValidUrl(values.policy):"";
     temp.timeAndDate = states.timeDate ? isValidDate(values.timeAndDate):"";
-    temp.beginAndDuration = states.beginAndDuration ? isValidDate(values.beginAndDuration): "";
+    temp.specifyBeginTime = states.specifyBeginTime ? isValidDate(values.specifyBeginTime): "";
     temp.logLevel = states.logLevel ? notEmpty(values.logLevel):"";
     temp.notificationLevel = states.notificationLevel ? notEmpty(values.notificationLevel):"";
     temp.artifactState = states.artifactState ? notEmpty(values.artifactState):"";

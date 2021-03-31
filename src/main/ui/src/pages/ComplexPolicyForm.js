@@ -30,7 +30,7 @@ const selected_components = {
   counter: false,
   purpose: false,
   restrictTimeDuration: false,
-  beginAndDuration: false,
+  specifyBeginTime: false,
 };
 
 export default function ComplexPolicyForm() {
@@ -51,7 +51,7 @@ export default function ComplexPolicyForm() {
     setAnchorEl(event.currentTarget);
   };
   const handleSubmit = (e) => {
-    console.log(selectedComponents)
+    console.log(selectedComponents);
     Submit(
       "/policy/ComplexPolicyForm",
       values,
@@ -73,7 +73,6 @@ export default function ComplexPolicyForm() {
       counter: false,
       purpose: false,
       restrictTimeDuration: false,
-      beginAndDuration: false,
     });
   };
 
@@ -298,62 +297,42 @@ export default function ComplexPolicyForm() {
               </>
             ) : null}
 
-            {selectedComponents.beginAndDuration ? (
-              <>
-                <Grid container>
-                  <Title label="Begin and Duration" />
-                  <Date
-                    name="beginAndDuration"
-                    value={values.beginAndDuration}
-                    onChange={handleInputChange}
-                    error={errors.beginAndDuration}
-                  />
-                  <Remove
-                    onClick={() => {
-                      removeEnteredData("beginAndDuration");
-                      removeComponent("beginAndDuration");
-                    }}
-                  />
-                </Grid>
-              </>
-            ) : null}
-
             {selectedComponents.restrictTimeDuration ? (
               <>
                 <Grid container>
-                  <Title label="Restrict Begin and Duration" />
+                  <Title label="Restrict Time Duration" />
+                  <Date
+                    name="specifyBeginTime"
+                    label="Begin Time (Optional)"
+                    value={values.specifyBeginTime}
+                    onChange={handleInputChange}
+                    error={errors.specifyBeginTime}
+                    sm={11}
+                    md={3}
+                  />
+                  <Grid item sm={1} />
                   <Input
                     name="restrictTimeDuration"
-                    label="Duration Value*"
+                    label="Duration Value (Optional)"
                     value={values.restrictTimeDuration}
                     placeholder="e.g. 10"
                     onChange={handleInputChange}
                     error={errors.restrictTimeDuration}
-                    xs={11}
-                    sm={5}
+                    sm={11}
+                    md={3}
                   />
                   <Grid item sm={1} />
-
                   <ItemPicker
                     name="restrictTimeDurationUnit"
-                    label="Unit*"
+                    label="Unit"
                     defaultValue=""
                     ItemList={time_units}
                     onChange={handleInputChange}
                     error={errors.restrictTimeDurationUnit}
-                    xs={11}
-                    sm={5}
+                    sm={11}
+                    md={3}
                   />
-
-                  <Remove
-                    onClick={() => {
-                      removeEnteredData(
-                        "restrictTimeDuration",
-                        "restrictTimeDurationUnit"
-                      );
-                      removeComponent("restrictTimeDuration");
-                    }}
-                  />
+                  <Remove onClick={resetStates} />
                 </Grid>
               </>
             ) : null}
@@ -469,21 +448,10 @@ export default function ComplexPolicyForm() {
                         }}
                         id="restrictTimeDuration"
                       >
-                        Restrict Begin and Duration
-                      </MenuItem>
-                    ) : null}
-
-                    {!selectedComponents.beginAndDuration ? (
-                      <MenuItem
-                        onClick={() => {
-                          selectedComponents.beginAndDuration = true;
-                          setAnchorEl(null);
-                        }}
-                        id="restrictTimeDuration"
-                      >
                         Specify a begin time
                       </MenuItem>
                     ) : null}
+
                     <MenuItem
                       onClick={() => {
                         selectedComponents.location = true;
@@ -494,7 +462,6 @@ export default function ComplexPolicyForm() {
                         selectedComponents.counter = true;
                         selectedComponents.purpose = true;
                         selectedComponents.restrictTimeDuration = true;
-                        selectedComponents.beginAndDuration = true;
 
                         setAnchorEl(null);
                       }}
@@ -511,7 +478,7 @@ export default function ComplexPolicyForm() {
               <Grid item xs={2} xm={1}>
                 <Button
                   variant="contained"
-                  color="primary"
+                  color="secondary"
                   className={classes.saveBtn}
                   type="submit"
                   id="Save"

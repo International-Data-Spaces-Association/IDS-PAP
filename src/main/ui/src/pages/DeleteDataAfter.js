@@ -183,7 +183,7 @@ export default function DeleteDataAfter() {
             <Grid item xs={2}>
               <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 className={classes.saveBtn}
                 type="submit"
                 id="Save"
