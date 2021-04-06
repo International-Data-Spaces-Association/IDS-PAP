@@ -38,9 +38,9 @@ export const policy_types = [
   { id: "Request", value: "Request" },
 ];
 
-export const system_list = [
+export const application_list = [
   { id: "", value: "" },
-  { id: "http://example.com/ids-app/risk-management-system", value: "http://example.com/ids-app/risk-management-system" },
+  { id: "http://example.com/ids-app/data_app", value: "http://example.com/ids-app/data-app" },
 ];
 
 export const event_list = [
@@ -49,10 +49,6 @@ export const event_list = [
 ];
 
 export const log_level_list = [
-  { id: "OFF", value: "OFF" },
-  { id: "ALL", value: "ALL" },
-  { id: "INFO_LEVEL", value: "INFO_LEVEL" },
-  { id: "DEBUG_LEVEL", value: "DEBUG_LEVEL" },
   { id: "ON_DENY", value: "ON_DENY" },
   { id: "ON_ALLOW", value: "ON_ALLOW" },
   { id: "ON_DUTY_EXERCISED", value: "ON_DUTY_EXERCISED" },

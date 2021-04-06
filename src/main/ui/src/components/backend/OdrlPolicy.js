@@ -6,6 +6,7 @@ export const OdrlPolicy = {
     consumer: "",
     location: "",
     system: "",
+    application:"",
     purpose: "",
     event: "",
     interval: "",

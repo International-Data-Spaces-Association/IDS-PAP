@@ -8,7 +8,7 @@ import {
   event_list,
   purpose_list,
   sale_rent_list,
-  system_list,
+  application_list,
   time_units,
 } from "../components/controls/InitialFieldListValues";
 import Date from "../components/controls/Date";
@@ -23,7 +23,7 @@ import Title from "../components/controls/Title";
 import DeleteIcon from "@material-ui/icons/Delete";
 const selected_components = {
   location: false,
-  system: false,
+  application: false,
   event: false,
   interval: false,
   payment: false,
@@ -66,7 +66,7 @@ export default function ComplexPolicyForm() {
     setValues({ ...OdrlPolicy, ["consumer"]: values["consumer"] });
     setSelectedComponents({
       location: false,
-      system: false,
+      application: false,
       event: false,
       interval: false,
       payment: false,
@@ -119,30 +119,30 @@ export default function ComplexPolicyForm() {
               </>
             ) : null}
 
-            {selectedComponents.system ? (
+            {selectedComponents.application ? (
               <>
                 <Grid container>
-                  <Title label="Restrict System" />
+                  <Title label="Restrict Application" />
                   <ItemPicker
-                    name="system"
+                    name="application"
                     defaultValue=""
-                    ItemList={system_list}
+                    ItemList={application_list}
                     onChange={handleInputChange}
-                    error={errors.system}
+                    error={errors.application}
                   />
                   {/*
                   <Input
-                    name="system"
-                    value={values.system}
+                    name="application"
+                    value={values.application}
                     placeholder="e.g. https://wikidata.org/wiki/Q136218 (ZIP)"
                     onChange={handleInputChange}
-                    error={errors.system}
+                    error={errors.application}
                   />
                   */}
                   <Remove
                     onClick={() => {
-                      removeComponent("system");
-                      removeEnteredData("system");
+                      removeComponent("application");
+                      removeEnteredData("application");
                     }}
                   />
                 </Grid>
@@ -371,17 +371,17 @@ export default function ComplexPolicyForm() {
                       </MenuItem>
                     ) : null}
 
-                    {!selectedComponents.system ? (
-                      <MenuItem
-                        onClick={() => {
-                          selectedComponents.system = true;
-                          setAnchorEl(null);
-                        }}
-                        id="system"
-                      >
-                        Restrict System
-                      </MenuItem>
-                    ) : null}
+                   {!selectedComponents.application ? (
+                     <MenuItem
+                       onClick={() => {
+                         selectedComponents.application = true;
+                         setAnchorEl(null);
+                       }}
+                       id="application"
+                     >
+                       Restrict Application
+                     </MenuItem>
+                   ) : null}
                     {!selectedComponents.purpose ? (
                       <MenuItem
                         onClick={() => {
@@ -455,7 +455,7 @@ export default function ComplexPolicyForm() {
                     <MenuItem
                       onClick={() => {
                         selectedComponents.location = true;
-                        selectedComponents.system = true;
+                        selectedComponents.application = true;
                         selectedComponents.event = true;
                         selectedComponents.interval = true;
                         selectedComponents.payment = true;
