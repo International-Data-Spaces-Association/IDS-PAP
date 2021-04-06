@@ -38,6 +38,7 @@ public class RecievedOdrlPolicy {
 	private String location;
 	private String system;
 	private String application;
+	private String connector;
 	private String purpose;
 	private String event;
 	private String interval;
@@ -96,6 +97,8 @@ public class RecievedOdrlPolicy {
 	public String getApplication() {
 		return application;
 	}
+
+	public String getConnector() {return connector;}
 
 	public String getPurpose() {
 		return purpose;
@@ -220,6 +223,18 @@ public class RecievedOdrlPolicy {
 			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ,
 					systemRightOperand, null);
 			constraints.add(systemConstraint);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addConnectorCondition() {
+		if (connector != "") {
+			RightOperand connectorRightOperand = new RightOperand(connector, RightOperandType.ANYURI);
+			connectorRightOperand.setType(RightOperandType.ANYURI);
+			Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.EQ,
+					connectorRightOperand, null);
+			constraints.add(connectorConstraint);
 			return true;
 		}
 		return false;

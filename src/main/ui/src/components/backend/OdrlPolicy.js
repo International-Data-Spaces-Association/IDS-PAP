@@ -7,6 +7,7 @@ export const OdrlPolicy = {
     location: "",
     system: "",
     application:"",
+    connector:"",
     purpose: "",
     event: "",
     interval: "",

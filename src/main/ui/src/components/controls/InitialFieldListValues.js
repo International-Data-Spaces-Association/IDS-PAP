@@ -43,6 +43,11 @@ export const application_list = [
   { id: "http://example.com/ids-app/data_app", value: "http://example.com/ids-app/data-app" },
 ];
 
+export const connector_list = [
+  { id: "", value: "" },
+  { id: "http://example.com/ids-connector/connector1", value: "http://example.com/ids-connector/connector1" },
+];
+
 export const event_list = [
   { id: "", value: "" },
   { id: "http://example.com/ids-event:exhibition", value: "http://example.com/ids-event:exhibition" },

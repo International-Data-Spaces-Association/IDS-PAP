@@ -57,6 +57,9 @@ public class OdrlPapRestController {
 		if (rp.addApplicationCondition()) {
 			uid =  baseUid + "restrict-access-application";
 		}
+		if (rp.addConnectorCondition()) {
+			uid =  baseUid + "restrict-access-connector";
+		}
 		if (rp.addPurposeCondition()) {
 			uid =  baseUid + "restrict-access-purpose";
 		} 
@@ -84,6 +87,7 @@ public class OdrlPapRestController {
 		String uid = baseUid + "complex-policy-access";
 		rp.addLocationCondition();
 		rp.addApplicationCondition();
+		rp.addConnectorCondition();
 		rp.addPurposeCondition();
 		rp.addEventCondition();
 		rp.addCounterCondition();

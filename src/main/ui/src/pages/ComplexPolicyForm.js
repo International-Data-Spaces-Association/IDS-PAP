@@ -9,6 +9,7 @@ import {
   purpose_list,
   sale_rent_list,
   application_list,
+  connector_list,
   time_units,
 } from "../components/controls/InitialFieldListValues";
 import Date from "../components/controls/Date";
@@ -24,6 +25,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 const selected_components = {
   location: false,
   application: false,
+  connector:false,
   event: false,
   interval: false,
   payment: false,
@@ -67,6 +69,7 @@ export default function ComplexPolicyForm() {
     setSelectedComponents({
       location: false,
       application: false,
+      connector:false,
       event: false,
       interval: false,
       payment: false,
@@ -143,6 +146,28 @@ export default function ComplexPolicyForm() {
                     onClick={() => {
                       removeComponent("application");
                       removeEnteredData("application");
+                    }}
+                  />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.connector ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict Connector" />
+                  <ItemPicker
+                    name="connector"
+                    defaultValue=""
+                    ItemList={connector_list}
+                    onChange={handleInputChange}
+                    error={errors.application}
+                  />
+                  {}
+                  <Remove
+                    onClick={() => {
+                      removeComponent("connector");
+                      removeEnteredData("connector");
                     }}
                   />
                 </Grid>
@@ -382,6 +407,19 @@ export default function ComplexPolicyForm() {
                        Restrict Application
                      </MenuItem>
                    ) : null}
+
+                   {!selectedComponents.connector ? (
+                     <MenuItem
+                       onClick={() => {
+                         selectedComponents.connector = true;
+                         setAnchorEl(null);
+                       }}
+                       id="connector"
+                     >
+                       Restrict Connector
+                     </MenuItem>
+                   ) : null}
+
                     {!selectedComponents.purpose ? (
                       <MenuItem
                         onClick={() => {
@@ -456,6 +494,7 @@ export default function ComplexPolicyForm() {
                       onClick={() => {
                         selectedComponents.location = true;
                         selectedComponents.application = true;
+                        selectedComponents.connector = true;
                         selectedComponents.event = true;
                         selectedComponents.interval = true;
                         selectedComponents.payment = true;

@@ -10,6 +10,7 @@ import {
   purpose_list,
   sale_rent_list,
   application_list,
+  connector_list,
   event_list,
 } from "../components/controls/InitialFieldListValues";
 import Form from "../components/controls/Form";
@@ -24,6 +25,7 @@ import { time_units } from "../components/controls/InitialFieldListValues";
 const selected_components = {
   location: false,
   application: false,
+  connector: false,
   purpose: false,
   event: false,
   interval: false,
@@ -52,6 +54,7 @@ export default function ProvideAccess() {
     setSelectedComponents({
       location: false,
       application: false,
+      connector:false,
       purpose: false,
       event: false,
       interval: false,
@@ -59,6 +62,7 @@ export default function ProvideAccess() {
     });
     values.location = "";
     values.application = "";
+    values.connector = "";
     values.purpose = "";
     values.event = "";
     values.restrictTimeIntervalStart = "";
@@ -128,6 +132,22 @@ export default function ProvideAccess() {
                     name="application"
                     defaultValue=""
                     ItemList={application_list}
+                    onChange={handleInputChange}
+                    error={errors.application}
+                  />
+                  <Remove onClick={resetStates} />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.connector ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict Connector" />
+                  <ItemPicker
+                    name="connector"
+                    defaultValue=""
+                    ItemList={connector_list}
                     onChange={handleInputChange}
                     error={errors.application}
                   />
@@ -296,6 +316,9 @@ export default function ProvideAccess() {
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="application">
                   Application
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="connector">
+                  Connector
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="purpose">
                   Purpose

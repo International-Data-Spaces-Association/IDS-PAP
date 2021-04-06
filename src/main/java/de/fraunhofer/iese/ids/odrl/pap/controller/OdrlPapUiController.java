@@ -127,6 +127,27 @@ public class OdrlPapUiController {
 		return "index";
 	}
 
+	@RequestMapping("/policy/SpecificConnectorPolicyForm")
+	public String provideConnectorPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.ANYURI);
+		Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.EQ, rightOperand, "");
+		ArrayList<Condition> constraints = new ArrayList<>();
+		constraints.add(connectorConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		ArrayList<Rule> rules = new ArrayList<>();
+		rules.add(rule);
+		Party consumer = new Party();
+		consumer.setType(PartyType.CONSUMER);
+		odrlPolicy.setConsumer(consumer);
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-connector"));
+		model.addAttribute(POLICY_FRAGMENT, "SpecificConnectorPolicyForm");
+		return "index";
+	}
+
 	@RequestMapping("/policy/SpecificApplicationPolicyForm")
 	public String provideApplicationPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
