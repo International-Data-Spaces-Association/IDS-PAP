@@ -112,6 +112,11 @@ public class OdrlTranslator {
 											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the state in which the data will be processed is " +
 											getLastSplitElement(rightOperandValue) + ".\n\n");
 									break;
+								case SECURITY_LEVEL:
+									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific Data Consumer with a specific connector security level; the Data Consumer is " +
+											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the security level of the connector which will process the data is " +
+											getLastSplitElement(rightOperandValue) + ".\n\n");
+									break;
 								case ROLE:
 									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific user roles in the user group of a specific Data Consumer; the Data Consumer is " +
 											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the user which will use the data has the role " +

@@ -10,6 +10,7 @@ import {
   sale_rent_list,
   application_list,
   state_list,
+  security_level_list,
   role_list,
   connector_list,
   time_units,
@@ -29,6 +30,7 @@ const selected_components = {
   application: false,
   connector:false,
   state: false,
+  securityLevel: false,
   role: false,
   event: false,
   interval: false,
@@ -76,6 +78,7 @@ export default function ComplexPolicyForm() {
       connector:false,
       state: false,
       role: false,
+      securityLevel: false,
       event: false,
       interval: false,
       payment: false,
@@ -174,6 +177,28 @@ export default function ComplexPolicyForm() {
                     onClick={() => {
                       removeComponent("connector");
                       removeEnteredData("connector");
+                    }}
+                  />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.securityLevel ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict Security Level" />
+                  <ItemPicker
+                    name="securityLevel"
+                    defaultValue=""
+                    ItemList={security_level_list}
+                    onChange={handleInputChange}
+                    error={errors.securityLevel}
+                  />
+                  {}
+                  <Remove
+                    onClick={() => {
+                      removeComponent("securityLevel");
+                      removeEnteredData("securityLevel");
                     }}
                   />
                 </Grid>
@@ -482,6 +507,18 @@ export default function ComplexPolicyForm() {
                      </MenuItem>
                    ) : null}
 
+                   {!selectedComponents.securityLevel ? (
+                     <MenuItem
+                       onClick={() => {
+                         selectedComponents.securityLevel = true;
+                         setAnchorEl(null);
+                       }}
+                       id="securityLevel"
+                     >
+                       Restrict Security Level
+                     </MenuItem>
+                   ) : null}
+
                    {!selectedComponents.state ? (
                      <MenuItem
                        onClick={() => {
@@ -569,6 +606,7 @@ export default function ComplexPolicyForm() {
                         selectedComponents.location = true;
                         selectedComponents.application = true;
                         selectedComponents.connector = true;
+                        selectedComponents.securityLevel = true;
                         selectedComponents.state = true;
                         selectedComponents.role = true;
                         selectedComponents.event = true;

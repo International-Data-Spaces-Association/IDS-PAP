@@ -181,6 +181,28 @@ public class OdrlPapUiController {
 		return "index";
 	}
 
+	@RequestMapping("/policy/SpecificSecurityLevelPolicyForm")
+	public String provideSecurityLevelPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.STRING);
+		rightOperand.setValue(SecurityLevelType.BASE_SECURITY_PROFILE.toString());
+		Condition securityLevelConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SECURITY_LEVEL, Operator.EQUALS, rightOperand, "");
+		ArrayList<Condition> constraints = new ArrayList<>();
+		constraints.add(securityLevelConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		ArrayList<Rule> rules = new ArrayList<>();
+		rules.add(rule);
+		Party consumer = new Party();
+		consumer.setType(PartyType.CONSUMER);
+		odrlPolicy.setConsumer(consumer);
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-security-level"));
+		model.addAttribute(POLICY_FRAGMENT, "SpecificSecurityLevelPolicyForm");
+		return "index";
+	}
+
 	@RequestMapping("/policy/SpecificApplicationPolicyForm")
 	public String provideApplicationPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();

@@ -39,6 +39,7 @@ public class RecievedOdrlPolicy {
 	private String system;
 	private String application;
 	private String role;
+	private String securityLevel;
 	private String connector;
 	private String state;
 	private String purpose;
@@ -101,6 +102,8 @@ public class RecievedOdrlPolicy {
 	}
 
 	public String getConnector() {return connector;}
+
+	public String getSecurityLevel() {return securityLevel;}
 
 	public String getRole() {return role;}
 
@@ -272,6 +275,17 @@ public class RecievedOdrlPolicy {
 			Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE, Operator.HAS_MEMBERSHIP,
 					userRoleRightOperand, null);
 			constraints.add(userRoleConstraint);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addSecurityLevelCondition() {
+		if (securityLevel != "") {
+			RightOperand userSecurityLevelRightOperand = new RightOperand(securityLevel, RightOperandType.STRING);
+			Condition userSecurityLevelConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SECURITY_LEVEL, Operator.EQUALS,
+					userSecurityLevelRightOperand, null);
+			constraints.add(userSecurityLevelConstraint);
 			return true;
 		}
 		return false;

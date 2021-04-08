@@ -10,6 +10,7 @@ import {
   purpose_list,
   sale_rent_list,
   application_list,
+  security_level_list,
   state_list,
   role_list,
   connector_list,
@@ -28,6 +29,7 @@ const selected_components = {
   location: false,
   application: false,
   connector: false,
+  securityLevel: false,
   state: false,
   role: false,
   purpose: false,
@@ -59,6 +61,7 @@ export default function ProvideAccess() {
       location: false,
       application: false,
       connector:false,
+      securityLevel: false,
       state: false,
       role: false,
       purpose: false,
@@ -71,6 +74,7 @@ export default function ProvideAccess() {
     values.connector = "";
     values.state = "";
     values.role = "";
+    values.securityLevel = "";
     values.purpose = "";
     values.event = "";
     values.restrictTimeIntervalStart = "";
@@ -158,6 +162,22 @@ export default function ProvideAccess() {
                     ItemList={connector_list}
                     onChange={handleInputChange}
                     error={errors.connector}
+                  />
+                  <Remove onClick={resetStates} />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.securityLevel ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict Security Level" />
+                  <ItemPicker
+                    name="securityLevel"
+                    defaultValue=""
+                    ItemList={security_level_list}
+                    onChange={handleInputChange}
+                    error={errors.securityLevel}
                   />
                   <Remove onClick={resetStates} />
                 </Grid>
@@ -359,6 +379,9 @@ export default function ProvideAccess() {
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="connector">
                   Connector
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="securityLevel">
+                  Security Level
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="state">
                   State

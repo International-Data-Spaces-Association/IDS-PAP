@@ -59,6 +59,12 @@ export const role_list = [
   { id: "End User", value: "END_USER" },
 ];
 
+export const security_level_list = [
+  { id: "Base", value: "BASE_SECURITY_PROFILE" },
+  { id: "Trust", value: "TRUST_SECURITY_PROFILE" },
+  { id: "Trust Plus", value: "TRUST_PLUS_SECURITY_PROFILE" },
+];
+
 export const log_level_list = [
   { id: "ON_DENY", value: "ON_DENY" },
   { id: "ON_ALLOW", value: "ON_ALLOW" },

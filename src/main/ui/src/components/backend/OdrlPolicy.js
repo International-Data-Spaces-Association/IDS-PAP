@@ -17,6 +17,7 @@ export const OdrlPolicy = {
     price: "",
     counter: "",
     encoding: "",
+    securityLevel: "",
     policy: "",
     time: "",
     timeUnit: "",
