@@ -38,7 +38,9 @@ public class RecievedOdrlPolicy {
 	private String location;
 	private String system;
 	private String application;
+	private String role;
 	private String connector;
+	private String state;
 	private String purpose;
 	private String event;
 	private String interval;
@@ -99,6 +101,10 @@ public class RecievedOdrlPolicy {
 	}
 
 	public String getConnector() {return connector;}
+
+	public String getRole() {return role;}
+
+	public String getState() {return state;}
 
 	public String getPurpose() {
 		return purpose;
@@ -219,7 +225,6 @@ public class RecievedOdrlPolicy {
 	public boolean addSystemCondition() {
 		if (system != "") {
 			RightOperand systemRightOperand = new RightOperand(system, RightOperandType.ANYURI);
-			systemRightOperand.setType(RightOperandType.ANYURI);
 			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ,
 					systemRightOperand, null);
 			constraints.add(systemConstraint);
@@ -231,8 +236,7 @@ public class RecievedOdrlPolicy {
 	public boolean addConnectorCondition() {
 		if (connector != "") {
 			RightOperand connectorRightOperand = new RightOperand(connector, RightOperandType.ANYURI);
-			connectorRightOperand.setType(RightOperandType.ANYURI);
-			Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.EQ,
+			Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.SAME_AS,
 					connectorRightOperand, null);
 			constraints.add(connectorConstraint);
 			return true;
@@ -243,10 +247,31 @@ public class RecievedOdrlPolicy {
 	public boolean addApplicationCondition() {
 		if (application != "") {
 			RightOperand applicationRightOperand = new RightOperand(application, RightOperandType.ANYURI);
-			applicationRightOperand.setType(RightOperandType.ANYURI);
 			Condition applicationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.APPLICATION, Operator.EQ,
 					applicationRightOperand, null);
 			constraints.add(applicationConstraint);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addStateCondition() {
+		if (state != "") {
+			RightOperand stateRightOperand = new RightOperand(state, RightOperandType.STRING);
+			Condition stateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.STATE, Operator.EQUALS,
+					stateRightOperand, null);
+			constraints.add(stateConstraint);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addUserRoleCondition() {
+		if (role != "") {
+			RightOperand userRoleRightOperand = new RightOperand(role, RightOperandType.STRING);
+			Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE, Operator.HAS_MEMBERSHIP,
+					userRoleRightOperand, null);
+			constraints.add(userRoleConstraint);
 			return true;
 		}
 		return false;

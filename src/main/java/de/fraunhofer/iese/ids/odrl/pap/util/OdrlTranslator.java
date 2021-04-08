@@ -107,6 +107,16 @@ public class OdrlTranslator {
 											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the connector which will process the data is " +
 											getLastSplitElement(rightOperandValue) + ".\n\n");
 									break;
+								case STATE:
+									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific State of a Data Consumer connector; the Data Consumer is " +
+											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the state in which the data will be processed is " +
+											getLastSplitElement(rightOperandValue) + ".\n\n");
+									break;
+								case ROLE:
+									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific user roles in the user group of a specific Data Consumer; the Data Consumer is " +
+											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the user which will use the data has the role " +
+											getLastSplitElement(rightOperandValue) + ".\n\n");
+									break;
 								case ABSOLUTESPATIALPOSITION:
 									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific location; the Data Consumer is " +
 											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +

@@ -53,11 +53,22 @@ export const event_list = [
   { id: "http://example.com/ids-event:exhibition", value: "http://example.com/ids-event:exhibition" },
 ];
 
+export const role_list = [
+  { id: "Admin", value: "ADMIN" },
+  { id: "Developer", value: "DEVELOPER" },
+  { id: "End User", value: "END_USER" },
+];
+
 export const log_level_list = [
   { id: "ON_DENY", value: "ON_DENY" },
   { id: "ON_ALLOW", value: "ON_ALLOW" },
   { id: "ON_DUTY_EXERCISED", value: "ON_DUTY_EXERCISED" },
   { id: "ON_ACTION_OPERATED", value: "ON_ACTION_OPERATED" },
+];
+
+export const state_list = [
+  { id: "Contract not Terminated", value: "CONTRACTNOTTERMINATED" },
+  { id: "Firewall Activated", value: "FIREWALLACTIVATED" },
 ];
 
 export const artifact_state_list = [

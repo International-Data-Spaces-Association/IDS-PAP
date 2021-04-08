@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,18 +30,6 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.Party;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperandEntity;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Rule;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ArtifactStateType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ConditionType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.EntityType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LeftOperand;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.LogLevelType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.Operator;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PartyType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PolicyType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RightOperandType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.IdsOdrlUtil;
 
 @Controller
@@ -131,7 +120,7 @@ public class OdrlPapUiController {
 	public String provideConnectorPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.EQ, rightOperand, "");
+		Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.SAME_AS, rightOperand, "");
 		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(connectorConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -145,6 +134,50 @@ public class OdrlPapUiController {
 		odrlPolicy.setRules(rules);
 		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-connector"));
 		model.addAttribute(POLICY_FRAGMENT, "SpecificConnectorPolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/SpecificUserRolePolicyForm")
+	public String provideUserRolePolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.STRING);
+		rightOperand.setValue(RoleType.ADMIN.toString());
+		Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE, Operator.HAS_MEMBERSHIP, rightOperand, "");
+		ArrayList<Condition> constraints = new ArrayList<>();
+		constraints.add(userRoleConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		ArrayList<Rule> rules = new ArrayList<>();
+		rules.add(rule);
+		Party consumer = new Party();
+		consumer.setType(PartyType.CONSUMER);
+		odrlPolicy.setConsumer(consumer);
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-user-role"));
+		model.addAttribute(POLICY_FRAGMENT, "SpecificUserRolePolicyForm");
+		return "index";
+	}
+
+	@RequestMapping("/policy/SpecificStatePolicyForm")
+	public String provideStatePolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.STRING);
+		rightOperand.setValue(StateType.CONTRACTNOTTERMINATED.toString());
+		Condition stateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.STATE, Operator.EQUALS, rightOperand, "");
+		ArrayList<Condition> constraints = new ArrayList<>();
+		constraints.add(stateConstraint);
+		Action useAction = new Action(ActionType.USE);
+		Rule rule = new Rule(RuleType.PERMISSION, useAction);
+		rule.setConstraints(constraints);
+		ArrayList<Rule> rules = new ArrayList<>();
+		rules.add(rule);
+		Party consumer = new Party();
+		consumer.setType(PartyType.CONSUMER);
+		odrlPolicy.setConsumer(consumer);
+		odrlPolicy.setRules(rules);
+		odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/restrict-access-state"));
+		model.addAttribute(POLICY_FRAGMENT, "SpecificStatePolicyForm");
 		return "index";
 	}
 

@@ -10,6 +10,8 @@ import {
   purpose_list,
   sale_rent_list,
   application_list,
+  state_list,
+  role_list,
   connector_list,
   event_list,
 } from "../components/controls/InitialFieldListValues";
@@ -26,6 +28,8 @@ const selected_components = {
   location: false,
   application: false,
   connector: false,
+  state: false,
+  role: false,
   purpose: false,
   event: false,
   interval: false,
@@ -55,6 +59,8 @@ export default function ProvideAccess() {
       location: false,
       application: false,
       connector:false,
+      state: false,
+      role: false,
       purpose: false,
       event: false,
       interval: false,
@@ -63,6 +69,8 @@ export default function ProvideAccess() {
     values.location = "";
     values.application = "";
     values.connector = "";
+    values.state = "";
+    values.role = "";
     values.purpose = "";
     values.event = "";
     values.restrictTimeIntervalStart = "";
@@ -149,7 +157,39 @@ export default function ProvideAccess() {
                     defaultValue=""
                     ItemList={connector_list}
                     onChange={handleInputChange}
-                    error={errors.application}
+                    error={errors.connector}
+                  />
+                  <Remove onClick={resetStates} />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.state ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict State" />
+                  <ItemPicker
+                    name="state"
+                    defaultValue=""
+                    ItemList={state_list}
+                    onChange={handleInputChange}
+                    error={errors.state}
+                  />
+                  <Remove onClick={resetStates} />
+                </Grid>
+              </>
+            ) : null}
+
+          {selectedComponents.role ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict User Role" />
+                  <ItemPicker
+                    name="role"
+                    defaultValue=""
+                    ItemList={role_list}
+                    onChange={handleInputChange}
+                    error={errors.role}
                   />
                   <Remove onClick={resetStates} />
                 </Grid>
@@ -319,6 +359,12 @@ export default function ProvideAccess() {
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="connector">
                   Connector
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="state">
+                  State
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="role">
+                  Role
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="purpose">
                   Purpose

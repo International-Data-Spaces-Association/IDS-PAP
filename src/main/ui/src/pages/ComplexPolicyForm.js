@@ -9,6 +9,8 @@ import {
   purpose_list,
   sale_rent_list,
   application_list,
+  state_list,
+  role_list,
   connector_list,
   time_units,
 } from "../components/controls/InitialFieldListValues";
@@ -26,6 +28,8 @@ const selected_components = {
   location: false,
   application: false,
   connector:false,
+  state: false,
+  role: false,
   event: false,
   interval: false,
   payment: false,
@@ -70,6 +74,8 @@ export default function ComplexPolicyForm() {
       location: false,
       application: false,
       connector:false,
+      state: false,
+      role: false,
       event: false,
       interval: false,
       payment: false,
@@ -161,13 +167,57 @@ export default function ComplexPolicyForm() {
                     defaultValue=""
                     ItemList={connector_list}
                     onChange={handleInputChange}
-                    error={errors.application}
+                    error={errors.connector}
                   />
                   {}
                   <Remove
                     onClick={() => {
                       removeComponent("connector");
                       removeEnteredData("connector");
+                    }}
+                  />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.state ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict State" />
+                  <ItemPicker
+                    name="state"
+                    defaultValue=""
+                    ItemList={state_list}
+                    onChange={handleInputChange}
+                    error={errors.state}
+                  />
+                  {}
+                  <Remove
+                    onClick={() => {
+                      removeComponent("state");
+                      removeEnteredData("state");
+                    }}
+                  />
+                </Grid>
+              </>
+            ) : null}
+
+            {selectedComponents.role ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict User Role" />
+                  <ItemPicker
+                    name="role"
+                    defaultValue=""
+                    ItemList={role_list}
+                    onChange={handleInputChange}
+                    error={errors.role}
+                  />
+                  {}
+                  <Remove
+                    onClick={() => {
+                      removeComponent("role");
+                      removeEnteredData("role");
                     }}
                   />
                 </Grid>
@@ -408,6 +458,18 @@ export default function ComplexPolicyForm() {
                      </MenuItem>
                    ) : null}
 
+                   {!selectedComponents.role ? (
+                     <MenuItem
+                       onClick={() => {
+                         selectedComponents.role = true;
+                         setAnchorEl(null);
+                       }}
+                       id="role"
+                     >
+                       Restrict User Role
+                     </MenuItem>
+                   ) : null}
+
                    {!selectedComponents.connector ? (
                      <MenuItem
                        onClick={() => {
@@ -417,6 +479,18 @@ export default function ComplexPolicyForm() {
                        id="connector"
                      >
                        Restrict Connector
+                     </MenuItem>
+                   ) : null}
+
+                   {!selectedComponents.state ? (
+                     <MenuItem
+                       onClick={() => {
+                         selectedComponents.state = true;
+                         setAnchorEl(null);
+                       }}
+                       id="state"
+                     >
+                       Restrict State
                      </MenuItem>
                    ) : null}
 
@@ -495,6 +569,8 @@ export default function ComplexPolicyForm() {
                         selectedComponents.location = true;
                         selectedComponents.application = true;
                         selectedComponents.connector = true;
+                        selectedComponents.state = true;
+                        selectedComponents.role = true;
                         selectedComponents.event = true;
                         selectedComponents.interval = true;
                         selectedComponents.payment = true;
