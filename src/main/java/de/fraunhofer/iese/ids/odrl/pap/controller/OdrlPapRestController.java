@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.management.modelmbean.ModelMBeanOperationInfo;
 
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.jsonldjava.utils.JsonUtils;
+
 import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
+import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
@@ -334,8 +338,23 @@ public class OdrlPapRestController {
 	@PostMapping("/policy/JsonOdrlPolicyMYDATA")
 	public String policy(@RequestBody String jsonPolicy) {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
+		Map map = null;
+		try {
+			if(null != jsonPolicy)
+			{
+				Object o = JsonUtils.fromString(jsonPolicy);
+				if (o instanceof Map) {
+					map  = (Map) o;
+				}
+			}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		boolean tempProviderSide = true;
-		
-		return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
+		String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
+		return dtPolicy;
+		//return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
 	}
 }
