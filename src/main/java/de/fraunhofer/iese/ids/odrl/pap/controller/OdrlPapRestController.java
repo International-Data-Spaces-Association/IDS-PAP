@@ -338,6 +338,15 @@ public class OdrlPapRestController {
 	@PostMapping("/policy/JsonOdrlPolicyMYDATA")
 	public String policy(@RequestBody String jsonPolicy) {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
+
+		boolean tempProviderSide = true;
+		return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
+	}
+
+
+	@PostMapping("/policy/InterpretOdrlPolicy")
+	public String interpretPolicy(@RequestBody String jsonPolicy) {
+		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 		Map map = null;
 		try {
 			if(null != jsonPolicy)
@@ -355,6 +364,5 @@ public class OdrlPapRestController {
 		boolean tempProviderSide = true;
 		String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
 		return dtPolicy;
-		//return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
 	}
 }

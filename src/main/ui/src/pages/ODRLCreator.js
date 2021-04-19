@@ -105,7 +105,7 @@ export default function ODRLCreator() {
         <Grid item xs={12} md={6}>
           <Grid item xs={12}>
             <Typography variant="h5">
-              Technology Dependent Policy (e.g., MYDATA)
+              Technology Dependent Policy (MYDATA)
             </Typography>
           </Grid>
           <Grid item xs={12}>
