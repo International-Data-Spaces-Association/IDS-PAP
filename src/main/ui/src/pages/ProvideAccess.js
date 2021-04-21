@@ -36,6 +36,7 @@ const selected_components = {
   event: false,
   interval: false,
   payment: false,
+  duration: false,
 };
 
 export default function ProvideAccess() {
@@ -68,6 +69,7 @@ export default function ProvideAccess() {
       event: false,
       interval: false,
       payment: false,
+      duration: false,
     });
     values.location = "";
     values.application = "";
@@ -82,8 +84,10 @@ export default function ProvideAccess() {
     values.payment = "";
     values.price = "";
     values.specifyBeginTime = "";
-    values.restrictTimeDuration = "";
-    values.restrictTimeDurationUnit = "";
+    values.durationHour = "";
+    values.durationDay = "";
+    values.durationMonth = "";
+    values.durationYear = "";
   };
   const handleSelectedClose = (e) => {
     selectedComponents[e.target.id] = true;
@@ -252,10 +256,32 @@ export default function ProvideAccess() {
             </>
           ) : null}
 
-          {selectedComponents.restrictTimeDuration ? (
+          {selectedComponents.duration ? (
             <>
               <Grid container>
                 <Title label="Restrict Time Duration" />
+                <Input
+                  name="durationYear"
+                  label="Year (Optional)"
+                  value={values.durationYear}
+                  placeholder="e.g. 3"
+                  onChange={handleInputChange}
+                  error={errors.durationYear}
+                  sm={11}
+                  md={3}
+                />
+                <Grid item sm={1} />
+                <Input
+                  name="durationMonth"
+                  label="Month (Optional)"
+                  value={values.durationMonth}
+                  placeholder="e.g. 3"
+                  onChange={handleInputChange}
+                  error={errors.durationMonth}
+                  sm={11}
+                  md={3}
+                />
+                <Grid item sm={1} />
                 <Date
                   name="specifyBeginTime"
                   label="Begin Time (Optional)"
@@ -267,23 +293,23 @@ export default function ProvideAccess() {
                 />
                 <Grid item sm={1} />
                 <Input
-                  name="restrictTimeDuration"
-                  label="Duration Value (Optional)"
-                  value={values.restrictTimeDuration}
-                  placeholder="e.g. 10"
+                  name="durationDay"
+                  label="Day (Optional)"
+                  value={values.durationDay}
+                  placeholder="e.g. 3"
                   onChange={handleInputChange}
-                  error={errors.restrictTimeDuration}
+                  error={errors.durationDay}
                   sm={11}
                   md={3}
                 />
                 <Grid item sm={1} />
-                <ItemPicker
-                  name="restrictTimeDurationUnit"
-                  label="Unit"
-                  defaultValue=""
-                  ItemList={time_units}
+                <Input
+                  name="durationHour"
+                  label="Hour (Optional)"
+                  value={values.durationHour}
+                  placeholder="e.g. 3"
                   onChange={handleInputChange}
-                  error={errors.restrictTimeDurationUnit}
+                  error={errors.durationHour}
                   sm={11}
                   md={3}
                 />
@@ -403,9 +429,9 @@ export default function ProvideAccess() {
                 </MenuItem>
                 <MenuItem
                   onClick={handleSelectedClose}
-                  id="restrictTimeDuration"
+                  id="duration"
                 >
-                  Specify a begin time
+                  Duration
                 </MenuItem>
               </Menu>
             </Grid>

@@ -56,14 +56,16 @@ public class RecievedOdrlPolicy {
 	private String informedParty;
 	private String systemDevice;
 	private String valueToChange;
-	private String modificator;
+	private String modifier;
 	private String fieldToChange;
 	private String restrictTimeIntervalStart;
 	private String restrictTimeIntervalEnd;
 	private int numberOfUsage = -1;
 	private String specifyBeginTime;
-	private String restrictTimeDuration;
-	private String restrictTimeDurationUnit;
+	private String durationYear;
+	private String durationMonth;
+	private String durationDay;
+	private String durationHour;
 	private String logLevel;
 	private String notificationLevel;
 	private String artifactState;
@@ -165,8 +167,8 @@ public class RecievedOdrlPolicy {
 		return valueToChange;
 	}
 
-	public String getModificator() {
-		return modificator;
+	public String getModifier() {
+		return modifier;
 	}
 
 	public String getFieldToChange() {
@@ -189,12 +191,18 @@ public class RecievedOdrlPolicy {
 		return specifyBeginTime;
 	}
 
-	public String getRestrictTimeDuration() {
-		return restrictTimeDuration;
+	public String getDurationYear() {
+		return durationYear;
 	}
 
-	public String getRestrictTimeDurationUnit() {
-		return restrictTimeDurationUnit;
+	public String getDurationMonth() { return durationMonth; }
+
+	public String getDurationDay() {
+		return durationDay;
+	}
+
+	public String getDurationHour() {
+		return durationHour;
 	}
 
 	public String getLogLevel() {
@@ -357,12 +365,31 @@ public class RecievedOdrlPolicy {
 			durationEntities.add(beginEntity);
 		}
 
-		if (restrictTimeDuration != "") {
-			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION,restrictTimeDuration  ,RightOperandType.DURATION);
-			hasDurationEntity.setTimeUnit(TimeUnit.valueOf(restrictTimeDurationUnit));
-			durationEntities.add(hasDurationEntity);
-
+		String hour = "";
+		String day = "";
+		String month = "";
+		String year = "";
+		if (durationHour != null && !durationHour.isEmpty()) {
+			hour = "T" + durationHour + TimeUnit.HOURS.getOdrlXsdDuration();
 		}
+		if(durationDay != null && !durationDay.isEmpty()) {
+			day = durationDay + TimeUnit.DAYS.getOdrlXsdDuration();
+		}
+		if(durationMonth != null && !durationMonth.isEmpty()) {
+			month = durationMonth + TimeUnit.MONTHS.getOdrlXsdDuration();
+		}
+		if(durationYear != null && !durationYear.isEmpty()) {
+			year = durationYear + TimeUnit.YEARS.getOdrlXsdDuration();
+		}
+		String duration = "P" + year + month + day + hour;
+
+		if(!duration.equals("P"))
+		{
+			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration  ,RightOperandType.DURATION);
+			//hasDurationEntity.setTimeUnit(TimeUnit.valueOf(restrictTimeDurationUnit));
+			durationEntities.add(hasDurationEntity);
+		}
+
 		if (durationEntities.size() >0) {
 			elapsedTimeRightOperand.setEntities(durationEntities);
 			Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.SHORTER_EQ, elapsedTimeRightOperand, null);

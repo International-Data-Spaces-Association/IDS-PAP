@@ -221,7 +221,7 @@ public class OdrlPapRestController {
 		String uid = baseUid + "anonymize-in-transit";
 		ArrayList<Condition> refinements = new ArrayList<>();
 		RightOperand modificationMethodRightOperand = new RightOperand();
-		modificationMethodRightOperand.setValue(rp.getModificator());
+		modificationMethodRightOperand.setValue(rp.getModifier());
 		modificationMethodRightOperand.setType(RightOperandType.ANYURI);
 		//ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter(rp.getValueToChange(),
 		//		RightOperandType.STRING);
