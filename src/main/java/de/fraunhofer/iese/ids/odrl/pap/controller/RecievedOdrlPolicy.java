@@ -60,6 +60,7 @@ public class RecievedOdrlPolicy {
 	private String fieldToChange;
 	private String restrictTimeIntervalStart;
 	private String restrictTimeIntervalEnd;
+	private String restrictEndTime;
 	private int numberOfUsage = -1;
 	private String specifyBeginTime;
 	private String durationYear;
@@ -181,6 +182,10 @@ public class RecievedOdrlPolicy {
 
 	public String getRestrictTimeIntervalEnd() {
 		return restrictTimeIntervalEnd;
+	}
+
+	public String getRestrictEndTime() {
+		return restrictEndTime;
 	}
 
 	public int getNumberOfUsage() {
@@ -338,6 +343,25 @@ public class RecievedOdrlPolicy {
 			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT,
 					LeftOperand.POLICY_EVALUATION_TIME, Operator.TEMPORAL_EQUALS, rightOperand, null);
 			constraints.add(timeIntervalCondition);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean addRestrictEndTimeCondition() {
+		if (restrictEndTime != "") {
+			RightOperand rightOperand = new RightOperand();
+			rightOperand.setType(RightOperandType.INSTANT);
+			RightOperandEntity endEntity = new RightOperandEntity(EntityType.BEGIN, restrictEndTime,
+					RightOperandType.DATETIMESTAMP);
+			endEntity.setEntityType(EntityType.END);
+			endEntity.setDataType(RightOperandType.DATETIMESTAMP);
+			ArrayList<RightOperandEntity> entities = new ArrayList<>();
+			entities.add(endEntity);
+			rightOperand.setEntities(entities);
+			Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT,
+					LeftOperand.DATE_TIME, Operator.BEFORE, rightOperand, null);
+			constraints.add(dateTimeCondition);
 			return true;
 		}
 		return false;

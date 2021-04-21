@@ -6,7 +6,7 @@ import { useStyle } from "../components/Style";
 import Input from "../components/controls/Input";
 import ItemPicker from "../components/controls/ItemPicker";
 import { useHistory } from "react-router-dom";
-import { modificator_list } from "../components/controls/InitialFieldListValues";
+import { modifier_list } from "../components/controls/InitialFieldListValues";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
@@ -54,15 +54,15 @@ export default function AnonymizeInTransit() {
           <Grid container>
             <Title label="The modification method defines specific changes to be applied on a field of data." />
             <ItemPicker
-              name="modificator"
+              name="modifier"
               label={"Modification method"}
               defaultValue="Replace modification method"
-              ItemList={modificator_list}
+              ItemList={modifier_list}
               onChange={handleInputChange}
-              error={errors.modificator}
+              error={errors.modifier}
             />
           </Grid>
-          {values.modificator === "http://example.com/anonymize/replace" ? (
+          {values.modifier === "http://example.com/anonymize/replace" ? (
             <>
               <Grid container>
                 <Input

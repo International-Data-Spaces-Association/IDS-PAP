@@ -81,7 +81,10 @@ public class OdrlPapRestController {
 		} 
 		if (rp.addRestrictTimeIntervalCondition()) {
 			uid =  baseUid + "restrict-access-interval";
-		} 
+		}
+		if (rp.addRestrictEndTimeCondition()) {
+			uid =  baseUid + "restrict-access-end-time";
+		}
 		if (rp.addPaymentCondition()) {
 			uid =  baseUid + "provide-access-after-payment";
 		} 
@@ -108,6 +111,7 @@ public class OdrlPapRestController {
 		rp.addEventCondition();
 		rp.addCounterCondition();
 		rp.addRestrictTimeIntervalCondition();
+		rp.addRestrictEndTimeCondition();
 		rp.addPaymentCondition();
 		rp.addElapsedTimeRightOperand();
 		Action useAction = new Action(ActionType.USE);
@@ -162,23 +166,53 @@ public class OdrlPapRestController {
 	public String deletePolicyAfterUsage(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "delete-after-usage";
 		ArrayList<Condition> refinements = new ArrayList<>();
+		RightOperand rightOperand = new RightOperand();
 		if (rp.getTimeAndDate() != "") {
-			RightOperand dateTimeRightOperand = new RightOperand(rp.getTimeAndDate(), RightOperandType.DATETIMESTAMP);
-			Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.BEFORE, dateTimeRightOperand, "");
-			refinements.add(dateTimeRefinement);
+			rightOperand.setType(RightOperandType.INSTANT);
+			RightOperandEntity endEntity = new RightOperandEntity(EntityType.BEGIN, rp.getTimeAndDate() ,
+					RightOperandType.DATETIMESTAMP);
+			endEntity.setEntityType(EntityType.END);
+			endEntity.setDataType(RightOperandType.DATETIMESTAMP);
+			ArrayList<RightOperandEntity> entities = new ArrayList<>();
+			entities.add(endEntity);
+			rightOperand.setEntities(entities);
+			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT,
+					LeftOperand.DATE_TIME, Operator.BEFORE, rightOperand, null);
+			refinements.add(timeIntervalCondition);
 		}
-		else if (rp.getTime() != "") {
-			RightOperand delayPeriodRightOperand = new RightOperand();
-			delayPeriodRightOperand.setType(RightOperandType.DURATIONENTITY);
-			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, rp.getTime(), RightOperandType.DURATION);
-			hasDurationEntity.setTimeUnit(TimeUnit.valueOf(rp.getTimeUnit()));
+		else {
+			rightOperand.setType(RightOperandType.DURATIONENTITY);
 			ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
+
+			String hour = "";
+			String day = "";
+			String month = "";
+			String year = "";
+			if (rp.getDurationHour() != null && !rp.getDurationHour().isEmpty()) {
+				hour = "T" + rp.getDurationHour() + TimeUnit.HOURS.getOdrlXsdDuration();
+			}
+			if(rp.getDurationDay() != null && !rp.getDurationDay().isEmpty()) {
+				day = rp.getDurationDay() + TimeUnit.DAYS.getOdrlXsdDuration();
+			}
+			if(rp.getDurationMonth() != null && !rp.getDurationMonth().isEmpty()) {
+				month = rp.getDurationMonth() + TimeUnit.MONTHS.getOdrlXsdDuration();
+			}
+			if(rp.getDurationYear() != null && !rp.getDurationYear().isEmpty()) {
+				year = rp.getDurationYear() + TimeUnit.YEARS.getOdrlXsdDuration();
+			}
+			String duration = "P" + year + month + day + hour;
+
+			if(duration.equals("P"))
+			{
+				//set initial delay value
+				duration = "P0D";
+			}
+
+			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration  ,RightOperandType.DURATION);
 			durationEntities.add(hasDurationEntity);
-			delayPeriodRightOperand.setEntities(durationEntities);
-			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, delayPeriodRightOperand, "");
+			rightOperand.setEntities(durationEntities);
+			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, rightOperand, "");
 			refinements.add(delayPeriodRefinement);
-		} else {
-			return "";
 		}
 
 	  	Action useAction = new Action(ActionType.USE);

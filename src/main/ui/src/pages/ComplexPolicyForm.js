@@ -38,7 +38,7 @@ const selected_components = {
   counter: false,
   purpose: false,
   duration: false,
-  specifyBeginTime: false,
+  endTime: false,
 };
 
 export default function ComplexPolicyForm() {
@@ -85,6 +85,7 @@ export default function ComplexPolicyForm() {
       counter: false,
       purpose: false,
       duration: false,
+      endTime: false,
     });
   };
 
@@ -397,6 +398,25 @@ export default function ComplexPolicyForm() {
               </>
             ) : null}
 
+            {selectedComponents.endTime ? (
+              <>
+                <Grid container>
+                  <Title label="Restrict End Time" />
+                 <Grid item sm={1} />
+                <Date
+                  name="restrictEndTime"
+                  label="End Time"
+                  value={values.restrictEndTime}
+                  onChange={handleInputChange}
+                  error={errors.restrictEndTime}
+                  sm={11}
+                  md={3}
+                />
+                  <Remove onClick={resetStates} />
+                </Grid>
+              </>
+            ) : null}
+
             {selectedComponents.duration ? (
               <>
                 <Grid container>
@@ -624,6 +644,18 @@ export default function ComplexPolicyForm() {
                       </MenuItem>
                     ) : null}
 
+                    {!selectedComponents.endTime ? (
+                      <MenuItem
+                        onClick={() => {
+                          selectedComponents.endTime = true;
+                          setAnchorEl(null);
+                        }}
+                        id="endTime"
+                      >
+                        Restrict End Time
+                      </MenuItem>
+                    ) : null}
+
                     <MenuItem
                       onClick={() => {
                         selectedComponents.location = true;
@@ -638,6 +670,7 @@ export default function ComplexPolicyForm() {
                         selectedComponents.counter = true;
                         selectedComponents.purpose = true;
                         selectedComponents.duration = true;
+                        selectedComponents.endTime = true;
 
                         setAnchorEl(null);
                       }}

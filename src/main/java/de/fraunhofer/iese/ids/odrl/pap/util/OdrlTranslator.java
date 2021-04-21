@@ -146,6 +146,18 @@ public class OdrlTranslator {
 										}
 									}
 									break;
+								case DATE_TIME:
+									for(RightOperandEntity entity: constraint.getRightOperand().getEntities())
+									{
+										switch (entity.getEntityType()) {
+											case END:
+												String end = entity.getValue();
+												translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific time interval; the Data Consumer is " +
+														decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data from now to " + end + ".\n");
+												break;
+										}
+									}
+									break;
 								case ELAPSED_TIME:
 									Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(rightOperandValue);
 									translation = translation.concat("The Data Consumer can use the data for the duration of " + d.getValue() + " " +

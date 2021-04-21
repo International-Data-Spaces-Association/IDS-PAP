@@ -59,7 +59,7 @@ function Validation(values, states, setErrors) {
     temp.counter = states.counter ? isValidInt(values.counter): "";
     temp.time = states.time ? isValidInt(values.time):"";
     temp.timeUnit = states.time ? notEmpty(values.timeUnit):"";
-    temp.modificator = states.anonymizeInTransit? notEmpty(values.modificator):"";
+    temp.modifier = states.anonymizeInTransit? notEmpty(values.modifier):"";
     //temp.valueToChange = states.anonymizeInTransit? isValidUrl(values.valueToChange):"";
     //temp.fieldToChange = states.anonymizeInTransit? notEmpty(values.fieldToChange):"";
     temp.systemDevice = states.logAccess? isValidUrl(values.systemDevice):"";
@@ -71,8 +71,7 @@ function Validation(values, states, setErrors) {
     temp.logLevel = states.logLevel ? notEmpty(values.logLevel):"";
     temp.notificationLevel = states.notificationLevel ? notEmpty(values.notificationLevel):"";
     temp.artifactState = states.artifactState ? notEmpty(values.artifactState):"";
-    temp.restrictTimeDuration = states.restrictTimeDuration? notEmpty(values.restrictTimeDuration):"";
-    temp.restrictTimeDurationUnit = states.restrictTimeDuration? notEmpty(values.restrictTimeDurationUnit):"";
+    temp.restrictEndTime = states.restrictEndTime ? isValidDate(values.restrictEndTime): "";
     setErrors({
       ...temp,
     });

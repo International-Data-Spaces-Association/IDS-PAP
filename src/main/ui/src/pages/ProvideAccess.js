@@ -37,6 +37,7 @@ const selected_components = {
   interval: false,
   payment: false,
   duration: false,
+  endTime: false,
 };
 
 export default function ProvideAccess() {
@@ -70,6 +71,7 @@ export default function ProvideAccess() {
       interval: false,
       payment: false,
       duration: false,
+      endTime: false,
     });
     values.location = "";
     values.application = "";
@@ -81,6 +83,7 @@ export default function ProvideAccess() {
     values.event = "";
     values.restrictTimeIntervalStart = "";
     values.restrictTimeIntervalEnd = "";
+    values.restrictEndTime = "";
     values.payment = "";
     values.price = "";
     values.specifyBeginTime = "";
@@ -243,13 +246,30 @@ export default function ProvideAccess() {
             <>
               <Grid container>
                 <Title label="Restrict Event" />
-
                 <ItemPicker
                   name="event"
                   defaultValue=""
                   ItemList={event_list}
                   onChange={handleInputChange}
                   error={errors.event}
+                />
+                <Remove onClick={resetStates} />
+              </Grid>
+            </>
+          ) : null}
+
+          {selectedComponents.endTime ? (
+            <>
+              <Grid container>
+                <Title label="Restrict End Time" />
+                <Date
+                  name="restrictEndTime"
+                  label="End Time"
+                  value={values.restrictEndTime}
+                  onChange={handleInputChange}
+                  error={errors.restrictEndTime}
+                  sm={11}
+                  md={3}
                 />
                 <Remove onClick={resetStates} />
               </Grid>
@@ -423,6 +443,9 @@ export default function ProvideAccess() {
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="interval">
                   Interval
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="endTime">
+                  End Time
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="payment">
                   Payment

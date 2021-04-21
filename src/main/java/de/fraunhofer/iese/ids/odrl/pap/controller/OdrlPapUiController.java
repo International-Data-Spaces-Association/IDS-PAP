@@ -351,38 +351,6 @@ public class OdrlPapUiController {
 		return "index";
 	}
 
-	/*  @RequestMapping("/policy/DeleteAfterUsagePeriodPolicyForm")
-	  public String deletePolicyAfterUsagePeriod(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
-		  RightOperand delayPeriodRightOperand = new RightOperand();
-		  delayPeriodRightOperand.setType(RightOperandType.DURATIONENTITY);
-		  RightOperandEntity hasDurationEntity = new RightOperandEntity();
-		  hasDurationEntity.setEntityType(EntityType.HASDURATION);
-		  hasDurationEntity.setDataType(RightOperandType.DURATION);
-		  hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
-		  ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
-		  durationEntities.add(hasDurationEntity);
-		  delayPeriodRightOperand.setEntities(durationEntities);
-		  Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, delayPeriodRightOperand, "");
-		  RightOperand dateTimeRightOperand = new RightOperand();
-		  dateTimeRightOperand.setType(RightOperandType.DATETIMESTAMP);
-		  Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME, Operator.BEFORE, dateTimeRightOperand, "");
-		  ArrayList<Condition> refinements = new ArrayList<>();
-		  refinements.add(delayPeriodRefinement);
-		  refinements.add(dateTimeRefinement);
-		  Action deleteAction = new Action(ActionType.DELETE);
-		  deleteAction.setRefinements(refinements);
-		  Rule rule = new Rule(RuleType.OBLIGATION, deleteAction);
-		  ArrayList<Rule> rules = new ArrayList<>();
-		  rules.add(rule);
-		  Party consumer = new Party();
-		  consumer.setType(PartyType.CONSUMER);
-		  odrlPolicy.setConsumer(consumer);
-		  odrlPolicy.setRules(rules);
-		  odrlPolicy.setPolicyId(URI.create("https://w3id.org/idsa/autogen/contract/delete-data"));
-	  	model.addAttribute(POLICY_FRAGMENT, "DeleteAfterUsagePeriodPolicyForm");
-	    return "index";
-	  }*/
-
 	@RequestMapping("/policy/DeleteAfterUsagePolicyForm")
 	public String deletePolicyAfterUsage(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand delayPeriodRightOperand = new RightOperand();
@@ -390,7 +358,6 @@ public class OdrlPapUiController {
 		RightOperandEntity hasDurationEntity = new RightOperandEntity();
 		hasDurationEntity.setEntityType(EntityType.HASDURATION);
 		hasDurationEntity.setDataType(RightOperandType.DURATION);
-		hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
 		ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
 		durationEntities.add(hasDurationEntity);
 		delayPeriodRightOperand.setEntities(durationEntities);
@@ -431,7 +398,6 @@ public class OdrlPapUiController {
 		  RightOperandEntity hasDurationEntity = new RightOperandEntity();
 		  hasDurationEntity.setEntityType(EntityType.HASDURATION);
 		  hasDurationEntity.setDataType(RightOperandType.DURATION);
-		  hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
 		  ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
 		  durationEntities.add(beginEntity);
 		  durationEntities.add(hasDurationEntity);
@@ -747,7 +713,6 @@ public class OdrlPapUiController {
 		RightOperandEntity hasDurationEntity = new RightOperandEntity();
 		hasDurationEntity.setEntityType(EntityType.HASDURATION);
 		hasDurationEntity.setDataType(RightOperandType.DURATION);
-		hasDurationEntity.setTimeUnit(TimeUnit.HOURS);
 		ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
 		durationEntities.add(beginEntity);
 		durationEntities.add(hasDurationEntity);

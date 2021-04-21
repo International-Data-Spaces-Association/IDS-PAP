@@ -16,7 +16,7 @@ import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
 
 const selected_components = {
-  time: false,
+  duration: false,
   timeDate: false,
 };
 
@@ -41,7 +41,13 @@ export default function DeleteDataAfter() {
         selectedComponents[key] = false;
       }
     }
-    setValues({ ...values, time: "", timeAndDate: "", timeUnit: "" });
+    setValues({ ...values,
+    timeAndDate: "",
+    durationHour: "",
+    durationDay: "",
+    durationMonth: "",
+    durationYear: ""
+    });
   };
   const handleSelectedClose = (e) => {
     selectedComponents[e.target.id] = true;
@@ -81,7 +87,7 @@ export default function DeleteDataAfter() {
             icon={<DeleteIcon />}
           />
         ) : null}
-        {selectedComponents.time ? (
+        {selectedComponents.duration ? (
           <PageHeader
             title="The assumption is that your data is stored in a database on consumer side.
                     This policy allows the Data Consumer to use your data and requests to delete it immediately after.s"
@@ -102,31 +108,52 @@ export default function DeleteDataAfter() {
             errors={errors}
           />
 
-          {selectedComponents.time ? (
+          {selectedComponents.duration ? (
             <>
               <Grid container>
                 <Title label="Specify a time duration that the application has to wait before deleting the data" />
                 <Input
-                  name="time"
-                  label="Duration value*"
-                  value={values.time}
-                  placeholder="1"
+                  name="durationYear"
+                  label="Year"
+                  value={values.durationYear}
+                  placeholder="e.g. 3"
                   onChange={handleInputChange}
-                  error={errors.time}
-                  xs={11}
-                  sm={5}
+                  error={errors.durationYear}
+                  sm={11}
+                  md={3}
                 />
-                <Grid sm={1} />
-
-                <ItemPicker
-                  name="timeUnit"
-                  label="Unit"
-                  defaultValue=""
-                  ItemList={time_units}
+                <Grid item sm={1} />
+                <Input
+                  name="durationMonth"
+                  label="Month"
+                  value={values.durationMonth}
+                  placeholder="e.g. 3"
                   onChange={handleInputChange}
-                  error={errors.timeUnit}
-                  xs={11}
-                  sm={5}
+                  error={errors.durationMonth}
+                  sm={11}
+                  md={3}
+                />
+                <Grid item sm={1} />
+                <Input
+                  name="durationDay"
+                  label="Day"
+                  value={values.durationDay}
+                  placeholder="e.g. 3"
+                  onChange={handleInputChange}
+                  error={errors.durationDay}
+                  sm={11}
+                  md={3}
+                />
+                <Grid item sm={1} />
+                <Input
+                  name="durationHour"
+                  label="Hour"
+                  value={values.durationHour}
+                  placeholder="e.g. 3"
+                  onChange={handleInputChange}
+                  error={errors.durationHour}
+                  sm={11}
+                  md={3}
                 />
                 <Remove onClick={resetStates} />
               </Grid>
@@ -170,8 +197,8 @@ export default function DeleteDataAfter() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleSelectedClose} id="time">
-                  Specify time to wait before deleting
+                <MenuItem onClick={handleSelectedClose} id="duration">
+                  Specify a period to wait before deleting
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="timeDate">
                   Specify exact time and date

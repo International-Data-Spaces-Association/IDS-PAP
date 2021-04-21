@@ -20,7 +20,7 @@ export const sale_rent_list = [
   { id: "Sale", value: "http://dbpedia.org/page/Sale" },
 ];
 
-export const modificator_list = [
+export const modifier_list = [
   { id: "", value: "" },
   {
     id: "Replace modification method",
