@@ -412,7 +412,12 @@ export default function ComplexPolicyForm() {
                   sm={11}
                   md={3}
                 />
-                  <Remove onClick={resetStates} />
+                 <Remove
+                  onClick={() => {
+                    removeEnteredData("restrictEndTime");
+                    removeComponent("endTime");
+                  }}
+                 />
                 </Grid>
               </>
             ) : null}
@@ -475,7 +480,12 @@ export default function ComplexPolicyForm() {
                   sm={11}
                   md={3}
                 />
-                  <Remove onClick={resetStates} />
+                  <Remove
+                    onClick={() => {
+                      removeEnteredData("durationYear", "durationMonth", "specifyBeginTime", "durationDay", "durationHour");
+                      removeComponent("duration");
+                    }}
+                   />
                 </Grid>
               </>
             ) : null}
