@@ -122,7 +122,7 @@ public class OdrlTranslator {
 											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when the user which will use the data has the role " +
 											getLastSplitElement(rightOperandValue) + ".\n\n");
 									break;
-								case ABSOLUTESPATIALPOSITION:
+								case ABSOLUTE_SPATIAL_POSITION:
 									translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific location; the Data Consumer is " +
 											decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +
 											getLastElement(rightOperandValue) + ".\n\n");
@@ -198,7 +198,7 @@ public class OdrlTranslator {
 								if (null != dutyAction.getRefinements()) {
 									for (Condition refinement : dutyAction.getRefinements()) {
 										switch (refinement.getLeftOperand()) {
-											case MODIFICATIONMETHOD:
+											case MODIFICATION_METHOD:
 												String jsonPath = refinement.getJsonPath();
 												translation = translation.concat("The " + jsonPath + " field of the data asset (given as jsonPathQuery) is requested to be modified.\n");
 												break;

@@ -270,7 +270,7 @@ public class OdrlPapUiController {
 	public String provideLocationPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQ, rightOperand, "");
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION, Operator.EQ, rightOperand, "");
 		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(locationConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -291,7 +291,7 @@ public class OdrlPapUiController {
 	public String inhibitLocationPolicy(@ModelAttribute OdrlPolicy odrlPolicy,  Model model) {
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
-		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQ, rightOperand, "");
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION, Operator.EQ, rightOperand, "");
 		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(locationConstraint);
 		Action useAction = new Action(ActionType.USE);
@@ -604,7 +604,7 @@ public class OdrlPapUiController {
 		replaceWithParameter.setType(RightOperandType.STRING);
 		RightOperand modificationMethodRightOperand = new RightOperand();
 		modificationMethodRightOperand.setType(RightOperandType.ANYURI);
-		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD, Operator.EQ, modificationMethodRightOperand, "");
+		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATION_METHOD, Operator.EQ, modificationMethodRightOperand, "");
 		modificationMethodRefinement.setReplaceWith(replaceWithParameter);
 		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(modificationMethodRefinement);
@@ -638,7 +638,7 @@ public class OdrlPapUiController {
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(constraints);
 
-		Action countDutyAction = new Action(ActionType.COUNT);
+		Action countDutyAction = new Action(ActionType.INCREMENT_COUNTER);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
@@ -691,7 +691,7 @@ public class OdrlPapUiController {
 	public String complexPolicy(@ModelAttribute OdrlPolicy odrlPolicy, Model model) {
 		RightOperand locationRightOperand = new RightOperand();
 		locationRightOperand.setType(RightOperandType.ANYURI);
-		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION, Operator.EQ, locationRightOperand, "");
+		Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION, Operator.EQ, locationRightOperand, "");
 
 		RightOperand systemRightOperand = new RightOperand();
 		systemRightOperand.setType(RightOperandType.ANYURI);

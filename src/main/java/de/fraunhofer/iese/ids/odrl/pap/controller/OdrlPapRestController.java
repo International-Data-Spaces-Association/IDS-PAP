@@ -126,7 +126,7 @@ public class OdrlPapRestController {
 		String uid = baseUid + "count-access";
 		rp.addCounterCondition();
 		
-		Action countDutyAction = new Action(ActionType.COUNT);
+		Action countDutyAction = new Action(ActionType.INCREMENT_COUNTER);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
@@ -262,7 +262,7 @@ public class OdrlPapRestController {
 		ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter();
 		replaceWithParameter.setValue(rp.getValueToChange());
 		replaceWithParameter.setType(RightOperandType.STRING);
-		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATIONMETHOD,
+		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATION_METHOD,
 				Operator.EQ, modificationMethodRightOperand, null);
 		modificationMethodRefinement.setReplaceWith(replaceWithParameter);
 		if (rp.getFieldToChange() != "") {

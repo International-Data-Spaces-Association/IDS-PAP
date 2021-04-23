@@ -230,7 +230,8 @@ public class RecievedOdrlPolicy {
 	public boolean addLocationCondition() {
 		if (location != "") {
 			RightOperand locationRightOperand = new RightOperand(location, RightOperandType.ANYURI);
-			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTESPATIALPOSITION,
+			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION
+					,
 					Operator.EQ, locationRightOperand, null);
 			constraints.add(locationConstraint);
 			return true;
