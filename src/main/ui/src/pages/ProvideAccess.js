@@ -23,24 +23,25 @@ import Submit from "../components/backend/Submit";
 import Remove from "../components/controls/Remove";
 import Date from "../components/controls/Date";
 import Title from "../components/controls/Title";
-import { time_units } from "../components/controls/InitialFieldListValues";
 
-const selected_components = {
-  location: false,
-  application: false,
-  connector: false,
-  securityLevel: false,
-  state: false,
-  role: false,
-  purpose: false,
-  event: false,
-  interval: false,
-  payment: false,
-  duration: false,
-  endTime: false,
-};
+
 
 export default function ProvideAccess() {
+  const selected_components = {
+    location: false,
+    application: false,
+    connector: false,
+    securityLevel: false,
+    state: false,
+    role: false,
+    purpose: false,
+    event: false,
+    interval: false,
+    payment: false,
+    duration: false,
+    endTime: false,
+  };
+
   document.title = 'Provide Access'
 
   const classes = useStyle();
@@ -48,7 +49,7 @@ export default function ProvideAccess() {
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] = useState(
-    selected_components
+    selected_components 
   );
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -59,20 +60,8 @@ export default function ProvideAccess() {
     setAnchorEl(null);
   };
   const resetStates = () => {
-    setSelectedComponents({
-      location: false,
-      application: false,
-      connector:false,
-      securityLevel: false,
-      state: false,
-      role: false,
-      purpose: false,
-      event: false,
-      interval: false,
-      payment: false,
-      duration: false,
-      endTime: false,
-    });
+    setSelectedComponents({...selected_components});
+
     values.location = "";
     values.application = "";
     values.connector = "";

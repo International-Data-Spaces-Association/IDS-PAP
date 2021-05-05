@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Navigation(props) {
   const { open, setOpen } = props;
   const classes = useStyles();
-  const [logedIn, setLogedIn] = React.useState(true);
+  const [logedIn] = React.useState(true);
   const [selected, setSelected] = React.useState({ selected: null });
 
   const updateSelected = (selectedIndex) => {

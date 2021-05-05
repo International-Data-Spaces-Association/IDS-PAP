@@ -13,7 +13,6 @@ import {
   security_level_list,
   role_list,
   connector_list,
-  time_units,
 } from "../components/controls/InitialFieldListValues";
 import Date from "../components/controls/Date";
 import PageHeader from "../components/PageHeader";
@@ -25,23 +24,25 @@ import Submit from "../components/backend/Submit";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
 import DeleteIcon from "@material-ui/icons/Delete";
-const selected_components = {
-  location: false,
-  application: false,
-  connector:false,
-  state: false,
-  securityLevel: false,
-  role: false,
-  event: false,
-  interval: false,
-  payment: false,
-  counter: false,
-  purpose: false,
-  duration: false,
-  endTime: false,
-};
+
 
 export default function ComplexPolicyForm() {
+  const selected_components = {
+    location: false,
+    application: false,
+    connector:false,
+    state: false,
+    securityLevel: false,
+    role: false,
+    event: false,
+    interval: false,
+    payment: false,
+    counter: false,
+    purpose: false,
+    duration: false,
+    endTime: false,
+  };
+
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
@@ -59,7 +60,6 @@ export default function ComplexPolicyForm() {
     setAnchorEl(event.currentTarget);
   };
   const handleSubmit = (e) => {
-    console.log(selectedComponents);
     Submit(
       "/policy/ComplexPolicyForm",
       values,
@@ -71,22 +71,8 @@ export default function ComplexPolicyForm() {
   };
 
   const resetStates = () => {
-    setValues({ ...OdrlPolicy, ["consumer"]: values["consumer"] });
-    setSelectedComponents({
-      location: false,
-      application: false,
-      connector:false,
-      state: false,
-      role: false,
-      securityLevel: false,
-      event: false,
-      interval: false,
-      payment: false,
-      counter: false,
-      purpose: false,
-      duration: false,
-      endTime: false,
-    });
+    setValues({ ...OdrlPolicy});
+    setSelectedComponents({...selected_components});
   };
 
   const removeComponent = (id) => {
