@@ -1,25 +1,13 @@
 import React, { useState } from "react";
-import { Grid, Menu, MenuItem, Button } from "@material-ui/core";
+import { Grid, Menu, Button } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import { useStyle } from "../components/Style";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
-import Input from "../components/controls/Input";
-import ItemPicker from "../components/controls/ItemPicker";
 import { useHistory } from "react-router-dom";
-import {
-  purpose_list,
-  sale_rent_list,
-  security_level_list,
-  state_list,
-  role_list,
-} from "../components/controls/InitialFieldListValues";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
-import Remove from "../components/controls/Remove";
-import Date from "../components/controls/Date";
-import Title from "../components/controls/Title";
 
 import FormComponents from "../components/FormComponents";
 import MenuItems from "../components/controls/MenuItems";
@@ -84,10 +72,6 @@ export default function ProvideAccess() {
     values.durationDay = "";
     values.durationMonth = "";
     values.durationYear = "";
-  };
-  const handleSelectedClose = (e) => {
-    selectedComponents[e.target.id] = true;
-    setAnchorEl(null);
   };
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

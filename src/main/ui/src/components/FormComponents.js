@@ -306,6 +306,7 @@ export default function FormComponents(props) {
               sm={11}
               md={3}
             />
+            <Grid item sm={0} md={8} />
             <Remove
               onClick={() => {
                 removeEnteredData("restrictEndTime");
@@ -373,6 +374,7 @@ export default function FormComponents(props) {
               sm={11}
               md={3}
             />
+            <Grid item sm={0} md={4} />
             <Remove
               onClick={() => {
                 removeEnteredData(
