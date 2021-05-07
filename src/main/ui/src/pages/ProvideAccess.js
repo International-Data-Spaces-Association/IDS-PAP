@@ -24,8 +24,6 @@ import Remove from "../components/controls/Remove";
 import Date from "../components/controls/Date";
 import Title from "../components/controls/Title";
 
-
-
 export default function ProvideAccess() {
   const selected_components = {
     location: false,
@@ -42,14 +40,14 @@ export default function ProvideAccess() {
     endTime: false,
   };
 
-  document.title = 'Provide Access'
+  document.title = "Provide Access";
 
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] = useState(
-    selected_components 
+    selected_components
   );
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -60,7 +58,7 @@ export default function ProvideAccess() {
     setAnchorEl(null);
   };
   const resetStates = () => {
-    setSelectedComponents({...selected_components});
+    setSelectedComponents({ ...selected_components });
 
     values.location = "";
     values.application = "";
@@ -102,8 +100,6 @@ export default function ProvideAccess() {
 
   return (
     <div className={classes.page}>
-
-
       <Form onSubmit={handleSubmit}>
         <PageHeader
           title="This policy gives permission to a specified IDS data consumer to use your data."
@@ -133,84 +129,84 @@ export default function ProvideAccess() {
           ) : null}
 
           {selectedComponents.application ? (
-              <>
-                <Grid container>
-                  <Title label="Restrict Application" />
-                  <ItemPicker
-                    name="application"
-                    defaultValue=""
-                    ItemList={application_list}
-                    onChange={handleInputChange}
-                    error={errors.application}
-                  />
-                  <Remove onClick={resetStates} />
-                </Grid>
-              </>
-            ) : null}
+            <>
+              <Grid container>
+                <Title label="Restrict Application" />
+                <Input
+                  name="application"
+                  value={values.application}
+                  placeholder="e.g. http://example.com/ids-app/data-app"
+                  onChange={handleInputChange}
+                  error={errors.application}
+                />
+                <Remove onClick={resetStates} />
+              </Grid>
+            </>
+          ) : null}
 
-            {selectedComponents.connector ? (
-              <>
-                <Grid container>
-                  <Title label="Restrict Connector" />
-                  <ItemPicker
-                    name="connector"
-                    defaultValue=""
-                    ItemList={connector_list}
-                    onChange={handleInputChange}
-                    error={errors.connector}
-                  />
-                  <Remove onClick={resetStates} />
-                </Grid>
-              </>
-            ) : null}
+          {selectedComponents.connector ? (
+            <>
+              <Grid container>
+                <Title label="Restrict Connector" />
+                <Input
+                  name="connector"
+                  value={values.connector}
+                  placeholder="e.g. http://example.com/ids-connector/connector1"
+                  onChange={handleInputChange}
+                  error={errors.connector}
+                />
+                <Remove onClick={resetStates} />
+              </Grid>
+            </>
+          ) : null}
 
-            {selectedComponents.securityLevel ? (
-              <>
-                <Grid container>
-                  <Title label="Restrict Security Level" />
-                  <ItemPicker
-                    name="securityLevel"
-                    defaultValue=""
-                    ItemList={security_level_list}
-                    onChange={handleInputChange}
-                    error={errors.securityLevel}
-                  />
-                  <Remove onClick={resetStates} />
-                </Grid>
-              </>
-            ) : null}
+          {selectedComponents.securityLevel ? (
+            <>
+              <Grid container>
+                <Title label="Restrict Security Level" />
+                <ItemPicker
+                  name="securityLevel"
+                  defaultValue=""
+                  ItemList={security_level_list}
+                  onChange={handleInputChange}
+                  error={errors.securityLevel}
+                />
+                <Remove onClick={resetStates} />
+              </Grid>
+            </>
+          ) : null}
 
-            {selectedComponents.state ? (
-              <>
-                <Grid container>
-                  <Title label="Restrict State" />
-                  <ItemPicker
-                    name="state"
-                    defaultValue=""
-                    ItemList={state_list}
-                    onChange={handleInputChange}
-                    error={errors.state}
-                  />
-                  <Remove onClick={resetStates} />
-                </Grid>
-              </>
-            ) : null}
+          {selectedComponents.state ? (
+            <>
+              <Grid container>
+                <Title label="Restrict State" />
+                <ItemPicker
+                  name="state"
+                  defaultValue=""
+                  ItemList={state_list}
+                  onChange={handleInputChange}
+                  error={errors.state}
+                />
+                <Remove onClick={resetStates} />
+              </Grid>
+            </>
+          ) : null}
 
           {selectedComponents.role ? (
-              <>
-                <Grid container>
-                  <Title label="Restrict User Role" />
-                  <ItemPicker
-                    name="role"
-                    defaultValue=""
-                    ItemList={role_list}
-                    onChange={handleInputChange}
-                    error={errors.role}
-                  />
-                  <Remove onClick={resetStates} />
-                </Grid>
-              </>
-            ) : null}
+            <>
+              <Grid container>
+                <Title label="Restrict User Role" />
+                <ItemPicker
+                  name="role"
+                  defaultValue=""
+                  ItemList={role_list}
+                  onChange={handleInputChange}
+                  error={errors.role}
+                />
+                <Remove onClick={resetStates} />
+              </Grid>
+            </>
+          ) : null}
 
           {selectedComponents.purpose ? (
             <>
@@ -235,10 +231,10 @@ export default function ProvideAccess() {
             <>
               <Grid container>
                 <Title label="Restrict Event" />
-                <ItemPicker
+                <Input
                   name="event"
-                  defaultValue=""
-                  ItemList={event_list}
+                  value={values.event}
+                  placeholder="e.g. http://example.com/ids-event:exhibition"
                   onChange={handleInputChange}
                   error={errors.event}
                 />
@@ -406,44 +402,41 @@ export default function ProvideAccess() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleSelectedClose} id="location">
-                  Location
-                </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="application">
-                  Application
+                  Restrict Application
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="connector">
-                  Connector
+                  Restrict Connector
                 </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="securityLevel">
-                  Security Level
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="state">
-                  State
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="role">
-                  Role
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="purpose">
-                  Purpose
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="event">
-                  Event
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="interval">
-                  Interval
+                <MenuItem onClick={handleSelectedClose} id="duration">
+                  Restrict Duration
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="endTime">
-                  End Time
+                  Restrict End Time
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="event">
+                  Restrict Event
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="interval">
+                  Restrict Interval
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="location">
+                  Restrict Location
                 </MenuItem>
                 <MenuItem onClick={handleSelectedClose} id="payment">
-                  Payment
+                  Restrict Payment
                 </MenuItem>
-                <MenuItem
-                  onClick={handleSelectedClose}
-                  id="duration"
-                >
-                  Duration
+                <MenuItem onClick={handleSelectedClose} id="purpose">
+                  Restrict Purpose
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="role">
+                  Restrict Role
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="securityLevel">
+                  Restrict Security Level
+                </MenuItem>
+                <MenuItem onClick={handleSelectedClose} id="state">
+                  Restrict State
                 </MenuItem>
               </Menu>
             </Grid>

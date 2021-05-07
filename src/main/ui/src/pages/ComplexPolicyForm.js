@@ -5,14 +5,11 @@ import Input from "../components/controls/Input";
 import ItemPicker from "../components/controls/ItemPicker";
 import { useHistory } from "react-router-dom";
 import {
-  event_list,
   purpose_list,
   sale_rent_list,
-  application_list,
   state_list,
   security_level_list,
   role_list,
-  connector_list,
 } from "../components/controls/InitialFieldListValues";
 import Date from "../components/controls/Date";
 import PageHeader from "../components/PageHeader";
@@ -104,7 +101,7 @@ export default function ComplexPolicyForm() {
                   <Input
                     name="location"
                     value={values.location}
-                    placeholder="e.g. https://wikidata.org/wiki/Q136218 (ZIP)"
+                    placeholder="e.g. https://ontologi.es/place/DE"
                     onChange={handleInputChange}
                     error={errors.location}
                   />
@@ -122,10 +119,10 @@ export default function ComplexPolicyForm() {
               <>
                 <Grid container>
                   <Title label="Restrict Application" />
-                  <ItemPicker
+                  <Input
                     name="application"
-                    defaultValue=""
-                    ItemList={application_list}
+                    value={values.application}
+                    placeholder="e.g.  http://example.com/ids-app/data-app"
                     onChange={handleInputChange}
                     error={errors.application}
                   />
@@ -152,10 +149,10 @@ export default function ComplexPolicyForm() {
               <>
                 <Grid container>
                   <Title label="Restrict Connector" />
-                  <ItemPicker
+                  <Input
                     name="connector"
-                    defaultValue=""
-                    ItemList={connector_list}
+                    value={values.connector}
+                    placeholder="e.g. http://example.com/ids-connector/connector1"
                     onChange={handleInputChange}
                     error={errors.connector}
                   />
@@ -265,10 +262,10 @@ export default function ComplexPolicyForm() {
                 <Grid container>
                   <Title label="Restrict Event" />
 
-                  <ItemPicker
+                  <Input
                     name="event"
-                    defaultValue=""
-                    ItemList={event_list}
+                    value={values.event}
+                    placeholder="e.g. http://example.com/ids-event:exhibition"
                     onChange={handleInputChange}
                     error={errors.event}
                   />
