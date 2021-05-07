@@ -9,12 +9,9 @@ import { useHistory } from "react-router-dom";
 import {
   purpose_list,
   sale_rent_list,
-  application_list,
   security_level_list,
   state_list,
   role_list,
-  connector_list,
-  event_list,
 } from "../components/controls/InitialFieldListValues";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
@@ -24,20 +21,26 @@ import Remove from "../components/controls/Remove";
 import Date from "../components/controls/Date";
 import Title from "../components/controls/Title";
 
+import FormComponents from "../components/FormComponents";
+import MenuItems from "../components/controls/MenuItems";
+
 export default function ProvideAccess() {
   const selected_components = {
-    location: false,
-    application: false,
-    connector: false,
-    securityLevel: false,
-    state: false,
-    role: false,
-    purpose: false,
-    event: false,
-    interval: false,
-    payment: false,
-    duration: false,
-    endTime: false,
+    order: [],
+    availableComponents: [
+      { id: "application", name: "Application", isVisible: true },
+      { id: "connector", name: "Connector", isVisible: true },
+      { id: "duration", name: "Duration", isVisible: true },
+      { id: "endTime", name: "EndTime", isVisible: true },
+      { id: "event", name: "Event", isVisible: true },
+      { id: "interval", name: "Interval", isVisible: true },
+      { id: "location", name: "Location", isVisible: true },
+      { id: "payment", name: "Payment", isVisible: true },
+      { id: "purpose", name: "Purpose", isVisible: true },
+      { id: "role", name: "Role", isVisible: true },
+      { id: "securityLevel", name: "SecurityLevel", isVisible: true },
+      { id: "state", name: "State", isVisible: true },
+    ],
   };
 
   document.title = "Provide Access";
@@ -57,6 +60,9 @@ export default function ProvideAccess() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const removeEnteredData = (id1, id2) => {
+  };
+
   const resetStates = () => {
     setSelectedComponents({ ...selected_components });
 
@@ -88,10 +94,15 @@ export default function ProvideAccess() {
   };
 
   const handleSubmit = (e) => {
+    const dict = selectedComponents.availableComponents;
+    var state = {}
+    dict.forEach(function (item) {
+      state[item.id] = !item.isVisible
+    });
     Submit(
       "/policy/ProvideAccess",
       values,
-      selectedComponents,
+      state,
       setErrors,
       history,
       e
@@ -111,277 +122,18 @@ export default function ProvideAccess() {
             handleInputChange={handleInputChange}
             errors={errors}
           />
+          <FormComponents
+            selectedComponents={selectedComponents}
+            values={values}
+            errors={errors}
+            handleInputChange={handleInputChange}
+            removeComponent={resetStates}
+            removeEnteredData={removeEnteredData}
+          />
 
-          {selectedComponents.location ? (
-            <>
-              <Grid container>
-                <Title label="Restrict Location" />
-                <Input
-                  name="location"
-                  value={values.location}
-                  placeholder="e.g. http://ontologi.es/place/DE"
-                  onChange={handleInputChange}
-                  error={errors.location}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.application ? (
-            <>
-              <Grid container>
-                <Title label="Restrict Application" />
-                <Input
-                  name="application"
-                  value={values.application}
-                  placeholder="e.g. http://example.com/ids-app/data-app"
-                  onChange={handleInputChange}
-                  error={errors.application}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.connector ? (
-            <>
-              <Grid container>
-                <Title label="Restrict Connector" />
-                <Input
-                  name="connector"
-                  value={values.connector}
-                  placeholder="e.g. http://example.com/ids-connector/connector1"
-                  onChange={handleInputChange}
-                  error={errors.connector}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.securityLevel ? (
-            <>
-              <Grid container>
-                <Title label="Restrict Security Level" />
-                <ItemPicker
-                  name="securityLevel"
-                  defaultValue=""
-                  ItemList={security_level_list}
-                  onChange={handleInputChange}
-                  error={errors.securityLevel}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.state ? (
-            <>
-              <Grid container>
-                <Title label="Restrict State" />
-                <ItemPicker
-                  name="state"
-                  defaultValue=""
-                  ItemList={state_list}
-                  onChange={handleInputChange}
-                  error={errors.state}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.role ? (
-            <>
-              <Grid container>
-                <Title label="Restrict User Role" />
-                <ItemPicker
-                  name="role"
-                  defaultValue=""
-                  ItemList={role_list}
-                  onChange={handleInputChange}
-                  error={errors.role}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.purpose ? (
-            <>
-              <Grid container>
-                <Title
-                  label="Restrict Purpose"
-                  subtitle="Any certified application in the market place uses the data for a specified purpose. \n You can restrict the usage of your data to specific applications by choosing your intended purpose from the list below*:"
-                />
-                <ItemPicker
-                  name="purpose"
-                  defaultValue=""
-                  ItemList={purpose_list}
-                  onChange={handleInputChange}
-                  error={errors.purpose}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.event ? (
-            <>
-              <Grid container>
-                <Title label="Restrict Event" />
-                <Input
-                  name="event"
-                  value={values.event}
-                  placeholder="e.g. http://example.com/ids-event:exhibition"
-                  onChange={handleInputChange}
-                  error={errors.event}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.endTime ? (
-            <>
-              <Grid container>
-                <Title label="Restrict End Time" />
-                <Date
-                  name="restrictEndTime"
-                  label="End Time"
-                  value={values.restrictEndTime}
-                  onChange={handleInputChange}
-                  error={errors.restrictEndTime}
-                  sm={11}
-                  md={3}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.duration ? (
-            <>
-              <Grid container>
-                <Title label="Restrict Time Duration" />
-                <Input
-                  name="durationYear"
-                  label="Year (Optional)"
-                  value={values.durationYear}
-                  placeholder="e.g. 3"
-                  onChange={handleInputChange}
-                  error={errors.durationYear}
-                  sm={11}
-                  md={3}
-                />
-                <Grid item sm={1} />
-                <Input
-                  name="durationMonth"
-                  label="Month (Optional)"
-                  value={values.durationMonth}
-                  placeholder="e.g. 3"
-                  onChange={handleInputChange}
-                  error={errors.durationMonth}
-                  sm={11}
-                  md={3}
-                />
-                <Grid item sm={1} />
-                <Date
-                  name="specifyBeginTime"
-                  label="Begin Time (Optional)"
-                  value={values.specifyBeginTime}
-                  onChange={handleInputChange}
-                  error={errors.specifyBeginTime}
-                  sm={11}
-                  md={3}
-                />
-                <Grid item sm={1} />
-                <Input
-                  name="durationDay"
-                  label="Day (Optional)"
-                  value={values.durationDay}
-                  placeholder="e.g. 3"
-                  onChange={handleInputChange}
-                  error={errors.durationDay}
-                  sm={11}
-                  md={3}
-                />
-                <Grid item sm={1} />
-                <Input
-                  name="durationHour"
-                  label="Hour (Optional)"
-                  value={values.durationHour}
-                  placeholder="e.g. 3"
-                  onChange={handleInputChange}
-                  error={errors.durationHour}
-                  sm={11}
-                  md={3}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.interval ? (
-            <>
-              <Grid container>
-                <Title label="Restrict Time Interval" />
-                <Date
-                  name="restrictTimeIntervalStart"
-                  label="Start Time*"
-                  value={values.restrictTimeIntervalStart}
-                  onChange={handleInputChange}
-                  error={errors.restrictTimeIntervalStart}
-                  xs={11}
-                  sm={5}
-                />
-                <Grid item sm={1} />
-                <Date
-                  name="restrictTimeIntervalEnd"
-                  label="End Time*"
-                  value={values.restrictTimeIntervalEnd}
-                  onChange={handleInputChange}
-                  error={errors.restrictTimeIntervalEnd}
-                  xs={11}
-                  sm={5}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.payment ? (
-            <>
-              <Grid container>
-                <Title label="Restrict Time Interval" />
-                <Input
-                  name="price"
-                  label="Payment (Euro)*"
-                  value={values.price}
-                  placeholder="150"
-                  onChange={handleInputChange}
-                  error={errors.price}
-                  xs={11}
-                  sm={5}
-                />
-                <Grid item sm={1} />
-                <ItemPicker
-                  name="payment"
-                  label="For Sale or Rend?*"
-                  defaultValue="Rent"
-                  ItemList={sale_rent_list}
-                  onChange={handleInputChange}
-                  error={errors.payment}
-                  xs={11}
-                  sm={5}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {Object.values(selectedComponents).every((x) => x === false) ? (
+          {Object.values(selectedComponents.availableComponents).some(
+            (x) => x.isVisible === true
+          ) ? (
             <Grid item xs={12} container justify="center">
               <Grid item xs={2}>
                 <Button
@@ -402,42 +154,10 @@ export default function ProvideAccess() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleSelectedClose} id="application">
-                  Restrict Application
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="connector">
-                  Restrict Connector
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="duration">
-                  Restrict Duration
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="endTime">
-                  Restrict End Time
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="event">
-                  Restrict Event
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="interval">
-                  Restrict Interval
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="location">
-                  Restrict Location
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="payment">
-                  Restrict Payment
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="purpose">
-                  Restrict Purpose
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="role">
-                  Restrict Role
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="securityLevel">
-                  Restrict Security Level
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="state">
-                  Restrict State
-                </MenuItem>
+                <MenuItems
+                  selectedComponents={selectedComponents}
+                  setAnchorEl={setAnchorEl}
+                />
               </Menu>
             </Grid>
           ) : null}

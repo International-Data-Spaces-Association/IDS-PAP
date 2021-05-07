@@ -289,8 +289,7 @@ export default function Navigation(props) {
                 </MenuItem>
 
                 <MenuItem
-                  button536
-                  fahrenh
+                  button
                   component={Link}
                   to="/policy/InformPolicyForm"
                   onClick={() => updateSelected("Inform Party")}
