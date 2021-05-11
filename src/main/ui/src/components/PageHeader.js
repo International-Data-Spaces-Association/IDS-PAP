@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PageHeader(props) {
-  const { title, icon } = props;
+  const { title } = props;
   const classes = useStyles();
   return (
     <div className={classes.pageHeader}>

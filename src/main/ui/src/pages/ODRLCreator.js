@@ -74,7 +74,7 @@ export default function ODRLCreator() {
               <Button
                 className={classes.translateBtn}
                 variant="contained"
-                color="primary"
+                color="secondary"
                 id="Transfer"
                 onClick={transfer}
               >
@@ -94,7 +94,7 @@ export default function ODRLCreator() {
               <Button
                 className={classes.translateBtn}
                 variant="contained"
-                color="primary"
+                color="secondary"
               >
                 Send
               </Button>
@@ -134,7 +134,7 @@ export default function ODRLCreator() {
               <Button
                 className={classes.translateBtn}
                 variant="contained"
-                color="primary"
+                color="secondary"
               >
                 Export
               </Button>

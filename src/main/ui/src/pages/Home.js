@@ -104,7 +104,7 @@ export default function Home() {
         <Typography variant="h5">
           Click{" "}
           <u>
-            <a href="/policy/HowTo" className={classes.link}>here</a>
+            <a href="https://odrl-pap.ids.isst.fraunhofer.de/" className={classes.link}>here</a>
           </u>{" "}
           to learn how to use this editor!
         </Typography>

@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 
 export default function Title(props) {
-  const { label, subtitle, seperator = true } = props;
+  const { label, seperator = true } = props;
   if (seperator) {
     return (
       <Grid item xs={11} className="gridSubItemWithLine">

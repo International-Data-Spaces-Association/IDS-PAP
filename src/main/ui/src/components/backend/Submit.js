@@ -2,12 +2,12 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:9090';
 
 export default function Submit(url, values, states, setErrors, history ,e) {
+  console.log(states)
   e.preventDefault();
   if (Validation(values, states, setErrors)) {
     for (var key in states) {
       states[key] = false;
   }
-  console.log(values)
     axios.post(BASE_URL + url, values)
     .then((response) => {
       let policies = response.data.split('DTPOLICY:');
@@ -71,7 +71,7 @@ function Validation(values, states, setErrors) {
     temp.logLevel = states.logLevel ? notEmpty(values.logLevel):"";
     temp.notificationLevel = states.notificationLevel ? notEmpty(values.notificationLevel):"";
     temp.artifactState = states.artifactState ? notEmpty(values.artifactState):"";
-    temp.restrictEndTime = states.restrictEndTime ? isValidDate(values.restrictEndTime): "";
+    temp.restrictEndTime = states.endTime ? isValidDate(values.restrictEndTime): "";
     setErrors({
       ...temp,
     });
@@ -100,7 +100,9 @@ function Validation(values, states, setErrors) {
     }
     return "";
   }
+
   function isValidDate(date) {
+    console.log(date)
     const error = notEmpty(date)
     if (error !== "") return error
 
@@ -119,7 +121,6 @@ function Validation(values, states, setErrors) {
   function isValidDateInterval(date1, date2) {
     const error = notEmpty(date2)
     if (error !== "") return error
-
     if (date1 === "") {
       return "The start date should not be empty"
     }

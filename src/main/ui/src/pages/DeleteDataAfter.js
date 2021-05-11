@@ -4,9 +4,7 @@ import PageHeader from "../components/PageHeader";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Input from "../components/controls/Input";
 import Date from "../components/controls/Date";
-import ItemPicker from "../components/controls/ItemPicker";
 import { useHistory } from "react-router-dom";
-import { time_units } from "../components/controls/InitialFieldListValues";
 import { useStyle } from "../components/Style";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
@@ -15,12 +13,11 @@ import Submit from "../components/backend/Submit";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
 
-const selected_components = {
-  duration: false,
-  timeDate: false,
-};
-
 export default function DeleteDataAfter() {
+  const selected_components = {
+    duration: false,
+    timeDate: false,
+  };
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
