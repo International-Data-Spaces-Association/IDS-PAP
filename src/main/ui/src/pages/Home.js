@@ -70,13 +70,13 @@ export default function Home() {
           There are variety of Data Usage Control policies that can be defined
           by data providers to protect their data.
           The Open Digital Rights Language (
-          <a href="https://www.w3.org/TR/odrl-model/" className={classes.link}>ODRL</a>) is a policy
+          <a href="https://www.w3.org/TR/odrl-model/" className={classes.link}>IDS</a>) is a policy
           expression language that provides a flexible and interoperable
           information model, vocabulary, and encoding mechanisms for
           representing statements about the usage of content and services.
         </Typography>
         <Typography variant="body1">
-          <a href="https://www.w3.org/TR/odrl-model/" className={classes.link}>ODRL</a> policies are
+          <a href="https://www.w3.org/TR/odrl-model/" className={classes.link}>IDS</a> policies are
           technology-independent and are not made to be technically enforced to
           a system. Therefore, it is been decided to use this language as a
           baseline for other technology-dependent solutions that can enforce
@@ -95,16 +95,16 @@ export default function Home() {
         <Typography variant="body1">
           In this tool, we have implemented an editor that supports the data
           providers to specify their Data Usage Control{" "}
-          <a href="https://www.w3.org/TR/odrl-model/" className={classes.link}>ODRL</a> policies.
+          <a href="https://www.w3.org/TR/odrl-model/" className={classes.link}>IDS</a> policies.
           In addition, they can use this tool to translate the{" "}
-          <a href="https://www.w3.org/TR/odrl-model/" className={classes.link}>ODRL</a> policies to{" "}
+          <a href="https://www.w3.org/TR/odrl-model/" className={classes.link}>IDS</a> policies to{" "}
           <a href="https://developer.mydata-control.de/" className={classes.link}>MYDATA</a> policies
         </Typography>
         <br />
         <Typography variant="h5">
           Click{" "}
           <u>
-            <a href="https://odrl-pap.ids.isst.fraunhofer.de/" className={classes.link}>here</a>
+            <a href="https://odrl-pap.ids.isst.fraunhofer.de/policy/HowTo" className={classes.link}>here</a>
           </u>{" "}
           to learn how to use this editor!
         </Typography>
@@ -122,7 +122,7 @@ export default function Home() {
                 IDS confluence
               </a>{" "}
               to get more information about the policy transformation rules,
-              ODRL and MYDATA policy specification and IDS specific profile.{" "}
+              IDS and MYDATA policy specification and IDS specific profile.{" "}
               
               IDS profile includes information model about the IDS Actions and
               IDS Left Operands.
