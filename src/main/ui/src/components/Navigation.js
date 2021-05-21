@@ -105,7 +105,7 @@ export default function Navigation(props) {
   const [selected, setSelected] = React.useState({ selected: null });
 
   React.useEffect(() => {
-    const parsedSelected = String(localStorage.getItem("selected") || 0)
+    const parsedSelected = String(localStorage.getItem("selected") || "")
     setSelected({ selected: parsedSelected });
   }, [])
 
