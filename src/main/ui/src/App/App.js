@@ -13,7 +13,7 @@ import { HashRouter as Router } from "react-router-dom";
 import RouteToPage from "../components/Route";
 import clsx from "clsx";
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import history from "../components/history";
 
 const drawerWidth = 324;
 
@@ -72,7 +72,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
+      <Router history={history}>
         <CssBaseline />
 
         <Navigation open={open} setOpen={setOpen} />

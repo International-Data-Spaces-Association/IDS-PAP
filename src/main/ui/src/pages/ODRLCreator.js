@@ -13,7 +13,9 @@ import "codemirror/addon/lint/lint.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import 'codemirror/mode/javascript/javascript.js';
+
 require("codemirror/theme/eclipse.css");
+
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -33,10 +35,24 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
+window.onload = function() {
+  var reloading = sessionStorage.getItem("reloading");
+  if (reloading) {
+      sessionStorage.removeItem("reloading");
+      window.history.back();
+  }
+}
+
 export default function ODRLCreator() {
+  if (useLocation().state === undefined ) {
+    return(<></>)
+  }
   const [policy, setPolicy] = useState(useLocation().state.jsonPolicy);
   const [dtPolicy, setDtPolicy] = useState(useLocation().state.dtPolicy, null, 2);
   const classes = useStyle();
+
+
+  sessionStorage.setItem("reloading", "true");
 
   const transfer = () =>{
     jsonOdrlPolicy("/policy/JsonOdrlPolicyMYDATA",policy ,setDtPolicy)
