@@ -8,10 +8,12 @@ import {
   unstable_createMuiStrictModeTheme as createMuiTheme,
 } from "@material-ui/core";
 import Navigation from "../components/Navigation";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
+
 import RouteToPage from "../components/Route";
 import clsx from "clsx";
 import CssBaseline from '@material-ui/core/CssBaseline';
+
 
 const drawerWidth = 324;
 

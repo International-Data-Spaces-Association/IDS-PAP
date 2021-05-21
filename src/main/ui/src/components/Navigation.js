@@ -104,6 +104,15 @@ export default function Navigation(props) {
   const [logedIn] = React.useState(true);
   const [selected, setSelected] = React.useState({ selected: null });
 
+  React.useEffect(() => {
+    const parsedSelected = String(localStorage.getItem("selected") || 0)
+    setSelected({ selected: parsedSelected });
+  }, [])
+
+  React.useEffect(() => {
+    localStorage.setItem("selected", selected.selected)
+  }, [selected.selected])
+
   const updateSelected = (selectedIndex) => {
     setSelected({ selected: selectedIndex });
   };
