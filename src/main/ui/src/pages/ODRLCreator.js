@@ -44,13 +44,9 @@ window.onload = function() {
 }
 
 export default function ODRLCreator() {
-  if (useLocation().state === undefined ) {
-    return(<></>)
-  }
   const [policy, setPolicy] = useState(useLocation().state.jsonPolicy);
   const [dtPolicy, setDtPolicy] = useState(useLocation().state.dtPolicy, null, 2);
   const classes = useStyle();
-
 
   sessionStorage.setItem("reloading", "true");
 
