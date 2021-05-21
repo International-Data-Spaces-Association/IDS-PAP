@@ -2,13 +2,12 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:9090';
 
 export default function Submit(url, values, states, setErrors, history ,e) {
-  console.log(states)
   e.preventDefault();
   if (Validation(values, states, setErrors)) {
     for (var key in states) {
       states[key] = false;
   }
-    axios.post(BASE_URL + url, values)
+    axios.post(url, values)
     .then((response) => {
       let policies = response.data.split('DTPOLICY:');
       var dict = {
@@ -27,7 +26,7 @@ export default function Submit(url, values, states, setErrors, history ,e) {
 };
 
 export function jsonOdrlPolicy(url, values, setPolicy) {
-    axios.post(BASE_URL + url, values, {
+    axios.post(url, values, {
       headers: {
         // Overwrite Axios's automatically set Content-Type
         'Content-Type': 'application/json'
