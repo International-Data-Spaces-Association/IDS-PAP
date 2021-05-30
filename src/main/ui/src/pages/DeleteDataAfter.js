@@ -117,7 +117,7 @@ export default function DeleteDataAfter() {
                   onChange={handleInputChange}
                   error={errors.durationYear}
                   sm={11}
-                  md={3}
+                  md={2}
                 />
                 <Grid item sm={1} />
                 <Input
@@ -128,7 +128,7 @@ export default function DeleteDataAfter() {
                   onChange={handleInputChange}
                   error={errors.durationMonth}
                   sm={11}
-                  md={3}
+                  md={2}
                 />
                 <Grid item sm={1} />
                 <Input
@@ -139,7 +139,7 @@ export default function DeleteDataAfter() {
                   onChange={handleInputChange}
                   error={errors.durationDay}
                   sm={11}
-                  md={3}
+                  md={2}
                 />
                 <Grid item sm={1} />
                 <Input
@@ -150,7 +150,7 @@ export default function DeleteDataAfter() {
                   onChange={handleInputChange}
                   error={errors.durationHour}
                   sm={11}
-                  md={3}
+                  md={2}
                 />
                 <Remove onClick={resetStates} />
               </Grid>
@@ -167,7 +167,10 @@ export default function DeleteDataAfter() {
                   defaultValue=""
                   onChange={handleInputChange}
                   error={errors.timeAndDate}
+                  sm={11}
+                  md={3}
                 />
+                <Grid item sm={0} md={8} />
                 <Remove onClick={resetStates} />
               </Grid>
             </>
