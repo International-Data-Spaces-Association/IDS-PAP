@@ -175,9 +175,11 @@ public class OdrlTranslator {
 					}
 
 					Action dutyAction = null;
+					Boolean isAPreDuty = false;
 					if(null != policy.getRules().get(0).getPreduties() && policy.getRules().get(0).getPreduties().size() > 0)
 					{
 						dutyAction = (Action) policy.getRules().get(0).getPreduties().get(0).getAction();
+						isAPreDuty = true;
 					}
 
 					if(null != policy.getRules().get(0).getPostduties() && policy.getRules().get(0).getPostduties().size() > 0)
@@ -189,18 +191,48 @@ public class OdrlTranslator {
 						ActionType actionType = dutyAction.getType();
 						switch (actionType) {
 							case DELETE:
-								translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
-										actionType.toString().toLowerCase() + "s the data asset right after it is used.\n\n");
-								break;
+								if(isAPreDuty.equals(true))
+								{
+									translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
+											+ actionType.toString().toLowerCase() + " a subset of the data.\n");
+									break;
+								}else{
+									translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
+											actionType.toString().toLowerCase() + "s the data asset right after it is used.\n\n");
+									break;
+								}
+
 							case ANONYMIZE:
 								translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
 										+ actionType.toString().toLowerCase() + " the data.\n");
 								if (null != dutyAction.getRefinements()) {
 									for (Condition refinement : dutyAction.getRefinements()) {
 										switch (refinement.getLeftOperand()) {
-											case MODIFICATION_METHOD:
-												String jsonPath = refinement.getJsonPath();
-												translation = translation.concat("The " + jsonPath + " field of the data asset (given as jsonPathQuery) is requested to be modified.\n");
+											case SUBSET_SPECIFICATION:
+												String jsonPath = refinement.getRightOperand().getValue();
+												translation = translation.concat("The " + jsonPath + " field of the data asset (given as jsonPathQuery) is requested to be modified (deleted, hashed, replaced, etc.).\n");
+												break;
+											case REPLACE_WITH:
+												String replaceWith = refinement.getRightOperand().getValue();
+												translation = translation.concat("The addressed field shall be replaced with the given value \"" + replaceWith + "\".\n");
+												break;
+										}
+									}
+								}
+								break;
+							case REPLACE:
+								translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
+										+ actionType.toString().toLowerCase() + " a subset of the data with a given value.\n");
+								if (null != dutyAction.getRefinements()) {
+									for (Condition refinement : dutyAction.getRefinements()) {
+										switch (refinement.getLeftOperand()) {
+											case SUBSET_SPECIFICATION:
+												String jsonPath = refinement.getRightOperand().getValue();
+												translation = translation.concat("The " + jsonPath + " field of the data asset (given as jsonPathQuery) is requested to be modified (deleted, hashed, replaced, etc.).\n");
+												break;
+											case REPLACE_WITH:
+												String replaceWith = refinement.getRightOperand().getValue();
+												translation = translation.concat("The addressed field shall be replaced with the given value \"" + replaceWith + "\".\n");
 												break;
 										}
 									}

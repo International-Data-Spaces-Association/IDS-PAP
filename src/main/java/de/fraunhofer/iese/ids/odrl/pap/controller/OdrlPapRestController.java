@@ -254,30 +254,33 @@ public class OdrlPapRestController {
 	public String anonymizeTransitPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "anonymize-in-transit";
 		ArrayList<Condition> refinements = new ArrayList<>();
-		RightOperand modificationMethodRightOperand = new RightOperand();
-		modificationMethodRightOperand.setValue(rp.getModifier());
-		modificationMethodRightOperand.setType(RightOperandType.ANYURI);
-		//ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter(rp.getValueToChange(),
-		//		RightOperandType.STRING);
-		ModificationMethodParameter replaceWithParameter = new ModificationMethodParameter();
-		replaceWithParameter.setValue(rp.getValueToChange());
-		replaceWithParameter.setType(RightOperandType.STRING);
-		Condition modificationMethodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.MODIFICATION_METHOD,
-				Operator.EQ, modificationMethodRightOperand, null);
-		modificationMethodRefinement.setReplaceWith(replaceWithParameter);
+
 		if (rp.getFieldToChange() != "") {
-			modificationMethodRefinement.setJsonPath(rp.getFieldToChange());
+			RightOperand replaceWithRightOperand = new RightOperand();
+			replaceWithRightOperand.setValue(rp.getValueToChange());
+			replaceWithRightOperand.setType(RightOperandType.STRING);
+			Condition replaceWithRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.REPLACE_WITH,
+					Operator.DEFINES_AS, replaceWithRightOperand, null);
+			refinements.add(replaceWithRefinement);
 		}
-		refinements.add(modificationMethodRefinement);
+
+		RightOperand subsetSpecificationRightOperand = new RightOperand();
+		subsetSpecificationRightOperand.setValue(rp.getFieldToChange());
+		subsetSpecificationRightOperand.setType(RightOperandType.STRING);
+		Condition subsetSpecificationRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SUBSET_SPECIFICATION,
+				Operator.DEFINES_AS, subsetSpecificationRightOperand, null);
+		refinements.add(subsetSpecificationRefinement);
+
 		Action useAction = new Action(ActionType.USE);
-		Action anonymizeDutyAction = new Action(ActionType.ANONYMIZE);
+		//TODO: pass modifier (rp.getModifier()) here
+		Action anonymizeDutyAction = new Action(ActionType.REPLACE);
 		anonymizeDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setTarget(URI.create(rp.getTarget()));
-		Rule preDuties = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
-		ArrayList<Rule> preDutiess = new ArrayList<>();
-		preDutiess.add(preDuties);
-		rule.setPreduties(preDutiess);
+		Rule preDuty = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
+		ArrayList<Rule> preDuties = new ArrayList<>();
+		preDuties.add(preDuty);
+		rule.setPreduties(preDuties);
 
 		return rp.createPolicy(uid, rule);
 	}

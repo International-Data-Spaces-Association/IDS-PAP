@@ -22,6 +22,7 @@ export const OdrlPolicy = {
     time: "",
     timeUnit: "",
     timeAndDate: "",
+    timeAndDate: "",
     informedParty:"",
     systemDevice:"",
     valueToChange: "",

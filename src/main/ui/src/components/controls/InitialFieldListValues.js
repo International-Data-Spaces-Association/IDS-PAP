@@ -24,11 +24,11 @@ export const modifier_list = [
   { id: "", value: "" },
   {
     id: "Replace modification method",
-    value: "http://example.com/anonymize/replace",
+    value: "idsc:REPLACE",
   },
   {
     id: "Delete modification method",
-    value: "http://example.com/anonymize/delete",
+    value: "idsc:DELETE",
   },
 ];
 
