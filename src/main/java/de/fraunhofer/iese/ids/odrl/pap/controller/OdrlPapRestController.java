@@ -272,8 +272,9 @@ public class OdrlPapRestController {
 		refinements.add(subsetSpecificationRefinement);
 
 		Action useAction = new Action(ActionType.USE);
-		//TODO: pass modifier (rp.getModifier()) here
-		Action anonymizeDutyAction = new Action(ActionType.REPLACE);
+		// remove the idsc: prefix from the duty action
+		ActionType dutyActionType = ActionType.valueOf(rp.getModifier().substring(5));
+		Action anonymizeDutyAction = new Action(dutyActionType);
 		anonymizeDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setTarget(URI.create(rp.getTarget()));
