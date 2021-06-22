@@ -231,8 +231,7 @@ public class RecievedOdrlPolicy {
 		if (location != "") {
 			RightOperand locationRightOperand = new RightOperand(location, RightOperandType.ANYURI);
 			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION
-					,
-					Operator.EQ, locationRightOperand, null);
+					, Operator.SAME_AS, locationRightOperand, null);
 			constraints.add(locationConstraint);
 			return true;
 		}
@@ -242,7 +241,7 @@ public class RecievedOdrlPolicy {
 	public boolean addSystemCondition() {
 		if (system != "") {
 			RightOperand systemRightOperand = new RightOperand(system, RightOperandType.ANYURI);
-			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.EQ,
+			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.SAME_AS,
 					systemRightOperand, null);
 			constraints.add(systemConstraint);
 			return true;
@@ -264,7 +263,7 @@ public class RecievedOdrlPolicy {
 	public boolean addApplicationCondition() {
 		if (application != "") {
 			RightOperand applicationRightOperand = new RightOperand(application, RightOperandType.ANYURI);
-			Condition applicationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.APPLICATION, Operator.EQ,
+			Condition applicationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.APPLICATION, Operator.SAME_AS,
 					applicationRightOperand, null);
 			constraints.add(applicationConstraint);
 			return true;
@@ -286,7 +285,7 @@ public class RecievedOdrlPolicy {
 	public boolean addUserRoleCondition() {
 		if (role != "") {
 			RightOperand userRoleRightOperand = new RightOperand(role, RightOperandType.STRING);
-			Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE, Operator.HAS_MEMBERSHIP,
+			Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE, Operator.EQUALS,
 					userRoleRightOperand, null);
 			constraints.add(userRoleConstraint);
 			return true;
@@ -308,7 +307,7 @@ public class RecievedOdrlPolicy {
 	public boolean addPurposeCondition() {
 		if (purpose != "") {
 			RightOperand purposeRightOperand = new RightOperand(purpose, RightOperandType.ANYURI);
-			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.EQ,
+			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.SAME_AS,
 					purposeRightOperand, null);
 			constraints.add(purposeConstraint);
 			return true;
@@ -319,7 +318,7 @@ public class RecievedOdrlPolicy {
 	public boolean addEventCondition() {
 		if (event != "") {
 			RightOperand eventRightOperand = new RightOperand(event, RightOperandType.ANYURI);
-			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.EQ,
+			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.SAME_AS,
 					eventRightOperand, null);
 			constraints.add(eventConstraint);
 			return true;
