@@ -341,7 +341,7 @@ public class RecievedOdrlPolicy {
 			entities.add(endEntity);
 			rightOperand.setEntities(entities);
 			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT,
-					LeftOperand.POLICY_EVALUATION_TIME, Operator.TEMPORAL_EQUALS, rightOperand, null);
+					LeftOperand.DATE_TIME, Operator.TEMPORAL_EQUALS, rightOperand, null);
 			constraints.add(timeIntervalCondition);
 			return true;
 		}

@@ -208,7 +208,7 @@ public class OdrlTranslator {
 								if (null != dutyAction.getRefinements()) {
 									for (Condition refinement : dutyAction.getRefinements()) {
 										switch (refinement.getLeftOperand()) {
-											case SUBSET_SPECIFICATION:
+											case JSON_PATH:
 												String jsonPath = refinement.getRightOperand().getValue();
 												translation = translation.concat("The " + jsonPath + " field of the data asset (given as jsonPathQuery) is requested to be modified (deleted, hashed, replaced, etc.).\n");
 												break;
@@ -226,7 +226,7 @@ public class OdrlTranslator {
 								if (null != dutyAction.getRefinements()) {
 									for (Condition refinement : dutyAction.getRefinements()) {
 										switch (refinement.getLeftOperand()) {
-											case SUBSET_SPECIFICATION:
+											case JSON_PATH:
 												String jsonPath = refinement.getRightOperand().getValue();
 												translation = translation.concat("The " + jsonPath + " field of the data asset (given as jsonPathQuery) is requested to be modified (deleted, hashed, replaced, etc.).\n");
 												break;

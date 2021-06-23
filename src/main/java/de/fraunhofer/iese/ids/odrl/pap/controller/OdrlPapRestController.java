@@ -267,7 +267,7 @@ public class OdrlPapRestController {
 		RightOperand subsetSpecificationRightOperand = new RightOperand();
 		subsetSpecificationRightOperand.setValue(rp.getFieldToChange());
 		subsetSpecificationRightOperand.setType(RightOperandType.STRING);
-		Condition subsetSpecificationRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SUBSET_SPECIFICATION,
+		Condition subsetSpecificationRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.JSON_PATH,
 				Operator.DEFINES_AS, subsetSpecificationRightOperand, null);
 		refinements.add(subsetSpecificationRefinement);
 
