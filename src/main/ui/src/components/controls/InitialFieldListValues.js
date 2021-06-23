@@ -40,17 +40,17 @@ export const policy_types = [
 
 export const application_list = [
   { id: "", value: "" },
-  { id: "http://example.com/ids-app/data_app", value: "http://example.com/ids-app/data-app" },
+  { id: "http://ids.or/application/data_app", value: "http://ids.or/application/data_app" },
 ];
 
 export const connector_list = [
   { id: "", value: "" },
-  { id: "http://example.com/ids-connector/connector1", value: "http://example.com/ids-connector/connector1" },
+  { id: "http://ids.org/connector/connector1", value: "http://ids.org/connector/connector1" },
 ];
 
 export const event_list = [
   { id: "", value: "" },
-  { id: "http://example.com/ids-event:exhibition", value: "http://example.com/ids-event:exhibition" },
+  { id: "http://ids.org/event/exhibition", value: "http://ids.org/event/exhibition" },
 ];
 
 export const role_list = [
@@ -78,13 +78,13 @@ export const state_list = [
 ];
 
 export const artifact_state_list = [
-  { id: "ANONYMIZED", value: "ANONYMIZED" },
-  { id: "PSEUDONYMIZED", value: "PSEUDONYMIZED" },
-  { id: "ENCRYPTED", value: "ENCRYPTED" },
-  { id: "COMBINED", value: "COMBINED" },
+  { id: "ANONYMIZED", value: "idsc:ANONYMIZED" },
+  { id: "PSEUDONYMIZED", value: "idsc:PSEUDONYMIZED" },
+  { id: "ENCRYPTED", value: "idsc:ENCRYPTED" },
+  { id: "COMBINED", value: "idsc:COMBINED" },
 ];
 
 export const data_consumers = [
   { id: "", value: "" },
-  { id: "Consumer Party", value: "http://example.com/party/consumer-party" },
+  { id: "Consumer Party", value: "http://ids.org/party/consumer-party" },
 ];
