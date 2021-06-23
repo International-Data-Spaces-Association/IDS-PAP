@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: "0px",
     },
     "& .MuiListItem-root": {
-      height: "80px",
+      height: "75px",
       color: theme.palette.primary.light,
       fontFamily: "FrutigerLTComBold",
       fontSize: "1rem",

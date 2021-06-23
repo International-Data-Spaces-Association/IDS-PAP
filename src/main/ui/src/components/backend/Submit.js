@@ -2,11 +2,13 @@ import axios from 'axios';
 
 export default function Submit(url, values, states, setErrors, history ,e) {
   e.preventDefault();
-  if (Validation(values, states, setErrors)) {
+  if (validation(values, states, setErrors)) {
     for (var key in states) {
       states[key] = false;
   }
-    axios.post(url, values)
+    const isoValues = convertDateToIso(values, states)
+    console.log(isoValues);
+    axios.post(url, isoValues)
     .then((response) => {
       let policies = response.data.split('DTPOLICY:');
       var dict = {
@@ -38,7 +40,25 @@ export function jsonOdrlPolicy(url, values, setPolicy) {
     })
 };
 
-function Validation(values, states, setErrors) {
+function convertDateToIso(values, states) {
+  var isoValues = {...values}
+  isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime)
+  isoValues.restrictEndTime = addDateSuffix(isoValues.restrictEndTime)
+  isoValues.restrictTimeIntervalStart = addDateSuffix(isoValues.restrictTimeIntervalStart)
+  isoValues.restrictTimeIntervalStart = addDateSuffix(isoValues.restrictTimeIntervalStart)
+  isoValues.restrictTimeIntervalEnd = addDateSuffix(isoValues.restrictTimeIntervalEnd)
+  isoValues.timeDate = addDateSuffix(isoValues.timeAndDate)
+  return isoValues
+}
+
+function addDateSuffix(date) {
+  if (date === "") {
+    return ""
+  }
+  return date+":00Z"
+}
+
+function validation(values, states, setErrors) {
     let temp = {};
     checkHeader(temp, values)
     temp.location = states.location ? isValidUrl(values.location) : "";
@@ -55,6 +75,13 @@ function Validation(values, states, setErrors) {
     temp.payment = states.payment ? notEmpty(values.payment) : "";
     temp.price = states.payment ? isValidFloat(values.price): "";
     temp.counter = states.counter ? isValidInt(values.counter): "";
+
+    temp.durationDay = states.duration ? isIntOrEmpty(values.durationDay): "";
+    temp.durationHour = states.duration ? isIntOrEmpty(values.durationHour): "";
+    temp.durationMonth = states.duration ? isIntOrEmpty(values.durationMonth): "";
+    temp.durationYear = states.duration ? isIntOrEmpty(values.durationYear): "";
+    temp.specifyBeginTime = states.duration ? isDateOrEmpty(values.specifyBeginTime): "";
+
     temp.time = states.time ? isValidInt(values.time):"";
     temp.timeUnit = states.time ? notEmpty(values.timeUnit):"";
     temp.modifier = states.anonymizeInTransit? notEmpty(values.modifier):"";
@@ -70,6 +97,7 @@ function Validation(values, states, setErrors) {
     temp.notificationLevel = states.notificationLevel ? notEmpty(values.notificationLevel):"";
     temp.artifactState = states.artifactState ? notEmpty(values.artifactState):"";
     temp.restrictEndTime = states.endTime ? isValidDate(values.restrictEndTime): "";
+    console.log(states)
     setErrors({
       ...temp,
     });
@@ -116,6 +144,22 @@ function Validation(values, states, setErrors) {
       return "This is not a valid date"
     }
   }
+
+  function isDateOrEmpty(date) {
+    if (date === "") return ""
+    try {
+      var today = new Date()
+      today.setHours(0,0,0,0)
+      if (today <= new Date(date)) {
+        return ""
+      } else {
+        return "The entered date is in the past"
+      }
+    }catch(_) {
+      return "This is not a valid date"
+    }
+  }
+
   function isValidDateInterval(date1, date2) {
     const error = notEmpty(date2)
     if (error !== "") return error
@@ -141,6 +185,18 @@ function Validation(values, states, setErrors) {
       return "Not a valid number"
     }
   }
+
+  function isIntOrEmpty(n) {
+    if (n === "") return ""
+    if (parseInt(n) < 0) {
+      return "Count should be positive";
+    } else if (parseFloat(n) >= 0) {
+      return ""
+    } else {
+      return "Not a valid number"
+    }
+  }
+
   function isValidInt(count) {
     const error = notEmpty(count)
     if (error !== "") return error
