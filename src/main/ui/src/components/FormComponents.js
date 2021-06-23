@@ -214,8 +214,8 @@ export default function FormComponents(props) {
               value={values.restrictTimeIntervalStart}
               onChange={handleInputChange}
               error={errors.restrictTimeIntervalStart}
-              xs={11}
-              sm={5}
+              sm={11}
+              md={3}
             />
             <Grid item sm={1} />
             <Date
@@ -224,9 +224,10 @@ export default function FormComponents(props) {
               value={values.restrictTimeIntervalEnd}
               onChange={handleInputChange}
               error={errors.restrictTimeIntervalEnd}
-              xs={11}
-              sm={5}
+              sm={11}
+              md={3}
             />
+            <Grid item sm={0} md={4} />
             <Remove
               onClick={() => {
                 removeEnteredData(
@@ -249,8 +250,8 @@ export default function FormComponents(props) {
               placeholder="e.g. 10"
               onChange={handleInputChange}
               error={errors.price}
-              xs={11}
-              sm={5}
+              sm={11}
+              md={3}
             />
             <Grid item sm={1} />
             <ItemPicker
@@ -260,9 +261,10 @@ export default function FormComponents(props) {
               ItemList={sale_rent_list}
               onChange={handleInputChange}
               error={errors.payment}
-              xs={11}
-              sm={5}
+              sm={11}
+              md={3}
             />
+            <Grid item sm={0} md={4} />
             <Remove
               onClick={() => {
                 removeEnteredData("price", "payment");
