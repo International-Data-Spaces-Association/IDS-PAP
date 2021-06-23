@@ -52,17 +52,17 @@ export default function AnonymizeInTransit() {
           />
 
           <Grid container>
-            <Title label="The modification method defines specific changes to be applied on a field of data." />
+            <Title label="The modify duty action defines specific changes to be applied on a field of data." />
             <ItemPicker
               name="modifier"
-              label={"Modification method"}
+              label={"Modify action"}
               defaultValue="Replace modification method"
               ItemList={modifier_list}
               onChange={handleInputChange}
               error={errors.modifier}
             />
           </Grid>
-          {values.modifier === "http://example.com/anonymize/replace" ? (
+          {values.modifier === "idsc:REPLACE" ? (
             <>
               <Grid container>
                 <Input
@@ -80,7 +80,7 @@ export default function AnonymizeInTransit() {
           )}
 
           <Grid container>
-            <Title label="Enter the field (ids:jsonPath) that you want to modify" />
+            <Title label="Enter the field (jsonPathQuery) that you want to modify" />
             <Input
               name="fieldToChange"
               value={values.fieldToChange}

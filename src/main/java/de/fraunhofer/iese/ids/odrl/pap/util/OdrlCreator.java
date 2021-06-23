@@ -85,7 +85,7 @@ public class OdrlCreator {
 
 			}
 		}else */
-			if (condition.getLeftOperand().equals(LeftOperand.LOG_LEVEL) || condition.getLeftOperand().equals(LeftOperand.NOTIFICATION_LEVEL))
+/*			if (condition.getLeftOperand().equals(LeftOperand.LOG_LEVEL) || condition.getLeftOperand().equals(LeftOperand.NOTIFICATION_LEVEL))
 		{
 			String value = condition.getRightOperand().getValue();
 			if (value != null && !value.isEmpty()) {
@@ -97,7 +97,7 @@ public class OdrlCreator {
 			if (value != null && !value.isEmpty()) {
 				condition.getRightOperand().setValue(ArtifactStateType.valueOf(value).getType());
 			}
-		}
+		}*/
 	}
 
 }
