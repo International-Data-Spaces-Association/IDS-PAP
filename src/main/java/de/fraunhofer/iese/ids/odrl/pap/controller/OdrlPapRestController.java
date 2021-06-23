@@ -321,11 +321,11 @@ public class OdrlPapRestController {
 		notificationLevelRightOperand.setType(RightOperandType.STRING);
 		notificationLevelRightOperand.setValue(rp.getNotificationLevel());
 		Condition notificationLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.NOTIFICATION_LEVEL,
-				Operator.EQUALS, notificationLevelRightOperand, "");
+				Operator.DEFINES_AS, notificationLevelRightOperand, "");
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		rightOperand.setValue(rp.getInformedParty());
-		Condition recipientRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.RECIPIENT, Operator.EQUALS,
+		Condition recipientRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.RECIPIENT, Operator.DEFINES_AS,
 				rightOperand, "");
 		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(notificationLevelRefinement);
