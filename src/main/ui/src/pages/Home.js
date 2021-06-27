@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles, Typography, Grid, Icon } from "@material-ui/core";
 import papEditor from "../images/PAP-Editor_Scenario.png";
 import { loadCSS } from 'fg-loadcss';
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -104,7 +105,7 @@ export default function Home() {
         <Typography variant="h5">
           Click{" "}
           <u>
-            <a href="https://odrl-pap.ids.isst.fraunhofer.de/policy/HowTo" className={classes.link}>here</a>
+          <Link to="/howto" className={classes.link}>here</Link>
           </u>{" "}
           to learn how to use this editor!
         </Typography>

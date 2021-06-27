@@ -31,7 +31,6 @@ export default function ProvideAccess() {
     ],
   };
 
-  document.title = "Provide Access";
 
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);

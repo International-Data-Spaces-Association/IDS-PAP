@@ -16,7 +16,7 @@ import Account from "../pages/Account";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import ForgotPassword from "../pages/ForgotPassword";
-
+import HowTo from "../pages/HowTo";
 export default function RouteToPage() {
   return (
     <Switch>
@@ -77,6 +77,9 @@ export default function RouteToPage() {
       </Route>
       <Route exact path="/ForgotPassword">
         <ForgotPassword/>
+      </Route>
+      <Route exact path="/howto">
+        <HowTo/>
       </Route>
     </Switch>
   );
