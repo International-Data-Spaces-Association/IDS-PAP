@@ -45,7 +45,6 @@ function convertDateToIso(values, states) {
   isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime)
   isoValues.restrictEndTime = addDateSuffix(isoValues.restrictEndTime)
   isoValues.restrictTimeIntervalStart = addDateSuffix(isoValues.restrictTimeIntervalStart)
-  isoValues.restrictTimeIntervalStart = addDateSuffix(isoValues.restrictTimeIntervalStart)
   isoValues.restrictTimeIntervalEnd = addDateSuffix(isoValues.restrictTimeIntervalEnd)
   isoValues.timeDate = addDateSuffix(isoValues.timeAndDate)
   return isoValues
