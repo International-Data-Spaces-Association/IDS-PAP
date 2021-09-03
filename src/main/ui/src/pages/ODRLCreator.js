@@ -37,18 +37,24 @@ const useStyle = makeStyles((theme) => ({
 
 window.onload = function() {
   var reloading = sessionStorage.getItem("reloading");
-  if (reloading) {
+  if (reloading === "Yes") {
       sessionStorage.removeItem("reloading");
       window.history.back();
   }
 }
 
 export default function ODRLCreator() {
-  const [policy, setPolicy] = useState(useLocation().state.jsonPolicy);
-  const [dtPolicy, setDtPolicy] = useState(useLocation().state.dtPolicy, null, 2);
+  var stateLocal = useLocation().state
+  if (stateLocal === undefined) {
+    stateLocal = {jsonPolicy: sessionStorage.getItem("jsonPolicy"),
+    dtPolicy: sessionStorage.getItem("dtPolicy")}
+  }
+  const [policy, setPolicy] = useState(stateLocal.jsonPolicy);
+  const [dtPolicy, setDtPolicy] = useState(stateLocal.dtPolicy, null, 2);
   const classes = useStyle();
-
-  sessionStorage.setItem("reloading", "true");
+  sessionStorage.setItem("reloading", "No");
+  sessionStorage.setItem("jsonPolicy", stateLocal.jsonPolicy)
+  sessionStorage.setItem("dtPolicy", stateLocal.dtPolicy)
 
   const transfer = () =>{
     jsonOdrlPolicy("/policy/JsonOdrlPolicyMYDATA",policy ,setDtPolicy)
