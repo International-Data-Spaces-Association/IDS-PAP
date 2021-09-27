@@ -169,15 +169,15 @@ public class OdrlPapRestController {
 		RightOperand rightOperand = new RightOperand();
 		if (rp.getTimeAndDate() != "") {
 			rightOperand.setType(RightOperandType.INSTANT);
-			RightOperandEntity endEntity = new RightOperandEntity(EntityType.BEGIN, rp.getTimeAndDate() ,
+			RightOperandEntity dateTimeEntity = new RightOperandEntity(EntityType.DATETIME, rp.getTimeAndDate() ,
 					RightOperandType.DATETIMESTAMP);
-			endEntity.setEntityType(EntityType.END);
-			endEntity.setDataType(RightOperandType.DATETIMESTAMP);
 			ArrayList<RightOperandEntity> entities = new ArrayList<>();
-			entities.add(endEntity);
+			entities.add(dateTimeEntity);
 			rightOperand.setEntities(entities);
+			ArrayList<RightOperand> rightOperands = new ArrayList<>();
+			rightOperands.add(rightOperand);
 			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT,
-					LeftOperand.DATE_TIME, Operator.BEFORE, rightOperand, null);
+					LeftOperand.DATE_TIME, Operator.BEFORE, rightOperands, null);
 			refinements.add(timeIntervalCondition);
 		}
 		else {
@@ -211,7 +211,9 @@ public class OdrlPapRestController {
 			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration  ,RightOperandType.DURATION);
 			durationEntities.add(hasDurationEntity);
 			rightOperand.setEntities(durationEntities);
-			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, rightOperand, "");
+			ArrayList<RightOperand> rightOperands = new ArrayList<>();
+			rightOperands.add(rightOperand);
+			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, rightOperands, "");
 			refinements.add(delayPeriodRefinement);
 		}
 
@@ -259,16 +261,20 @@ public class OdrlPapRestController {
 			RightOperand replaceWithRightOperand = new RightOperand();
 			replaceWithRightOperand.setValue(rp.getValueToChange());
 			replaceWithRightOperand.setType(RightOperandType.STRING);
+			ArrayList<RightOperand> replaceWithRightOperands = new ArrayList<>();
+			replaceWithRightOperands.add(replaceWithRightOperand);
 			Condition replaceWithRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.REPLACE_WITH,
-					Operator.DEFINES_AS, replaceWithRightOperand, null);
+					Operator.DEFINES_AS, replaceWithRightOperands, null);
 			refinements.add(replaceWithRefinement);
 		}
 
 		RightOperand subsetSpecificationRightOperand = new RightOperand();
 		subsetSpecificationRightOperand.setValue(rp.getFieldToChange());
 		subsetSpecificationRightOperand.setType(RightOperandType.STRING);
+		ArrayList<RightOperand> subsetSpecificationRightOperands = new ArrayList<>();
+		subsetSpecificationRightOperands.add(subsetSpecificationRightOperand);
 		Condition subsetSpecificationRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.JSON_PATH,
-				Operator.DEFINES_AS, subsetSpecificationRightOperand, null);
+				Operator.DEFINES_AS, subsetSpecificationRightOperands, null);
 		refinements.add(subsetSpecificationRefinement);
 
 		Action useAction = new Action(ActionType.USE);
@@ -292,12 +298,16 @@ public class OdrlPapRestController {
 		RightOperand logLevelRightOperand = new RightOperand();
 		logLevelRightOperand.setType(RightOperandType.STRING);
 		logLevelRightOperand.setValue(rp.getLogLevel());
+		ArrayList<RightOperand> logLevelRightOperands = new ArrayList<>();
+		logLevelRightOperands.add(logLevelRightOperand);
 		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.DEFINES_AS,
-				logLevelRightOperand, "");
+				logLevelRightOperands, "");
 
 		RightOperand rightOperand = new RightOperand(rp.getSystemDevice(), RightOperandType.ANYURI);
+		ArrayList<RightOperand> rightOperands = new ArrayList<>();
+		rightOperands.add(rightOperand);
 		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEM_DEVICE,
-				Operator.DEFINES_AS, rightOperand, "");
+				Operator.DEFINES_AS, rightOperands, "");
 
 		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(logLevelRefinement);
@@ -320,13 +330,17 @@ public class OdrlPapRestController {
 		RightOperand notificationLevelRightOperand = new RightOperand();
 		notificationLevelRightOperand.setType(RightOperandType.STRING);
 		notificationLevelRightOperand.setValue(rp.getNotificationLevel());
+		ArrayList<RightOperand> notificationLevelRightOperands = new ArrayList<>();
+		notificationLevelRightOperands.add(notificationLevelRightOperand);
 		Condition notificationLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.NOTIFICATION_LEVEL,
-				Operator.DEFINES_AS, notificationLevelRightOperand, "");
+				Operator.DEFINES_AS, notificationLevelRightOperands, "");
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.ANYURI);
 		rightOperand.setValue(rp.getInformedParty());
+		ArrayList<RightOperand> rightOperands = new ArrayList<>();
+		rightOperands.add(rightOperand);
 		Condition recipientRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.RECIPIENT, Operator.DEFINES_AS,
-				rightOperand, "");
+				rightOperands, "");
 		ArrayList<Condition> refinements = new ArrayList<>();
 		refinements.add(notificationLevelRefinement);
 		refinements.add(recipientRefinement);
@@ -348,16 +362,20 @@ public class OdrlPapRestController {
 		RightOperand dutyRightOperand = new RightOperand();
 		dutyRightOperand.setType(RightOperandType.ANYURI);
 		dutyRightOperand.setValue(rp.getPolicy());
+		ArrayList<RightOperand> dutyRightOperands = new ArrayList<>();
+		dutyRightOperands.add(dutyRightOperand);
 		Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY,
-				Operator.SAME_AS, dutyRightOperand, "");
+				Operator.SAME_AS, dutyRightOperands, "");
 		ArrayList<Condition> dutyRefinements = new ArrayList<>();
 		dutyRefinements.add(thirdPartyRefinement);
 
 		RightOperand rightOperand = new RightOperand();
 		rightOperand.setType(RightOperandType.STRING);
 		rightOperand.setValue(rp.getArtifactState());
+		ArrayList<RightOperand> rightOperands = new ArrayList<>();
+		rightOperands.add(rightOperand);
 		Condition artifactStateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ARTIFACT_STATE,
-				Operator.EQUALS, rightOperand, "");
+				Operator.EQUALS, rightOperands, "");
 		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(artifactStateConstraint);
 		Action distributeAction = new Action(ActionType.DISTRIBUTE);

@@ -230,8 +230,10 @@ public class RecievedOdrlPolicy {
 	public boolean addLocationCondition() {
 		if (location != "") {
 			RightOperand locationRightOperand = new RightOperand(location, RightOperandType.ANYURI);
+			ArrayList<RightOperand> locationRightOperands = new ArrayList<>();
+			locationRightOperands.add(locationRightOperand);
 			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION
-					, Operator.SAME_AS, locationRightOperand, null);
+					, Operator.SAME_AS, locationRightOperands, null);
 			constraints.add(locationConstraint);
 			return true;
 		}
@@ -241,8 +243,10 @@ public class RecievedOdrlPolicy {
 	public boolean addSystemCondition() {
 		if (system != "") {
 			RightOperand systemRightOperand = new RightOperand(system, RightOperandType.ANYURI);
+			ArrayList<RightOperand> systemRightOperands = new ArrayList<>();
+			systemRightOperands.add(systemRightOperand);
 			Condition systemConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SYSTEM, Operator.SAME_AS,
-					systemRightOperand, null);
+					systemRightOperands, null);
 			constraints.add(systemConstraint);
 			return true;
 		}
@@ -252,8 +256,10 @@ public class RecievedOdrlPolicy {
 	public boolean addConnectorCondition() {
 		if (connector != "") {
 			RightOperand connectorRightOperand = new RightOperand(connector, RightOperandType.ANYURI);
+			ArrayList<RightOperand> connectorRightOperands = new ArrayList<>();
+			connectorRightOperands.add(connectorRightOperand);
 			Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.SAME_AS,
-					connectorRightOperand, null);
+					connectorRightOperands, null);
 			constraints.add(connectorConstraint);
 			return true;
 		}
@@ -263,8 +269,10 @@ public class RecievedOdrlPolicy {
 	public boolean addApplicationCondition() {
 		if (application != "") {
 			RightOperand applicationRightOperand = new RightOperand(application, RightOperandType.ANYURI);
+			ArrayList<RightOperand> applicationRightOperands = new ArrayList<>();
+			applicationRightOperands.add(applicationRightOperand);
 			Condition applicationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.APPLICATION, Operator.SAME_AS,
-					applicationRightOperand, null);
+					applicationRightOperands, null);
 			constraints.add(applicationConstraint);
 			return true;
 		}
@@ -274,8 +282,10 @@ public class RecievedOdrlPolicy {
 	public boolean addStateCondition() {
 		if (state != "") {
 			RightOperand stateRightOperand = new RightOperand(state, RightOperandType.STRING);
+			ArrayList<RightOperand> stateRightOperands = new ArrayList<>();
+			stateRightOperands.add(stateRightOperand);
 			Condition stateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.STATE, Operator.EQUALS,
-					stateRightOperand, null);
+					stateRightOperands, null);
 			constraints.add(stateConstraint);
 			return true;
 		}
@@ -285,8 +295,10 @@ public class RecievedOdrlPolicy {
 	public boolean addUserRoleCondition() {
 		if (role != "") {
 			RightOperand userRoleRightOperand = new RightOperand(role, RightOperandType.STRING);
+			ArrayList<RightOperand> userRoleRightOperands = new ArrayList<>();
+			userRoleRightOperands.add(userRoleRightOperand);
 			Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE, Operator.EQUALS,
-					userRoleRightOperand, null);
+					userRoleRightOperands, null);
 			constraints.add(userRoleConstraint);
 			return true;
 		}
@@ -296,8 +308,10 @@ public class RecievedOdrlPolicy {
 	public boolean addSecurityLevelCondition() {
 		if (securityLevel != "") {
 			RightOperand userSecurityLevelRightOperand = new RightOperand(securityLevel, RightOperandType.STRING);
+			ArrayList<RightOperand> userSecurityLevelRightOperands = new ArrayList<>();
+			userSecurityLevelRightOperands.add(userSecurityLevelRightOperand);
 			Condition userSecurityLevelConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SECURITY_LEVEL, Operator.EQUALS,
-					userSecurityLevelRightOperand, null);
+					userSecurityLevelRightOperands, null);
 			constraints.add(userSecurityLevelConstraint);
 			return true;
 		}
@@ -307,8 +321,10 @@ public class RecievedOdrlPolicy {
 	public boolean addPurposeCondition() {
 		if (purpose != "") {
 			RightOperand purposeRightOperand = new RightOperand(purpose, RightOperandType.ANYURI);
+			ArrayList<RightOperand> purposeRightOperands = new ArrayList<>();
+			purposeRightOperands.add(purposeRightOperand);
 			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.SAME_AS,
-					purposeRightOperand, null);
+					purposeRightOperands, null);
 			constraints.add(purposeConstraint);
 			return true;
 		}
@@ -318,8 +334,10 @@ public class RecievedOdrlPolicy {
 	public boolean addEventCondition() {
 		if (event != "") {
 			RightOperand eventRightOperand = new RightOperand(event, RightOperandType.ANYURI);
+			ArrayList<RightOperand> eventRightOperands = new ArrayList<>();
+			eventRightOperands.add(eventRightOperand);
 			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.SAME_AS,
-					eventRightOperand, null);
+					eventRightOperands, null);
 			constraints.add(eventConstraint);
 			return true;
 		}
@@ -330,18 +348,22 @@ public class RecievedOdrlPolicy {
 		if (restrictTimeIntervalStart != "") {
 			RightOperand rightOperand = new RightOperand();
 			rightOperand.setType(RightOperandType.INTERVAL);
-			RightOperandEntity startEntity = new RightOperandEntity(EntityType.BEGIN, restrictTimeIntervalStart,
-					RightOperandType.DATETIMESTAMP);
-			RightOperandEntity endEntity = new RightOperandEntity(EntityType.BEGIN, restrictTimeIntervalEnd,
-					RightOperandType.DATETIMESTAMP);
-			endEntity.setEntityType(EntityType.END);
-			endEntity.setDataType(RightOperandType.DATETIMESTAMP);
+			RightOperandEntity startInnerEntity = new RightOperandEntity(EntityType.DATETIME, restrictTimeIntervalStart, RightOperandType.DATETIMESTAMP);
+			RightOperandEntity startEntity = new RightOperandEntity(EntityType.BEGIN, startInnerEntity,
+					RightOperandType.INSTANT);
+
+			RightOperandEntity endInnerEntity = new RightOperandEntity(EntityType.DATETIME, restrictTimeIntervalEnd, RightOperandType.DATETIMESTAMP);
+			RightOperandEntity endEntity = new RightOperandEntity(EntityType.END, endInnerEntity,
+					RightOperandType.INSTANT);
+
 			ArrayList<RightOperandEntity> entities = new ArrayList<>();
 			entities.add(startEntity);
 			entities.add(endEntity);
 			rightOperand.setEntities(entities);
+			ArrayList<RightOperand> rightOperands = new ArrayList<>();
+			rightOperands.add(rightOperand);
 			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT,
-					LeftOperand.DATE_TIME, Operator.TEMPORAL_EQUALS, rightOperand, null);
+					LeftOperand.DATE_TIME, Operator.TEMPORAL_EQUALS, rightOperands, null);
 			constraints.add(timeIntervalCondition);
 			return true;
 		}
@@ -352,15 +374,16 @@ public class RecievedOdrlPolicy {
 		if (restrictEndTime != "") {
 			RightOperand rightOperand = new RightOperand();
 			rightOperand.setType(RightOperandType.INSTANT);
-			RightOperandEntity endEntity = new RightOperandEntity(EntityType.BEGIN, restrictEndTime,
+			RightOperandEntity endEntity = new RightOperandEntity(EntityType.DATETIME, restrictEndTime,
 					RightOperandType.DATETIMESTAMP);
-			endEntity.setEntityType(EntityType.END);
-			endEntity.setDataType(RightOperandType.DATETIMESTAMP);
+
 			ArrayList<RightOperandEntity> entities = new ArrayList<>();
 			entities.add(endEntity);
 			rightOperand.setEntities(entities);
+			ArrayList<RightOperand> rightOperands = new ArrayList<>();
+			rightOperands.add(rightOperand);
 			Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT,
-					LeftOperand.DATE_TIME, Operator.BEFORE, rightOperand, null);
+					LeftOperand.DATE_TIME, Operator.BEFORE, rightOperands, null);
 			constraints.add(dateTimeCondition);
 			return true;
 		}
@@ -370,8 +393,10 @@ public class RecievedOdrlPolicy {
 	public boolean addPaymentCondition() {
 		if (payment != "") {
 			RightOperand paymentRightOperand = new RightOperand(String.valueOf(price), RightOperandType.DOUBLE);
+			ArrayList<RightOperand> paymentRightOperands = new ArrayList<>();
+			paymentRightOperands.add(paymentRightOperand);
 			Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQ,
-					paymentRightOperand, null);
+					paymentRightOperands, null);
 			paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
 			paymentCondition.setContract(payment);
 			constraints.add(paymentCondition);
@@ -385,7 +410,8 @@ public class RecievedOdrlPolicy {
 		RightOperand elapsedTimeRightOperand = new RightOperand();
 		elapsedTimeRightOperand.setType(RightOperandType.DURATIONENTITY);
 		if (specifyBeginTime != "" ) {
-			RightOperandEntity beginEntity = new RightOperandEntity(EntityType.BEGIN, specifyBeginTime, RightOperandType.DATETIMESTAMP);
+			RightOperandEntity beginInnerEntity = new RightOperandEntity(EntityType.DATETIME, specifyBeginTime, RightOperandType.DATETIMESTAMP);
+			RightOperandEntity beginEntity = new RightOperandEntity(EntityType.BEGIN, beginInnerEntity, RightOperandType.INSTANT);
 			durationEntities.add(beginEntity);
 		}
 
@@ -416,7 +442,9 @@ public class RecievedOdrlPolicy {
 
 		if (durationEntities.size() >0) {
 			elapsedTimeRightOperand.setEntities(durationEntities);
-			Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.SHORTER_EQ, elapsedTimeRightOperand, null);
+			ArrayList<RightOperand> elapsedTimeRightOperands = new ArrayList<>();
+			elapsedTimeRightOperands.add(elapsedTimeRightOperand);
+			Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME, Operator.SHORTER_EQ, elapsedTimeRightOperands, null);
 			constraints.add(elapsedTimeConstraint);
 			return true;
 		}return false;
@@ -426,7 +454,9 @@ public class RecievedOdrlPolicy {
 	public boolean addCounterCondition() {
 		if (counter != "") {
 			RightOperand rightOperand = new RightOperand(counter, RightOperandType.DECIMAL);
-			Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ, rightOperand, null);
+			ArrayList<RightOperand> rightOperands = new ArrayList<>();
+			rightOperands.add(rightOperand);
+			Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ, rightOperands, null);
 			constraints.add(countCondition);
 			return true;
 		}
@@ -436,8 +466,10 @@ public class RecievedOdrlPolicy {
 	public boolean addTimeAndDate() {
 		if (timeAndDate != "") {
 			RightOperand dateTimeRightOperand = new RightOperand(timeAndDate, RightOperandType.DATETIMESTAMP);
+			ArrayList<RightOperand> dateTimeRightOperands = new ArrayList<>();
+			dateTimeRightOperands.add(dateTimeRightOperand);
 			Condition dateTimeRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DATE_TIME,
-					Operator.BEFORE, dateTimeRightOperand, null);
+					Operator.BEFORE, dateTimeRightOperands, null);
 			constraints.add(dateTimeRefinement);
 			return true;
 		}
@@ -447,8 +479,10 @@ public class RecievedOdrlPolicy {
 	public boolean addTime() {
 		if (time != "") {
 			RightOperand delayPeriodRightOperand = new RightOperand(time, RightOperandType.DURATION);
+			ArrayList<RightOperand> delayPeriodRightOperands = new ArrayList<>();
+			delayPeriodRightOperands.add(delayPeriodRightOperand);
 			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY,
-					Operator.DURATION_EQ, delayPeriodRightOperand, null);
+					Operator.DURATION_EQ, delayPeriodRightOperands, null);
 			delayPeriodRefinement.setUnit(TimeUnit.valueOf(timeUnit).toString());
 			constraints.add(delayPeriodRefinement);
 			return true;
