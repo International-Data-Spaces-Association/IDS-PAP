@@ -13,6 +13,7 @@ import "codemirror/addon/lint/lint.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import 'codemirror/mode/javascript/javascript.js';
+import { useHistory } from "react-router-dom";
 
 require("codemirror/theme/eclipse.css");
 
@@ -36,23 +37,29 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 window.onload = function() {
-  var reloading = sessionStorage.getItem("reloading");
-  if (reloading === "Yes") {
+  var reloading = sessionStorage.getItem("jsonPolicy");
+  if (reloading === "null2") {
       sessionStorage.removeItem("reloading");
       window.history.back();
   }
 }
 
 export default function ODRLCreator() {
+  const history = useHistory();
   var stateLocal = useLocation().state
   if (stateLocal === undefined) {
+    if (typeof(stateLocal) === 'undefined') {
+      sessionStorage.removeItem("jsonPolicy");
+      history.push({
+        pathname: '/'
+      })
+    }
     stateLocal = {jsonPolicy: sessionStorage.getItem("jsonPolicy"),
     dtPolicy: sessionStorage.getItem("dtPolicy")}
   }
   const [policy, setPolicy] = useState(stateLocal.jsonPolicy);
   const [dtPolicy, setDtPolicy] = useState(stateLocal.dtPolicy, null, 2);
   const classes = useStyle();
-  sessionStorage.setItem("reloading", "No");
   sessionStorage.setItem("jsonPolicy", stateLocal.jsonPolicy)
   sessionStorage.setItem("dtPolicy", stateLocal.dtPolicy)
 

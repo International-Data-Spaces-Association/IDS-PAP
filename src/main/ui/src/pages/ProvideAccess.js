@@ -6,7 +6,7 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+import { OdrlPolicy, OdrlPolicyZero } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 
 import FormComponents from "../components/FormComponents";
@@ -48,29 +48,11 @@ export default function ProvideAccess() {
     setAnchorEl(null);
   };
   const removeEnteredData = (id1, id2) => {
+    setValues({ ...values, [id1]: OdrlPolicyZero[id1], [id2]: OdrlPolicyZero[id2] });
   };
 
   const resetStates = () => {
     setSelectedComponents({ ...selected_components });
-
-    values.location = "";
-    values.application = "";
-    values.connector = "";
-    values.state = "";
-    values.role = "";
-    values.securityLevel = "";
-    values.purpose = "";
-    values.event = "";
-    values.restrictTimeIntervalStart = "";
-    values.restrictTimeIntervalEnd = "";
-    values.restrictEndTime = "";
-    values.payment = "";
-    values.price = "";
-    values.specifyBeginTime = "";
-    values.durationHour = "";
-    values.durationDay = "";
-    values.durationMonth = "";
-    values.durationYear = "";
   };
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });

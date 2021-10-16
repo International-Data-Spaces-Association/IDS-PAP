@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Input from "../components/controls/Input";
 import ItemPicker from "../components/controls/ItemPicker";
 import {
@@ -12,11 +12,13 @@ import {
 import Date from "../components/controls/Date";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
+import MultiselectInputField from "../components/controls/MultiselectInputField";
 
 export default function FormComponents(props) {
   const {
     selectedComponents,
     values,
+    setValues,
     errors,
     handleInputChange,
     removeComponent,
@@ -29,12 +31,13 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"location"}>
             <Title label="Restrict Location" />
-            <Input
+            <MultiselectInputField
               name="location"
-              value={values.location}
+              values={values}
+              setValues={setValues}
               placeholder="e.g. https://ontologi.es/place/DE"
               onChange={handleInputChange}
-              error={errors.location}
+              error={errors}
             />
             <Remove
               onClick={() => {
@@ -48,22 +51,14 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"application"}>
             <Title label="Restrict Application" />
-            <Input
+            <MultiselectInputField
               name="application"
-              value={values.application}
-              placeholder="e.g.  http://example.com/ids-app/data-app"
+              values={values}
+              setValues={setValues}
+              placeholder="e.g. http://example.com/ids-app/data-app"
               onChange={handleInputChange}
-              error={errors.application}
+              error={errors}
             />
-            {/*
-              <Input
-                name="application"
-                value={values.application}
-                placeholder="e.g. https://wikidata.org/wiki/Q136218 (ZIP)"
-                onChange={handleInputChange}
-                error={errors.application}
-              />
-              */}
             <Remove
               onClick={() => {
                 removeComponent("application");
@@ -76,12 +71,13 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"connector"}>
             <Title label="Restrict Connector" />
-            <Input
+            <MultiselectInputField
               name="connector"
-              value={values.connector}
-              placeholder="e.g. http://example.com/ids-connector/connector1"
+              values={values}
+              setValues={setValues}
+              placeholder="e.g. http://example.com/ids-connector/connector"
               onChange={handleInputChange}
-              error={errors.connector}
+              error={errors}
             />
             {}
             <Remove
@@ -96,12 +92,15 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"securityLevel"}>
             <Title label="Restrict Security Level" />
-            <ItemPicker
+            <MultiselectInputField
               name="securityLevel"
-              defaultValue=""
-              ItemList={security_level_list}
+              values={values}
+              setValues={setValues}
+              placeholder=""
               onChange={handleInputChange}
-              error={errors.securityLevel}
+              error={errors}
+              inputType={"itempicker"}
+              itemList={security_level_list}
             />
             {}
             <Remove
@@ -116,12 +115,15 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"state"}>
             <Title label="Restrict State" />
-            <ItemPicker
+            <MultiselectInputField
               name="state"
-              defaultValue=""
-              ItemList={state_list}
+              values={values}
+              setValues={setValues}
+              placeholder=""
               onChange={handleInputChange}
-              error={errors.state}
+              error={errors}
+              inputType={"itempicker"}
+              itemList={state_list}
             />
             {}
             <Remove
@@ -136,13 +138,17 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"role"}>
             <Title label="Restrict User Role" />
-            <ItemPicker
+            <MultiselectInputField
               name="role"
-              defaultValue=""
-              ItemList={role_list}
+              values={values}
+              setValues={setValues}
+              placeholder=""
               onChange={handleInputChange}
-              error={errors.role}
+              error={errors}
+              inputType={"itempicker"}
+              itemList={role_list}
             />
+
             {}
             <Remove
               onClick={() => {
@@ -159,12 +165,15 @@ export default function FormComponents(props) {
               label="Restrict Purpose"
               subtitle="Any certified application in the market place uses the data for a specified purpose. \n You can restrict the usage of your data to specific applications by choosing your intended purpose from the list below*:"
             />
-            <ItemPicker
+            <MultiselectInputField
               name="purpose"
-              defaultValue=""
-              ItemList={purpose_list}
+              values={values}
+              setValues={setValues}
+              placeholder=""
               onChange={handleInputChange}
-              error={errors.purpose}
+              error={errors}
+              inputType={"itempicker"}
+              itemList={purpose_list}
             />
             <Remove
               onClick={() => {
@@ -178,24 +187,14 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"event"}>
             <Title label="Restrict Event" />
-
-            <Input
+            <MultiselectInputField
               name="event"
-              value={values.event}
+              values={values}
+              setValues={setValues}
               placeholder="e.g. http://example.com/ids-event:exhibition"
               onChange={handleInputChange}
-              error={errors.event}
+              error={errors}
             />
-            {/*
-                                      <Input
-                                        name="event"
-                                        value={values.event}
-                                        placeholder="e.g. https://wikidata.org/wiki/Q136218 (ZIP)"
-                                        onChange={handleInputChange}
-                                        error={errors.event}
-                                      />
-                                      */}
-
             <Remove
               onClick={() => {
                 removeComponent("event");
@@ -227,7 +226,7 @@ export default function FormComponents(props) {
               sm={11}
               md={3}
             />
-            <Grid item sm={0} md={4} />
+            <Grid item md={4} />
             <Remove
               onClick={() => {
                 removeEnteredData(
@@ -264,7 +263,7 @@ export default function FormComponents(props) {
               sm={11}
               md={3}
             />
-            <Grid item sm={0} md={4} />
+            <Grid item md={4} />
             <Remove
               onClick={() => {
                 removeEnteredData("price", "payment");
@@ -308,7 +307,7 @@ export default function FormComponents(props) {
               sm={11}
               md={3}
             />
-            <Grid item sm={0} md={8} />
+            <Grid item md={8} />
             <Remove
               onClick={() => {
                 removeEnteredData("restrictEndTime");
@@ -376,7 +375,7 @@ export default function FormComponents(props) {
               sm={11}
               md={3}
             />
-            <Grid item sm={0} md={4} />
+            <Grid item md={4} />
             <Remove
               onClick={() => {
                 removeEnteredData(
@@ -391,8 +390,8 @@ export default function FormComponents(props) {
             />
           </Grid>
         );
-        default:
-            return null
+      default:
+        return null;
     }
   });
   return <>{components.map((c) => c())}</>;

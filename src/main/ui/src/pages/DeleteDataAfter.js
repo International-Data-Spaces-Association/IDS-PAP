@@ -170,7 +170,7 @@ export default function DeleteDataAfter() {
                   sm={11}
                   md={3}
                 />
-                <Grid item sm={0} md={8} />
+                <Grid item md={8} />
                 <Remove onClick={resetStates} />
               </Grid>
             </>

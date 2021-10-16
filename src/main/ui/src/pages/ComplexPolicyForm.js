@@ -6,7 +6,7 @@ import PageHeader from "../components/PageHeader";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+import { OdrlPolicy, OdrlPolicyZero } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -37,9 +37,8 @@ export default function ComplexPolicyForm() {
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents, setSelectedComponents] = useState(
-    selected_components
-  );
+  const [selectedComponents, setSelectedComponents] =
+    useState(selected_components);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleInputChange = (e) => {
@@ -51,22 +50,15 @@ export default function ComplexPolicyForm() {
   };
   const handleSubmit = (e) => {
     const dict = selectedComponents.availableComponents;
-    var state = {}
+    var state = {};
     dict.forEach(function (item) {
-      state[item.id] = !item.isVisible
+      state[item.id] = !item.isVisible;
     });
-    Submit(
-      "/policy/ComplexPolicyForm",
-      values,
-      state,
-      setErrors,
-      history,
-      e
-    );
+    Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
   };
 
   const resetStates = () => {
-    setValues({ ...OdrlPolicy });
+    setValues({ ...OdrlPolicyZero });
     setSelectedComponents({ ...selected_components });
   };
 
@@ -91,7 +83,11 @@ export default function ComplexPolicyForm() {
     });
   };
   const removeEnteredData = (id1, id2) => {
-    setValues({ ...values, [id1]: "", [id2]: "" });
+    setValues({
+      ...values,
+      [id1]: OdrlPolicyZero[id1],
+      [id2]: OdrlPolicyZero[id2],
+    });
   };
 
   return (
@@ -111,6 +107,7 @@ export default function ComplexPolicyForm() {
             <FormComponents
               selectedComponents={selectedComponents}
               values={values}
+              setValues={setValues}
               errors={errors}
               handleInputChange={handleInputChange}
               removeComponent={removeComponent}

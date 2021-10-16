@@ -35,15 +35,15 @@ public class RecievedOdrlPolicy {
 	private String target;
 	private String provider;
 	private String consumer;
-	private String location;
+	private MultiSelectInputField location;
 	private String system;
-	private String application;
-	private String role;
-	private String securityLevel;
-	private String connector;
-	private String state;
-	private String purpose;
-	private String event;
+	private MultiSelectInputField application;
+	private MultiSelectInputField role;
+	private MultiSelectInputField securityLevel;
+	private MultiSelectInputField connector;
+	private MultiSelectInputField state;
+	private MultiSelectInputField purpose;
+	private MultiSelectInputField event;
 	private String interval;
 	private String payment;
 	private String price;
@@ -92,7 +92,7 @@ public class RecievedOdrlPolicy {
 		return consumer;
 	}
 
-	public String getLocation() {
+	public MultiSelectInputField getLocation() {
 		return location;
 	}
 
@@ -100,23 +100,23 @@ public class RecievedOdrlPolicy {
 		return system;
 	}
 
-	public String getApplication() {
+	public MultiSelectInputField getApplication() {
 		return application;
 	}
 
-	public String getConnector() {return connector;}
+	public MultiSelectInputField getConnector() {return connector;}
 
-	public String getSecurityLevel() {return securityLevel;}
+	public MultiSelectInputField getSecurityLevel() {return securityLevel;}
 
-	public String getRole() {return role;}
+	public MultiSelectInputField getRole() {return role;}
 
-	public String getState() {return state;}
+	public MultiSelectInputField getState() {return state;}
 
-	public String getPurpose() {
+	public MultiSelectInputField getPurpose() {
 		return purpose;
 	}
 
-	public String getEvent() {
+	public MultiSelectInputField getEvent() {
 		return event;
 	}
 
@@ -228,12 +228,14 @@ public class RecievedOdrlPolicy {
 
 	// policy components
 	public boolean addLocationCondition() {
-		if (location != "") {
-			RightOperand locationRightOperand = new RightOperand(location, RightOperandType.ANYURI);
+		if (location != null && location.getInput().size() >0 && !location.getInput().get(0).equals("")) {
 			ArrayList<RightOperand> locationRightOperands = new ArrayList<>();
-			locationRightOperands.add(locationRightOperand);
-			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION
-					, Operator.SAME_AS, locationRightOperands, null);
+			location.getInput().forEach((e) -> {
+				RightOperand locationRightOperand = new RightOperand(e, RightOperandType.ANYURI);
+				locationRightOperands.add(locationRightOperand);
+			});
+			//Operator.valueOf(location.getOp())
+			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION, Operator.SAME_AS, locationRightOperands, null);
 			constraints.add(locationConstraint);
 			return true;
 		}
@@ -254,12 +256,13 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addConnectorCondition() {
-		if (connector != "") {
-			RightOperand connectorRightOperand = new RightOperand(connector, RightOperandType.ANYURI);
+		if (connector != null && connector.getInput().size() >0 && !connector.getInput().get(0).equals("")) {
 			ArrayList<RightOperand> connectorRightOperands = new ArrayList<>();
-			connectorRightOperands.add(connectorRightOperand);
-			Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.SAME_AS,
-					connectorRightOperands, null);
+			connector.getInput().forEach((e) -> {
+				RightOperand connectorRightOperand = new RightOperand(e, RightOperandType.ANYURI);
+				connectorRightOperands.add(connectorRightOperand);
+			});
+			Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.SAME_AS, connectorRightOperands, null);
 			constraints.add(connectorConstraint);
 			return true;
 		}
@@ -267,10 +270,12 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addApplicationCondition() {
-		if (application != "") {
-			RightOperand applicationRightOperand = new RightOperand(application, RightOperandType.ANYURI);
+		if (application != null && application.getInput().size() >0 && !application.getInput().get(0).equals("")) {
 			ArrayList<RightOperand> applicationRightOperands = new ArrayList<>();
-			applicationRightOperands.add(applicationRightOperand);
+			application.getInput().forEach((e) -> {
+				RightOperand applicationRightOperand = new RightOperand(e, RightOperandType.ANYURI);
+				applicationRightOperands.add(applicationRightOperand);
+			});
 			Condition applicationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.APPLICATION, Operator.SAME_AS,
 					applicationRightOperands, null);
 			constraints.add(applicationConstraint);
@@ -280,10 +285,12 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addStateCondition() {
-		if (state != "") {
-			RightOperand stateRightOperand = new RightOperand(state, RightOperandType.STRING);
+		if (state != null && state.getInput().size() >0 && !state.getInput().get(0).equals("")) {
 			ArrayList<RightOperand> stateRightOperands = new ArrayList<>();
-			stateRightOperands.add(stateRightOperand);
+			state.getInput().forEach((e) -> {
+				RightOperand stateRightOperand = new RightOperand(e, RightOperandType.STRING);
+				stateRightOperands.add(stateRightOperand);
+			});
 			Condition stateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.STATE, Operator.EQUALS,
 					stateRightOperands, null);
 			constraints.add(stateConstraint);
@@ -293,10 +300,12 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addUserRoleCondition() {
-		if (role != "") {
-			RightOperand userRoleRightOperand = new RightOperand(role, RightOperandType.STRING);
+		if (role != null && role.getInput().size() >0 && !role.getInput().get(0).equals("")) {
 			ArrayList<RightOperand> userRoleRightOperands = new ArrayList<>();
-			userRoleRightOperands.add(userRoleRightOperand);
+			role.getInput().forEach((e) -> {
+				RightOperand userRoleRightOperand = new RightOperand(e, RightOperandType.STRING);
+				userRoleRightOperands.add(userRoleRightOperand);
+			});
 			Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE, Operator.EQUALS,
 					userRoleRightOperands, null);
 			constraints.add(userRoleConstraint);
@@ -306,10 +315,12 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addSecurityLevelCondition() {
-		if (securityLevel != "") {
-			RightOperand userSecurityLevelRightOperand = new RightOperand(securityLevel, RightOperandType.STRING);
+		if (securityLevel != null && securityLevel.getInput().size() >0 && !securityLevel.getInput().get(0).equals("")) {
 			ArrayList<RightOperand> userSecurityLevelRightOperands = new ArrayList<>();
-			userSecurityLevelRightOperands.add(userSecurityLevelRightOperand);
+			securityLevel.getInput().forEach((e) -> {
+				RightOperand userSecurityLevelRightOperand = new RightOperand(e, RightOperandType.STRING);
+				userSecurityLevelRightOperands.add(userSecurityLevelRightOperand);
+			});
 			Condition userSecurityLevelConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SECURITY_LEVEL, Operator.EQUALS,
 					userSecurityLevelRightOperands, null);
 			constraints.add(userSecurityLevelConstraint);
@@ -319,10 +330,12 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addPurposeCondition() {
-		if (purpose != "") {
-			RightOperand purposeRightOperand = new RightOperand(purpose, RightOperandType.ANYURI);
+		if (purpose != null && purpose.getInput().size() >0 && !purpose.getInput().get(0).equals("")) {
 			ArrayList<RightOperand> purposeRightOperands = new ArrayList<>();
-			purposeRightOperands.add(purposeRightOperand);
+			purpose.getInput().forEach((e) -> {
+				RightOperand purposeRightOperand = new RightOperand(e, RightOperandType.ANYURI);
+				purposeRightOperands.add(purposeRightOperand);
+			});
 			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.SAME_AS,
 					purposeRightOperands, null);
 			constraints.add(purposeConstraint);
@@ -332,10 +345,12 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addEventCondition() {
-		if (event != "") {
-			RightOperand eventRightOperand = new RightOperand(event, RightOperandType.ANYURI);
+		if (event != null && event.getInput().size() >0 && !event.getInput().get(0).equals("")) {
 			ArrayList<RightOperand> eventRightOperands = new ArrayList<>();
-			eventRightOperands.add(eventRightOperand);
+			event.getInput().forEach((e) -> {
+				RightOperand eventRightOperand = new RightOperand(e, RightOperandType.ANYURI);
+				eventRightOperands.add(eventRightOperand);
+			});
 			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.SAME_AS,
 					eventRightOperands, null);
 			constraints.add(eventConstraint);

@@ -88,3 +88,11 @@ export const data_consumers = [
   { id: "", value: "" },
   { id: "Consumer Party", value: "http://ids.org/party/consumer-party" },
 ];
+
+export const operator_list = [
+{ id: "", value: "" },
+{id: "IS_ANY_OF", value: "idsc:IS_ANY_OF"},
+{id: "IS_ALL_OF", value: "idsc:IS_ALL_OF"},
+{id: "IS_NONE_OF", value: "idsc:IS_NONE_OF"},
+
+];

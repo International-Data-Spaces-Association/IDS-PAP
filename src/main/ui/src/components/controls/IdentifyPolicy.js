@@ -22,6 +22,7 @@ export default function IdentifyPolicy(props) {
         <Title label="Policy Type*" seperator={false}/>
         <ItemPicker
           name="policyType"
+          value={values.policyType}
           defaultValue="Agreement"
           ItemList={policy_types}
           onChange={handleInputChangeLocal}
@@ -60,6 +61,7 @@ export default function IdentifyPolicy(props) {
             <ItemPicker
               name="consumer"
               defaultValue=""
+              value={values.consumer}
               ItemList={data_consumers}
               onChange={handleInputChange}
               error={errors.consumer}

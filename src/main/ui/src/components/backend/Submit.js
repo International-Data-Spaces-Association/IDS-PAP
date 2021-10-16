@@ -1,4 +1,5 @@
 import axios from 'axios';
+const BASE_URL = 'http://localhost:9090';
 
 export default function Submit(url, values, states, setErrors, history ,e) {
   e.preventDefault();
@@ -8,8 +9,9 @@ export default function Submit(url, values, states, setErrors, history ,e) {
   }
     const isoValues = convertDateToIso(values, states)
     console.log(isoValues);
-    axios.post(url, isoValues)
+    axios.post(BASE_URL + url, isoValues)
     .then((response) => {
+      console.log(response)
       let policies = response.data.split('DTPOLICY:');
       var dict = {
         jsonPolicy: "",
@@ -27,7 +29,7 @@ export default function Submit(url, values, states, setErrors, history ,e) {
 };
 
 export function jsonOdrlPolicy(url, values, setPolicy) {
-    axios.post(url, values, {
+    axios.post(BASE_URL + url, values, {
       headers: {
         // Overwrite Axios's automatically set Content-Type
         'Content-Type': 'application/json'
@@ -60,15 +62,15 @@ function addDateSuffix(date) {
 function validation(values, states, setErrors) {
     let temp = {};
     checkHeader(temp, values)
-    temp.location = states.location ? isValidUrl(values.location) : "";
+    //temp.location = states.location ? isValidUrl(values.location) : "";
     temp.system = states.system ? isValidUrl(values.system) : "";
-    temp.application = states.application ? isValidUrl(values.application) : "";
-    temp.connector = states.connector ? isValidUrl(values.connector) : "";
-    temp.role = states.role ? notEmpty(values.role) : "";
-    temp.state = states.state ? notEmpty(values.state) : "";
-    temp.securityLevel = states.securityLevel ? notEmpty(values.securityLevel) : "";
-    temp.event = states.event ? isValidUrl(values.event) : "";
-    temp.purpose = states.purpose ? notEmpty(values.purpose) : "";
+    //temp.application = states.application ? isValidUrl(values.application) : "";
+    //temp.connector = states.connector ? isValidUrl(values.connector) : "";
+    //temp.role = states.role ? notEmpty(values.role) : "";
+    //temp.state = states.state ? notEmpty(values.state) : "";
+    //temp.securityLevel = states.securityLevel ? notEmpty(values.securityLevel) : "";
+    //temp.event = states.event ? isValidUrl(values.event) : "";
+    //temp.purpose = states.purpose ? notEmpty(values.purpose) : "";
     temp.restrictTimeIntervalStart = states.interval ? isValidDate(values.restrictTimeIntervalStart): "";
     temp.restrictTimeIntervalEnd = states.interval ? isValidDateInterval(values.restrictTimeIntervalStart, values.restrictTimeIntervalEnd): "";
     temp.payment = states.payment ? notEmpty(values.payment) : "";
@@ -92,7 +94,7 @@ function validation(values, states, setErrors) {
     temp.policy = states.policy? isValidUrl(values.policy):"";
     temp.timeAndDate = states.timeDate ? isValidDate(values.timeAndDate):"";
     temp.specifyBeginTime = states.specifyBeginTime ? isValidDate(values.specifyBeginTime): "";
-    temp.logLevel = states.logLevel ? notEmpty(values.logLevel):"";
+    //temp.logLevel = states.logLevel ? notEmpty(values.logLevel):"";
     temp.notificationLevel = states.notificationLevel ? notEmpty(values.notificationLevel):"";
     temp.artifactState = states.artifactState ? notEmpty(values.artifactState):"";
     temp.restrictEndTime = states.endTime ? isValidDate(values.restrictEndTime): "";
