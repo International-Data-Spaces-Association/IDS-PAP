@@ -2,16 +2,16 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 
 export default function Title(props) {
-  const { label, seperator = true } = props;
+  const { label, xs=11, seperator = true } = props;
   if (seperator) {
     return (
-      <Grid item xs={11} className="gridSubItemWithLine">
+      <Grid item xs={xs} className="gridSubItemWithLine">
         <Typography variant="subtitle2" className="extraSpaceAfterTitle">{label}</Typography>
       </Grid>
     );
   } else {
     return (
-      <Grid item xs={11} className="gridSubItem">
+      <Grid item xs={xs} className="gridSubItem">
         <Typography variant="subtitle2" className="extraSpaceAfterTitle">{label}</Typography>
       </Grid>
     );

@@ -1,20 +1,22 @@
 import React, { useState } from "react";
-import { Grid, MenuItem, Menu, Button } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import { useStyle } from "../components/Style";
 import { useHistory } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import { OdrlPolicy, OdrlPolicyZero } from "../components/backend/OdrlPolicy";
+import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import FormComponents from "../components/FormComponents";
-import MenuItems from "../components/controls/MenuItems";
+import AddRestrictions from "../components/AddRestrictions";
+import Duty from "../components/controls/Duty";
 
 export default function ComplexPolicyForm() {
+
   const selected_components = {
+    type: "restrictions",
     order: [],
     availableComponents: [
       { id: "application", name: "Application", isVisible: true },
@@ -33,22 +35,52 @@ export default function ComplexPolicyForm() {
     ],
   };
 
+  const selected_preduties_components = {
+    type: "preduties",
+    order: [],
+    availableComponents: [
+      { id: "delete", name: "Delete Data After", isVisible: true },
+      { id: "log", name: "Log Data Usage", isVisible: true },
+      { id: "inform", name: "Inform Party", isVisible: true },
+    ],
+  };
+
+  const selected_postduties_components = {
+    type: "postduties",
+    order: [],
+    availableComponents: [
+      { id: "delete", name: "Delete Data After", isVisible: true },
+      { id: "log", name: "Log Data Usage", isVisible: true },
+      { id: "inform", name: "Inform Party", isVisible: true },
+    ],
+  };
+
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] =
     useState(selected_components);
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedPreDuties, setSelectedPreDuties] = useState(
+    selected_preduties_components
+  );
+  const [selectedPostDuties, setSelectedPostDuties] = useState(
+    selected_postduties_components
+  );
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   const handleSubmit = (e) => {
+    OdrlPolicy.location_input = [""]
+    OdrlPolicy.application_input = [""]
+    OdrlPolicy.connector_input = [""]
+    OdrlPolicy.role_input = [""]
+    OdrlPolicy.purpose_input = [""]
+    OdrlPolicy.event_input = [""]
+    OdrlPolicy.state_input = [""]
+    OdrlPolicy.securityLevel_input = [""]
     const dict = selectedComponents.availableComponents;
     var state = {};
     dict.forEach(function (item) {
@@ -58,35 +90,50 @@ export default function ComplexPolicyForm() {
   };
 
   const resetStates = () => {
-    setValues({ ...OdrlPolicyZero });
+    OdrlPolicy.location_input = [""]
+    OdrlPolicy.application_input = [""]
+    OdrlPolicy.connector_input = [""]
+    OdrlPolicy.role_input = [""]
+    OdrlPolicy.purpose_input = [""]
+    OdrlPolicy.event_input = [""]
+    OdrlPolicy.state_input = [""]
+    OdrlPolicy.securityLevel_input = [""]
+    setValues({ ...OdrlPolicy });
     setSelectedComponents({ ...selected_components });
+    setSelectedPostDuties({ ...selected_postduties_components });
+    setSelectedPreDuties({ ...selected_preduties_components });
   };
 
-  const removeComponent = (id) => {
-    const dict = selectedComponents.availableComponents;
-    const list = selectedComponents.order;
-    dict.forEach(function (item) {
-      if (item.id === id) {
-        item.isVisible = true;
+  const removeComponent = (type, id) => {
+    const states = [selectedComponents, selectedPostDuties, selectedPreDuties];
+    const setStates = [setSelectedComponents, setSelectedPostDuties, setSelectedPreDuties];
+    states.forEach(function (state, index) {
+      if (state.type == type) {
+        const dict = state.availableComponents;
+        const list = state.order;
+        const setState = setStates[index]
+
+        dict.forEach(function (item, key) {
+          if (item.id === id) {
+            const obj = JSON.parse(JSON.stringify(state))
+            obj.order = list.filter((e) => e !== id);
+            obj.availableComponents[key].isVisible = true
+            setState({...obj});
+          }
+        });
       }
+
     });
-    selectedComponents.order = list.filter((e) => e !== id);
   };
 
-  const addAll = () => {
-    const dict = selectedComponents.availableComponents;
-    dict.forEach(function (item) {
-      if (item.isVisible) {
-        item.isVisible = false;
-        selectedComponents.order.push(item.id);
+  const removeEnteredData = (ids) => {
+    ids.forEach(function (id) {
+      if (OdrlPolicy[id] instanceof Array) {
+        values[id] = [""]
+        OdrlPolicy[id] = [""];
+      } else {
+        values[id] = ""
       }
-    });
-  };
-  const removeEnteredData = (id1, id2) => {
-    setValues({
-      ...values,
-      [id1]: OdrlPolicyZero[id1],
-      [id2]: OdrlPolicyZero[id2],
     });
   };
 
@@ -104,7 +151,8 @@ export default function ComplexPolicyForm() {
               handleInputChange={handleInputChange}
               errors={errors}
             />
-            <FormComponents
+
+            <AddRestrictions
               selectedComponents={selectedComponents}
               values={values}
               setValues={setValues}
@@ -112,49 +160,33 @@ export default function ComplexPolicyForm() {
               handleInputChange={handleInputChange}
               removeComponent={removeComponent}
               removeEnteredData={removeEnteredData}
+              classes={classes}
+              type={"preduties"}
             />
-            {Object.values(selectedComponents.availableComponents).some(
-              (x) => x.isVisible === true
-            ) ? (
-              <>
-                <Grid item xs={12} container justify="center">
-                  <Grid item xs={2}>
-                    <Button
-                      color="primary"
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      onClick={handleClick}
-                      className={classes.addBtn}
-                      id="Add Component"
-                    >
-                      Add Restriction
-                    </Button>
-                  </Grid>
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={() => setAnchorEl(null)}
-                  >
-                    <MenuItems
-                      selectedComponents={selectedComponents}
-                      setAnchorEl={setAnchorEl}
-                    />
-
-                    <MenuItem
-                      onClick={() => {
-                        addAll();
-                        setAnchorEl(null);
-                      }}
-                      id="all"
-                    >
-                      All
-                    </MenuItem>
-                  </Menu>
-                </Grid>
-              </>
-            ) : null}
+            <Duty
+              selectedComponents={selectedPreDuties}
+              values={values}
+              setValues={setValues}
+              errors={errors}
+              handleInputChange={handleInputChange}
+              removeComponent={removeComponent}
+              removeEnteredData={removeEnteredData}
+              classes={classes}
+              name={"Add Preduty"}
+              type={"preduties"}
+            />
+            <Duty
+              selectedComponents={selectedPostDuties}
+              values={values}
+              setValues={setValues}
+              errors={errors}
+              handleInputChange={handleInputChange}
+              removeComponent={removeComponent}
+              removeEnteredData={removeEnteredData}
+              classes={classes}
+              name={"Add Postduty"}
+              type={"postduties"}
+            />
 
             <Grid container>
               <Grid item xs={2} xm={1}>

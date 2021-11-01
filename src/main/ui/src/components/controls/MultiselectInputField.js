@@ -27,29 +27,28 @@ export default function MultiselectInputField(props) {
     const id = e_name.match(numberPattern);
     var items = values;
     if (e_name.includes("op")) {
-      items[name].op = e.target.value;
+      items[name + "_op"] = e.target.value;
     } else if (e_name.includes("input")) {
-      items[name].input[id] = e.target.value;
+      items[name + "_input"][id] = e.target.value;
     }
     setValues({ ...items });
-    console.log(items);
   };
 
   const handleAddItem = (e) => {
     var items = values;
-    items[name].input.push("");
+    items[name + "_input"].push("");
     setValues({ ...items });
   };
   const handleRemoveItem = (index) => {
     const items = values;
     if (index !== -1) {
-      items[name].input.splice(index, 1);
+      items[name + "_input"].splice(index, 1);
       setValues({ ...items });
     }
     setValues({ ...items });
   };
 
-  if (values[name].input.length === 1) {
+  if (values[name + "_input"].length === 1) {
     return (
       <Grid item container xs={xs} sm={sm} md={md} spacing={1}>
         {inputType === "input" && (
@@ -57,7 +56,7 @@ export default function MultiselectInputField(props) {
             name={name + "_input_0"}
             label={""}
             placeholder={placeholder}
-            value={values[name].input[0]}
+            value={values[name + "_input"][0]}
             onChange={handleInputChange}
             xs={11}
             sm={11}
@@ -72,7 +71,7 @@ export default function MultiselectInputField(props) {
             md={11}
             label={""}
             ItemList={itemList}
-            value={values[name].input[0]}
+            value={values[name + "_input"][0]}
             onChange={handleInputChange}
           />
         )}
@@ -90,10 +89,10 @@ export default function MultiselectInputField(props) {
         </Grid>
       </Grid>
     );
-  } else if (values[name].input.length > 1) {
+  } else if (values[name + "_input"].length > 1) {
     const components = (
       <Grid item xs={xs} sm={sm} md={md}>
-        {values[name].input.map((data, id) => {
+        {values[name + "_input"].map((data, id) => {
           return (
             <Grid item container xs={12} spacing={1}>
               {id === 0 && (
@@ -118,7 +117,7 @@ export default function MultiselectInputField(props) {
                       md={9}
                       label={""}
                       ItemList={itemList}
-                      value={values[name].input[0]}
+                      value={values[name + "_input"][0]}
                       onChange={handleInputChange}
                     />
                   )}
@@ -129,7 +128,7 @@ export default function MultiselectInputField(props) {
                     md={2}
                     label={"Operator"}
                     ItemList={operator_list}
-                    value={values[name].op}
+                    value={values[name + "_op"]}
                     onChange={handleInputChange}
                   />
                 </>
@@ -174,7 +173,7 @@ export default function MultiselectInputField(props) {
                   <RemoveIcon />
                 </IconButton>
               </Grid>
-              {id + 1 === values[name].input.length && (
+              {id + 1 === values[name + "_input"].length && (
                 <Grid item container xs={12} justify="center" spacing={1}>
                   <Button
                     color="primary"
@@ -182,7 +181,7 @@ export default function MultiselectInputField(props) {
                     aria-haspopup="true"
                     id="Add Component"
                     onClick={() => {
-                      handleAddItem(values[name].input.length);
+                      handleAddItem(values[name + "_input"].length);
                     }}
                   >
                     Add {name}

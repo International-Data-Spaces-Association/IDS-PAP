@@ -91,8 +91,8 @@ export const data_consumers = [
 
 export const operator_list = [
 { id: "", value: "" },
-{id: "IS_ANY_OF", value: "idsc:IS_ANY_OF"},
-{id: "IS_ALL_OF", value: "idsc:IS_ALL_OF"},
-{id: "IS_NONE_OF", value: "idsc:IS_NONE_OF"},
+{id: "IS_ANY_OF", value: "IS_ANY_OF"},
+{id: "IS_ALL_OF", value: "IS_ALL_OF"},
+{id: "IS_NONE_OF", value: "IS_NONE_OF"},
 
 ];

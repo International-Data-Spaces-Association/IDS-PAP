@@ -1,18 +1,14 @@
 import React, { useState } from "react";
-import { Grid, Menu, MenuItem, Button } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import DeleteIcon from "@material-ui/icons/Delete";
-import Input from "../components/controls/Input";
-import Date from "../components/controls/Date";
 import { useHistory } from "react-router-dom";
 import { useStyle } from "../components/Style";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
-import Remove from "../components/controls/Remove";
-import Title from "../components/controls/Title";
-
+import DeleteData from "../components/controls/DeleteData";
 export default function DeleteDataAfter() {
   const selected_components = {
     duration: false,
@@ -24,14 +20,6 @@ export default function DeleteDataAfter() {
   const history = useHistory();
   const [selectedComponents] = useState(selected_components);
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   const resetStates = () => {
     for (var key in selectedComponents) {
       if (selectedComponents.hasOwnProperty(key)) {
@@ -45,10 +33,6 @@ export default function DeleteDataAfter() {
     durationMonth: "",
     durationYear: ""
     });
-  };
-  const handleSelectedClose = (e) => {
-    selectedComponents[e.target.id] = true;
-    setAnchorEl(null);
   };
 
   const handleInputChange = (e) => {
@@ -103,109 +87,14 @@ export default function DeleteDataAfter() {
             values={values}
             handleInputChange={handleInputChange}
             errors={errors}
+            resetStates={resetStates}
           />
 
-          {selectedComponents.duration ? (
-            <>
-              <Grid container>
-                <Title label="Specify a time duration that the application has to wait before deleting the data" />
-                <Input
-                  name="durationYear"
-                  label="Year"
-                  value={values.durationYear}
-                  placeholder="e.g. 3"
-                  onChange={handleInputChange}
-                  error={errors.durationYear}
-                  sm={11}
-                  md={2}
-                />
-                <Grid item sm={1} />
-                <Input
-                  name="durationMonth"
-                  label="Month"
-                  value={values.durationMonth}
-                  placeholder="e.g. 3"
-                  onChange={handleInputChange}
-                  error={errors.durationMonth}
-                  sm={11}
-                  md={2}
-                />
-                <Grid item sm={1} />
-                <Input
-                  name="durationDay"
-                  label="Day"
-                  value={values.durationDay}
-                  placeholder="e.g. 3"
-                  onChange={handleInputChange}
-                  error={errors.durationDay}
-                  sm={11}
-                  md={2}
-                />
-                <Grid item sm={1} />
-                <Input
-                  name="durationHour"
-                  label="Hour"
-                  value={values.durationHour}
-                  placeholder="e.g. 3"
-                  onChange={handleInputChange}
-                  error={errors.durationHour}
-                  sm={11}
-                  md={2}
-                />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-
-          {selectedComponents.timeDate ? (
-            <>
-              <Grid container>
-                <Title label="Specify an exact date and time to delete the data:" />
-                <Date
-                  name="timeAndDate"
-                  label="Date and Time*"
-                  defaultValue=""
-                  onChange={handleInputChange}
-                  error={errors.timeAndDate}
-                  sm={11}
-                  md={3}
-                />
-                <Grid item md={8} />
-                <Remove onClick={resetStates} />
-              </Grid>
-            </>
-          ) : null}
-          {Object.values(selectedComponents).every((x) => x === false) ? (
-            <Grid item xs={12} container justify="center">
-              <Grid item xs={2}>
-                {" "}
-                <Button
-                  color="primary"
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                  className={classes.addBtn}
-                  id="Add Component"
-                >
-                  Add Component
-                </Button>
-              </Grid>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleSelectedClose} id="duration">
-                  Specify a period to wait before deleting
-                </MenuItem>
-                <MenuItem onClick={handleSelectedClose} id="timeDate">
-                  Specify exact time and date
-                </MenuItem>
-              </Menu>
-            </Grid>
-          ) : null}
+          <DeleteData
+          handleInputChange={handleInputChange}
+          errors={errors}
+          values={values}
+          selectedComponents={selectedComponents}/>
           <Grid item xs={12}>
             <Grid item xs={2}>
               <Button

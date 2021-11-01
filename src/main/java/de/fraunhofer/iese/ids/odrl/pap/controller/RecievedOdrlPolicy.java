@@ -3,6 +3,7 @@ package de.fraunhofer.iese.ids.odrl.pap.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.github.jsonldjava.utils.JsonUtils;
@@ -30,49 +31,74 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RightOperandId;
 
 public class RecievedOdrlPolicy {
-	private String id;
-	private String policyType;
-	private String target;
-	private String provider;
-	private String consumer;
-	private MultiSelectInputField location;
-	private String system;
-	private MultiSelectInputField application;
-	private MultiSelectInputField role;
-	private MultiSelectInputField securityLevel;
-	private MultiSelectInputField connector;
-	private MultiSelectInputField state;
-	private MultiSelectInputField purpose;
-	private MultiSelectInputField event;
-	private String interval;
-	private String payment;
-	private String price;
-	private String counter;
-	private String encoding;
-	private String policy;
-	private String time;
-	private String timeUnit;
-	private String timeAndDate;
-	private String informedParty;
-	private String systemDevice;
-	private String valueToChange;
-	private String modifier;
-	private String fieldToChange;
-	private String restrictTimeIntervalStart;
-	private String restrictTimeIntervalEnd;
-	private String restrictEndTime;
-	private int numberOfUsage = -1;
-	private String specifyBeginTime;
-	private String durationYear;
-	private String durationMonth;
-	private String durationDay;
-	private String durationHour;
-	private String logLevel;
-	private String notificationLevel;
-	private String artifactState;
+	public int id;
+    public String policyType;
+    public String target;
+    public String provider;
+    public String consumer;
+    public List<String> location_input;
+    public String location_op;
+    public List<String> application_input;
+    public String application_op;
+    public List<String> connector_input;
+    public String connector_op;
+    public List<String> role_input;
+	public String role_op;
+    public List<String> purpose_input;
+    public String purpose_op;
+    public List<String> event_input;
+    public String event_op;
+    public List<String> state_input;
+    public String state_op;
+    public List<String> securityLevel_input;
+    public String securityLevel_op;
+    public String preduties_systemDevice;
+    public String preduties_logLevel;
+    public String preduties_durationYear;
+    public String preduties_durationMonth;
+    public String preduties_durationDay;
+    public String preduties_durationHour;
+    public String preduties_timeAndDate;
+    public String preduties_notificationLevel;
+    public String preduties_informedParty;
+    public String postduties_systemDevice;
+    public String postduties_logLevel;
+    public String postduties_durationYear;
+    public String postduties_durationMonth;
+    public String postduties_durationDay;
+    public String postduties_durationHour;
+    public String postduties_timeAndDate;
+    public String postduties_notificationLevel;
+    public String postduties_informedParty;
+    public String system;
+    public String interval;
+    public String payment;
+    public String price;
+    public String counter;
+    public String encoding;
+    public String policy;
+    public String time;
+    public String timeUnit;
+    public String timeAndDate;
+    public String informedParty;
+    public String systemDevice;
+    public String valueToChange;
+    public String modifier;
+    public String fieldToChange;
+    public String restrictTimeIntervalStart;
+    public String restrictTimeIntervalEnd;
+    public String restrictEndTime;
+    public String specifyBeginTime;
+    public String durationHour;
+    public String durationDay;
+    public String durationMonth;
+    public String durationYear;
+    public String logLevel;
+    public String notificationLevel;
+    public String artifactState;
 	private ArrayList<Condition> constraints = new ArrayList<>();
 
-	public String getId() {
+    public int getId() {
 		return id;
 	}
 
@@ -92,32 +118,144 @@ public class RecievedOdrlPolicy {
 		return consumer;
 	}
 
-	public MultiSelectInputField getLocation() {
-		return location;
+	public List<String> getLocation_input() {
+		return location_input;
+	}
+
+	public String getLocation_op() {
+		return location_op;
+	}
+
+	public List<String> getApplication_input() {
+		return application_input;
+	}
+
+	public String getApplication_op() {
+		return application_op;
+	}
+
+	public List<String> getConnector_input() {
+		return connector_input;
+	}
+
+	public String getConnector_op() {
+		return connector_op;
+	}
+
+	public List<String> getRole_input() {
+		return role_input;
+	}
+
+	public String getRole_op() {
+		return role_op;
+	}
+
+	public List<String> getPurpose_input() {
+		return purpose_input;
+	}
+
+	public String getPurpose_op() {
+		return purpose_op;
+	}
+
+	public List<String> getEvent_input() {
+		return event_input;
+	}
+
+	public String getEvent_op() {
+		return event_op;
+	}
+
+	public List<String> getState_input() {
+		return state_input;
+	}
+
+	public String getState_op() {
+		return state_op;
+	}
+
+	public List<String> getSecurityLevel_input() {
+		return securityLevel_input;
+	}
+
+	public String getSecurityLevel_op() {
+		return securityLevel_op;
+	}
+
+	public String getPreduties_systemDevice() {
+		return preduties_systemDevice;
+	}
+
+	public String getPreduties_logLevel() {
+		return preduties_logLevel;
+	}
+
+	public String getPreduties_durationYear() {
+		return preduties_durationYear;
+	}
+
+	public String getPreduties_durationMonth() {
+		return preduties_durationMonth;
+	}
+
+	public String getPreduties_durationDay() {
+		return preduties_durationDay;
+	}
+
+	public String getPreduties_durationHour() {
+		return preduties_durationHour;
+	}
+
+	public String getPreduties_timeAndDate() {
+		return preduties_timeAndDate;
+	}
+
+	public String getPreduties_notificationLevel() {
+		return preduties_notificationLevel;
+	}
+
+	public String getPreduties_informedParty() {
+		return preduties_informedParty;
+	}
+
+	public String getPostduties_systemDevice() {
+		return postduties_systemDevice;
+	}
+
+	public String getPostduties_logLevel() {
+		return postduties_logLevel;
+	}
+
+	public String getPostduties_durationYear() {
+		return postduties_durationYear;
+	}
+
+	public String getPostduties_durationMonth() {
+		return postduties_durationMonth;
+	}
+
+	public String getPostduties_durationDay() {
+		return postduties_durationDay;
+	}
+
+	public String getPostduties_durationHour() {
+		return postduties_durationHour;
+	}
+
+	public String getPostduties_timeAndDate() {
+		return postduties_timeAndDate;
+	}
+
+	public String getPostduties_notificationLevel() {
+		return postduties_notificationLevel;
+	}
+
+	public String getPostduties_informedParty() {
+		return postduties_informedParty;
 	}
 
 	public String getSystem() {
 		return system;
-	}
-
-	public MultiSelectInputField getApplication() {
-		return application;
-	}
-
-	public MultiSelectInputField getConnector() {return connector;}
-
-	public MultiSelectInputField getSecurityLevel() {return securityLevel;}
-
-	public MultiSelectInputField getRole() {return role;}
-
-	public MultiSelectInputField getState() {return state;}
-
-	public MultiSelectInputField getPurpose() {
-		return purpose;
-	}
-
-	public MultiSelectInputField getEvent() {
-		return event;
 	}
 
 	public String getInterval() {
@@ -188,26 +326,24 @@ public class RecievedOdrlPolicy {
 		return restrictEndTime;
 	}
 
-	public int getNumberOfUsage() {
-		return numberOfUsage;
-	}
-
 	public String getSpecifyBeginTime() {
 		return specifyBeginTime;
 	}
 
-	public String getDurationYear() {
-		return durationYear;
+	public String getDurationHour() {
+		return durationHour;
 	}
-
-	public String getDurationMonth() { return durationMonth; }
 
 	public String getDurationDay() {
 		return durationDay;
 	}
 
-	public String getDurationHour() {
-		return durationHour;
+	public String getDurationMonth() {
+		return durationMonth;
+	}
+
+	public String getDurationYear() {
+		return durationYear;
 	}
 
 	public String getLogLevel() {
@@ -225,17 +361,25 @@ public class RecievedOdrlPolicy {
 	public ArrayList<Condition> getConstraints() {
 		return constraints;
 	}
+		
+	private String checkIfEmptyValue(String value, String defaultValue) {
+		if (value.length() > 0) {
+			return value;
+		}else {
+			return defaultValue;
+		}
+	}
 
 	// policy components
 	public boolean addLocationCondition() {
-		if (location != null && location.getInput().size() >0 && !location.getInput().get(0).equals("")) {
+		if (location_input.size() >0 && !location_input.get(0).equals("")) {
 			ArrayList<RightOperand> locationRightOperands = new ArrayList<>();
-			location.getInput().forEach((e) -> {
+			location_input.forEach((e) -> {
 				RightOperand locationRightOperand = new RightOperand(e, RightOperandType.ANYURI);
 				locationRightOperands.add(locationRightOperand);
 			});
 			//Operator.valueOf(location.getOp())
-			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION, Operator.SAME_AS, locationRightOperands, null);
+			Condition locationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ABSOLUTE_SPATIAL_POSITION, Operator.valueOf(checkIfEmptyValue(location_op, "SAME_AS")), locationRightOperands, null);
 			constraints.add(locationConstraint);
 			return true;
 		}
@@ -256,13 +400,13 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addConnectorCondition() {
-		if (connector != null && connector.getInput().size() >0 && !connector.getInput().get(0).equals("")) {
+		if (connector_input.size() >0 && !connector_input.get(0).equals("")) {
 			ArrayList<RightOperand> connectorRightOperands = new ArrayList<>();
-			connector.getInput().forEach((e) -> {
+			connector_input.forEach((e) -> {
 				RightOperand connectorRightOperand = new RightOperand(e, RightOperandType.ANYURI);
 				connectorRightOperands.add(connectorRightOperand);
 			});
-			Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.SAME_AS, connectorRightOperands, null);
+			Condition connectorConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.CONNECTOR, Operator.valueOf(checkIfEmptyValue(connector_op, "SAME_AS")), connectorRightOperands, null);
 			constraints.add(connectorConstraint);
 			return true;
 		}
@@ -270,13 +414,13 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addApplicationCondition() {
-		if (application != null && application.getInput().size() >0 && !application.getInput().get(0).equals("")) {
+		if (application_input.size() >0 && !application_input.get(0).equals("")) {
 			ArrayList<RightOperand> applicationRightOperands = new ArrayList<>();
-			application.getInput().forEach((e) -> {
+			application_input.forEach((e) -> {
 				RightOperand applicationRightOperand = new RightOperand(e, RightOperandType.ANYURI);
 				applicationRightOperands.add(applicationRightOperand);
 			});
-			Condition applicationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.APPLICATION, Operator.SAME_AS,
+			Condition applicationConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.APPLICATION, Operator.valueOf(checkIfEmptyValue(application_op, "SAME_AS")),
 					applicationRightOperands, null);
 			constraints.add(applicationConstraint);
 			return true;
@@ -285,13 +429,13 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addStateCondition() {
-		if (state != null && state.getInput().size() >0 && !state.getInput().get(0).equals("")) {
+		if (state_input.size() >0 && !state_input.get(0).equals("")) {
 			ArrayList<RightOperand> stateRightOperands = new ArrayList<>();
-			state.getInput().forEach((e) -> {
+			state_input.forEach((e) -> {
 				RightOperand stateRightOperand = new RightOperand(e, RightOperandType.STRING);
 				stateRightOperands.add(stateRightOperand);
 			});
-			Condition stateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.STATE, Operator.EQUALS,
+			Condition stateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.STATE, Operator.valueOf(checkIfEmptyValue(state_op, "EQUALS")),
 					stateRightOperands, null);
 			constraints.add(stateConstraint);
 			return true;
@@ -300,13 +444,13 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addUserRoleCondition() {
-		if (role != null && role.getInput().size() >0 && !role.getInput().get(0).equals("")) {
+		if (role_input.size() >0 && !role_input.get(0).equals("")) {
 			ArrayList<RightOperand> userRoleRightOperands = new ArrayList<>();
-			role.getInput().forEach((e) -> {
+			role_input.forEach((e) -> {
 				RightOperand userRoleRightOperand = new RightOperand(e, RightOperandType.STRING);
 				userRoleRightOperands.add(userRoleRightOperand);
 			});
-			Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE, Operator.EQUALS,
+			Condition userRoleConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ROLE,  Operator.valueOf(checkIfEmptyValue(role_op, "EQUALS")),
 					userRoleRightOperands, null);
 			constraints.add(userRoleConstraint);
 			return true;
@@ -315,13 +459,13 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addSecurityLevelCondition() {
-		if (securityLevel != null && securityLevel.getInput().size() >0 && !securityLevel.getInput().get(0).equals("")) {
+		if (securityLevel_input.size() >0 && !securityLevel_input.get(0).equals("")) {
 			ArrayList<RightOperand> userSecurityLevelRightOperands = new ArrayList<>();
-			securityLevel.getInput().forEach((e) -> {
+			securityLevel_input.forEach((e) -> {
 				RightOperand userSecurityLevelRightOperand = new RightOperand(e, RightOperandType.STRING);
 				userSecurityLevelRightOperands.add(userSecurityLevelRightOperand);
 			});
-			Condition userSecurityLevelConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SECURITY_LEVEL, Operator.EQUALS,
+			Condition userSecurityLevelConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.SECURITY_LEVEL,  Operator.valueOf(checkIfEmptyValue(securityLevel_op, "EQUALS")),
 					userSecurityLevelRightOperands, null);
 			constraints.add(userSecurityLevelConstraint);
 			return true;
@@ -330,13 +474,13 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addPurposeCondition() {
-		if (purpose != null && purpose.getInput().size() >0 && !purpose.getInput().get(0).equals("")) {
+		if (purpose_input.size() >0 && !purpose_input.get(0).equals("")) {
 			ArrayList<RightOperand> purposeRightOperands = new ArrayList<>();
-			purpose.getInput().forEach((e) -> {
+			purpose_input.forEach((e) -> {
 				RightOperand purposeRightOperand = new RightOperand(e, RightOperandType.ANYURI);
 				purposeRightOperands.add(purposeRightOperand);
 			});
-			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE, Operator.SAME_AS,
+			Condition purposeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.PURPOSE,  Operator.valueOf(checkIfEmptyValue(purpose_op, "SAME_AS")),
 					purposeRightOperands, null);
 			constraints.add(purposeConstraint);
 			return true;
@@ -345,13 +489,13 @@ public class RecievedOdrlPolicy {
 	}
 
 	public boolean addEventCondition() {
-		if (event != null && event.getInput().size() >0 && !event.getInput().get(0).equals("")) {
+		if (event_input.size() >0 && !event_input.get(0).equals("")) {
 			ArrayList<RightOperand> eventRightOperands = new ArrayList<>();
-			event.getInput().forEach((e) -> {
+			event_input.forEach((e) -> {
 				RightOperand eventRightOperand = new RightOperand(e, RightOperandType.ANYURI);
 				eventRightOperands.add(eventRightOperand);
 			});
-			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.SAME_AS,
+			Condition eventConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.EVENT, Operator.valueOf(checkIfEmptyValue(event_op, "SAME_AS")),
 					eventRightOperands, null);
 			constraints.add(eventConstraint);
 			return true;
@@ -551,6 +695,139 @@ public class RecievedOdrlPolicy {
 		//String dtPolicy = policy(jsonPolicy);
 		String policies = jsonPolicy + "DTPOLICY:" + dtPolicy;
 		return policies;
+	}
+
+	public Rule logDuty(String logLevel, String systemDevice, RuleType type) {
+		RightOperand logLevelRightOperand = new RightOperand();
+		logLevelRightOperand.setType(RightOperandType.STRING);
+		logLevelRightOperand.setValue(logLevel);
+		ArrayList<RightOperand> logLevelRightOperands = new ArrayList<>();
+		logLevelRightOperands.add(logLevelRightOperand);
+		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.DEFINES_AS,
+				logLevelRightOperands, "");
+
+		RightOperand rightOperand = new RightOperand(systemDevice, RightOperandType.ANYURI);
+		ArrayList<RightOperand> rightOperands = new ArrayList<>();
+		rightOperands.add(rightOperand);
+		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEM_DEVICE,
+				Operator.DEFINES_AS, rightOperands, "");
+		
+		ArrayList<Condition> refinements = new ArrayList<>();
+		refinements.add(logLevelRefinement);
+		refinements.add(systemDeviceRefinement);
+		Action logDutyAction = new Action(ActionType.LOG);
+		logDutyAction.setRefinements(refinements);
+		Rule postobligation = new Rule(type, logDutyAction);
+		return postobligation;
+	}
+	
+	public Rule informDuty(String notificationLevel, String informedParty, RuleType type) {
+		RightOperand notificationLevelRightOperand = new RightOperand();
+		notificationLevelRightOperand.setType(RightOperandType.STRING);
+		notificationLevelRightOperand.setValue(notificationLevel);
+		ArrayList<RightOperand> notificationLevelRightOperands = new ArrayList<>();
+		notificationLevelRightOperands.add(notificationLevelRightOperand);
+		Condition notificationLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.NOTIFICATION_LEVEL,
+				Operator.DEFINES_AS, notificationLevelRightOperands, "");
+		RightOperand rightOperand = new RightOperand();
+		rightOperand.setType(RightOperandType.ANYURI);
+		rightOperand.setValue(informedParty);
+		ArrayList<RightOperand> rightOperands = new ArrayList<>();
+		rightOperands.add(rightOperand);
+		Condition recipientRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.RECIPIENT, Operator.DEFINES_AS,
+				rightOperands, "");
+		ArrayList<Condition> refinements = new ArrayList<>();
+		refinements.add(notificationLevelRefinement);
+		refinements.add(recipientRefinement);
+		Action notifyDutyAction = new Action(ActionType.NOTIFY);
+		notifyDutyAction.setRefinements(refinements);
+		Rule postobligation = new Rule(type, notifyDutyAction);
+		return postobligation;
+	}
+
+	public Rule deleteDuty(String timeAndDate, String durationYear, String durationMonth, String durationDay, String durationHour, RuleType type) {
+		ArrayList<Condition> refinements = new ArrayList<>();
+		RightOperand rightOperand = new RightOperand();
+		if (timeAndDate != "") {
+			rightOperand.setType(RightOperandType.INSTANT);
+			RightOperandEntity dateTimeEntity = new RightOperandEntity(EntityType.DATETIME, timeAndDate ,
+					RightOperandType.DATETIMESTAMP);
+			ArrayList<RightOperandEntity> entities = new ArrayList<>();
+			entities.add(dateTimeEntity);
+			rightOperand.setEntities(entities);
+			ArrayList<RightOperand> rightOperands = new ArrayList<>();
+			rightOperands.add(rightOperand);
+			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT,
+					LeftOperand.DATE_TIME, Operator.BEFORE, rightOperands, null);
+			refinements.add(timeIntervalCondition);
+		}
+		else {
+			rightOperand.setType(RightOperandType.DURATIONENTITY);
+			ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
+
+			String hour = "";
+			String day = "";
+			String month = "";
+			String year = "";
+			if (durationHour != null && !durationHour.isEmpty()) {
+				hour = "T" + durationHour + TimeUnit.HOURS.getOdrlXsdDuration();
+			}
+			if(durationDay != null && !durationDay.isEmpty()) {
+				day = durationDay + TimeUnit.DAYS.getOdrlXsdDuration();
+			}
+			if(durationMonth != null && !durationMonth.isEmpty()) {
+				month = durationMonth + TimeUnit.MONTHS.getOdrlXsdDuration();
+			}
+			if(durationYear != null && !durationYear.isEmpty()) {
+				year = durationYear + TimeUnit.YEARS.getOdrlXsdDuration();
+			}
+			String duration = "P" + year + month + day + hour;
+
+			if(duration.equals("P"))
+			{
+				//set initial delay value
+				duration = "P0D";
+			}
+
+			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration  ,RightOperandType.DURATION);
+			durationEntities.add(hasDurationEntity);
+			rightOperand.setEntities(durationEntities);
+			ArrayList<RightOperand> rightOperands = new ArrayList<>();
+			rightOperands.add(rightOperand);
+			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, rightOperands, "");
+			refinements.add(delayPeriodRefinement);
+		}
+
+		Action deleteDutyAction = new Action(ActionType.DELETE);
+		deleteDutyAction.setRefinements(refinements);
+		Rule postobligation = new Rule(type, deleteDutyAction);
+		return postobligation;
+	}
+	public ArrayList<Rule> addPostDuties() {
+		ArrayList<Rule> postDuties = new ArrayList<>();
+		if (getPostduties_logLevel()!="" && getPostduties_systemDevice() !="") {
+			postDuties.add(logDuty(getPostduties_logLevel(), getPostduties_systemDevice(), RuleType.POSTDUTY));
+		}
+		if (getPostduties_notificationLevel()!="" && getPostduties_informedParty() !="") {
+			postDuties.add(informDuty(getPostduties_notificationLevel(), getPostduties_informedParty(), RuleType.POSTDUTY));
+		}
+		if (getPostduties_timeAndDate()!="" || (getPostduties_durationYear() !="" && getPostduties_durationMonth() !="" && getPostduties_durationDay() !="" && getPostduties_durationHour() !="")) {
+			postDuties.add(deleteDuty(getPostduties_timeAndDate(), getPostduties_durationYear(), getPostduties_durationMonth(), getPostduties_durationDay(), getPostduties_durationHour(), RuleType.POSTDUTY));
+		}
+		return postDuties;		
+	}
+	public ArrayList<Rule> addPreDuties() {
+		ArrayList<Rule> preDuties = new ArrayList<>();
+		if (getPreduties_logLevel()!="" && getPreduties_systemDevice() !="") {
+			preDuties.add(logDuty(getPreduties_logLevel(), getPreduties_systemDevice(), RuleType.PREDUTY));
+		}
+		if (getPreduties_notificationLevel()!="" && getPreduties_informedParty() !="") {
+			preDuties.add(informDuty(getPreduties_notificationLevel(), getPreduties_informedParty(), RuleType.PREDUTY));
+		}
+		if (getPreduties_timeAndDate()!="" || (getPreduties_durationYear() !="" && getPreduties_durationMonth() !="" && getPreduties_durationDay() !="" && getPreduties_durationHour() !="")) {
+			preDuties.add(deleteDuty(getPreduties_timeAndDate(), getPreduties_durationYear(), getPreduties_durationMonth(), getPreduties_durationDay(), getPreduties_durationHour(), RuleType.PREDUTY));
+		}
+		return preDuties;	
 	}
 
 }

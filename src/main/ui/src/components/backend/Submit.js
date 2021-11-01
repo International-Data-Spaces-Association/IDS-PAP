@@ -8,10 +8,8 @@ export default function Submit(url, values, states, setErrors, history ,e) {
       states[key] = false;
   }
     const isoValues = convertDateToIso(values, states)
-    console.log(isoValues);
     axios.post(BASE_URL + url, isoValues)
     .then((response) => {
-      console.log(response)
       let policies = response.data.split('DTPOLICY:');
       var dict = {
         jsonPolicy: "",

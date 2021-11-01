@@ -3,15 +3,13 @@ import { Grid, Button } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import { useStyle } from "../components/Style";
-import Input from "../components/controls/Input";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
-import ItemPicker from "../components/controls/ItemPicker";
-import Title from "../components/controls/Title";
-import { log_level_list } from "../components/controls/InitialFieldListValues";
+import LogData from "../components/controls/LogData";
+
 const selected_components = {
   logAccess: true,
 };
@@ -50,29 +48,11 @@ export default function LogAccess() {
             handleInputChange={handleInputChange}
             errors={errors}
           />
-
-          <Grid container>
-            <Title label="Log Level" />
-            <ItemPicker
-              name="logLevel"
-              defaultValue=""
-              ItemList={log_level_list}
-              onChange={handleInputChange}
-              error={errors.logLevel}
-            />
-          </Grid>
-
-          <Grid container>
-            <Title label="System Device" />
-            <Input
-              name="systemDevice"
-              value={values.systemDevice}
-              placeholder="e.g. http://example.com/system:ESN-database"
-              onChange={handleInputChange}
-              error={errors.systemDevice}
-            />
-          </Grid>
-
+          <LogData
+          handleInputChange={handleInputChange}
+          values={values}
+          errors={errors}
+          />
           <Grid item xs={2}>
             <Button
               variant="contained"

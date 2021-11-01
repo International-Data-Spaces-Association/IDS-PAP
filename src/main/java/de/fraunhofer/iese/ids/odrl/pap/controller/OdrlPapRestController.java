@@ -56,40 +56,40 @@ public class OdrlPapRestController {
 	public String accessPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "restrict-access";
 		if (rp.addLocationCondition()) {
-			uid =  baseUid + "restrict-access-location";
-		} 
+			uid = baseUid + "restrict-access-location";
+		}
 		if (rp.addApplicationCondition()) {
-			uid =  baseUid + "restrict-access-application";
+			uid = baseUid + "restrict-access-application";
 		}
 		if (rp.addUserRoleCondition()) {
-			uid =  baseUid + "restrict-access-user-role";
+			uid = baseUid + "restrict-access-user-role";
 		}
 		if (rp.addSecurityLevelCondition()) {
-			uid =  baseUid + "restrict-access-user-security-level";
+			uid = baseUid + "restrict-access-user-security-level";
 		}
 		if (rp.addStateCondition()) {
-			uid =  baseUid + "restrict-access-state";
+			uid = baseUid + "restrict-access-state";
 		}
 		if (rp.addConnectorCondition()) {
-			uid =  baseUid + "restrict-access-connector";
+			uid = baseUid + "restrict-access-connector";
 		}
 		if (rp.addPurposeCondition()) {
-			uid =  baseUid + "restrict-access-purpose";
-		} 
+			uid = baseUid + "restrict-access-purpose";
+		}
 		if (rp.addEventCondition()) {
-			uid =  baseUid + "restrict-access-event";
-		} 
+			uid = baseUid + "restrict-access-event";
+		}
 		if (rp.addRestrictTimeIntervalCondition()) {
-			uid =  baseUid + "restrict-access-interval";
+			uid = baseUid + "restrict-access-interval";
 		}
 		if (rp.addRestrictEndTimeCondition()) {
-			uid =  baseUid + "restrict-access-end-time";
+			uid = baseUid + "restrict-access-end-time";
 		}
 		if (rp.addPaymentCondition()) {
-			uid =  baseUid + "provide-access-after-payment";
-		} 
+			uid = baseUid + "provide-access-after-payment";
+		}
 		if (rp.addElapsedTimeRightOperand()) {
-			uid =  baseUid + "restrict-access-interval";
+			uid = baseUid + "restrict-access-interval";
 		}
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
@@ -114,10 +114,19 @@ public class OdrlPapRestController {
 		rp.addRestrictEndTimeCondition();
 		rp.addPaymentCondition();
 		rp.addElapsedTimeRightOperand();
+		ArrayList<Rule> postDuties = rp.addPostDuties();
+		ArrayList<Rule> preDuties = rp.addPreDuties();
+
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(rp.getConstraints());
 		rule.setTarget(URI.create(rp.getTarget()));
+		if (postDuties.size() > 0) {
+			rule.setPostduties(postDuties);
+		}
+		if (preDuties.size() > 0) {
+			rule.setPreduties(preDuties);
+		}
 		return rp.createPolicy(uid, rule);
 	}
 
@@ -125,12 +134,12 @@ public class OdrlPapRestController {
 	public String countPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "count-access";
 		rp.addCounterCondition();
-		
+
 		Action countDutyAction = new Action(ActionType.INCREMENT_COUNTER);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(postobligation);
-		
+
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setPostduties(postDuties);
@@ -165,74 +174,20 @@ public class OdrlPapRestController {
 	@PostMapping("/policy/deletePolicyAfterUsage")
 	public String deletePolicyAfterUsage(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "delete-after-usage";
-		ArrayList<Condition> refinements = new ArrayList<>();
-		RightOperand rightOperand = new RightOperand();
-		if (rp.getTimeAndDate() != "") {
-			rightOperand.setType(RightOperandType.INSTANT);
-			RightOperandEntity dateTimeEntity = new RightOperandEntity(EntityType.DATETIME, rp.getTimeAndDate() ,
-					RightOperandType.DATETIMESTAMP);
-			ArrayList<RightOperandEntity> entities = new ArrayList<>();
-			entities.add(dateTimeEntity);
-			rightOperand.setEntities(entities);
-			ArrayList<RightOperand> rightOperands = new ArrayList<>();
-			rightOperands.add(rightOperand);
-			Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT,
-					LeftOperand.DATE_TIME, Operator.BEFORE, rightOperands, null);
-			refinements.add(timeIntervalCondition);
-		}
-		else {
-			rightOperand.setType(RightOperandType.DURATIONENTITY);
-			ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
-
-			String hour = "";
-			String day = "";
-			String month = "";
-			String year = "";
-			if (rp.getDurationHour() != null && !rp.getDurationHour().isEmpty()) {
-				hour = "T" + rp.getDurationHour() + TimeUnit.HOURS.getOdrlXsdDuration();
-			}
-			if(rp.getDurationDay() != null && !rp.getDurationDay().isEmpty()) {
-				day = rp.getDurationDay() + TimeUnit.DAYS.getOdrlXsdDuration();
-			}
-			if(rp.getDurationMonth() != null && !rp.getDurationMonth().isEmpty()) {
-				month = rp.getDurationMonth() + TimeUnit.MONTHS.getOdrlXsdDuration();
-			}
-			if(rp.getDurationYear() != null && !rp.getDurationYear().isEmpty()) {
-				year = rp.getDurationYear() + TimeUnit.YEARS.getOdrlXsdDuration();
-			}
-			String duration = "P" + year + month + day + hour;
-
-			if(duration.equals("P"))
-			{
-				//set initial delay value
-				duration = "P0D";
-			}
-
-			RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration  ,RightOperandType.DURATION);
-			durationEntities.add(hasDurationEntity);
-			rightOperand.setEntities(durationEntities);
-			ArrayList<RightOperand> rightOperands = new ArrayList<>();
-			rightOperands.add(rightOperand);
-			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, rightOperands, "");
-			refinements.add(delayPeriodRefinement);
-		}
-
-	  	Action useAction = new Action(ActionType.USE);
-		Action deleteDutyAction = new Action(ActionType.DELETE);
-		deleteDutyAction.setRefinements(refinements);
+		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-		Rule postobligation = new Rule(RuleType.POSTDUTY, deleteDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
-		postDuties.add(postobligation);
+		postDuties.add(rp.deleteDuty(rp.getTimeAndDate(), rp.getDurationYear(), rp.getDurationMonth(),
+				rp.getDurationDay(), rp.getDurationHour(), RuleType.POSTDUTY));
 		rule.setPostduties(postDuties);
 		rule.setTarget(URI.create(rp.getTarget()));
 		return rp.createPolicy(uid, rule);
 	}
 
 	@PostMapping("/policy/deletePolicyAfterUsagePeriod")
-	public String deletePolicyAfterUsagePeriod(@RequestBody RecievedOdrlPolicy rp) {	
+	public String deletePolicyAfterUsagePeriod(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "delete-after-usage";
-	  	Action useAction = new Action(ActionType.USE);
+		Action useAction = new Action(ActionType.USE);
 		Action deleteDutyAction = new Action(ActionType.DELETE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		Rule postobligation = new Rule(RuleType.POSTDUTY, deleteDutyAction);
@@ -242,7 +197,7 @@ public class OdrlPapRestController {
 		rule.setTarget(URI.create(rp.getTarget()));
 		return rp.createPolicy(uid, rule);
 	}
-	
+
 	@PostMapping("/policy/AnonymizeInRestPolicyForm")
 	public String anonymizeInRestolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "anonymize-in-rest";
@@ -295,31 +250,11 @@ public class OdrlPapRestController {
 	@PostMapping("/policy/LogAccessPolicyForm")
 	public String logPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "log-access";
-		RightOperand logLevelRightOperand = new RightOperand();
-		logLevelRightOperand.setType(RightOperandType.STRING);
-		logLevelRightOperand.setValue(rp.getLogLevel());
-		ArrayList<RightOperand> logLevelRightOperands = new ArrayList<>();
-		logLevelRightOperands.add(logLevelRightOperand);
-		Condition logLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.LOG_LEVEL, Operator.DEFINES_AS,
-				logLevelRightOperands, "");
-
-		RightOperand rightOperand = new RightOperand(rp.getSystemDevice(), RightOperandType.ANYURI);
-		ArrayList<RightOperand> rightOperands = new ArrayList<>();
-		rightOperands.add(rightOperand);
-		Condition systemDeviceRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.SYSTEM_DEVICE,
-				Operator.DEFINES_AS, rightOperands, "");
-
-		ArrayList<Condition> refinements = new ArrayList<>();
-		refinements.add(logLevelRefinement);
-		refinements.add(systemDeviceRefinement);
 		Action useAction = new Action(ActionType.USE);
-		Action logDutyAction = new Action(ActionType.LOG);
-		logDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setTarget(URI.create(rp.getTarget()));
-		Rule postobligation = new Rule(RuleType.POSTDUTY, logDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
-		postDuties.add(postobligation);
+		postDuties.add(rp.logDuty(rp.getLogLevel(), rp.getSystemDevice(), RuleType.POSTDUTY));
 		rule.setPostduties(postDuties);
 		return rp.createPolicy(uid, rule);
 	}
@@ -327,31 +262,11 @@ public class OdrlPapRestController {
 	@PostMapping("/policy/InformPolicyForm")
 	public String policy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "notify";
-		RightOperand notificationLevelRightOperand = new RightOperand();
-		notificationLevelRightOperand.setType(RightOperandType.STRING);
-		notificationLevelRightOperand.setValue(rp.getNotificationLevel());
-		ArrayList<RightOperand> notificationLevelRightOperands = new ArrayList<>();
-		notificationLevelRightOperands.add(notificationLevelRightOperand);
-		Condition notificationLevelRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.NOTIFICATION_LEVEL,
-				Operator.DEFINES_AS, notificationLevelRightOperands, "");
-		RightOperand rightOperand = new RightOperand();
-		rightOperand.setType(RightOperandType.ANYURI);
-		rightOperand.setValue(rp.getInformedParty());
-		ArrayList<RightOperand> rightOperands = new ArrayList<>();
-		rightOperands.add(rightOperand);
-		Condition recipientRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.RECIPIENT, Operator.DEFINES_AS,
-				rightOperands, "");
-		ArrayList<Condition> refinements = new ArrayList<>();
-		refinements.add(notificationLevelRefinement);
-		refinements.add(recipientRefinement);
 		Action useAction = new Action(ActionType.USE);
-		Action notifyDutyAction = new Action(ActionType.NOTIFY);
-		notifyDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setTarget(URI.create(rp.getTarget()));
-		Rule postobligation = new Rule(RuleType.POSTDUTY, notifyDutyAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
-		postDuties.add(postobligation);
+		postDuties.add(rp.informDuty(rp.getNotificationLevel(), rp.getInformedParty(), RuleType.POSTDUTY));
 		rule.setPostduties(postDuties);
 		return rp.createPolicy(uid, rule);
 	}
@@ -399,21 +314,18 @@ public class OdrlPapRestController {
 		return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
 	}
 
-
 	@PostMapping("/policy/InterpretOdrlPolicy")
 	public String interpretPolicy(@RequestBody String jsonPolicy) {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 		Map map = null;
 		try {
-			if(null != jsonPolicy)
-			{
+			if (null != jsonPolicy) {
 				Object o = JsonUtils.fromString(jsonPolicy);
 				if (o instanceof Map) {
-					map  = (Map) o;
+					map = (Map) o;
 				}
 			}
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

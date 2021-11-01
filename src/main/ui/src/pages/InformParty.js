@@ -3,15 +3,12 @@ import { Grid, Button } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import { useStyle } from "../components/Style";
-import Input from "../components/controls/Input";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
-import ItemPicker from "../components/controls/ItemPicker";
-import Title from "../components/controls/Title";
-import { log_level_list } from "../components/controls/InitialFieldListValues";
+import InformParty from "../components/controls/InformParty";
 
 const selected_components = {
   informedParty: true,
@@ -50,27 +47,11 @@ export default function LogAccess() {
             handleInputChange={handleInputChange}
             errors={errors}
           />
-          <Grid container>
-            <Title label="Notification Level" />
-            <ItemPicker
-              name="notificationLevel"
-              defaultValue=""
-              ItemList={log_level_list}
-              onChange={handleInputChange}
-              error={errors.notificationLevel}
-            />
-          </Grid>
-
-          <Grid container>
-            <Title label="Informed Party (by default, you are the party who gets the notification)" />
-            <Input
-              name="informedParty"
-              value={values.informedParty}
-              placeholder="My Party"
-              onChange={handleInputChange}
-              error={errors.informedParty}
-            />
-          </Grid>
+          <InformParty
+          handleInputChange={handleInputChange}
+          errors={errors}
+          values={values}
+          />
           <Grid item xs={2}>
             <Button
               variant="contained"

@@ -119,7 +119,6 @@ export default function Navigation(props) {
 
   React.useEffect(() => {
     function handleResize() {
-      console.log("resized to: ", window.innerWidth, "x", window.innerHeight);
       setOpen(window.innerWidth > 600);
     }
 
