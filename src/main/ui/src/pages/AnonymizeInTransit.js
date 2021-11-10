@@ -12,7 +12,6 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import Title from "../components/controls/Title";
-
 const selected_components = {
   anonymizeInTransit: true,
 };

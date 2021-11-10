@@ -9,9 +9,9 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteIcon from "@material-ui/icons/Delete";
-
+import PostDuty from "../components/controls/PostDuty";
+import PreDuty from "../components/controls/PreDuty";
 import AddRestrictions from "../components/AddRestrictions";
-import Duty from "../components/controls/Duty";
 
 export default function ComplexPolicyForm() {
   const selected_components = {
@@ -38,9 +38,8 @@ export default function ComplexPolicyForm() {
     type: "preduties",
     order: [],
     availableComponents: [
-      { id: "delete", name: "Delete Data After", isVisible: true },
-      { id: "log", name: "Log Data Usage", isVisible: true },
-      { id: "inform", name: "Inform Party", isVisible: true },
+      { id: "anonymizeRest", name: "Anonymize in Rest", isVisible: true },
+      { id: "anonymizeTransit", name: "Anbonymize in Transit", isVisible: true },
     ],
   };
 
@@ -69,6 +68,7 @@ export default function ComplexPolicyForm() {
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
+    console.log(values)
   };
 
   const handleSubmit = (e) => {
@@ -174,7 +174,7 @@ export default function ComplexPolicyForm() {
             </Grid>
 
             <Grid item xs={12}>
-                <Duty
+                <PreDuty
                   selectedComponents={selectedPreDuties}
                   values={values}
                   setValues={setValues}
@@ -190,7 +190,7 @@ export default function ComplexPolicyForm() {
             </Grid>
 
             <Grid item xs={12}>
-                <Duty
+                <PostDuty
                   selectedComponents={selectedPostDuties}
                   values={values}
                   setValues={setValues}

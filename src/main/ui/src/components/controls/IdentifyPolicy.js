@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
+import { useStyle } from "../Style";
 import Input from "../controls/Input";
 import ItemPicker from "../controls/ItemPicker";
 import {
@@ -9,7 +10,8 @@ import {
 import Title from "../controls/Title";
 
 export default function IdentifyPolicy(props) {
-  const {classes, values, handleInputChange, errors } = props;
+  const {values, handleInputChange, errors } = props;
+  const classes = useStyle();
 
   const handleInputChangeLocal = (e) => {
     if (e.target.value === "Offer") values.consumer = "";

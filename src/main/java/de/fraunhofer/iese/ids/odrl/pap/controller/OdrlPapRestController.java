@@ -210,38 +210,13 @@ public class OdrlPapRestController {
 	@PostMapping("/policy/AnonymizeInTransitPolicyForm")
 	public String anonymizeTransitPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "anonymize-in-transit";
-		ArrayList<Condition> refinements = new ArrayList<>();
 
-		if (rp.getFieldToChange() != "") {
-			RightOperand replaceWithRightOperand = new RightOperand();
-			replaceWithRightOperand.setValue(rp.getValueToChange());
-			replaceWithRightOperand.setType(RightOperandType.STRING);
-			ArrayList<RightOperand> replaceWithRightOperands = new ArrayList<>();
-			replaceWithRightOperands.add(replaceWithRightOperand);
-			Condition replaceWithRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.REPLACE_WITH,
-					Operator.DEFINES_AS, replaceWithRightOperands, null);
-			refinements.add(replaceWithRefinement);
-		}
-
-		RightOperand subsetSpecificationRightOperand = new RightOperand();
-		subsetSpecificationRightOperand.setValue(rp.getFieldToChange());
-		subsetSpecificationRightOperand.setType(RightOperandType.STRING);
-		ArrayList<RightOperand> subsetSpecificationRightOperands = new ArrayList<>();
-		subsetSpecificationRightOperands.add(subsetSpecificationRightOperand);
-		Condition subsetSpecificationRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.JSON_PATH,
-				Operator.DEFINES_AS, subsetSpecificationRightOperands, null);
-		refinements.add(subsetSpecificationRefinement);
 
 		Action useAction = new Action(ActionType.USE);
-		// remove the idsc: prefix from the duty action
-		ActionType dutyActionType = ActionType.valueOf(rp.getModifier().substring(5));
-		Action anonymizeDutyAction = new Action(dutyActionType);
-		anonymizeDutyAction.setRefinements(refinements);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setTarget(URI.create(rp.getTarget()));
-		Rule preDuty = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
 		ArrayList<Rule> preDuties = new ArrayList<>();
-		preDuties.add(preDuty);
+		preDuties.add(rp.anonymizeInTransit(rp.getFieldToChange(), rp.getValueToChange(), rp.getModifier()));
 		rule.setPreduties(preDuties);
 
 		return rp.createPolicy(uid, rule);

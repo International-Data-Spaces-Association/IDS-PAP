@@ -52,15 +52,14 @@ public class RecievedOdrlPolicy {
     public String state_op;
     public List<String> securityLevel_input;
     public String securityLevel_op;
-    public String preduties_systemDevice;
-    public String preduties_logLevel;
-    public String preduties_durationYear;
-    public String preduties_durationMonth;
-    public String preduties_durationDay;
-    public String preduties_durationHour;
-    public String preduties_timeAndDate;
-    public String preduties_notificationLevel;
-    public String preduties_informedParty;
+    
+
+	public Boolean preduties_anomInRest;
+    public String preduties_modifier;
+    public String preduties_valueToChange;
+    public String preduties_fieldToChange;
+
+    
     public String postduties_systemDevice;
     public String postduties_logLevel;
     public String postduties_durationYear;
@@ -181,41 +180,20 @@ public class RecievedOdrlPolicy {
 	public String getSecurityLevel_op() {
 		return securityLevel_op;
 	}
-
-	public String getPreduties_systemDevice() {
-		return preduties_systemDevice;
+    public Boolean getPreduties_anomInRest() {
+		return preduties_anomInRest;
 	}
 
-	public String getPreduties_logLevel() {
-		return preduties_logLevel;
+	public String getPreduties_modifier() {
+		return preduties_modifier;
 	}
 
-	public String getPreduties_durationYear() {
-		return preduties_durationYear;
+	public String getPreduties_valueToChange() {
+		return preduties_valueToChange;
 	}
 
-	public String getPreduties_durationMonth() {
-		return preduties_durationMonth;
-	}
-
-	public String getPreduties_durationDay() {
-		return preduties_durationDay;
-	}
-
-	public String getPreduties_durationHour() {
-		return preduties_durationHour;
-	}
-
-	public String getPreduties_timeAndDate() {
-		return preduties_timeAndDate;
-	}
-
-	public String getPreduties_notificationLevel() {
-		return preduties_notificationLevel;
-	}
-
-	public String getPreduties_informedParty() {
-		return preduties_informedParty;
+	public String getPreduties_fieldToChange() {
+		return preduties_fieldToChange;
 	}
 
 	public String getPostduties_systemDevice() {
@@ -803,6 +781,37 @@ public class RecievedOdrlPolicy {
 		Rule postobligation = new Rule(type, deleteDutyAction);
 		return postobligation;
 	}
+	
+	public Rule anonymizeInTransit(String fieldToChange, String valueToChange, String modifier) {
+		ArrayList<Condition> refinements = new ArrayList<>();
+
+		if (fieldToChange != "") {
+			RightOperand replaceWithRightOperand = new RightOperand();
+			replaceWithRightOperand.setValue(fieldToChange);
+			replaceWithRightOperand.setType(RightOperandType.STRING);
+			ArrayList<RightOperand> replaceWithRightOperands = new ArrayList<>();
+			replaceWithRightOperands.add(replaceWithRightOperand);
+			Condition replaceWithRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.REPLACE_WITH,
+					Operator.DEFINES_AS, replaceWithRightOperands, null);
+			refinements.add(replaceWithRefinement);
+		}
+
+		RightOperand subsetSpecificationRightOperand = new RightOperand();
+		subsetSpecificationRightOperand.setValue(valueToChange);
+		subsetSpecificationRightOperand.setType(RightOperandType.STRING);
+		ArrayList<RightOperand> subsetSpecificationRightOperands = new ArrayList<>();
+		subsetSpecificationRightOperands.add(subsetSpecificationRightOperand);
+		Condition subsetSpecificationRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.JSON_PATH,
+				Operator.DEFINES_AS, subsetSpecificationRightOperands, null);
+		refinements.add(subsetSpecificationRefinement);
+		
+		ActionType dutyActionType = ActionType.valueOf(modifier.substring(5));
+		Action anonymizeDutyAction = new Action(dutyActionType);
+		anonymizeDutyAction.setRefinements(refinements);
+		Rule preDuty = new Rule(RuleType.PREDUTY, anonymizeDutyAction);
+		return preDuty;
+	}
+	
 	public ArrayList<Rule> addPostDuties() {
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		if (getPostduties_logLevel()!="" && getPostduties_systemDevice() !="") {
@@ -818,14 +827,8 @@ public class RecievedOdrlPolicy {
 	}
 	public ArrayList<Rule> addPreDuties() {
 		ArrayList<Rule> preDuties = new ArrayList<>();
-		if (getPreduties_logLevel()!="" && getPreduties_systemDevice() !="") {
-			preDuties.add(logDuty(getPreduties_logLevel(), getPreduties_systemDevice(), RuleType.PREDUTY));
-		}
-		if (getPreduties_notificationLevel()!="" && getPreduties_informedParty() !="") {
-			preDuties.add(informDuty(getPreduties_notificationLevel(), getPreduties_informedParty(), RuleType.PREDUTY));
-		}
-		if (getPreduties_timeAndDate()!="" || (getPreduties_durationYear() !="" && getPreduties_durationMonth() !="" && getPreduties_durationDay() !="" && getPreduties_durationHour() !="")) {
-			preDuties.add(deleteDuty(getPreduties_timeAndDate(), getPreduties_durationYear(), getPreduties_durationMonth(), getPreduties_durationDay(), getPreduties_durationHour(), RuleType.PREDUTY));
+		if(getPreduties_modifier() != "" && getPreduties_valueToChange() != "") {
+			preDuties.add(anonymizeInTransit(preduties_fieldToChange, preduties_valueToChange, preduties_modifier));
 		}
 		return preDuties;	
 	}
