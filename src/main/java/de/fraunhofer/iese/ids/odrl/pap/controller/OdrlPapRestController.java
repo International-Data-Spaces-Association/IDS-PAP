@@ -210,15 +210,12 @@ public class OdrlPapRestController {
 	@PostMapping("/policy/AnonymizeInTransitPolicyForm")
 	public String anonymizeTransitPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		String uid = baseUid + "anonymize-in-transit";
-
-
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setTarget(URI.create(rp.getTarget()));
 		ArrayList<Rule> preDuties = new ArrayList<>();
 		preDuties.add(rp.anonymizeInTransit(rp.getFieldToChange(), rp.getValueToChange(), rp.getModifier()));
 		rule.setPreduties(preDuties);
-
 		return rp.createPolicy(uid, rule);
 	}
 
