@@ -3,7 +3,7 @@ import { Grid, Typography } from "@material-ui/core";
 
 export default function Title(props) {
   const { label, xs=11, seperator = true } = props;
-  if (seperator) {
+  if (seperator=== "ff") {
     return (
       <Grid item xs={xs} className="gridSubItemWithLine">
         <Typography variant="subtitle2" className="extraSpaceAfterTitle">{label}</Typography>

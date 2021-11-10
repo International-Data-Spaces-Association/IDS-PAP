@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Menu, MenuItem, Button } from "@material-ui/core";
+import { Grid, Menu, MenuItem, Button, makeStyles } from "@material-ui/core";
 import { useStyle } from "../Style";
 import Input from "./Input";
 import Title from "./Title";
@@ -8,7 +8,7 @@ import Remove from "./Remove";
 
 export default function DeleteData(props) {
 
-    const { handleInputChange, values, errors, selectedComponents,removeEnteredData, setSelectedComponents, xs = 12, sm = 12, md = 12, type="" } = props;
+    const { handleInputChange, values, errors, selectedComponents,removeEnteredData, setSelectedComponents, xs = 12, sm = 12, md = 12, type="", seperator=true } = props;
     const [anchorEl, setAnchorEl] = useState(null);
     const classes = useStyle();
 
@@ -38,11 +38,11 @@ export default function DeleteData(props) {
           );    };
     return (
         <>
-            <Grid item xs={xs} sm={sm} md={md}>
+            <Grid item xs={xs} sm={sm} md={md} >
                 {selectedComponents.duration ? (
                     <>
                         <Grid container>
-                            <Title label="Specify a time duration that the application has to wait before deleting the data" />
+                            <Title seperator={seperator} label="Specify a time duration that the application has to wait before deleting the data" />
                             <Input
                                 name= {type + "durationYear"}
                                 label="Year"
@@ -94,7 +94,7 @@ export default function DeleteData(props) {
                 {selectedComponents.timeDate ? (
                     <>
                         <Grid container>
-                            <Title label="Specify an exact date and time to delete the data:" />
+                            <Title seperator={seperator} label="Specify an exact date and time to delete the data:" />
                             <Date
                                 name= {type + "timeAndDate"}
                                 label="Date and Time*"

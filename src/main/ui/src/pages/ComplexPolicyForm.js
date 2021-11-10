@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Paper } from "@material-ui/core";
 import { useStyle } from "../components/Style";
 import { useHistory } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
@@ -14,7 +14,6 @@ import AddRestrictions from "../components/AddRestrictions";
 import Duty from "../components/controls/Duty";
 
 export default function ComplexPolicyForm() {
-
   const selected_components = {
     type: "restrictions",
     order: [],
@@ -73,14 +72,14 @@ export default function ComplexPolicyForm() {
   };
 
   const handleSubmit = (e) => {
-    OdrlPolicy.location_input = [""]
-    OdrlPolicy.application_input = [""]
-    OdrlPolicy.connector_input = [""]
-    OdrlPolicy.role_input = [""]
-    OdrlPolicy.purpose_input = [""]
-    OdrlPolicy.event_input = [""]
-    OdrlPolicy.state_input = [""]
-    OdrlPolicy.securityLevel_input = [""]
+    OdrlPolicy.location_input = [""];
+    OdrlPolicy.application_input = [""];
+    OdrlPolicy.connector_input = [""];
+    OdrlPolicy.role_input = [""];
+    OdrlPolicy.purpose_input = [""];
+    OdrlPolicy.event_input = [""];
+    OdrlPolicy.state_input = [""];
+    OdrlPolicy.securityLevel_input = [""];
     const dict = selectedComponents.availableComponents;
     var state = {};
     dict.forEach(function (item) {
@@ -90,14 +89,14 @@ export default function ComplexPolicyForm() {
   };
 
   const resetStates = () => {
-    OdrlPolicy.location_input = [""]
-    OdrlPolicy.application_input = [""]
-    OdrlPolicy.connector_input = [""]
-    OdrlPolicy.role_input = [""]
-    OdrlPolicy.purpose_input = [""]
-    OdrlPolicy.event_input = [""]
-    OdrlPolicy.state_input = [""]
-    OdrlPolicy.securityLevel_input = [""]
+    OdrlPolicy.location_input = [""];
+    OdrlPolicy.application_input = [""];
+    OdrlPolicy.connector_input = [""];
+    OdrlPolicy.role_input = [""];
+    OdrlPolicy.purpose_input = [""];
+    OdrlPolicy.event_input = [""];
+    OdrlPolicy.state_input = [""];
+    OdrlPolicy.securityLevel_input = [""];
     setValues({ ...OdrlPolicy });
     setSelectedComponents({ ...selected_components });
     setSelectedPostDuties({ ...selected_postduties_components });
@@ -106,33 +105,36 @@ export default function ComplexPolicyForm() {
 
   const removeComponent = (type, id) => {
     const states = [selectedComponents, selectedPostDuties, selectedPreDuties];
-    const setStates = [setSelectedComponents, setSelectedPostDuties, setSelectedPreDuties];
+    const setStates = [
+      setSelectedComponents,
+      setSelectedPostDuties,
+      setSelectedPreDuties,
+    ];
     states.forEach(function (state, index) {
       if (state.type == type) {
         const dict = state.availableComponents;
         const list = state.order;
-        const setState = setStates[index]
+        const setState = setStates[index];
 
         dict.forEach(function (item, key) {
           if (item.id === id) {
-            const obj = JSON.parse(JSON.stringify(state))
+            const obj = JSON.parse(JSON.stringify(state));
             obj.order = list.filter((e) => e !== id);
-            obj.availableComponents[key].isVisible = true
-            setState({...obj});
+            obj.availableComponents[key].isVisible = true;
+            setState({ ...obj });
           }
         });
       }
-
     });
   };
 
   const removeEnteredData = (ids) => {
     ids.forEach(function (id) {
       if (OdrlPolicy[id] instanceof Array) {
-        values[id] = [""]
+        values[id] = [""];
         OdrlPolicy[id] = [""];
       } else {
-        values[id] = ""
+        values[id] = "";
       }
     });
   };
@@ -146,47 +148,62 @@ export default function ComplexPolicyForm() {
             icon={<PostAddIcon />}
           />
           <Grid container>
-            <IdentifyPolicy
-              values={values}
-              handleInputChange={handleInputChange}
-              errors={errors}
-            />
+            <Grid item xs={12}>
+              <Paper elevation={3}>
+                <IdentifyPolicy
+                  classes={classes}
+                  values={values}
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                />
+              </Paper>
+            </Grid>
 
-            <AddRestrictions
-              selectedComponents={selectedComponents}
-              values={values}
-              setValues={setValues}
-              errors={errors}
-              handleInputChange={handleInputChange}
-              removeComponent={removeComponent}
-              removeEnteredData={removeEnteredData}
-              classes={classes}
-              type={"preduties"}
-            />
-            <Duty
-              selectedComponents={selectedPreDuties}
-              values={values}
-              setValues={setValues}
-              errors={errors}
-              handleInputChange={handleInputChange}
-              removeComponent={removeComponent}
-              removeEnteredData={removeEnteredData}
-              classes={classes}
-              name={"Add Preduty"}
-              type={"preduties"}
-            />
-            <Duty
-              selectedComponents={selectedPostDuties}
-              values={values}
-              setValues={setValues}
-              errors={errors}
-              handleInputChange={handleInputChange}
-              removeComponent={removeComponent}
-              removeEnteredData={removeEnteredData}
-              classes={classes}
-              name={"Add Postduty"}
-              type={"postduties"}
-            />
+            <Grid item xs={12}>
+                <AddRestrictions
+                  selectedComponents={selectedComponents}
+                  values={values}
+                  setValues={setValues}
+                  errors={errors}
+                  handleInputChange={handleInputChange}
+                  removeComponent={removeComponent}
+                  removeEnteredData={removeEnteredData}
+                  classes={classes}
+                  type={"preduties"}
+                />
+            </Grid>
+
+            <Grid item xs={12}>
+                <Duty
+                  selectedComponents={selectedPreDuties}
+                  values={values}
+                  setValues={setValues}
+                  errors={errors}
+                  handleInputChange={handleInputChange}
+                  removeComponent={removeComponent}
+                  removeEnteredData={removeEnteredData}
+                  classes={classes}
+                  name={"Pre Duty"}
+                  title={"Pre Duties"}
+                  type={"preduties"}
+                />
+            </Grid>
+
+            <Grid item xs={12}>
+                <Duty
+                  selectedComponents={selectedPostDuties}
+                  values={values}
+                  setValues={setValues}
+                  errors={errors}
+                  handleInputChange={handleInputChange}
+                  removeComponent={removeComponent}
+                  removeEnteredData={removeEnteredData}
+                  classes={classes}
+                  name={"Post Duty"}
+                  title={"Post Duties"}
+                  type={"postduties"}
+                />
+            </Grid>
 
             <Grid container>
               <Grid item xs={2} xm={1}>

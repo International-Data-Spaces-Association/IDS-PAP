@@ -59,8 +59,8 @@ const theme = createMuiTheme({
 const useStyles = makeStyles((theme) => ({
   content: {
     paddingTop: 35,
-    marginLeft: drawerWidth + 35,
-    marginTop: 80 + 35,
+    marginLeft: drawerWidth + 0,
+    marginTop: 80 + 0,
     paddingBottom: 35,
     minHeight: "calc(100vh - 115px)",
   },
@@ -83,9 +83,9 @@ function App() {
             [classes.appBarShift]: open,
           })}
         >
-          <Paper className={classes.content}>
+          <div className={classes.content}>
             <RouteToPage />
-          </Paper>
+          </div>
         </div>
       </Router>
     </ThemeProvider>

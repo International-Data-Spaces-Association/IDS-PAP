@@ -9,7 +9,7 @@ import {
 import Title from "../controls/Title";
 
 export default function IdentifyPolicy(props) {
-  const { values, handleInputChange, errors } = props;
+  const {classes, values, handleInputChange, errors } = props;
 
   const handleInputChangeLocal = (e) => {
     if (e.target.value === "Offer") values.consumer = "";
@@ -17,9 +17,9 @@ export default function IdentifyPolicy(props) {
     handleInputChange(e);
   };
   return (
-    <>
-      <Grid container>
-        <Title label="Policy Type*" seperator={false}/>
+    <Grid container spacing={2} justify="center" className={classes.container}>
+      <Grid item xs={3}>
+        <Title label="Policy Type*" seperator={false} />
         <ItemPicker
           name="policyType"
           value={values.policyType}
@@ -27,37 +27,16 @@ export default function IdentifyPolicy(props) {
           ItemList={policy_types}
           onChange={handleInputChangeLocal}
           error={errors.policyType}
+          xs={12}
+          sm={12}
+          md={12}
         />
       </Grid>
-      <Grid container>
-        <Title label="Data URI*" seperator={false} />
-        <Input
-          name="target"
-          value={values.target}
-          placeholder="e.g. http://example.com/ids-data/production-plan"
-          onChange={handleInputChange}
-          error={errors.target}
-        />
-      </Grid>
-      {values.policyType === "Agreement" || values.policyType === "Offer" ? (
-        <>
-          <Grid container>
-            <Title label="Data Provider*" seperator={false}/>
-            <Input
-              name="provider"
-              value={values.provider}
-              placeholder="My party"
-              onChange={handleInputChange}
-              error={errors.provider}
-            />
-          </Grid>
-        </>
-      ) : null}
 
       {values.policyType === "Agreement" || values.policyType === "Request" ? (
         <>
-          <Grid container>
-            <Title label="Data Consumer*" seperator={false}/>
+          <Grid item xs={3}>
+            <Title label="Data Consumer*" seperator={false} />
             <ItemPicker
               name="consumer"
               defaultValue=""
@@ -65,10 +44,45 @@ export default function IdentifyPolicy(props) {
               ItemList={data_consumers}
               onChange={handleInputChange}
               error={errors.consumer}
+              xs={12}
+              sm={12}
+              md={12}
             />
           </Grid>
         </>
       ) : null}
-    </>
+
+      {values.policyType === "Agreement" || values.policyType === "Offer" ? (
+        <>
+          <Grid item xs={5}>
+          <Title label="Data Provider*" seperator={false} />
+          <Input
+            name="provider"
+            value={values.provider}
+            placeholder="My party"
+            onChange={handleInputChange}
+            error={errors.provider}
+            xs={12}
+            sm={12}
+            md={12}
+          />
+          </Grid>
+        </>
+      ) : null}
+
+      <Grid item xs={11}>
+        <Title label="Data URI*" seperator={false} />
+        <Input
+          name="target"
+          value={values.target}
+          placeholder="e.g. http://example.com/ids-data/production-plan"
+          onChange={handleInputChange}
+          error={errors.target}
+          xs={12}
+          sm={12}
+          md={12}
+        />
+      </Grid>
+    </Grid>
   );
 }

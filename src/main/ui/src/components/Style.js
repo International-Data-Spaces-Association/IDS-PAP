@@ -42,4 +42,16 @@ export const useStyle = makeStyles((theme) => ({
     width: "100%",
     fontSize: "1.25em",
   },
+  
+  paper: {
+    padding:"10px 10px 1px 10px",
+    marginBottom:theme.spacing(2),
+  },
+  subtitle: {
+    fontSize:"1.675rem",
+    fontFamily:"Roboto",
+  },
+  container: {
+    paddingTop:"10px",
+  }
 }));
