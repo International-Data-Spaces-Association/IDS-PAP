@@ -18,7 +18,6 @@ export default function Anonymize(props) {
     <>
       <Grid item xs={xs} sm={sm} md={md}>
         <Grid container>
-          <Title label="The modify duty action defines specific changes to be applied on a field of data." />
           <ItemPicker
             name="preduties_modifier"
             label={"Modify action"}
@@ -34,7 +33,7 @@ export default function Anonymize(props) {
               <Input
                 name="preduties_valueToChange"
                 label={
-                  "Enter the value that you want to replace the field with"
+                  "Value that you want to replace the field with"
                 }
                 value={values.preduties_valueToChange}
                 placeholder="e.g. XXXX"
@@ -48,8 +47,8 @@ export default function Anonymize(props) {
         )}
 
         <Grid container>
-          <Title label="Enter the field (jsonPathQuery) that you want to modify" />
           <Input
+            label="Field (jsonPathQuery) you want to modify"
             name="preduties_fieldToChange"
             value={values.preduties_fieldToChange}
             placeholder="e.g. $.name"

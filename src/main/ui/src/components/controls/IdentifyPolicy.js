@@ -19,8 +19,8 @@ export default function IdentifyPolicy(props) {
     handleInputChange(e);
   };
   return (
-    <Grid container spacing={2} justify="center" className={classes.container}>
-      <Grid item xs={3}>
+    <Grid container spacing={2}>
+      <Grid item xs={4}>
         <Title label="Policy Type*" seperator={false} />
         <ItemPicker
           name="policyType"
@@ -37,7 +37,7 @@ export default function IdentifyPolicy(props) {
 
       {values.policyType === "Agreement" || values.policyType === "Request" ? (
         <>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Title label="Data Consumer*" seperator={false} />
             <ItemPicker
               name="consumer"
@@ -56,7 +56,7 @@ export default function IdentifyPolicy(props) {
 
       {values.policyType === "Agreement" || values.policyType === "Offer" ? (
         <>
-          <Grid item xs={5}>
+          <Grid item xs={4}>
           <Title label="Data Provider*" seperator={false} />
           <Input
             name="provider"
@@ -72,7 +72,7 @@ export default function IdentifyPolicy(props) {
         </>
       ) : null}
 
-      <Grid item xs={11}>
+      <Grid item xs={12}>
         <Title label="Data URI*" seperator={false} />
         <Input
           name="target"

@@ -29,316 +29,76 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RightOperandId;
+import lombok.Getter;
 
+@Getter
 public class RecievedOdrlPolicy {
-	public int id;
-    public String policyType;
-    public String target;
-    public String provider;
-    public String consumer;
-    public List<String> location_input;
-    public String location_op;
-    public List<String> application_input;
-    public String application_op;
-    public List<String> connector_input;
-    public String connector_op;
-    public List<String> role_input;
-	public String role_op;
-    public List<String> purpose_input;
-    public String purpose_op;
-    public List<String> event_input;
-    public String event_op;
-    public List<String> state_input;
-    public String state_op;
-    public List<String> securityLevel_input;
-    public String securityLevel_op;
+	private int id;
+	private String policyType;
+	private String target;
+	private String provider;
+	private String consumer;
+	private List<String> location_input;
+	private String location_op;
+	private List<String> application_input;
+	private String application_op;
+	private List<String> connector_input;
+	private String connector_op;
+	private List<String> role_input;
+	private String role_op;
+	private List<String> purpose_input;
+	private String purpose_op;
+	private List<String> event_input;
+	private String event_op;
+    private List<String> state_input;
+    private String state_op;
+    private List<String> securityLevel_input;
+    private String securityLevel_op;
     
 
-	public Boolean preduties_anomInRest;
-    public String preduties_modifier;
-    public String preduties_valueToChange;
-    public String preduties_fieldToChange;
+    private Boolean preduties_anomInRest;
+    private String preduties_modifier;
+    private String preduties_valueToChange;
+    private String preduties_fieldToChange;
 
     
-    public String postduties_systemDevice;
-    public String postduties_logLevel;
-    public String postduties_durationYear;
-    public String postduties_durationMonth;
-    public String postduties_durationDay;
-    public String postduties_durationHour;
-    public String postduties_timeAndDate;
-    public String postduties_notificationLevel;
-    public String postduties_informedParty;
-    public String system;
-    public String interval;
-    public String payment;
-    public String price;
-    public String counter;
-    public String encoding;
-    public String policy;
-    public String time;
-    public String timeUnit;
-    public String timeAndDate;
-    public String informedParty;
-    public String systemDevice;
-    public String valueToChange;
-    public String modifier;
-    public String fieldToChange;
-    public String restrictTimeIntervalStart;
-    public String restrictTimeIntervalEnd;
-    public String restrictEndTime;
-    public String specifyBeginTime;
-    public String durationHour;
-    public String durationDay;
-    public String durationMonth;
-    public String durationYear;
-    public String logLevel;
-    public String notificationLevel;
-    public String artifactState;
+    private String postduties_systemDevice;
+    private String postduties_logLevel;
+    private String postduties_durationYear;
+    private String postduties_durationMonth;
+    private String postduties_durationDay;
+    private String postduties_durationHour;
+    private String postduties_timeAndDate;
+    private String postduties_notificationLevel;
+    private String postduties_informedParty;
+    private String system;
+    private String interval;
+    private String payment;
+    private String price;
+    private String counter;
+    private String encoding;
+    private String policy;
+    private String time;
+    private String timeUnit;
+    private String timeAndDate;
+    private String informedParty;
+    private String systemDevice;
+    private String valueToChange;
+    private String modifier;
+    private String fieldToChange;
+    private String restrictTimeIntervalStart;
+    private String restrictTimeIntervalEnd;
+    private String restrictEndTime;
+    private String specifyBeginTime;
+    private String durationHour;
+    private String durationDay;
+    private String durationMonth;
+    private String durationYear;
+    private String logLevel;
+    private String notificationLevel;
+    private String artifactState;
 	private ArrayList<Condition> constraints = new ArrayList<>();
 
-    public int getId() {
-		return id;
-	}
-
-	public String getPolicyType() {
-		return policyType;
-	}
-
-	public String getTarget() {
-		return target;
-	}
-
-	public String getProvider() {
-		return provider;
-	}
-
-	public String getConsumer() {
-		return consumer;
-	}
-
-	public List<String> getLocation_input() {
-		return location_input;
-	}
-
-	public String getLocation_op() {
-		return location_op;
-	}
-
-	public List<String> getApplication_input() {
-		return application_input;
-	}
-
-	public String getApplication_op() {
-		return application_op;
-	}
-
-	public List<String> getConnector_input() {
-		return connector_input;
-	}
-
-	public String getConnector_op() {
-		return connector_op;
-	}
-
-	public List<String> getRole_input() {
-		return role_input;
-	}
-
-	public String getRole_op() {
-		return role_op;
-	}
-
-	public List<String> getPurpose_input() {
-		return purpose_input;
-	}
-
-	public String getPurpose_op() {
-		return purpose_op;
-	}
-
-	public List<String> getEvent_input() {
-		return event_input;
-	}
-
-	public String getEvent_op() {
-		return event_op;
-	}
-
-	public List<String> getState_input() {
-		return state_input;
-	}
-
-	public String getState_op() {
-		return state_op;
-	}
-
-	public List<String> getSecurityLevel_input() {
-		return securityLevel_input;
-	}
-
-	public String getSecurityLevel_op() {
-		return securityLevel_op;
-	}
-    public Boolean getPreduties_anomInRest() {
-		return preduties_anomInRest;
-	}
-
-	public String getPreduties_modifier() {
-		return preduties_modifier;
-	}
-
-	public String getPreduties_valueToChange() {
-		return preduties_valueToChange;
-	}
-
-	public String getPreduties_fieldToChange() {
-		return preduties_fieldToChange;
-	}
-
-	public String getPostduties_systemDevice() {
-		return postduties_systemDevice;
-	}
-
-	public String getPostduties_logLevel() {
-		return postduties_logLevel;
-	}
-
-	public String getPostduties_durationYear() {
-		return postduties_durationYear;
-	}
-
-	public String getPostduties_durationMonth() {
-		return postduties_durationMonth;
-	}
-
-	public String getPostduties_durationDay() {
-		return postduties_durationDay;
-	}
-
-	public String getPostduties_durationHour() {
-		return postduties_durationHour;
-	}
-
-	public String getPostduties_timeAndDate() {
-		return postduties_timeAndDate;
-	}
-
-	public String getPostduties_notificationLevel() {
-		return postduties_notificationLevel;
-	}
-
-	public String getPostduties_informedParty() {
-		return postduties_informedParty;
-	}
-
-	public String getSystem() {
-		return system;
-	}
-
-	public String getInterval() {
-		return interval;
-	}
-
-	public String getPayment() {
-		return payment;
-	}
-
-	public String getPrice() {
-		return price;
-	}
-
-	public String getCounter() {
-		return counter;
-	}
-
-	public String getEncoding() {
-		return encoding;
-	}
-
-	public String getPolicy() {
-		return policy;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public String getTimeUnit() {
-		return timeUnit;
-	}
-
-	public String getTimeAndDate() {
-		return timeAndDate;
-	}
-
-	public String getInformedParty() {
-		return informedParty;
-	}
-
-	public String getSystemDevice() {
-		return systemDevice;
-	}
-
-	public String getValueToChange() {
-		return valueToChange;
-	}
-
-	public String getModifier() {
-		return modifier;
-	}
-
-	public String getFieldToChange() {
-		return fieldToChange;
-	}
-
-	public String getRestrictTimeIntervalStart() {
-		return restrictTimeIntervalStart;
-	}
-
-	public String getRestrictTimeIntervalEnd() {
-		return restrictTimeIntervalEnd;
-	}
-
-	public String getRestrictEndTime() {
-		return restrictEndTime;
-	}
-
-	public String getSpecifyBeginTime() {
-		return specifyBeginTime;
-	}
-
-	public String getDurationHour() {
-		return durationHour;
-	}
-
-	public String getDurationDay() {
-		return durationDay;
-	}
-
-	public String getDurationMonth() {
-		return durationMonth;
-	}
-
-	public String getDurationYear() {
-		return durationYear;
-	}
-
-	public String getLogLevel() {
-		return logLevel;
-	}
-
-	public String getNotificationLevel() {
-		return notificationLevel;
-	}
-
-	public String getArtifactState() {
-		return artifactState;
-	}
-
-	public ArrayList<Condition> getConstraints() {
-		return constraints;
-	}
 		
 	private String checkIfEmptyValue(String value, String defaultValue) {
 		if (value.length() > 0) {
@@ -774,7 +534,7 @@ public class RecievedOdrlPolicy {
 			rightOperands.add(rightOperand);
 			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, rightOperands, "");
 			refinements.add(delayPeriodRefinement);
-		}
+		}t
 
 		Action deleteDutyAction = new Action(ActionType.DELETE);
 		deleteDutyAction.setRefinements(refinements);

@@ -56,65 +56,19 @@ export default function PreDuty(props) {
   };
   const components = selectedComponents.order.map((c) => {
     switch (c) {
-      case "anonymizeRest":
-        return () => (
-          <>
-            <Grid container key={"anonymizeRest" + type}>
-              <Grid xs={12}>
-                <Grid xs={12}>
-                  <Title label="Anonymize in Rest" seperator={true} xs={12} />
-                </Grid>
-                <Grid container>
-                  <Grid item xs={1}></Grid>
-                  <Grid xs={10}>
-                    <Grid container xs={12} justify="center">
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={values.preduties_anomInRest}
-                            onChange={(e) => {
-                              setValues({
-                                ...values,
-                                ["preduties_anomInRest"]: e.target.checked,
-                              });
-                            }}
-                          />
-                        }
-                        label="Active"
-                      />
-                    </Grid>
-                  </Grid>
-                  <Remove
-                    onClick={() => {
-                      removeComponent(type, "anonymizeRest");
-                      removeEnteredData(["preduties_anomInRest"]);
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </Grid>{" "}
-          </>
-        );
       case "anonymizeTransit":
         return () => (
           <>
             <Grid container key={"anonymizeTransit" + type}>
-              <Grid xs={12}>
-                <Grid xs={12}>
                   <Title label="Anonymize in Transit" seperator={true} xs={12} />
-                </Grid>
-                <Grid container>
-                  <Grid item xs={1}></Grid>
-                  <Grid xs={10}>
-                    <Grid container xs={12} justify="center">
+                <Grid container xs={11} spacing={2}>
                       <Anonymize
                        values={values}
                        handleInputChange={handleInputChange}
                        errors={errors}
                       />
-                    </Grid>
-                  </Grid>
-                  <Remove
+                </Grid>
+                <Remove
                     onClick={() => {
                       setSelectedDeleteComponents({
                         duration: false,
@@ -128,9 +82,7 @@ export default function PreDuty(props) {
                       ]);
                     }}
                   />
-                </Grid>
               </Grid>
-            </Grid>
           </>
         );
       default:
@@ -159,7 +111,7 @@ export default function PreDuty(props) {
               (x) => x.isVisible === true
             ) ? (
               <>
-                <Grid item xs={12} container justify="center">
+                <Grid item xs={12} container >
                   <Grid item xs={3}>
                     <Button
                       color="primary"

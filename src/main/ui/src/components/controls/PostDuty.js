@@ -48,18 +48,19 @@ export default function PostDuty(props) {
       case "log":
         return () => (
           <>
-            <Title label="Log Data Usage" seperator={false} xs={11} />
             <Grid container key={"log_" + type}>
-              <Grid item xs={1} />
-              <LogData
-                handleInputChange={handleInputChange}
-                values={values}
-                errors={errors}
-                xs={10}
-                sm={10}
-                md={10}
-                type={type + "_"}
-              />
+              <Title label="Log Data Usage" seperator={false} xs={12} />
+              <Grid container xs={11} spacing={2}>
+                <LogData
+                  handleInputChange={handleInputChange}
+                  values={values}
+                  errors={errors}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  type={type + "_"}
+                />
+              </Grid>
               <Remove
                 onClick={() => {
                   removeComponent(type, "log");
@@ -76,65 +77,58 @@ export default function PostDuty(props) {
         return () => (
           <>
             <Grid container key={"delete_" + type}>
-              <Grid xs={12}>
-                <Grid xs={12}>
-                  <Title label="Delete Data After" seperator={true} xs={12} />
-                </Grid>
-                <Grid container>
-                  <Grid item xs={1}></Grid>
-                  <Grid xs={10}>
-                    <Grid container xs={12} justify="center">
-                      <DeleteData
-                        handleInputChange={handleInputChange}
-                        errors={errors}
-                        values={values}
-                        removeEnteredData={removeEnteredData}
-                        selectedComponents={selectedDeleteComponents}
-                        setSelectedComponents={setSelectedDeleteComponents}
-                        xs={11}
-                        sm={11}
-                        md={11}
-                        seperator={false}
-                        type={type + "_"}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Remove
-                    onClick={() => {
-                      setSelectedDeleteComponents({
-                        duration: false,
-                        timeDate: false,
-                      });
-                      removeComponent(type, "delete");
-                      removeEnteredData([
-                        type + "_durationYear",
-                        type + "_durationMonth",
-                        type + "_durationDay",
-                        type + "_durationHour",
-                        type + "_timeAndDate",
-                      ]);
-                    }}
-                  />
-                </Grid>
+              <Title label="Delete Data After" seperator={true} xs={12} />
+              <Grid container xs={11} spacing={2}>
+                <DeleteData
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                  values={values}
+                  removeEnteredData={removeEnteredData}
+                  selectedComponents={selectedDeleteComponents}
+                  setSelectedComponents={setSelectedDeleteComponents}
+                  xs={11}
+                  sm={11}
+                  md={11}
+                  seperator={false}
+                  type={type + "_"}
+                />
               </Grid>
+              <Remove
+                onClick={() => {
+                  setSelectedDeleteComponents({
+                    duration: false,
+                    timeDate: false,
+                  });
+                  removeComponent(type, "delete");
+                  removeEnteredData([
+                    type + "_durationYear",
+                    type + "_durationMonth",
+                    type + "_durationDay",
+                    type + "_durationHour",
+                    type + "_timeAndDate",
+                  ]);
+                }}
+              />
             </Grid>
           </>
         );
       case "inform":
         return () => (
           <>
-            <Title label="Inform Party" seperator={false} xs={11} />
+            {" "}
             <Grid container key={"inform_" + type}>
-              <Grid item xs={1} />
-              <InformParty
-                handleInputChange={handleInputChange}
-                errors={errors}
-                values={values}
-                xs={10}
-                sm={10}
-                md={10}
-                type={type + "_"}
-              />
+              <Title label="Inform Party" seperator={false} xs={11} />
+              <Grid container xs={11} spacing={2}>
+                <InformParty
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                  values={values}
+                  xs={12}
+                  sm={12}
+                  md={12}
+                  type={type + "_"}
+                />
+              </Grid>
               <Remove
                 onClick={() => {
                   removeComponent(type, "inform");
@@ -214,7 +208,7 @@ export default function PostDuty(props) {
           </Paper>
         </>
       ) : (
-          <>
+        <>
           {Object.values(selectedComponents.availableComponents).some(
             (x) => x.isVisible === true
           ) ? (
@@ -257,7 +251,7 @@ export default function PostDuty(props) {
               </Grid>
             </>
           ) : null}
-          </>
+        </>
       )}
     </>
   );

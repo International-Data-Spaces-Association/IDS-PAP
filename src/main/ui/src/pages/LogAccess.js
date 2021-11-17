@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Paper } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import { useStyle } from "../components/Style";
@@ -42,17 +42,25 @@ export default function LogAccess() {
           title="This policy gives permission to a specified IDS data consumer to use your data and requests to log the usage information on a specified system device."
           icon={<AssignmentIcon />}
         />
-        <Grid container spacing={1}>
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-          />
-          <LogData
-          handleInputChange={handleInputChange}
-          values={values}
-          errors={errors}
-          />
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy
+                values={values}
+                handleInputChange={handleInputChange}
+                errors={errors}
+              />
+              <LogData
+                handleInputChange={handleInputChange}
+                values={values}
+                errors={errors}
+                xs={12}
+                sm={12}
+                md={12}
+
+              />
+            </Paper>
+          </Grid>
           <Grid item xs={2}>
             <Button
               variant="contained"

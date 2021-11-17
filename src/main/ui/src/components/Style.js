@@ -42,16 +42,29 @@ export const useStyle = makeStyles((theme) => ({
     width: "100%",
     fontSize: "1.25em",
   },
-  
-  paper: {
-    padding:"10px 10px 1px 10px",
+  paperWithoutRemoveBtn: {
+    padding:"38px 20px 20px 20px",
     marginBottom:theme.spacing(2),
+    borderRadius:"10px",
+  },
+  paper: {
+    padding:"38px 0px 20px 20px",
+    marginBottom:theme.spacing(3),
+    borderRadius:"10px",
+  },
+  paperSubContainer: {
+    borderStyle: "solid",
+    borderColor: "#d7d7d7",
+    borderWidth: "1px",
+    padding: "10px",
+    borderRadius: "10px",
   },
   subtitle: {
     fontSize:"1.675rem",
     fontFamily:"Roboto",
   },
-  container: {
-    paddingTop:"10px",
+  formBtn:{
+    height: "55.97px",
+    marginBottom: "12px"
   }
 }));

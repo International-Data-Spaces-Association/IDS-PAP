@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Paper } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import EnhancedEncryptionIcon from "@material-ui/icons/EnhancedEncryption";
 import { useStyle } from "../components/Style";
@@ -43,52 +43,57 @@ export default function AnonymizeInTransit() {
           title="This policy gives permission to a specified IDS data consumer to use your data."
           icon={<EnhancedEncryptionIcon />}
         />
-        <Grid container spacing={1}>
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-          />
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy
+                values={values}
+                handleInputChange={handleInputChange}
+                errors={errors}
+              />
 
-          <Grid container>
-            <Title label="The modify duty action defines specific changes to be applied on a field of data." />
-            <ItemPicker
-              name="modifier"
-              label={"Modify action"}
-              defaultValue="Replace modification method"
-              ItemList={modifier_list}
-              onChange={handleInputChange}
-              error={errors.modifier}
-            />
-          </Grid>
-          {values.modifier === "idsc:REPLACE" ? (
-            <>
               <Grid container>
-                <Input
-                  name="valueToChange"
-                  label={"Enter the value that you want to replace the field with"}
-                  value={values.valueToChange}
-                  placeholder="e.g. XXXX"
+                <Title label="The modify duty action defines specific changes to be applied on a field of data." />
+                <ItemPicker
+                  name="modifier"
+                  label={"Modify action"}
+                  defaultValue="Replace modification method"
+                  ItemList={modifier_list}
                   onChange={handleInputChange}
-                  error={errors.valueToChange}
+                  error={errors.modifier}
                 />
               </Grid>
-            </>
-          ) : (
-            (values.valueToChange = "")
-          )}
+              {values.modifier === "idsc:REPLACE" ? (
+                <>
+                  <Grid container>
+                    <Input
+                      name="valueToChange"
+                      label={
+                        "Enter the value that you want to replace the field with"
+                      }
+                      value={values.valueToChange}
+                      placeholder="e.g. XXXX"
+                      onChange={handleInputChange}
+                      error={errors.valueToChange}
+                    />
+                  </Grid>
+                </>
+              ) : (
+                (values.valueToChange = "")
+              )}
 
-          <Grid container>
-            <Title label="Enter the field (jsonPathQuery) that you want to modify" />
-            <Input
-              name="fieldToChange"
-              value={values.fieldToChange}
-              placeholder="e.g. $.name"
-              onChange={handleInputChange}
-              error={errors.fieldToChange}
-            />
+              <Grid container>
+                <Title label="Enter the field (jsonPathQuery) that you want to modify" />
+                <Input
+                  name="fieldToChange"
+                  value={values.fieldToChange}
+                  placeholder="e.g. $.name"
+                  onChange={handleInputChange}
+                  error={errors.fieldToChange}
+                />
+              </Grid>
+            </Paper>
           </Grid>
-
           <Grid item xs={2}>
             <Button
               variant="contained"

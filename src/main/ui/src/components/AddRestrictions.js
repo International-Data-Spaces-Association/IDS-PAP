@@ -228,26 +228,26 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"interval"}>
             <Title label="Restrict Time Interval" />
-            <Date
-              name="restrictTimeIntervalStart"
-              label="Start Time*"
-              value={values.restrictTimeIntervalStart}
-              onChange={handleInputChange}
-              error={errors.restrictTimeIntervalStart}
-              sm={11}
-              md={3}
-            />
-            <Grid item sm={1} />
-            <Date
-              name="restrictTimeIntervalEnd"
-              label="End Time*"
-              value={values.restrictTimeIntervalEnd}
-              onChange={handleInputChange}
-              error={errors.restrictTimeIntervalEnd}
-              sm={11}
-              md={3}
-            />
-            <Grid item md={4} />
+            <Grid container xs={11} spacing={2}>
+              <Date
+                name="restrictTimeIntervalStart"
+                label="Start Time*"
+                value={values.restrictTimeIntervalStart}
+                onChange={handleInputChange}
+                error={errors.restrictTimeIntervalStart}
+                sm={11}
+                md={4}
+              />
+              <Date
+                name="restrictTimeIntervalEnd"
+                label="End Time*"
+                value={values.restrictTimeIntervalEnd}
+                onChange={handleInputChange}
+                error={errors.restrictTimeIntervalEnd}
+                sm={11}
+                md={4}
+              />
+            </Grid>
             <Remove
               onClick={() => {
                 removeEnteredData([
@@ -263,28 +263,28 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"payment"}>
             <Title label="Restrict Payment" />
-            <Input
-              name="price"
-              label="Payment (Euro)*"
-              value={values.price}
-              placeholder="e.g. 10"
-              onChange={handleInputChange}
-              error={errors.price}
-              sm={11}
-              md={3}
-            />
-            <Grid item sm={1} />
-            <ItemPicker
-              name="payment"
-              label="For Sale or Rent*"
-              defaultValue=""
-              ItemList={sale_rent_list}
-              onChange={handleInputChange}
-              error={errors.payment}
-              sm={11}
-              md={3}
-            />
-            <Grid item md={4} />
+            <Grid container spacing={2} xs={11}>
+              <Input
+                name="price"
+                label="Payment (Euro)*"
+                value={values.price}
+                placeholder="e.g. 10"
+                onChange={handleInputChange}
+                error={errors.price}
+                sm={11}
+                md={3}
+              />
+              <ItemPicker
+                name="payment"
+                label="For Sale or Rent*"
+                defaultValue=""
+                ItemList={sale_rent_list}
+                onChange={handleInputChange}
+                error={errors.payment}
+                sm={11}
+                md={3}
+              />
+            </Grid>
             <Remove
               onClick={() => {
                 removeEnteredData(["price", "payment"]);
@@ -298,13 +298,18 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"counter"}>
             <Title label="Restrict Number of Usage" />
-            <Input
-              name="counter"
-              value={values.counter}
-              placeholder="e.g. 10"
-              onChange={handleInputChange}
-              error={errors.counter}
-            />
+            <Grid container xs={11} spacing={2}>
+              <Input
+                name="counter"
+                value={values.counter}
+                placeholder="e.g. 10"
+                onChange={handleInputChange}
+                error={errors.counter}
+                xs={3}
+                sm={3}
+                md={3}
+              />
+            </Grid>
             <Remove
               onClick={() => {
                 removeComponent("restrictions", "counter");
@@ -318,17 +323,17 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"endTime"}>
             <Title label="Restrict End Time" />
-            <Grid item sm={1} />
-            <Date
-              name="restrictEndTime"
-              label="End Time"
-              value={values.restrictEndTime}
-              onChange={handleInputChange}
-              error={errors.restrictEndTime}
-              sm={11}
-              md={3}
-            />
-            <Grid item md={8} />
+            <Grid container xs={11} spacing={2}>
+              <Date
+                name="restrictEndTime"
+                label="End Time"
+                value={values.restrictEndTime}
+                onChange={handleInputChange}
+                error={errors.restrictEndTime}
+                sm={11}
+                md={5}
+              />
+            </Grid>
             <Remove
               onClick={() => {
                 removeEnteredData(["restrictEndTime"]);
@@ -342,61 +347,58 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"duration"}>
             <Title label="Restrict Time Duration" />
-            <Grid item sm={1} />
-            <Input
-              name="durationYear"
-              label="Year (Optional)"
-              value={values.durationYear}
-              placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationYear}
-              sm={11}
-              md={3}
-            />
-            <Grid item sm={1} />
-            <Input
-              name="durationMonth"
-              label="Month (Optional)"
-              value={values.durationMonth}
-              placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationMonth}
-              sm={11}
-              md={3}
-            />
-            <Grid item sm={1} />
-            <Date
-              name="specifyBeginTime"
-              label="Begin Time (Optional)"
-              value={values.specifyBeginTime}
-              onChange={handleInputChange}
-              error={errors.specifyBeginTime}
-              sm={11}
-              md={3}
-            />
-            <Grid item sm={1} />
-            <Input
-              name="durationDay"
-              label="Day (Optional)"
-              value={values.durationDay}
-              placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationDay}
-              sm={11}
-              md={3}
-            />
-            <Grid item sm={1} />
-            <Input
-              name="durationHour"
-              label="Hour (Optional)"
-              value={values.durationHour}
-              placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationHour}
-              sm={11}
-              md={3}
-            />
-            <Grid item md={4} />
+            <Grid container sm={11} spacing={2}>
+              <Input
+                name="durationYear"
+                label="Year (Optional)"
+                value={values.durationYear}
+                placeholder="e.g. 2021"
+                onChange={handleInputChange}
+                error={errors.durationYear}
+                sm={11}
+                md={3}
+              />
+              <Input
+                name="durationMonth"
+                label="Month (Optional)"
+                value={values.durationMonth}
+                placeholder="e.g. 01"
+                onChange={handleInputChange}
+                error={errors.durationMonth}
+                sm={11}
+                md={3}
+              />
+
+              <Input
+                name="durationDay"
+                label="Day (Optional)"
+                value={values.durationDay}
+                placeholder="e.g. 01"
+                onChange={handleInputChange}
+                error={errors.durationDay}
+                sm={11}
+                md={3}
+              />
+              <Input
+                name="durationHour"
+                label="Hour (Optional)"
+                value={values.durationHour}
+                placeholder="e.g. 12"
+                onChange={handleInputChange}
+                error={errors.durationHour}
+                sm={11}
+                md={3}
+              />
+              <Date
+                name="specifyBeginTime"
+                label="Begin Time (Optional)"
+                value={values.specifyBeginTime}
+                onChange={handleInputChange}
+                error={errors.specifyBeginTime}
+                sm={11}
+                md={5}
+              />
+            </Grid>
             <Remove
               onClick={() => {
                 removeEnteredData([
@@ -431,6 +433,7 @@ export default function AddRestrictions(props) {
           <Paper elevation={3} className={classes.paper}>
             {components.map((c) => c())}
 
+            {selectedComponents.order.length <= 12 ? (
             <Grid item xs={12} container justify="center">
               <Grid item xs={3}>
                 <Button
@@ -467,6 +470,7 @@ export default function AddRestrictions(props) {
                 </MenuItem>
               </Menu>
             </Grid>
+            ):null}
           </Paper>
         </>
       ) : (

@@ -11,8 +11,8 @@ export default function LogData(props) {
     <>
       <Grid item xs={xs} sm={sm} md={md}>
       <Grid container>
-            <Title label="Log Level" />
             <ItemPicker
+              label="Log Level"
               name= {type + "logLevel"}
               defaultValue=""
               ItemList={log_level_list}
@@ -22,8 +22,8 @@ export default function LogData(props) {
           </Grid>
 
           <Grid container>
-            <Title label="System Device" />
             <Input
+             label="System Device"
               name={type + "systemDevice"}
               value={values[type + "systemDevice"]}
               placeholder="e.g. http://example.com/system:ESN-database"

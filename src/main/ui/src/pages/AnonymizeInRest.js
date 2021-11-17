@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Paper } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import EnhancedEncryptionIcon from "@material-ui/icons/EnhancedEncryption";
 import { useStyle } from "../components/Style";
@@ -38,14 +38,17 @@ export default function AnonymizeInRest() {
                 This policy requests a specified IDS data consumer to anonymize your stored data."
           icon={<EnhancedEncryptionIcon />}
         />
-        <Grid container spacing={1}>
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-            type="submit"
-          />
-
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy
+                values={values}
+                handleInputChange={handleInputChange}
+                errors={errors}
+                type="submit"
+              />
+            </Paper>
+          </Grid>
           <Grid item xs={2}>
             <Button
               variant="contained"

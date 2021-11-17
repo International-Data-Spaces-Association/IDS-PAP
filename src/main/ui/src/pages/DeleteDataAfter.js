@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Paper } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useHistory } from "react-router-dom";
@@ -14,11 +14,12 @@ export default function DeleteDataAfter() {
     duration: false,
     timeDate: false,
   };
+  
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
+  const [selectedComponents, setSelectedComponents] = useState(selected_components);
 
   const resetStates = () => {
     for (var key in selectedComponents) {
@@ -26,12 +27,13 @@ export default function DeleteDataAfter() {
         selectedComponents[key] = false;
       }
     }
-    setValues({ ...values,
-    timeAndDate: "",
-    durationHour: "",
-    durationDay: "",
-    durationMonth: "",
-    durationYear: ""
+    setValues({
+      ...values,
+      timeAndDate: "",
+      durationHour: "",
+      durationDay: "",
+      durationMonth: "",
+      durationYear: "",
     });
   };
 
@@ -59,6 +61,16 @@ export default function DeleteDataAfter() {
       );
     }
   };
+  const removeEnteredData = (ids) => {
+    ids.forEach(function (id) {
+      if (OdrlPolicy[id] instanceof Array) {
+        values[id] = [""];
+        OdrlPolicy[id] = [""];
+      } else {
+        values[id] = "";
+      }
+    });
+  };
   return (
     <div className={classes.page}>
       <Form onSubmit={handleSubmit}>
@@ -82,19 +94,26 @@ export default function DeleteDataAfter() {
             icon={<DeleteIcon />}
           />
         ) : null}
-        <Grid container spacing={1}>
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-            resetStates={resetStates}
-          />
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy
+                values={values}
+                handleInputChange={handleInputChange}
+                errors={errors}
+                resetStates={resetStates}
+              />
 
-          <DeleteData
-          handleInputChange={handleInputChange}
-          errors={errors}
-          values={values}
-          selectedComponents={selectedComponents}/>
+              <DeleteData
+                handleInputChange={handleInputChange}
+                errors={errors}
+                values={values}
+                selectedComponents={selectedComponents}
+                removeEnteredData={removeEnteredData}
+                setSelectedComponents={setSelectedComponents}
+              />
+            </Paper>
+          </Grid>
           <Grid item xs={12}>
             <Grid item xs={2}>
               <Button

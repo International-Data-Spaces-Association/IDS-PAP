@@ -5,6 +5,7 @@ import Input from "./Input";
 import { operator_list } from "./InitialFieldListValues";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
+import { useStyle } from "../Style";
 
 export default function MultiselectInputField(props) {
   const {
@@ -20,6 +21,7 @@ export default function MultiselectInputField(props) {
     sm = 11,
     md = 11,
   } = props;
+  const classes = useStyle();
   const numberPattern = /\d+/g;
 
   const handleInputChange = (e) => {
@@ -50,7 +52,7 @@ export default function MultiselectInputField(props) {
 
   if (values[name + "_input"].length === 1) {
     return (
-      <Grid item container xs={xs} sm={sm} md={md} spacing={1}>
+      <Grid item container xs={xs} sm={sm} md={md} spacing={2}>
         {inputType === "input" && (
           <Input
             name={name + "_input_0"}
@@ -80,6 +82,7 @@ export default function MultiselectInputField(props) {
           <IconButton
             aria-label="add"
             color="primary"
+            className={classes.formBtn}
             onClick={() => {
               handleAddItem(0);
             }}

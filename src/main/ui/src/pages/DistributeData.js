@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Paper } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import ShareIcon from "@material-ui/icons/Share";
 import { useStyle } from "../components/Style";
@@ -43,35 +43,38 @@ export default function DistributeData() {
           icon={<ShareIcon />}
         />
 
-        <Grid container spacing={1}>
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-          />
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy
+                values={values}
+                handleInputChange={handleInputChange}
+                errors={errors}
+              />
 
-          <Grid container>
-            <Title label="Artifact State" />
-            <ItemPicker
-              name="artifactState"
-              defaultValue=""
-              ItemList={artifact_state_list}
-              onChange={handleInputChange}
-              error={errors.artifactState}
-            />
+              <Grid container>
+                <Title label="Artifact State" />
+                <ItemPicker
+                  name="artifactState"
+                  defaultValue=""
+                  ItemList={artifact_state_list}
+                  onChange={handleInputChange}
+                  error={errors.artifactState}
+                />
+              </Grid>
+
+              <Grid container>
+                <Title label="Policy to be sent to the third party" />
+                <Input
+                  name="policy"
+                  value={values.policy}
+                  placeholder="e.g. http://example.com/policy/third-party-policy"
+                  onChange={handleInputChange}
+                  error={errors.policy}
+                />
+              </Grid>
+            </Paper>
           </Grid>
-
-          <Grid container>
-            <Title label="Policy to be sent to the third party" />
-            <Input
-              name="policy"
-              value={values.policy}
-              placeholder="e.g. http://example.com/policy/third-party-policy"
-              onChange={handleInputChange}
-              error={errors.policy}
-            />
-          </Grid>
-
           <Grid item xs={2}>
             <Button
               variant="contained"

@@ -38,7 +38,6 @@ export default function ComplexPolicyForm() {
     type: "preduties",
     order: [],
     availableComponents: [
-      { id: "anonymizeRest", name: "Anonymize in Rest", isVisible: true },
       { id: "anonymizeTransit", name: "Anbonymize in Transit", isVisible: true },
     ],
   };
@@ -149,7 +148,7 @@ export default function ComplexPolicyForm() {
           />
           <Grid container>
             <Grid item xs={12}>
-              <Paper elevation={3}>
+              <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
                 <IdentifyPolicy
                   classes={classes}
                   values={values}

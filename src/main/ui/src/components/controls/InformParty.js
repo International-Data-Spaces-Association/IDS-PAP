@@ -11,10 +11,10 @@ export default function InformParty(props) {
         <>
             <Grid item xs={xs} sm={sm} md={md}>
                 <Grid container>
-                    <Title label="Notification Level" />
                     <ItemPicker
                         name= {type + "notificationLevel"}
                         defaultValue=""
+                        label="Notification Level"
                         ItemList={log_level_list}
                         onChange={handleInputChange}
                         error={errors[type + "notificationLevel"]}
@@ -22,9 +22,9 @@ export default function InformParty(props) {
                 </Grid>
 
                 <Grid container>
-                    <Title label="Informed Party (by default, you are the party who gets the notification)" />
                     <Input
                         name= {type + "informedParty"}
+                        label="Informed Party (by default, you are the party who gets the notification)"
                         value={values[type + "informedParty"]}
                         placeholder="My Party"
                         onChange={handleInputChange}

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Grid, Menu, Button } from "@material-ui/core";
+import { Grid, Menu, Button, Paper } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import { useStyle } from "../components/Style";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import { OdrlPolicy} from "../components/backend/OdrlPolicy";
+import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 
 import FormComponents from "../components/FormComponents";
@@ -31,14 +31,12 @@ export default function ProvideAccess() {
     ],
   };
 
-
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents, setSelectedComponents] = useState(
-    selected_components
-  );
+  const [selectedComponents, setSelectedComponents] =
+    useState(selected_components);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -60,18 +58,11 @@ export default function ProvideAccess() {
 
   const handleSubmit = (e) => {
     const dict = selectedComponents.availableComponents;
-    var state = {}
+    var state = {};
     dict.forEach(function (item) {
-      state[item.id] = !item.isVisible
+      state[item.id] = !item.isVisible;
     });
-    Submit(
-      "/policy/ProvideAccess",
-      values,
-      state,
-      setErrors,
-      history,
-      e
-    );
+    Submit("/policy/ProvideAccess", values, state, setErrors, history, e);
   };
 
   return (
@@ -81,51 +72,56 @@ export default function ProvideAccess() {
           title="This policy gives permission to a specified IDS data consumer to use your data."
           icon={<LockOpenIcon />}
         />
-        <Grid container spacing={1}>
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-          />
-          <FormComponents
-            selectedComponents={selectedComponents}
-            values={values}
-            errors={errors}
-            handleInputChange={handleInputChange}
-            removeComponent={resetStates}
-            removeEnteredData={removeEnteredData}
-          />
 
-          {Object.values(selectedComponents.availableComponents).some(
-            (x) => x.isVisible === true
-          ) ? (
-            <Grid item xs={12} container justify="center">
-              <Grid item xs={2}>
-                <Button
-                  color="primary"
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleClick}
-                  id="Add Component"
-                  className={classes.addBtn}
-                >
-                  Add Component
-                </Button>
-              </Grid>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItems
-                  selectedComponents={selectedComponents}
-                  setAnchorEl={setAnchorEl}
-                />
-              </Menu>
-            </Grid>
-          ) : null}
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy
+                values={values}
+                handleInputChange={handleInputChange}
+                errors={errors}
+              />
+              <FormComponents
+                selectedComponents={selectedComponents}
+                values={values}
+                setValues={setValues}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                removeComponent={resetStates}
+                removeEnteredData={removeEnteredData}
+              />
+              {Object.values(selectedComponents.availableComponents).every(
+                (x) => x.isVisible === true
+              ) ? (
+                <Grid item xs={12} container justify="center">
+                  <Grid item xs={2}>
+                    <Button
+                      color="primary"
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                      id="Add Component"
+                      className={classes.addBtn}
+                    >
+                      Add Component
+                    </Button>
+                  </Grid>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItems
+                      selectedComponents={selectedComponents}
+                      setAnchorEl={setAnchorEl}
+                    />
+                  </Menu>
+                </Grid>
+              ) : null}
+            </Paper>
+          </Grid>
 
           <Grid item xs={2}>
             <Button

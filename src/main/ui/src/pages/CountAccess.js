@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button } from "@material-ui/core";
+import { Grid, Button, Paper } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import { useStyle } from "../components/Style";
@@ -42,7 +42,9 @@ export default function CountAccess() {
           title="This policy restricts the numeric count of using your data by a specified IDS data consumer."
           icon={<EqualizerIcon />}
         />
-        <Grid container spacing={1}>
+        <Grid container>
+        <Grid item xs={12}>
+              <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
           <IdentifyPolicy
             values={values}
             handleInputChange={handleInputChange}
@@ -59,7 +61,8 @@ export default function CountAccess() {
               error={errors.counter}
             />
           </Grid>
-
+          </Paper>
+            </Grid>
           <Grid item xs={2}>
             <Button
               variant="contained"
