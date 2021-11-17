@@ -71,6 +71,7 @@ public class RecievedOdrlPolicy {
     private String postduties_timeAndDate;
     private String postduties_notificationLevel;
     private String postduties_informedParty;
+    
     private String system;
     private String interval;
     private String payment;
