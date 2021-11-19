@@ -57,7 +57,6 @@ export default function LogAccess() {
                 xs={12}
                 sm={12}
                 md={12}
-
               />
             </Paper>
           </Grid>

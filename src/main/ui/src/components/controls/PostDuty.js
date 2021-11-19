@@ -168,7 +168,7 @@ export default function PostDuty(props) {
             ) ? (
               <>
                 <Grid item xs={12} container justify="center">
-                  <Grid item xs={3}>
+                  <Grid item xs={5}>
                     <Button
                       color="primary"
                       aria-controls="simple-menu"

@@ -116,6 +116,7 @@ public class OdrlPapRestController {
 		rp.addElapsedTimeRightOperand();
 		ArrayList<Rule> postDuties = rp.addPostDuties();
 		ArrayList<Rule> preDuties = rp.addPreDuties();
+		rp.distributeData(preDuties);
 
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
@@ -177,6 +178,12 @@ public class OdrlPapRestController {
 		Action useAction = new Action(ActionType.USE);
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		ArrayList<Rule> postDuties = new ArrayList<>();
+		System.out.println(rp.getTimeAndDate());
+		System.out.println(rp.getDurationYear());
+		System.out.println(rp.getDurationMonth());
+		System.out.println(rp.getDurationDay());
+		System.out.println(rp.getDurationHour());
+
 		postDuties.add(rp.deleteDuty(rp.getTimeAndDate(), rp.getDurationYear(), rp.getDurationMonth(),
 				rp.getDurationDay(), rp.getDurationHour(), RuleType.POSTDUTY));
 		rule.setPostduties(postDuties);

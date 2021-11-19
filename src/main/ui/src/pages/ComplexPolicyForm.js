@@ -12,7 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import PostDuty from "../components/controls/PostDuty";
 import PreDuty from "../components/controls/PreDuty";
 import AddRestrictions from "../components/AddRestrictions";
-
+import DistributeDataComplex from "../components/controls/DistributeDataComplex";
 export default function ComplexPolicyForm() {
   const selected_components = {
     type: "restrictions",
@@ -38,7 +38,11 @@ export default function ComplexPolicyForm() {
     type: "preduties",
     order: [],
     availableComponents: [
-      { id: "anonymizeTransit", name: "Anbonymize in Transit", isVisible: true },
+      {
+        id: "anonymizeTransit",
+        name: "Anbonymize in Transit",
+        isVisible: true,
+      },
     ],
   };
 
@@ -67,7 +71,7 @@ export default function ComplexPolicyForm() {
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    console.log(values)
+    console.log(values);
   };
 
   const handleSubmit = (e) => {
@@ -110,7 +114,7 @@ export default function ComplexPolicyForm() {
       setSelectedPreDuties,
     ];
     states.forEach(function (state, index) {
-      if (state.type == type) {
+      if (state.type === type) {
         const dict = state.availableComponents;
         const list = state.order;
         const setState = setStates[index];
@@ -155,53 +159,60 @@ export default function ComplexPolicyForm() {
                   handleInputChange={handleInputChange}
                   errors={errors}
                 />
+                <DistributeDataComplex
+                values={values}
+                setValues={setValues}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                removeEnteredData={removeEnteredData}
+                />
               </Paper>
             </Grid>
 
             <Grid item xs={12}>
-                <AddRestrictions
-                  selectedComponents={selectedComponents}
-                  values={values}
-                  setValues={setValues}
-                  errors={errors}
-                  handleInputChange={handleInputChange}
-                  removeComponent={removeComponent}
-                  removeEnteredData={removeEnteredData}
-                  classes={classes}
-                  type={"preduties"}
-                />
+              <AddRestrictions
+                selectedComponents={selectedComponents}
+                values={values}
+                setValues={setValues}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                removeComponent={removeComponent}
+                removeEnteredData={removeEnteredData}
+                classes={classes}
+                type={"preduties"}
+              />
             </Grid>
 
             <Grid item xs={12}>
-                <PreDuty
-                  selectedComponents={selectedPreDuties}
-                  values={values}
-                  setValues={setValues}
-                  errors={errors}
-                  handleInputChange={handleInputChange}
-                  removeComponent={removeComponent}
-                  removeEnteredData={removeEnteredData}
-                  classes={classes}
-                  name={"Pre Duty"}
-                  title={"Pre Duties"}
-                  type={"preduties"}
-                />
+              <PreDuty
+                selectedComponents={selectedPreDuties}
+                values={values}
+                setValues={setValues}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                removeComponent={removeComponent}
+                removeEnteredData={removeEnteredData}
+                classes={classes}
+                name={"Pre Duty"}
+                title={"Pre Duties"}
+                type={"preduties"}
+              />
             </Grid>
 
             <Grid item xs={12}>
-                <PostDuty
-                  selectedComponents={selectedPostDuties}
-                  values={values}
-                  setValues={setValues}
-                  errors={errors}
-                  handleInputChange={handleInputChange}
-                  removeComponent={removeComponent}
-                  removeEnteredData={removeEnteredData}
-                  classes={classes}
-                  name={"Post Duty"}
-                  title={"Post Duties"}
-                  type={"postduties"}
-                />
+              <PostDuty
+                selectedComponents={selectedPostDuties}
+                values={values}
+                setValues={setValues}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                removeComponent={removeComponent}
+                removeEnteredData={removeEnteredData}
+                classes={classes}
+                name={"Post Duty"}
+                title={"Post Duties"}
+                type={"postduties"}
+              />
             </Grid>
 
             <Grid container>

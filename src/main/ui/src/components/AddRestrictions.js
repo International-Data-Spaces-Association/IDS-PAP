@@ -21,6 +21,8 @@ import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
 import MultiselectInputField from "../components/controls/MultiselectInputField";
 import MenuItems from "../components/controls/MenuItems";
+import AddIcon from "@material-ui/icons/Add";
+
 export default function AddRestrictions(props) {
   const {
     selectedComponents,
@@ -435,7 +437,7 @@ export default function AddRestrictions(props) {
 
             {selectedComponents.order.length <= 12 ? (
             <Grid item xs={12} container justify="center">
-              <Grid item xs={3}>
+              <Grid item xs={5}>
                 <Button
                   color="primary"
                   aria-controls="simple-menu"
@@ -444,7 +446,8 @@ export default function AddRestrictions(props) {
                   className={classes.addBtn}
                   id="Add Component"
                 >
-                  Add Restriction
+                   Restriction
+
                 </Button>
               </Grid>
               <Menu
@@ -475,7 +478,7 @@ export default function AddRestrictions(props) {
         </>
       ) : (
         <Grid item xs={12} container justify="center">
-          <Grid item xs={3}>
+          <Grid item xs={5}>
             <Button
               color="primary"
               aria-controls="simple-menu"

@@ -48,7 +48,7 @@ export default function InterpretOdrlPolicy() {
       <Grid container spacing={1}>
         <Grid item xs={12} md={6}>
           <Grid item xs={12}>
-            <Typography variant="h5">Copy your ODRL policy here:</Typography>
+            <Typography variant="h5">Copy your IDS policy here:</Typography>
           </Grid>
           <Grid item xs={12}>
             <CodeMirror

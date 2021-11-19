@@ -3,7 +3,6 @@ import { Grid } from "@material-ui/core";
 import { modifier_list } from "./InitialFieldListValues";
 import Input from "./Input";
 import ItemPicker from "./ItemPicker";
-import Title from "./Title";
 
 export default function Anonymize(props) {
   const {

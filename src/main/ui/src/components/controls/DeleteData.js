@@ -21,13 +21,7 @@ export default function DeleteData(props) {
     seperator = true,
   } = props;
 
-  const selected_delete_data_components = {
-    duration: false,
-    timeDate: false,
-  };
-  const [selectedDeleteComponents, setSelectedDeleteComponents] = useState(
-    selected_delete_data_components
-  );
+  
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyle();
 

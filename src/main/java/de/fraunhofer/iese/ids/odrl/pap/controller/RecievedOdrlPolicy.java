@@ -387,6 +387,39 @@ public class RecievedOdrlPolicy {
 		}
 		return false;
 	}
+	
+	public boolean distributeData(ArrayList<Rule> preDutiesList) {
+		// Don't know how to add this component to the policy
+		if (getPolicy() != "" && getArtifactState()!= "") {
+			RightOperand dutyRightOperand = new RightOperand();
+			dutyRightOperand.setType(RightOperandType.ANYURI);
+			dutyRightOperand.setValue(getPolicy());
+			ArrayList<RightOperand> dutyRightOperands = new ArrayList<>();
+			dutyRightOperands.add(dutyRightOperand);
+			Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY,
+					Operator.SAME_AS, dutyRightOperands, "");
+			ArrayList<Condition> dutyRefinements = new ArrayList<>();
+			dutyRefinements.add(thirdPartyRefinement);
+
+			RightOperand rightOperand = new RightOperand();
+			rightOperand.setType(RightOperandType.STRING);
+			rightOperand.setValue(getArtifactState());
+			ArrayList<RightOperand> rightOperands = new ArrayList<>();
+			rightOperands.add(rightOperand);
+			Condition artifactStateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ARTIFACT_STATE,
+					Operator.EQUALS, rightOperands, "");
+			ArrayList<Condition> constraints = new ArrayList<>();
+			constraints.add(artifactStateConstraint);
+			Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
+			nextPolicyDutyAction.setRefinements(dutyRefinements);
+			Rule preDuties = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
+			preDutiesList.add(preDuties);
+			constraints.add(artifactStateConstraint);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	private Party createConsumer() {
 		Party consumer = null;
@@ -399,21 +432,6 @@ public class RecievedOdrlPolicy {
 		return consumer;
 	}
 
-	// Create policy:
-//	public String createPolicyConstraints(String policyUID) {
-//		Action useAction = new Action(ActionType.USE);
-//		Rule rule = new Rule(RuleType.PERMISSION, useAction);
-//		rule.setConstraints(constraints);
-//		return createPolicy(policyUID, rule);
-//	}
-
-//	public String createPolicy(String policyUID, ActionType at, RuleType rt) {
-//		Action useAction = new Action(at);
-//		Rule rule = new Rule(rt, useAction);
-//		if (constraints.size() > 0)
-//			rule.setConstraints(constraints);
-//		return createPolicy(policyUID, rule);
-//	}
 
 	public String createPolicy(String policyUID, Rule rule) {
 		OdrlPolicy odrlPolicy = new OdrlPolicy();
@@ -535,7 +553,7 @@ public class RecievedOdrlPolicy {
 			rightOperands.add(rightOperand);
 			Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY, Operator.DURATION_EQ, rightOperands, "");
 			refinements.add(delayPeriodRefinement);
-		}t
+		}
 
 		Action deleteDutyAction = new Action(ActionType.DELETE);
 		deleteDutyAction.setRefinements(refinements);
@@ -593,5 +611,7 @@ public class RecievedOdrlPolicy {
 		}
 		return preDuties;	
 	}
+
+
 
 }

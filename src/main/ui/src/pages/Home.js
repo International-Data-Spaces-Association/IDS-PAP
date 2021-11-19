@@ -115,7 +115,7 @@ export default function Home() {
           <Grid item xs={2} md={1} container justify="center">
             <Icon className="fas fa-question" style={{ color: '#FFFFFF', fontSize:"4em",}} />
           </Grid>
-          <Grid item xs={10} md={10}>
+          <Grid container xs={10} justify="Bottom center">
             <Typography variant="body1">
               {" "}
               Please check our page on{" "}

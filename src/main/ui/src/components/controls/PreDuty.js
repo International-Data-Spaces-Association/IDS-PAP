@@ -5,12 +5,7 @@ import {
   Menu,
   Button,
   Paper,
-  Checkbox,
-  FormControlLabel,
 } from "@material-ui/core";
-import InformParty from "./InformParty";
-import DeleteData from "./DeleteData";
-import LogData from "./LogData";
 import MenuItems from "./MenuItems";
 import Title from "./Title";
 import Remove from "./Remove";
@@ -158,7 +153,7 @@ export default function PreDuty(props) {
           ) ? (
             <>
               <Grid item xs={12} container justify="center">
-                <Grid item xs={3}>
+                <Grid item xs={5}>
                   <Button
                     color="primary"
                     aria-controls="simple-menu"

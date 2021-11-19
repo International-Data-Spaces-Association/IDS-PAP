@@ -186,8 +186,8 @@ export default function Navigation(props) {
                   button
                   component={Link}
                   to="/policy/InterpretOdrlPolicy"
-                  onClick={() => updateSelected("Interprete an ODRL Policy")}
-                  selected={selected.selected === "Interprete an ODRL Policy"}
+                  onClick={() => updateSelected("Interprete an IDS Policy")}
+                  selected={selected.selected === "Interprete an IDS Policy"}
                   className={classes.menuItem}
                 >
                   <SwapHorizIcon className={classes.listitemicon} />

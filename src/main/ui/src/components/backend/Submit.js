@@ -8,6 +8,7 @@ export default function Submit(url, values, states, setErrors, history ,e) {
       states[key] = false;
   }
     const isoValues = convertDateToIso(values, states)
+    console.log(values)
     axios.post(BASE_URL + url, isoValues)
     .then((response) => {
       let policies = response.data.split('DTPOLICY:');
