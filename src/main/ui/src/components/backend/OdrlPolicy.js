@@ -22,7 +22,7 @@ export const OdrlPolicy = {
     securityLevel_input: [""],
     securityLevel_op: "",
 
-    preduties_anomInRest: false,
+    preduties_anomInRest: "",
     preduties_modifier: "",
     preduties_valueToChange: "",
     preduties_fieldToChange: "",
