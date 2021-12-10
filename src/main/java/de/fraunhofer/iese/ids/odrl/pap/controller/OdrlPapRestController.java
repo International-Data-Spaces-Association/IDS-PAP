@@ -95,7 +95,9 @@ public class OdrlPapRestController {
 		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(rp.getConstraints());
 		rule.setTarget(URI.create(rp.getTarget()));
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/ComplexPolicyForm")
@@ -116,10 +118,10 @@ public class OdrlPapRestController {
 		rp.addElapsedTimeRightOperand();
 		ArrayList<Rule> postDuties = rp.addPostDuties();
 		ArrayList<Rule> preDuties = rp.addPreDuties();
-		rp.distributeData(preDuties);
+				
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		Rule rule = new Rule(RuleType.PERMISSION, new Action(ActionType.USE));
 
-		Action useAction = new Action(ActionType.USE);
-		Rule rule = new Rule(RuleType.PERMISSION, useAction);
 		rule.setConstraints(rp.getConstraints());
 		rule.setTarget(URI.create(rp.getTarget()));
 		if (postDuties.size() > 0) {
@@ -128,7 +130,9 @@ public class OdrlPapRestController {
 		if (preDuties.size() > 0) {
 			rule.setPreduties(preDuties);
 		}
-		return rp.createPolicy(uid, rule);
+		rules.add(rule);
+		rp.distributeData(rules);				
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/CountAccessPolicyForm")
@@ -146,7 +150,9 @@ public class OdrlPapRestController {
 		rule.setPostduties(postDuties);
 		rule.setConstraints(rp.getConstraints());
 		rule.setTarget(URI.create(rp.getTarget()));
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 //	@PostMapping("/policy/deletePolicyAfterUsage")
@@ -188,7 +194,9 @@ public class OdrlPapRestController {
 				rp.getDurationDay(), rp.getDurationHour(), RuleType.POSTDUTY));
 		rule.setPostduties(postDuties);
 		rule.setTarget(URI.create(rp.getTarget()));
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/deletePolicyAfterUsagePeriod")
@@ -202,7 +210,9 @@ public class OdrlPapRestController {
 		postDuties.add(postobligation);
 		rule.setPostduties(postDuties);
 		rule.setTarget(URI.create(rp.getTarget()));
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/AnonymizeInRestPolicyForm")
@@ -211,7 +221,9 @@ public class OdrlPapRestController {
 		Action anonymizeAction = new Action(ActionType.ANONYMIZE);
 		Rule rule = new Rule(RuleType.OBLIGATION, anonymizeAction);
 		rule.setTarget(URI.create(rp.getTarget()));
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/AnonymizeInTransitPolicyForm")
@@ -223,7 +235,9 @@ public class OdrlPapRestController {
 		ArrayList<Rule> preDuties = new ArrayList<>();
 		preDuties.add(rp.anonymizeInTransit(rp.getFieldToChange(), rp.getValueToChange(), rp.getModifier()));
 		rule.setPreduties(preDuties);
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/LogAccessPolicyForm")
@@ -235,7 +249,9 @@ public class OdrlPapRestController {
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(rp.logDuty(rp.getLogLevel(), rp.getSystemDevice(), RuleType.POSTDUTY));
 		rule.setPostduties(postDuties);
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/InformPolicyForm")
@@ -247,7 +263,9 @@ public class OdrlPapRestController {
 		ArrayList<Rule> postDuties = new ArrayList<>();
 		postDuties.add(rp.informDuty(rp.getNotificationLevel(), rp.getInformedParty(), RuleType.POSTDUTY));
 		rule.setPostduties(postDuties);
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/DistributePolicyForm")
@@ -272,6 +290,7 @@ public class OdrlPapRestController {
 				Operator.EQUALS, rightOperands, "");
 		ArrayList<Condition> constraints = new ArrayList<>();
 		constraints.add(artifactStateConstraint);
+		
 		Action distributeAction = new Action(ActionType.DISTRIBUTE);
 		Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
 		nextPolicyDutyAction.setRefinements(dutyRefinements);
@@ -282,11 +301,14 @@ public class OdrlPapRestController {
 		preDutiess.add(preDuties);
 		rule.setPreduties(preDutiess);
 		rule.setConstraints(constraints);
-		return rp.createPolicy(uid, rule);
+		ArrayList<Rule> rules = new ArrayList<Rule>();
+		rules.add(rule);
+		return rp.createPolicy(uid, rules);
 	}
 
 	@PostMapping("/policy/JsonOdrlPolicyMYDATA")
 	public String policy(@RequestBody String jsonPolicy) {
+		System.out.print(jsonPolicy);
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 
 		boolean tempProviderSide = true;
