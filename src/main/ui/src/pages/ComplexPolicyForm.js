@@ -38,11 +38,8 @@ export default function ComplexPolicyForm() {
     type: "preduties",
     order: [],
     availableComponents: [
-      {
-        id: "anonymizeTransit",
-        name: "Anbonymize in Transit",
-        isVisible: true,
-      },
+      {id: "anonymizeTransit",name: "Anonymize in Transit", isVisible: true},
+      {id: "anonymizeInRest", name:"Anonymize in Rest", isVisible: true}
     ],
   };
 

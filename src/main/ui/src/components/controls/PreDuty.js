@@ -12,6 +12,7 @@ import Remove from "./Remove";
 import { Typography } from "@material-ui/core";
 import Anonymize from "./Anonymize";
 
+
 export default function PreDuty(props) {
   const {
     selectedComponents,
@@ -55,29 +56,52 @@ export default function PreDuty(props) {
         return () => (
           <>
             <Grid container key={"anonymizeTransit" + type}>
-                  <Title label="Anonymize in Transit" seperator={true} xs={12} />
-                <Grid container xs={11} spacing={2}>
-                      <Anonymize
-                       values={values}
-                       handleInputChange={handleInputChange}
-                       errors={errors}
-                      />
-                </Grid>
-                <Remove
-                    onClick={() => {
-                      setSelectedDeleteComponents({
-                        duration: false,
-                        timeDate: false,
-                      });
-                      removeComponent(type, "anonymizeTransit");
-                      removeEnteredData([
-                        type + "_modifier",
-                        type + "_valueToChange",
-                        type + "_fieldToChange",
-                      ]);
-                    }}
-                  />
+              <Title label="Anonymize in Transit" seperator={true} xs={12} />
+              <Grid container xs={11} spacing={2}>
+                <Anonymize
+                  values={values}
+                  handleInputChange={handleInputChange}
+                  errors={errors}
+                />
               </Grid>
+              <Remove
+                onClick={() => {
+                  setSelectedDeleteComponents({
+                    duration: false,
+                    timeDate: false,
+                  });
+                  removeComponent(type, "anonymizeTransit");
+                  removeEnteredData([
+                    type + "_modifier",
+                    type + "_valueToChange",
+                    type + "_fieldToChange",
+                  ]);
+                }}
+              />
+            </Grid>
+          </>
+        );
+      case "anonymizeInRest":
+        const key = type + "_anomInRest"
+        if (values[key] === "") {
+          values[key] = "Active"
+        }
+        return () => (
+          <>
+            <Grid container key={"anonymizeInRest" + type}>
+              <Title label="Anonymize in Rest" seperator={true} xs={12} />
+              <Grid container xs={11} spacing={2}>
+                  <Typography> Anonymize in Rest activated. </Typography>
+              </Grid>
+              <Remove
+                onClick={() => {
+                  removeComponent(type, "anonymizeInRest");
+                  removeEnteredData([
+                    type + "_anomInRest"
+                  ]);
+                }}
+              />
+            </Grid>
           </>
         );
       default:
