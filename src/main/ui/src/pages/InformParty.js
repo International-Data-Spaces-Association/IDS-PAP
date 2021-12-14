@@ -54,6 +54,7 @@ export default function LogAccess() {
           handleInputChange={handleInputChange}
           errors={errors}
           values={values}
+          type="postduties_"
           />
                         </Paper>
             </Grid>
