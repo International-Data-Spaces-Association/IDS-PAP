@@ -50,9 +50,14 @@ public class RecievedOdrlPolicy {
 	private String policy;
 	private String time;
 	private String timeUnit;
+	private String timeAndDate;
 	private String restrictTimeIntervalStart;
 	private String restrictTimeIntervalEnd;
 	private String restrictEndTime;
 	private String specifyBeginTime;
+	private String durationHour;
+	private String durationDay;
+	private String durationMonth;
+	private String durationYear;
 	private String artifactState;
 }
