@@ -111,6 +111,7 @@ export default function DeleteDataAfter() {
                 selectedComponents={selectedComponents}
                 removeEnteredData={removeEnteredData}
                 setSelectedComponents={setSelectedComponents}
+                type = "postduties_"
               />
             </Paper>
           </Grid>

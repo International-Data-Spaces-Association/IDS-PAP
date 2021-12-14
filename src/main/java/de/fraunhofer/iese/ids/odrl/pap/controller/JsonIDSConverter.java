@@ -443,8 +443,12 @@ public class JsonIDSConverter {
 			postDuties.add(postobligation);
 		}
 
-		public void deleteDuty(String timeAndDate, String durationYear, String durationMonth, String durationDay,
-				String durationHour, RuleType type) {
+		public void deleteDuty(RuleType type) {
+			String timeAndDate = rp.getPostduties_timeAndDate();
+			String durationYear = rp.getPostduties_durationYear();
+			String durationMonth = rp.getPostduties_durationMonth();
+			String durationDay = rp.getPostduties_durationDay();
+			String durationHour = rp.getPostduties_durationHour(); 
 			ArrayList<Condition> refinements = new ArrayList<>();
 			RightOperand rightOperand = new RightOperand();
 			if (timeAndDate != "") {
@@ -550,14 +554,12 @@ public class JsonIDSConverter {
 			if (rp.getPostduties_timeAndDate() != ""
 					|| (rp.getPostduties_durationYear() != "" && rp.getPostduties_durationMonth() != ""
 							&& rp.getPostduties_durationDay() != "" && rp.getPostduties_durationHour() != "")) {
-				deleteDuty(rp.getPostduties_timeAndDate(), rp.getPostduties_durationYear(), rp.getPostduties_durationMonth(),
-								rp.getPostduties_durationDay(), rp.getPostduties_durationHour(), RuleType.POSTDUTY);
+				deleteDuty(RuleType.POSTDUTY);
 			}
 		}
 		
 		public void addDeletePolicyAfterUsage() {
-			deleteDuty(rp.getPostduties_timeAndDate(), rp.getPostduties_durationYear(), rp.getPostduties_durationMonth(),
-							rp.getPostduties_durationDay(), rp.getPostduties_durationHour(), RuleType.POSTDUTY);
+			deleteDuty(RuleType.POSTDUTY);
 		}
 		
 		public void addDeletePolicyAfterUsagePeriod() {
@@ -572,6 +574,7 @@ public class JsonIDSConverter {
 			}
 			
 			if (rp.getPreduties_anomInRest() != "") {
+				System.out.println("ANOMINREST");
 				anonymizeInRest();
 			}
 		}

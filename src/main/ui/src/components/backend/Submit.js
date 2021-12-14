@@ -2,12 +2,12 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:9090';
 
 export default function Submit(url, values, states, setErrors, history ,e) {
+  console.log(values)
   e.preventDefault();
   if (validation(values, states, setErrors)) {
     for (var key in states) {
       states[key] = false;
   }
-  console.log(values)
     const isoValues = convertDateToIso(values, states)
     axios.post(BASE_URL + url, isoValues)
     .then((response) => {
@@ -77,10 +77,10 @@ function validation(values, states, setErrors) {
     temp.price = states.payment ? isValidFloat(values.price): "";
     temp.counter = states.counter ? isValidInt(values.counter): "";
 
-    temp.durationDay = states.duration ? isIntOrEmpty(values.durationDay): "";
-    temp.durationHour = states.duration ? isIntOrEmpty(values.durationHour): "";
-    temp.durationMonth = states.duration ? isIntOrEmpty(values.durationMonth): "";
-    temp.durationYear = states.duration ? isIntOrEmpty(values.durationYear): "";
+    //temp.durationDay = states.duration ? isIntOrEmpty(values.durationDay): "";
+    //temp.durationHour = states.duration ? isIntOrEmpty(values.durationHour): "";
+    //temp.durationMonth = states.duration ? isIntOrEmpty(values.durationMonth): "";
+    //temp.durationYear = states.duration ? isIntOrEmpty(values.durationYear): "";
     temp.specifyBeginTime = states.duration ? isDateOrEmpty(values.specifyBeginTime): "";
 
     temp.time = states.time ? isValidInt(values.time):"";
@@ -92,7 +92,7 @@ function validation(values, states, setErrors) {
     temp.getPostduties_informedParty = states.getPostduties_informedParty? notEmpty(values.getPostduties_informedParty):"";
     temp.encoding = states.encoding? isValidUrl(values.encoding):"";
     temp.policy = states.policy? isValidUrl(values.policy):"";
-    temp.timeAndDate = states.timeDate ? isValidDate(values.timeAndDate):"";
+    //temp.timeAndDate = states.timeDate ? isValidDate(values.timeAndDate):"";
     temp.specifyBeginTime = states.specifyBeginTime ? isValidDate(values.specifyBeginTime): "";
     //temp.logLevel = states.logLevel ? notEmpty(values.logLevel):"";
     //temp.notificationLevel = states.notificationLevel ? notEmpty(values.notificationLevel):"";
