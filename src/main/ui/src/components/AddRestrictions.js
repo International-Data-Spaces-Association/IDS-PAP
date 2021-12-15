@@ -432,10 +432,9 @@ export default function AddRestrictions(props) {
             Restrictions
           </Typography>
 
-          <Paper elevation={3} className={classes.paper}>
-            {components.map((c) => c())}
+          {components.map((c) => c())}
 
-            {selectedComponents.order.length <= 12 ? (
+          {selectedComponents.order.length <= 12 ? (
             <Grid item xs={12} container justify="center">
               <Grid item xs={5}>
                 <Button
@@ -446,8 +445,7 @@ export default function AddRestrictions(props) {
                   className={classes.addBtn}
                   id="Add Component"
                 >
-                   Restriction
-
+                  Restriction
                 </Button>
               </Grid>
               <Menu
@@ -473,8 +471,7 @@ export default function AddRestrictions(props) {
                 </MenuItem>
               </Menu>
             </Grid>
-            ):null}
-          </Paper>
+          ) : null}
         </>
       ) : (
         <Grid item xs={12} container justify="center">

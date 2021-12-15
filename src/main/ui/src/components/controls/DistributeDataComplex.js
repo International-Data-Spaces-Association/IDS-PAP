@@ -44,52 +44,55 @@ export default function DistributeDataComplex(props) {
   };
   return (
     <>
-      {selectedComponents.show_distribute ? (
-        <>
-          <Grid container className={classes.paperSubContainer}>
-            <Grid item xs={12}>
-              <Title label="Distribute Data" />
-            </Grid>
-            <Grid item xs={11}>
-              <ItemPicker
-                name="artifactState"
-                defaultValue=""
-                label="Artifact State"
-                ItemList={artifact_state_list}
-                onChange={handleInputChange}
-                error={errors.artifactState}
-              />
-            </Grid>
-            <Remove onClick={resetStates} />
+        {selectedComponents.show_distribute ? (
+          <>
+                <Paper elevation={3} className={classes.paper}>
+            <Grid container >
+              <Grid item xs={12}>
+                <Title label="Distribute Data" />
+              </Grid>
+              <Grid item xs={11}>
+                <ItemPicker
+                  name="artifactState"
+                  defaultValue=""
+                  label="Artifact State"
+                  ItemList={artifact_state_list}
+                  onChange={handleInputChange}
+                  error={errors.artifactState}
+                />
+              </Grid>
+              <Remove onClick={resetStates} />
 
-            <Grid item xs={11}>
-              <Input
-                name="policy"
-                label="Policy to be sent to the third party"
-                value={values.policy}
-                placeholder="e.g. http://example.com/policy/third-party-policy"
-                onChange={handleInputChange}
-                error={errors.policy}
-              />
+              <Grid item xs={11}>
+                <Input
+                  name="policy"
+                  label="Policy to be sent to the third party"
+                  value={values.policy}
+                  placeholder="e.g. http://example.com/policy/third-party-policy"
+                  onChange={handleInputChange}
+                  error={errors.policy}
+                />
+              </Grid>
+            </Grid>
+            </Paper>
+
+          </>
+        ) : (
+          <Grid item xs={12} container justify="center">
+            <Grid item xs={5}>
+              <Button
+                color="primary"
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={showDistribute}
+                className={classes.addBtn}
+                id="Add Component"
+              >
+                Distribute Data
+              </Button>
             </Grid>
           </Grid>
-        </>
-      ) : (
-        <Grid item xs={12} container justify="center">
-          <Grid item xs={5}>
-            <Button
-              color="primary"
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={showDistribute}
-              className={classes.addBtn}
-              id="Add Component"
-            >
-              Distribute Data
-            </Button>
-          </Grid>
-        </Grid>
-      )}
+        )}
     </>
   );
 }

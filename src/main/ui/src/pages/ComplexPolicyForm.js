@@ -38,8 +38,8 @@ export default function ComplexPolicyForm() {
     type: "preduties",
     order: [],
     availableComponents: [
-      {id: "anonymizeTransit",name: "Anonymize in Transit", isVisible: true},
-      {id: "anonymizeInRest", name:"Anonymize in Rest", isVisible: true}
+      { id: "anonymizeTransit", name: "Anonymize in Transit", isVisible: true },
+      { id: "anonymizeInRest", name: "Anonymize in Rest", isVisible: true },
     ],
   };
 
@@ -156,27 +156,27 @@ export default function ComplexPolicyForm() {
                   handleInputChange={handleInputChange}
                   errors={errors}
                 />
-                <DistributeDataComplex
-                values={values}
-                setValues={setValues}
-                errors={errors}
-                handleInputChange={handleInputChange}
-                removeEnteredData={removeEnteredData}
+                <AddRestrictions
+                  selectedComponents={selectedComponents}
+                  values={values}
+                  setValues={setValues}
+                  errors={errors}
+                  handleInputChange={handleInputChange}
+                  removeComponent={removeComponent}
+                  removeEnteredData={removeEnteredData}
+                  classes={classes}
+                  type={"preduties"}
                 />
               </Paper>
             </Grid>
 
             <Grid item xs={12}>
-              <AddRestrictions
-                selectedComponents={selectedComponents}
+              <DistributeDataComplex
                 values={values}
                 setValues={setValues}
                 errors={errors}
                 handleInputChange={handleInputChange}
-                removeComponent={removeComponent}
                 removeEnteredData={removeEnteredData}
-                classes={classes}
-                type={"preduties"}
               />
             </Grid>
 
