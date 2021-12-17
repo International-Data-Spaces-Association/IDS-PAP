@@ -77,7 +77,7 @@ export default function IdentifyPolicy(props) {
         <Input
           name="target"
           value={values.target}
-          placeholder="e.g. http://example.com/ids-data/production-plan"
+          placeholder="e.g. http://example.com/ids/data/production-plan"
           onChange={handleInputChange}
           error={errors.target}
           xs={12}

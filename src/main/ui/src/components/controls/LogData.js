@@ -26,7 +26,7 @@ export default function LogData(props) {
              label="System Device"
               name={type + "systemDevice"}
               value={values[type + "systemDevice"]}
-              placeholder="e.g. http://example.com/system:ESN-database"
+              placeholder="e.g. http://example.com/ids/system/ESN-database"
               onChange={handleInputChange}
               error={errors[type + "systemDevice"]}
             />

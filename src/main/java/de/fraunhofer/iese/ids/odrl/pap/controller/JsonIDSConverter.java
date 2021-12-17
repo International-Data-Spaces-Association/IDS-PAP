@@ -327,7 +327,7 @@ public class JsonIDSConverter {
 				ArrayList<RightOperand> dutyRightOperands = new ArrayList<>();
 				dutyRightOperands.add(dutyRightOperand);
 				Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY,
-						Operator.SAME_AS, dutyRightOperands, "");
+						Operator.DEFINES_AS, dutyRightOperands, "");
 				ArrayList<Condition> dutyRefinements = new ArrayList<>();
 				dutyRefinements.add(thirdPartyRefinement);
 		
@@ -363,7 +363,7 @@ public class JsonIDSConverter {
 				ArrayList<RightOperand> dutyRightOperands = new ArrayList<>();
 				dutyRightOperands.add(dutyRightOperand);
 				Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY,
-						Operator.SAME_AS, dutyRightOperands, "");
+						Operator.DEFINES_AS, dutyRightOperands, "");
 				ArrayList<Condition> dutyRefinements = new ArrayList<>();
 				dutyRefinements.add(thirdPartyRefinement);
 		

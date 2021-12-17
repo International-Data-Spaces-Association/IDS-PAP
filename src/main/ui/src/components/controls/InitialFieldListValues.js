@@ -8,10 +8,10 @@ export const time_units = [
 
 export const purpose_list = [
   { id: "", value: "" },
-  { id: "Marketing", value: "http://example.com/ids-purpose/Marketing" },
+  { id: "Marketing", value: "http://example.com/ids/purpose/Marketing" },
   {
     id: "Risk Management",
-    value: "http://example.com/ids-purpose/Risk_Management",
+    value: "http://example.com/ids/purpose/Risk_Management",
   },
 ];
 export const sale_rent_list = [
@@ -40,17 +40,17 @@ export const policy_types = [
 
 export const application_list = [
   { id: "", value: "" },
-  { id: "http://ids.or/application/data_app", value: "http://ids.or/application/data_app" },
+  { id: "http://example.com/ids/application/data_app", value: "http://example.com/ids/application/data_app" },
 ];
 
 export const connector_list = [
   { id: "", value: "" },
-  { id: "http://ids.org/connector/connector1", value: "http://ids.org/connector/connector1" },
+  { id: "http://example.com/ids/connector/connector1", value: "http://example.com/ids/connector/connector1" },
 ];
 
 export const event_list = [
   { id: "", value: "" },
-  { id: "http://ids.org/event/exhibition", value: "http://ids.org/event/exhibition" },
+  { id: "http://example.com/ids/event/exhibition", value: "http://example.com/ids/event/exhibition" },
 ];
 
 export const role_list = [
@@ -86,7 +86,7 @@ export const artifact_state_list = [
 
 export const data_consumers = [
   { id: "", value: "" },
-  { id: "Consumer Party", value: "http://ids.org/party/consumer-party" },
+  { id: "Consumer Party", value: "http://example.com/ids/party/consumer-party" },
 ];
 
 export const operator_list = [

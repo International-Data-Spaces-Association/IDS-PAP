@@ -55,7 +55,7 @@ export default function FormComponents(props) {
               name="application"
               values={values}
               setValues={setValues}
-              placeholder="e.g. http://example.com/ids-app/data-app"
+              placeholder="e.g. http://example.com/ids/application/smart-app"
               onChange={handleInputChange}
               error={errors}
             />
@@ -75,7 +75,7 @@ export default function FormComponents(props) {
               name="connector"
               values={values}
               setValues={setValues}
-              placeholder="e.g. http://example.com/ids-connector/connector"
+              placeholder="e.g. http://example.com/ids/connector/connector1"
               onChange={handleInputChange}
               error={errors}
             />
@@ -191,7 +191,7 @@ export default function FormComponents(props) {
               name="event"
               values={values}
               setValues={setValues}
-              placeholder="e.g. http://example.com/ids-event:exhibition"
+              placeholder="e.g. http://example.com/ids/event/exhibition"
               onChange={handleInputChange}
               error={errors}
             />

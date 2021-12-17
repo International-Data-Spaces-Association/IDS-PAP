@@ -101,7 +101,7 @@ class RecievedOdrlPolicyTest {
 	 */
 	JSONObject createAgreementHeader(JSONObject json) throws JSONException {
 		json.put("policyType", "Agreement");
-		json.put("consumer", "http://ids.org/party/consumer-party/");
+		json.put("consumer", "http://example.com/ids/party/consumer-party/");
 		json.put("provider", "My party");
 		json.put("target", "http://target/");
 		return json;
@@ -128,7 +128,7 @@ class RecievedOdrlPolicyTest {
 	 */
 	JSONObject createRequestHeader(JSONObject json) throws JSONException {
 		json.put("policyType", "Request");
-		json.put("consumer", "http://ids.org/party/consumer-party/");
+		json.put("consumer", "http://example.com/ids/party/consumer-party/");
 		json.put("target", "http://target/");
 		return json;
 	}

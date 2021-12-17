@@ -68,7 +68,7 @@ export default function DistributeDataComplex(props) {
                   name="policy"
                   label="Policy to be sent to the third party"
                   value={values.policy}
-                  placeholder="e.g. http://example.com/policy/third-party-policy"
+                  placeholder="e.g. http://example.com/policy/offer-policy"
                   onChange={handleInputChange}
                   error={errors.policy}
                 />
