@@ -51,12 +51,12 @@
 		<dependency>
 			<groupId>de.fraunhofer.iese.ids.odrl</groupId>
 			<artifactId>mydata-translator</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.fraunhofer.iese.ids.odrl</groupId>
 			<artifactId>policy-library</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -196,6 +196,14 @@
 						<version>1.1</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.amashchenko.maven.plugin</groupId>
+				<artifactId>gitflow-maven-plugin</artifactId>
+				<version>1.17.0</version>
+				<configuration>
+					<goalPrefix>gitflow</goalPrefix>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
