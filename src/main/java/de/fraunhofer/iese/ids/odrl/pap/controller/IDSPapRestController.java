@@ -139,7 +139,7 @@ public class IDSPapRestController {
 	}
 	
 	@PostMapping("/policy/InformPolicyForm")
-	public String policy(@RequestBody RecievedOdrlPolicy rp) {
+	public String informPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "notify";
 		converter.addPostDuties();
@@ -147,7 +147,7 @@ public class IDSPapRestController {
 	}
 	
 	@PostMapping("/policy/DistributePolicyForm")
-	public String encodingPolicy(@RequestBody RecievedOdrlPolicy rp) {
+	public String distributePolicyForm(@RequestBody RecievedOdrlPolicy rp) {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.DISTRIBUTE);
 		String uid = baseUid + "restrict-access-encoding";
 		converter.distributeData();

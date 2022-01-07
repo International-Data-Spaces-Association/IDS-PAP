@@ -11,16 +11,9 @@ export default function Submit(url, values, states, setErrors, history ,e) {
     const isoValues = convertDateToIso(values, states)
     axios.post(BASE_URL + url, isoValues)
     .then((response) => {
-      let policies = response.data.split('DTPOLICY:');
-      var dict = {
-        jsonPolicy: "",
-        dtPolicy: "",
-      }
-      dict.jsonPolicy = policies[0];
-      dict.dtPolicy = policies[1];
       history.push({
         pathname: '/ODRLCreator',
-        state: dict
+        state: response.data
       })
     }, (error) => {
       console.log(error);
