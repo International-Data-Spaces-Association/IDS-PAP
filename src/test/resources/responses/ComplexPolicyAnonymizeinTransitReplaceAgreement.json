@@ -1,0 +1,52 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party/",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [{
+        "ids:action": [{"@id": "idsc:USE"}],
+        "ids:preDuty": [{
+            "ids:action": [{
+                "ids:pxpEndpoint": {
+                    "@type": "ids:PXP",
+                    "ids:interfaceDescription": {
+                        "@value": "https://example.com/ids/PXP/interfaceDescription/replace",
+                        "@type": "anyURI"
+                    },
+                    "ids:endpointURI": {
+                        "@value": "https://example.com/ids/PXPendpoint/replace",
+                        "@type": "anyURI"
+                    }
+                },
+                "ids:refinement": [
+                    {
+                        "@type": "ids:Constraint",
+                        "ids:rightOperand": [{
+                            "@value": "Field1",
+                            "@type": "xsd:string"
+                        }],
+                        "ids:leftOperand": {"@id": "idsc:REPLACE_WITH"},
+                        "ids:operator": {"@id": "idsc:DEFINES_AS"}
+                    },
+                    {
+                        "@type": "ids:Constraint",
+                        "ids:rightOperand": [{
+                            "@value": "ValueToChange",
+                            "@type": "xsd:string"
+                        }],
+                        "ids:leftOperand": {"@id": "idsc:JSON_PATH"},
+                        "ids:operator": {"@id": "idsc:DEFINES_AS"}
+                    }
+                ],
+                "@id": "idsc:REPLACE"
+            }],
+            "@type": "ids:Duty"
+        }],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@id": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}

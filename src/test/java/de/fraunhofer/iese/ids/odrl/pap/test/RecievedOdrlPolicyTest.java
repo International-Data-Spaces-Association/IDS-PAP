@@ -1,18 +1,17 @@
 package de.fraunhofer.iese.ids.odrl.pap.test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -20,91 +19,128 @@ import java.nio.file.Paths;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import de.fraunhofer.iese.ids.odrl.pap.OdrlPapApplication;
 
 /**
  * 
  * This class is used to check the integrity of the pap backend.
  *
  */
-class RecievedOdrlPolicyTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = OdrlPapApplication.class)
+@EntityScan(basePackages = "de.fraunhofer.iese.ide.odrl.pap")
+@WebAppConfiguration
+//@DirtiesContext
+public class RecievedOdrlPolicyTest {
+	@Autowired
+	private WebApplicationContext wac;
+	
+	private MockMvc mockMvc;
+	
+	private JSONObject jsonObject;
+	
 	private String baseUrl = "http://localhost:9090";
-	private String basePath = "src/test/java/de/fraunhofer/iese/ids/odrl/pap/test/responses/";
+	private String basePath = "src/test/resources/responses/";
+	
+	  @Before
+	  public void setup() throws JSONException {
+	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+	     this.jsonObject = createAgreementHeader(emptyPolicy());
+	    
+	  }
+	
 	JSONObject emptyPolicy() throws JSONException {
-		JSONArray array = new JSONArray();
-		array.put("");
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.put("");
 
-		JSONObject json = new JSONObject();
-		json.put("id", 0);
-		json.put("policyType", "");
-		json.put("target", "");
-		json.put("provider", "");
-		json.put("consumer", "");
-		json.put("location_input", array);
-		json.put("location_op", "");
-		json.put("application_input", array);
-		json.put("application_op", "");
-		json.put("connector_input", array);
-		json.put("connector_op", "");
-		json.put("role_input", array);
-		json.put("role_op", "");
-		json.put("purpose_input", array);
-		json.put("purpose_op", "");
-		json.put("event_input", array);
-		json.put("event_op", "");
-		json.put("state_input", array);
-		json.put("state_op", "");
-		json.put("securityLevel_input", array);
-		json.put("securityLevel_op", "");
-		json.put("preduties_anomInRest", "");
-		json.put("preduties_modifier", "");
-		json.put("preduties_valueToChange", "");
-		json.put("preduties_fieldToChange", "");
-		json.put("postduties_anomInRest", "");
-		json.put("postduties_logLevel", "");
-		json.put("postduties_durationYear", "");
-		json.put("postduties_durationMonth", "");
-		json.put("postduties_durationDay", "");
-		json.put("postduties_durationHour", "");
-		json.put("postduties_timeAndDate", "");
-		json.put("postduties_notificationLevel", "");
-		json.put("postduties_informedParty", "");
-		json.put("postduties_systemDevice", "");
-		json.put("system", "");
-		json.put("interval", "");
-		json.put("payment", "");
-		json.put("price", "");
-		json.put("counter", "");
-		json.put("encoding", "");
-		json.put("policy", "");
-		json.put("time", "");
-		json.put("timeUnit", "");
-		json.put("timeAndDate", "");
-		json.put("durationHour", "");
-		json.put("durationDay", "");
-		json.put("durationMonth", "");
-		json.put("durationYear", "");
-		json.put("restrictTimeIntervalStart", "");
-		json.put("restrictTimeIntervalEnd", "");
-		json.put("restrictEndTime", "");
-		json.put("specifyBeginTime", "");
-		json.put("artifactState", "");
-		return json;
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("id", 0);
+		jsonObject.put("policyType", "");
+		jsonObject.put("target", "");
+		jsonObject.put("provider", "");
+		jsonObject.put("consumer", "");
+		jsonObject.put("location_input", jsonArray);
+		jsonObject.put("location_op", "");
+		jsonObject.put("application_input", jsonArray);
+		jsonObject.put("application_op", "");
+		jsonObject.put("connector_input", jsonArray);
+		jsonObject.put("connector_op", "");
+		jsonObject.put("role_input", jsonArray);
+		jsonObject.put("role_op", "");
+		jsonObject.put("purpose_input", jsonArray);
+		jsonObject.put("purpose_op", "");
+		jsonObject.put("event_input", jsonArray);
+		jsonObject.put("event_op", "");
+		jsonObject.put("state_input", jsonArray);
+		jsonObject.put("state_op", "");
+		jsonObject.put("securityLevel_input", jsonArray);
+		jsonObject.put("securityLevel_op", "");
+		jsonObject.put("preduties_anomInRest", "");
+		jsonObject.put("preduties_modifier", "");
+		jsonObject.put("preduties_valueToChange", "");
+		jsonObject.put("preduties_fieldToChange", "");
+		jsonObject.put("postduties_anomInRest", "");
+		jsonObject.put("postduties_logLevel", "");
+		jsonObject.put("postduties_durationYear", "");
+		jsonObject.put("postduties_durationMonth", "");
+		jsonObject.put("postduties_durationDay", "");
+		jsonObject.put("postduties_durationHour", "");
+		jsonObject.put("postduties_timeAndDate", "");
+		jsonObject.put("postduties_notificationLevel", "");
+		jsonObject.put("postduties_informedParty", "");
+		jsonObject.put("postduties_systemDevice", "");
+		jsonObject.put("system", "");
+		jsonObject.put("interval", "");
+		jsonObject.put("payment", "");
+		jsonObject.put("price", "");
+		jsonObject.put("counter", "");
+		jsonObject.put("encoding", "");
+		jsonObject.put("policy", "");
+		jsonObject.put("time", "");
+		jsonObject.put("timeUnit", "");
+		jsonObject.put("timeAndDate", "");
+		jsonObject.put("durationHour", "");
+		jsonObject.put("durationDay", "");
+		jsonObject.put("durationMonth", "");
+		jsonObject.put("durationYear", "");
+		jsonObject.put("restrictTimeIntervalStart", "");
+		jsonObject.put("restrictTimeIntervalEnd", "");
+		jsonObject.put("restrictEndTime", "");
+		jsonObject.put("specifyBeginTime", "");
+		jsonObject.put("artifactState", "");
+		return jsonObject;
 
 	}
+	
+
+	
+	
 	/**
 	 *  Creates an agreement header
 	 * @param json that contains arguments
 	 * @return json object with header
 	 * @throws JSONException
 	 */
-	JSONObject createAgreementHeader(JSONObject json) throws JSONException {
-		json.put("policyType", "Agreement");
-		json.put("consumer", "http://example.com/ids/party/consumer-party/");
-		json.put("provider", "My party");
-		json.put("target", "http://target/");
-		return json;
+	JSONObject createAgreementHeader(JSONObject jsonObject) throws JSONException {
+		jsonObject.put("policyType", "Agreement");
+		jsonObject.put("consumer", "http://example.com/ids/party/consumer-party/");
+		jsonObject.put("provider", "My party");
+		jsonObject.put("target", "http://target/");
+		return jsonObject;
 	}
 	
 	/**
@@ -113,11 +149,11 @@ class RecievedOdrlPolicyTest {
 	 * @return json object with header
 	 * @throws JSONException
 	 */
-	JSONObject createOfferHeader(JSONObject json) throws JSONException {
-		json.put("policyType", "Offer");
-		json.put("provider", "My party");
-		json.put("target", "http://target/");
-		return json;
+	JSONObject createOfferHeader(JSONObject jsonObject) throws JSONException {
+		jsonObject.put("policyType", "Offer");
+		jsonObject.put("provider", "My party");
+		jsonObject.put("target", "http://target/");
+		return jsonObject;
 	}
 	
 	/**
@@ -126,11 +162,11 @@ class RecievedOdrlPolicyTest {
 	 * @return json object with header
 	 * @throws JSONException
 	 */
-	JSONObject createRequestHeader(JSONObject json) throws JSONException {
-		json.put("policyType", "Request");
-		json.put("consumer", "http://example.com/ids/party/consumer-party/");
-		json.put("target", "http://target/");
-		return json;
+	JSONObject createRequestHeader(JSONObject jsonObject) throws JSONException {
+		jsonObject.put("policyType", "Request");
+		jsonObject.put("consumer", "http://example.com/ids/party/consumer-party/");
+		jsonObject.put("target", "http://target/");
+		return jsonObject;
 	}
 
 	/**
@@ -139,36 +175,23 @@ class RecievedOdrlPolicyTest {
 	 * @param urlString of rest end point
 	 * @return response of rest end point
 	 */
-	String send(JSONObject json, String urlString) {
-		URL url;
+	String send(JSONObject jsonObject, String urlString) {
 		try {
-			url = new URL(urlString);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("POST");
-			con.setRequestProperty("Content-Type", "application/json; utf-8");
-			con.setRequestProperty("Accept", "application/json");
-			con.setDoOutput(true);
-			try (OutputStream os = con.getOutputStream()) {
-				byte[] input = json.toString().getBytes("utf-8");
-				os.write(input, 0, input.length);
-			}
-
-			try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
-				StringBuilder response = new StringBuilder();
-				String responseLine = null;
-				while ((responseLine = br.readLine()) != null) {
-					response.append(responseLine.trim());
-				}
-				return response.toString();
-			}
-		} catch (IOException e) {
+			final MvcResult mvcResult = this.mockMvc
+			        .perform(post(urlString)
+			            .header("Content-Type", "application/json")
+			            .content(jsonObject.toString()))
+			        .andExpect(status().is(200)).andReturn();
+			return mvcResult.getResponse().getContentAsString();
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return "";
 	}
 
 	/**
-	 * All expected responses are saved as .txt files and this method can load one file
+	 * All expected responses are saved as .json files and this method can load one file
 	 * @param path to file with expected response
 	 * @return The specified file as string
 	 */
@@ -184,16 +207,14 @@ class RecievedOdrlPolicyTest {
 	}
 
 	/**
-	 * All expected responses are saved as .txt files and this method can save a response as a file
-	 * @param out string to write in the file
+	 * All expected responses are saved as .json files and this method can save a response as a file
+	 * @param response.toString() string to write in the file
 	 * @param path of the file
 	 */
-	void writeFile(String out, String path) {
+	public void writeFile(byte[] response, String path) {
 		try {
 			new File(path).createNewFile();
-			FileWriter writer = new FileWriter(path, false);
-			writer.write(out);
-			writer.close();
+			Files.write(Paths.get(path), response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -205,564 +226,569 @@ class RecievedOdrlPolicyTest {
 	 * @param url rest end point
 	 * @param path of file which contains the expected response
 	 */
-	public void check(JSONObject json, String url, String path) {
-		String response = send(json, url);
-		//writeFile(response, path); // This line will override all expected responses!
-		String expectedResponse = readFile(path);
-		assertTrue(response.equals(expectedResponse));
+	public void check(JSONObject jsonObject, String url, String path) {
+		try {
+			byte[] response = new JSONObject(send(jsonObject, url)).toString(4).getBytes();
+			//writeFile(response, path); // This line will override all expected responses!
+			byte[] expectedResponse = new JSONObject(readFile(path)).toString(4).getBytes();
+			Assert.assertArrayEquals( expectedResponse, response );
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 // ##################### Tests #####################
 	
 	// Complex Policy
 	@Test
-	void ComplexPolicyAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyAgreement.txt";
+	public void ComplexPolicyAgreement() throws Exception {
+		String expectedResponseFilePath = basePath + "ComplexPolicyAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		JSONObject json = createAgreementHeader(emptyPolicy());
 		check(json, url, expectedResponseFilePath);
+
 	}
 
 	@Test
-	void ComplexPolicyApplicationSingleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyApplicationSingleAgreement.txt";
+	public void ComplexPolicyApplicationSingleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyApplicationSingleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray application = new JSONArray();
 		application.put("Application1");
-		json.put("application_input", application);
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("application_input", application);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyApplicationMultipleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyApplicationMultipleAgreement.txt";
+	public void ComplexPolicyApplicationMultipleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyApplicationMultipleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray application = new JSONArray();
 		application.put("Application1");
 		application.put("Application2");
-		json.put("application_input", application);
-		json.put("application_op", "IN");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("application_input", application);
+		jsonObject.put("application_op", "IN");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyConnectorSingleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyConnectorSingleAgreement.txt";
+	public void ComplexPolicyConnectorSingleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyConnectorSingleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray connector = new JSONArray();
 		connector.put("Connector1");
-		json.put("connector_input", connector);
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("connector_input", connector);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyConnectornMultipleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyConnectornMultipleAgreement.txt";
+	public void ComplexPolicyConnectornMultipleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyConnectornMultipleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray connector = new JSONArray();
 		connector.put("Connector1");
 		connector.put("Connector2");
-		json.put("connector_input", connector);
-		json.put("connector_op", "IN");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("connector_input", connector);
+		jsonObject.put("connector_op", "IN");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyCounterAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyCounterAgreement.txt";
+	public void ComplexPolicyCounterAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyCounterAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("counter", "222");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("counter", "222");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyDurationAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyDurationAgreement.txt";
+	public void ComplexPolicyDurationAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyDurationAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("durationDay", "21");
-		json.put("durationHour", "10");
-		json.put("durationMonth", "10");
-		json.put("durationYear", "2021");
-		json.put("specifyBeginTime", "2021-12-16T20:43");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("durationDay", "21");
+		jsonObject.put("durationHour", "10");
+		jsonObject.put("durationMonth", "10");
+		jsonObject.put("durationYear", "2021");
+		jsonObject.put("specifyBeginTime", "2021-12-16T20:43");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyRestrictEndTimeAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyRestrictEndTimeAgreement.txt";
+	public void ComplexPolicyRestrictEndTimeAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyRestrictEndTimeAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("restrictEndTime", "2021-12-16T20:43");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("restrictEndTime", "2021-12-16T20:43");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicySecurityLevelSingleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicySecurityLevelSingleAgreement.txt";
+	public void ComplexPolicySecurityLevelSingleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicySecurityLevelSingleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray securityLevel = new JSONArray();
 		securityLevel.put("idsc:TRUST_SECURITY_PROFILE");
-		json.put("securityLevel_input", securityLevel);
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("securityLevel_input", securityLevel);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicySecurityLevelMultipleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicySecurityLevelMultipleAgreement.txt";
+	public void ComplexPolicySecurityLevelMultipleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicySecurityLevelMultipleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray securityLevel = new JSONArray();
 		securityLevel.put("idsc:TRUST_SECURITY_PROFILE");
 		securityLevel.put("idsc:TRUST_PLUS_SECURITY_PROFILE");
-		json.put("securityLevel_input", securityLevel);
-		json.put("securityLevel_op", "IN");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("securityLevel_input", securityLevel);
+		jsonObject.put("securityLevel_op", "IN");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyIntervalAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyIntervalAgreement.txt";
+	public void ComplexPolicyIntervalAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyIntervalAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("restrictTimeIntervalEnd", "2022-01-05T20:47");
-		json.put("restrictTimeIntervalStart", "2021-12-16T20:47");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("restrictTimeIntervalEnd", "2022-01-05T20:47");
+		jsonObject.put("restrictTimeIntervalStart", "2021-12-16T20:47");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyLocationSingleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyLocationSingleAgreement.txt";
+	public void ComplexPolicyLocationSingleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyLocationSingleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray location = new JSONArray();
 		location.put("location1");
-		json.put("location_input", location);
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("location_input", location);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyLocationMultipleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyLocationMultipleAgreement.txt";
+	public void ComplexPolicyLocationMultipleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyLocationMultipleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray location = new JSONArray();
 		location.put("location1");
 		location.put("location2");
-		json.put("location_input", location);
-		json.put("location_op", "IN");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("location_input", location);
+		jsonObject.put("location_op", "IN");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyPurposeSingleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyPurposeSingleAgreement.txt";
+	public void ComplexPolicyPurposeSingleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyPurposeSingleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray purpose = new JSONArray();
 		purpose.put("http://example.com/ids-purpose/Marketing");
-		json.put("purpose_input", purpose);
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("purpose_input", purpose);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyPurposeMultipleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyPurposeMultipleAgreement.txt";
+	public void ComplexPolicyPurposeMultipleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyPurposeMultipleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray purpose = new JSONArray();
 		purpose.put("http://example.com/ids-purpose/Marketing");
 		purpose.put("http://example.com/ids-purpose/Risk_Management");
-		json.put("purpose_input", purpose);
-		json.put("purpose_op", "IN");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("purpose_input", purpose);
+		jsonObject.put("purpose_op", "IN");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyRoleSingleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyRoleSingleAgreement.txt";
+	public void ComplexPolicyRoleSingleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyRoleSingleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray role = new JSONArray();
 		role.put("idsc:ADMIN");
-		json.put("role_input", role);
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("role_input", role);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyRoleMultipleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyRoleMultipleAgreement.txt";
+	public void ComplexPolicyRoleMultipleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyRoleMultipleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray role = new JSONArray();
 		role.put("idsc:ADMIN");
 		role.put("idsc:DEVELOPER");
-		json.put("role_input", role);
-		json.put("role_op", "IN");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("role_input", role);
+		jsonObject.put("role_op", "IN");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyStateSingleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyStateSingleAgreement.txt";
+	public void ComplexPolicyStateSingleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyStateSingleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray state = new JSONArray();
 		state.put("CONTRACTNOTTERMINATED");
-		json.put("state_input", state);
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("state_input", state);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyStateMultipleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyStateMultipleAgreement.txt";
+	public void ComplexPolicyStateMultipleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyStateMultipleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray state = new JSONArray();
 		state.put("CONTRACTNOTTERMINATED");
 		state.put("FIREWALLACTIVATED");
-		json.put("state_input", state);
-		json.put("state_op", "IN");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("state_input", state);
+		jsonObject.put("state_op", "IN");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyEventSingleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyEventSingleAgreement.txt";
+	public void ComplexPolicyEventSingleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyEventSingleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray event = new JSONArray();
 		event.put("event1");
-		json.put("event_input", event);
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("event_input", event);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyEventMultipleAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyEventMultipleAgreement.txt";
+	public void ComplexPolicyEventMultipleAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyEventMultipleAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray event = new JSONArray();
 		event.put("event1");
 		event.put("event2");
-		json.put("event_input", event);
-		json.put("event_op", "IN");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("event_input", event);
+		jsonObject.put("event_op", "IN");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 
 	@Test
-	void ComplexPolicyPaymentAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyPaymentAgreement.txt";
+	public void ComplexPolicyPaymentAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyPaymentAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("price", "10");
-		json.put("payment", "http://dbpedia.org/page/Rent");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("price", "10");
+		jsonObject.put("payment", "http://dbpedia.org/page/Rent");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyDistributeDataAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyDistributeDataAgreement.txt";
+	public void ComplexPolicyDistributeDataAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyDistributeDataAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("policy", "Policy1");
-		json.put("artifactState", "idsc:ANONYMIZED");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("policy", "Policy1");
+		jsonObject.put("artifactState", "idsc:ANONYMIZED");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyAnonymizeinRestAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyAnonymizeinRestAgreement.txt";
+	public void ComplexPolicyAnonymizeinRestAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyAnonymizeinRestAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("preduties_anomInRest", "Active");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("preduties_anomInRest", "Active");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyAnonymizeinTransitReplaceAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyAnonymizeinTransitReplaceAgreement.txt";
+	public void ComplexPolicyAnonymizeinTransitReplaceAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyAnonymizeinTransitReplaceAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("preduties_fieldToChange", "Field1");
-		json.put("preduties_modifier", "idsc:REPLACE");
-		json.put("preduties_valueToChange", "ValueToChange");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("preduties_fieldToChange", "Field1");
+		jsonObject.put("preduties_modifier", "idsc:REPLACE");
+		jsonObject.put("preduties_valueToChange", "ValueToChange");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyAnonymizeinTransitDeleteAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyAnonymizeinTransitDeleteAgreement.txt";
+	public void ComplexPolicyAnonymizeinTransitDeleteAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyAnonymizeinTransitDeleteAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("preduties_modifier", "idsc:DELETE");
-		json.put("preduties_fieldToChange", "Field1");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("preduties_modifier", "idsc:DELETE");
+		jsonObject.put("preduties_fieldToChange", "Field1");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyLogDataUsageAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyLogDataUsageAgreement.txt";
+	public void ComplexPolicyLogDataUsageAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyLogDataUsageAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_logLevel", "idsc:ON_DUTY_EXERCISED");
-		json.put("postduties_systemDevice", "SystemDevice1");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_logLevel", "idsc:ON_DUTY_EXERCISED");
+		jsonObject.put("postduties_systemDevice", "SystemDevice1");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyInformPartyAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyInformPartyAgreement.txt";
+	public void ComplexPolicyInformPartyAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyInformPartyAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_informedParty", "InformParty");
-		json.put("postduties_notificationLevel", "idsc:ON_ALLOW");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_informedParty", "InformParty");
+		jsonObject.put("postduties_notificationLevel", "idsc:ON_ALLOW");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyDeleteDataAfterTimeDurationAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyDeleteDataAfterTimeDurationAgreement.txt";
+	public void ComplexPolicyDeleteDataAfterTimeDurationAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyDeleteDataAfterTimeDurationAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_durationDay", "1");
-		json.put("postduties_durationHour", "2");
-		json.put("postduties_durationMonth", "3");
-		json.put("postduties_durationYear", "2021");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_durationDay", "1");
+		jsonObject.put("postduties_durationHour", "2");
+		jsonObject.put("postduties_durationMonth", "3");
+		jsonObject.put("postduties_durationYear", "2021");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyDeleteDataAfterSpecificTimeAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyDeleteDataAfterSpecificTimeAgreement.txt";
+	public void ComplexPolicyDeleteDataAfterSpecificTimeAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyDeleteDataAfterSpecificTimeAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_timeAndDate", "2021-12-16T21:08");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_timeAndDate", "2021-12-16T21:08");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	@Test
-	void ComplexPolicyWithAllArgumentsAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "ComplexPolicyWithAllArgumentsAgreement.txt";
+	public void ComplexPolicyWithAllArgumentsAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "ComplexPolicyWithAllArgumentsAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
+		
 		JSONArray application = new JSONArray();
 		application.put("Application1");
-		json.put("application_input", application);
+		jsonObject.put("application_input", application);
 	
 		JSONArray connector = new JSONArray();
 		connector.put("Connector1");
-		json.put("connector_input", connector);
+		jsonObject.put("connector_input", connector);
 	
-		json.put("counter", "222");
+		jsonObject.put("counter", "222");
 
 	
-		json.put("durationDay", "21");
-		json.put("durationHour", "10");
-		json.put("durationMonth", "10");
-		json.put("durationYear", "2021");
-		json.put("specifyBeginTime", "2021-12-16T20:43");
+		jsonObject.put("durationDay", "21");
+		jsonObject.put("durationHour", "10");
+		jsonObject.put("durationMonth", "10");
+		jsonObject.put("durationYear", "2021");
+		jsonObject.put("specifyBeginTime", "2021-12-16T20:43");
 
 	
-		json.put("restrictEndTime", "2021-12-16T20:43");
+		jsonObject.put("restrictEndTime", "2021-12-16T20:43");
 
 		JSONArray securityLevel = new JSONArray();
 		securityLevel.put("idsc:TRUST_SECURITY_PROFILE");
-		json.put("securityLevel_input", securityLevel);
+		jsonObject.put("securityLevel_input", securityLevel);
 
-		json.put("restrictTimeIntervalEnd", "2022-01-05T20:47");
-		json.put("restrictTimeIntervalStart", "2021-12-16T20:47");
+		jsonObject.put("restrictTimeIntervalEnd", "2022-01-05T20:47");
+		jsonObject.put("restrictTimeIntervalStart", "2021-12-16T20:47");
 	
 		JSONArray location = new JSONArray();
 		location.put("location1");
-		json.put("location_input", location);
+		jsonObject.put("location_input", location);
 	
 		JSONArray purpose = new JSONArray();
 		purpose.put("http://example.com/ids-purpose/Marketing");
-		json.put("purpose_input", purpose);
+		jsonObject.put("purpose_input", purpose);
 	
 		JSONArray role = new JSONArray();
 		role.put("idsc:ADMIN");
-		json.put("role_input", role);
+		jsonObject.put("role_input", role);
 
 		JSONArray state = new JSONArray();
 		state.put("CONTRACTNOTTERMINATED");
-		json.put("state_input", state);
+		jsonObject.put("state_input", state);
 	
 		JSONArray event = new JSONArray();
 		event.put("event1");
-		json.put("event_input", event);
+		jsonObject.put("event_input", event);
 	
-		json.put("price", "10");
-		json.put("payment", "http://dbpedia.org/page/Rent");
+		jsonObject.put("price", "10");
+		jsonObject.put("payment", "http://dbpedia.org/page/Rent");
 	
-		json.put("policy", "Policy1");
-		json.put("artifactState", "idsc:ANONYMIZED");
+		jsonObject.put("policy", "Policy1");
+		jsonObject.put("artifactState", "idsc:ANONYMIZED");
 	
-		json.put("preduties_anomInRest", "Active");
+		jsonObject.put("preduties_anomInRest", "Active");
 	
-		json.put("preduties_fieldToChange", "Field1");
-		json.put("preduties_modifier", "idsc:REPLACE");
-		json.put("preduties_valueToChange", "ValueToChange");
+		jsonObject.put("preduties_fieldToChange", "Field1");
+		jsonObject.put("preduties_modifier", "idsc:REPLACE");
+		jsonObject.put("preduties_valueToChange", "ValueToChange");
 
 	
-		json.put("postduties_logLevel", "idsc:ON_DUTY_EXERCISED");
-		json.put("postduties_systemDevice", "SystemDevice1");
+		jsonObject.put("postduties_logLevel", "idsc:ON_DUTY_EXERCISED");
+		jsonObject.put("postduties_systemDevice", "SystemDevice1");
 	
-		json.put("postduties_informedParty", "InformParty");
-		json.put("postduties_notificationLevel", "idsc:ON_ALLOW");
+		jsonObject.put("postduties_informedParty", "InformParty");
+		jsonObject.put("postduties_notificationLevel", "idsc:ON_ALLOW");
 
-		json.put("postduties_durationDay", "1");
-		json.put("postduties_durationHour", "2");
-		json.put("postduties_durationMonth", "3");
-		json.put("postduties_durationYear", "2021");
+		jsonObject.put("postduties_durationDay", "1");
+		jsonObject.put("postduties_durationHour", "2");
+		jsonObject.put("postduties_durationMonth", "3");
+		jsonObject.put("postduties_durationYear", "2021");
 	
-		json.put("postduties_timeAndDate", "2021-12-16T21:08");	
+		jsonObject.put("postduties_timeAndDate", "2021-12-16T21:08");	
 		
-		check(json, url, expectedResponseFilePath);
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	
 	// Counter
 	@Test
-	void CountAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "CountAgreement.txt";
+	public void CountAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "CountAgreement.json";
 		String url = baseUrl + "/policy/CountAccessPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("counter", "22");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("counter", "22");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	// Delete Data After
 	
 	@Test
-	void DeleteDataAfterAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "DeleteDataAfterAgreement"+".txt";
+	public void DeleteDataAfterAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "DeleteDataAfterAgreement"+".json";
 		String url = baseUrl + "/policy/deletePolicyAfterUsagePeriod";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		check(json, url, expectedResponseFilePath);
+		
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	@Test
-	void DeleteDataAfterExactTimeAndDateAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "DeleteDataAfterExactTimeAndDateAgreement"+".txt";
+	public void DeleteDataAfterExactTimeAndDateAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "DeleteDataAfterExactTimeAndDateAgreement"+".json";
 		String url = baseUrl + "/policy/deletePolicyAfterUsage";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_timeAndDate", "2021-12-16T11:10");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_timeAndDate", "2021-12-16T11:10");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	@Test
-	void DeleteDataAfterSpecificTimeDurationAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "DeleteDataAfterSpecificTimeDurationAgreement"+".txt";
+	public void DeleteDataAfterSpecificTimeDurationAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "DeleteDataAfterSpecificTimeDurationAgreement"+".json";
 		String url = baseUrl + "/policy/deletePolicyAfterUsage";
 		JSONObject json = createRequestHeader(emptyPolicy());
-		json.put("postduties_durationDay", "1");
-		json.put("postduties_durationHour", "10");
-		json.put("postduties_durationMonth", "11");
-		json.put("postduties_durationYear", "2021");
-		check(json, url, expectedResponseFilePath);
+		jsonObject.put("postduties_durationDay", "1");
+		jsonObject.put("postduties_durationHour", "10");
+		jsonObject.put("postduties_durationMonth", "11");
+		jsonObject.put("postduties_durationYear", "2021");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	
 	// Anonymize in Rest
 	
 	@Test
-	void AnonymizeInRestAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "AnonymizeInRestAgreement"+".txt";
+	public void AnonymizeInRestAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "AnonymizeInRestAgreement"+".json";
 		String url = baseUrl + "/policy/AnonymizeInRestPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		check(json, url, expectedResponseFilePath);
+		
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	// Anonymize in Transit
 	
 	@Test
-	void AnonymizeInTransitReplaceAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "AnonymizeInTransitReplaceAgreement"+".txt";
+	public void AnonymizeInTransitReplaceAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "AnonymizeInTransitReplaceAgreement"+".json";
 		String url = baseUrl + "/policy/AnonymizeInTransitPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("preduties_modifier", "idsc:REPLACE");
-		json.put("preduties_fieldToChange", "FieldToChange");
-		json.put("preduties_valueToChange", "ValueToChange");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("preduties_modifier", "idsc:REPLACE");
+		jsonObject.put("preduties_fieldToChange", "FieldToChange");
+		jsonObject.put("preduties_valueToChange", "ValueToChange");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	@Test
-	void AnonymizeInTransitDeleteAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "AnonymizeInTransitDeleteAgreement"+".txt";
+	public void AnonymizeInTransitDeleteAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "AnonymizeInTransitDeleteAgreement"+".json";
 		String url = baseUrl + "/policy/AnonymizeInTransitPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("preduties_modifier", "idsc:DELETE");
-		json.put("preduties_fieldToChange", "FieldToChange");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("preduties_modifier", "idsc:DELETE");
+		jsonObject.put("preduties_fieldToChange", "FieldToChange");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	// Log Access
 	@Test
-	void LogAccessOnDenyAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "LogAccessOnDenyAgreement"+".txt";
+	public void LogAccessOnDenyAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "LogAccessOnDenyAgreement"+".json";
 		String url = baseUrl + "/policy/LogAccessPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_logLevel", "idsc:ON_DENY");
-		json.put("postduties_systemDevice", "SystemDevice");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_logLevel", "idsc:ON_DENY");
+		jsonObject.put("postduties_systemDevice", "SystemDevice");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	@Test
-	void LogAccessOnDutyExercisedAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "LogAccessOnDutyExercisedAgreement"+".txt";
+	public void LogAccessOnDutyExercisedAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "LogAccessOnDutyExercisedAgreement"+".json";
 		String url = baseUrl + "/policy/LogAccessPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_logLevel", "idsc:ON_DUTY_EXERCISED");
-		json.put("postduties_systemDevice", "SystemDevice");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_logLevel", "idsc:ON_DUTY_EXERCISED");
+		jsonObject.put("postduties_systemDevice", "SystemDevice");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	// Inform Party
-	void LogAccessOnDenyOnDenyAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "LogAccessOnDenyOnDenyAgreement"+".txt";
+	public void LogAccessOnDenyOnDenyAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "LogAccessOnDenyOnDenyAgreement"+".json";
 		String url = baseUrl + "/policy/InformPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_notificationLevel", "idsc:ON_DENY");
-		json.put("postduties_informedParty", "SystemDevice");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_notificationLevel", "idsc:ON_DENY");
+		jsonObject.put("postduties_informedParty", "SystemDevice");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	@Test
-	void InformPartyOnDutyExerciseAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "InformPartyOnDutyExerciseAgreement"+".txt";
+	public void InformPartyOnDutyExerciseAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "InformPartyOnDutyExerciseAgreement"+".json";
 		String url = baseUrl + "/policy/InformPolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("postduties_notificationLevel", "idsc:ON_DUTY_EXERCISED");
-		json.put("postduties_informedParty", "SystemDevice");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("postduties_notificationLevel", "idsc:ON_DUTY_EXERCISED");
+		jsonObject.put("postduties_informedParty", "SystemDevice");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	// Distribute Party
-	void DistributeANONYMIZEDAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "DistributeANONYMIZEDAgreement"+".txt";
+	public void DistributeANONYMIZEDAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "DistributeANONYMIZEDAgreement"+".json";
 		String url = baseUrl + "/policy/DistributePolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("artifactState", "idsc:ANONYMIZED");
-		json.put("policy", "Policy1");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("artifactState", "idsc:ANONYMIZED");
+		jsonObject.put("policy", "Policy1");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	@Test
-	void DistributePSEUDONYMIZEDAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "DistributePSEUDONYMIZEDAgreement"+".txt";
+	public void DistributePSEUDONYMIZEDAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "DistributePSEUDONYMIZEDAgreement"+".json";
 		String url = baseUrl + "/policy/DistributePolicyForm";
-		JSONObject json = createAgreementHeader(emptyPolicy());
-		json.put("artifactState", "idsc:PSEUDONYMIZED");
-		json.put("policy", "Policy1");
-		check(json, url, expectedResponseFilePath);
+		
+		jsonObject.put("artifactState", "idsc:PSEUDONYMIZED");
+		jsonObject.put("policy", "Policy1");
+		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 }
