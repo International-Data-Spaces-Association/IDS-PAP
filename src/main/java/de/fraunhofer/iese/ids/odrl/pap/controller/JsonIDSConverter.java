@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
@@ -65,22 +62,13 @@ public class JsonIDSConverter {
 		// odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
-		String jsonPolicyString = OdrlCreator.createODRL(odrlPolicy);
+		String jsonPolicy = OdrlCreator.createODRL(odrlPolicy);
 		Map map = null;
 		boolean tempProviderSide = true;
-		//String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
+		String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
 		// String dtPolicy = policy(jsonPolicy);
-		
-		/**JSONObject json = new JSONObject();
-		try {
-			json.put("jsonPolicy", new JSONObject(jsonPolicyString));
-			//json.put("jsonPolicy", jsonPolicyString);
-			json.put("dtPolicy", dtPolicy);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}**/
-		return jsonPolicyString.toString();
-
+		String policies = jsonPolicy + "DTPOLICY:" + dtPolicy;
+		return policies;
 	}
 	
 	private String checkIfEmptyValue(String value, String defaultValue) {
@@ -586,6 +574,7 @@ public class JsonIDSConverter {
 			}
 			
 			if (rp.getPreduties_anomInRest() != "") {
+				System.out.println("ANOMINREST");
 				anonymizeInRest();
 			}
 		}

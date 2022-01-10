@@ -139,7 +139,7 @@ public class IDSPapRestController {
 	}
 	
 	@PostMapping("/policy/InformPolicyForm")
-	public String informPolicy(@RequestBody RecievedOdrlPolicy rp) {
+	public String policy(@RequestBody RecievedOdrlPolicy rp) {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "notify";
 		converter.addPostDuties();
@@ -147,7 +147,7 @@ public class IDSPapRestController {
 	}
 	
 	@PostMapping("/policy/DistributePolicyForm")
-	public String distributePolicyForm(@RequestBody RecievedOdrlPolicy rp) {
+	public String encodingPolicy(@RequestBody RecievedOdrlPolicy rp) {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.DISTRIBUTE);
 		String uid = baseUid + "restrict-access-encoding";
 		converter.distributeData();
@@ -180,12 +180,4 @@ public class IDSPapRestController {
 		return dtPolicy;
 	}
 	
-	@PostMapping("/policy/initialTDP")
-	public String initialTDP() {
-		return "The provider is an IDS party that is issuing the rule. Here the provider is the my-party party. This party is either the Data Owner or the Data Provider of the specified data asset in the IDS context.\r\n"
-				+ "The consumer is an IDS party that is the recipient the of rule. Here the consumer is the consumer-party party.\r\n"
-				+ "\r\n"
-				+ "In this Policy AGREEMENT example, the ids:permission rule allows the Data Consumer to use the target asset.\r\n"
-				+ "The identifier of this policy and the target asset are https://w3id.org/idsa/autogen/contract/complex-policy-access and http://localhost:3000/#/ODRLCreator, respectively.";
-	}
 }

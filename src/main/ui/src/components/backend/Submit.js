@@ -11,18 +11,17 @@ export default function Submit(url, values, states, setErrors, history ,e) {
     const isoValues = convertDateToIso(values, states)
     axios.post(BASE_URL + url, isoValues)
     .then((response) => {
-      axios.post(BASE_URL + "/policy/initialTDP")
-      .then((responseTDP) => {
-              var dict = {
-                jsonPolicy: JSON.stringify(response.data, null, 2),
-                dtPolicy: responseTDP.data,
-              }
+      let policies = response.data.split('DTPOLICY:');
+      var dict = {
+        jsonPolicy: "",
+        dtPolicy: "",
+      }
+      dict.jsonPolicy = policies[0];
+      dict.dtPolicy = policies[1];
       history.push({
         pathname: '/ODRLCreator',
         state: dict
-      })}, (error) => {
-        console.log(error);
-      })    
+      })
     }, (error) => {
       console.log(error);
     })    
