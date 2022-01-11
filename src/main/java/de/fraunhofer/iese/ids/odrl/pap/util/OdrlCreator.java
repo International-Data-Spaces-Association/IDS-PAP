@@ -50,7 +50,7 @@ public class OdrlCreator {
 	}
 
 	private static void updateToIDSValue(Condition condition) {
-		if (condition.getLeftOperand().equals(LeftOperand.DELAY) || condition.getLeftOperand().equals(LeftOperand.ELAPSED_TIME) ) {
+		/*if (condition.getLeftOperand().equals(LeftOperand.DELAY) || condition.getLeftOperand().equals(LeftOperand.ELAPSED_TIME) ) {
 			if (null != condition.getRightOperand().getEntities()) {
 				for (RightOperandEntity entity : condition.getRightOperand().getEntities()) {
 					if (entity.getEntityType().equals(EntityType.HASDURATION)) {
@@ -84,7 +84,8 @@ public class OdrlCreator {
 				}
 
 			}
-		}else if (condition.getLeftOperand().equals(LeftOperand.LOG_LEVEL) || condition.getLeftOperand().equals(LeftOperand.NOTIFICATION_LEVEL))
+		}else */
+/*			if (condition.getLeftOperand().equals(LeftOperand.LOG_LEVEL) || condition.getLeftOperand().equals(LeftOperand.NOTIFICATION_LEVEL))
 		{
 			String value = condition.getRightOperand().getValue();
 			if (value != null && !value.isEmpty()) {
@@ -96,7 +97,7 @@ public class OdrlCreator {
 			if (value != null && !value.isEmpty()) {
 				condition.getRightOperand().setValue(ArtifactStateType.valueOf(value).getType());
 			}
-		}
+		}*/
 	}
 
 }

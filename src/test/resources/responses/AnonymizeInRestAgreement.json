@@ -1,0 +1,28 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party/",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "@id": "https://w3id.org/idsa/autogen/contract/anonymize-in-rest",
+    "ids:obligation": [{
+        "ids:action": [{
+            "ids:pxpEndpoint": {
+                "@type": "ids:PXP",
+                "ids:interfaceDescription": {
+                    "@value": "https://example.com/ids/PXP/interfaceDescription/anonymize",
+                    "@type": "anyURI"
+                },
+                "ids:endpointURI": {
+                    "@value": "https://example.com/ids/PXPendpoint/anonymize",
+                    "@type": "anyURI"
+                }
+            },
+            "@id": "idsc:ANONYMIZE"
+        }],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}
