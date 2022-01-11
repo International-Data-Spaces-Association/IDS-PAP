@@ -1,5 +1,5 @@
 import axios from 'axios';
-const BASE_URL = 'http://localhost:9090';
+const BASE_URL = '';
 
 export default function Submit(url, values, states, setErrors, history ,e) {
   console.log(values)
