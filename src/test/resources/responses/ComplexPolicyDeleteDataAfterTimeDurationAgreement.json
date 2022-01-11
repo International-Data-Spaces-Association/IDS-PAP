@@ -1,0 +1,56 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party/",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [{
+        "ids:postDuty": [{
+            "ids:action": [{
+                "ids:pxpEndpoint": {
+                    "@type": "ids:PXP",
+                    "ids:interfaceDescription": {
+                        "@value": "https://example.com/ids/PXP/interfaceDescription/delete",
+                        "@type": "anyURI"
+                    },
+                    "ids:endpointURI": {
+                        "@value": "https://example.com/ids/PXPendpoint/delete",
+                        "@type": "anyURI"
+                    }
+                },
+                "ids:refinement": [{
+                    "@type": "ids:Constraint",
+                    "ids:pipEndpoint": {
+                        "@type": "ids:PIP",
+                        "ids:interfaceDescription": {
+                            "@value": "https://example.com/ids/PIP/interfaceDescription/delay",
+                            "@type": "anyURI"
+                        },
+                        "ids:endpointURI": {
+                            "@value": "https://example.com/ids/PXPendpoint/delay",
+                            "@type": "anyURI"
+                        }
+                    },
+                    "ids:comment": "  ",
+                    "ids:rightOperand": [{
+                        "@type": "ids:durationEntity",
+                        "ids:hasDuration": {
+                            "@value": "P2021Y3M1DT2H",
+                            "@type": "xsd:duration"
+                        }
+                    }],
+                    "ids:leftOperand": {"@id": "idsc:DELAY"},
+                    "ids:operator": {"@id": "idsc:DURATION_EQ"}
+                }],
+                "@id": "idsc:DELETE"
+            }],
+            "@type": "ids:Duty"
+        }],
+        "ids:action": [{"@id": "idsc:USE"}],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@id": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}
