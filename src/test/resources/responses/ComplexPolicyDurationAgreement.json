@@ -1,0 +1,45 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party/",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [{
+        "ids:action": [{"@id": "idsc:USE"}],
+        "ids:constraint": [{
+            "@type": "ids:Constraint",
+            "ids:pipEndpoint": {
+                "@type": "ids:PIP",
+                "ids:interfaceDescription": {
+                    "@value": "https://example.com/ids/PIP/interfaceDescription/elapsed_time",
+                    "@type": "anyURI"
+                },
+                "ids:endpointURI": {
+                    "@value": "https://example.com/ids/PXPendpoint/elapsed_time",
+                    "@type": "anyURI"
+                }
+            },
+            "ids:rightOperand": [{
+                "@type": "ids:durationEntity",
+                "ids:begin": {
+                    "ids:dateTime": {
+                        "@value": "2021-12-16T20:43",
+                        "@type": "xsd:datetimeStamp"
+                    },
+                    "@type": "ids:Instant"
+                },
+                "ids:hasDuration": {
+                    "@value": "P2021Y10M21DT10H",
+                    "@type": "xsd:duration"
+                }
+            }],
+            "ids:leftOperand": {"@id": "idsc:ELAPSED_TIME"},
+            "ids:operator": {"@id": "idsc:SHORTER_EQ"}
+        }],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@id": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}

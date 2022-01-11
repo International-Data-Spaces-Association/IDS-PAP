@@ -1,0 +1,37 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party/",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [{
+        "ids:action": [{"@id": "idsc:USE"}],
+        "ids:constraint": [{
+            "ids:contract": "http://dbpedia.org/page/Rent",
+            "@type": "ids:Constraint",
+            "ids:unit": "http://dbpedia.org/resource/Euro",
+            "ids:pipEndpoint": {
+                "@type": "ids:PIP",
+                "ids:interfaceDescription": {
+                    "@value": "https://example.com/ids/PIP/interfaceDescription/pay_amount",
+                    "@type": "anyURI"
+                },
+                "ids:endpointURI": {
+                    "@value": "https://example.com/ids/PXPendpoint/pay_amount",
+                    "@type": "anyURI"
+                }
+            },
+            "ids:rightOperand": [{
+                "@value": "10",
+                "@type": "http://www.w3.org/2001/XMLSchema#double"
+            }],
+            "ids:leftOperand": {"@id": "idsc:PAY_AMOUNT"},
+            "ids:operator": {"@id": "idsc:EQ"}
+        }],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@id": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}
