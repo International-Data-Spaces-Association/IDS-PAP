@@ -12,7 +12,7 @@ import Submit from "../components/backend/Submit";
 import Title from "../components/controls/Title";
 
 const selected_components = {
-  counter: true,
+  page: "CountAccess",
 };
 
 export default function CountAccess() {
@@ -20,16 +20,16 @@ export default function CountAccess() {
   const [errors, setErrors] = useState({});
   const [values, setValues] = useState(OdrlPolicy);
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+  var state = {page: "CreatePolicy"};
 
   const handleSubmit = (e) => {
     Submit(
       "/policy/CountAccessPolicyForm",
       values,
-      selectedComponents,
+      selected_components,
       setErrors,
       history,
       e
@@ -43,26 +43,26 @@ export default function CountAccess() {
           icon={<EqualizerIcon />}
         />
         <Grid container>
-        <Grid item xs={12}>
-              <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-          />
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy
+                values={values}
+                handleInputChange={handleInputChange}
+                errors={errors}
+              />
 
-          <Grid container>
-            <Title label="Count" />
-            <Input
-              name="counter"
-              value={values.counter}
-              placeholder="0"
-              onChange={handleInputChange}
-              error={errors.counter}
-            />
+              <Grid container>
+                <Title label="Count" />
+                <Input
+                  name="counter"
+                  value={values.counter}
+                  placeholder="0"
+                  onChange={handleInputChange}
+                  error={errors.counter}
+                />
+              </Grid>
+            </Paper>
           </Grid>
-          </Paper>
-            </Grid>
           <Grid item xs={2}>
             <Button
               variant="contained"

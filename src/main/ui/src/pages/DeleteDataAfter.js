@@ -41,11 +41,21 @@ export default function DeleteDataAfter() {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   const handleSubmit = (e) => {
+    var state = {page: "DeleteDataAfter",
+        duration: false,
+        timeDate: false,};
+
+    if (selectedComponents.duration) {
+      state.duration = true;
+    }
+    if (selectedComponents.timeDate) {
+      state.timeDate = true;
+    }
     if (Object.values(selectedComponents).some((x) => x === true)) {
       Submit(
         "/policy/deletePolicyAfterUsage",
         values,
-        selectedComponents,
+        state,
         setErrors,
         history,
         e
@@ -54,7 +64,7 @@ export default function DeleteDataAfter() {
       Submit(
         "/policy/deletePolicyAfterUsagePeriod",
         values,
-        selectedComponents,
+        state,
         setErrors,
         history,
         e

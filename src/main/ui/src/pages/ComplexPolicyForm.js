@@ -18,28 +18,37 @@ export default function ComplexPolicyForm() {
     type: "restrictions",
     order: [],
     availableComponents: [
-      { id: "application", name: "Application", isVisible: true },
-      { id: "connector", name: "Connector", isVisible: true },
-      { id: "counter", name: "Counter", isVisible: true },
-      { id: "duration", name: "Duration", isVisible: true },
-      { id: "endTime", name: "EndTime", isVisible: true },
-      { id: "event", name: "Event", isVisible: true },
-      { id: "interval", name: "Interval", isVisible: true },
-      { id: "location", name: "Location", isVisible: true },
-      { id: "payment", name: "Payment", isVisible: true },
-      { id: "purpose", name: "Purpose", isVisible: true },
-      { id: "role", name: "Role", isVisible: true },
-      { id: "securityLevel", name: "SecurityLevel", isVisible: true },
-      { id: "state", name: "State", isVisible: true },
+      { id: "application", name: "Application", isVisible: false },
+      { id: "connector", name: "Connector", isVisible: false },
+      { id: "counter", name: "Counter", isVisible: false },
+      { id: "duration", name: "Duration", isVisible: false },
+      { id: "endTime", name: "EndTime", isVisible: false },
+      { id: "event", name: "Event", isVisible: false },
+      { id: "interval", name: "Interval", isVisible: false },
+      { id: "location", name: "Location", isVisible: false },
+      { id: "payment", name: "Payment", isVisible: false },
+      { id: "purpose", name: "Purpose", isVisible: false },
+      { id: "role", name: "Role", isVisible: false },
+      { id: "securityLevel", name: "SecurityLevel", isVisible: false },
+      { id: "state", name: "State", isVisible: false },
     ],
   };
+
+  const selected_distribute_components = {
+    type: "distributeData",
+    order: [],
+    availableComponents: [
+      { id: "distribute", name: "Distribute Data", isVisible: false },
+    ],
+  };
+
 
   const selected_preduties_components = {
     type: "preduties",
     order: [],
     availableComponents: [
-      { id: "anonymizeTransit", name: "Anonymize in Transit", isVisible: true },
-      { id: "anonymizeInRest", name: "Anonymize in Rest", isVisible: true },
+      { id: "anonymizeTransit", name: "Anonymize in Transit", isVisible: false },
+      { id: "anonymizeInRest", name: "Anonymize in Rest", isVisible: false },
     ],
   };
 
@@ -47,9 +56,9 @@ export default function ComplexPolicyForm() {
     type: "postduties",
     order: [],
     availableComponents: [
-      { id: "delete", name: "Delete Data After", isVisible: true },
-      { id: "log", name: "Log Data Usage", isVisible: true },
-      { id: "inform", name: "Inform Party", isVisible: true },
+      { id: "delete", name: "Delete Data After", isVisible: false },
+      { id: "log", name: "Log Data Usage", isVisible: false },
+      { id: "inform", name: "Inform Party", isVisible: false },
     ],
   };
 
@@ -62,13 +71,14 @@ export default function ComplexPolicyForm() {
   const [selectedPreDuties, setSelectedPreDuties] = useState(
     selected_preduties_components
   );
+  const [selectedDistributeDataComponents, setSelectedDistributeDataComponents] = useState(selected_distribute_components);
+
   const [selectedPostDuties, setSelectedPostDuties] = useState(
     selected_postduties_components
   );
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    console.log(values);
   };
 
   const handleSubmit = (e) => {
@@ -80,10 +90,18 @@ export default function ComplexPolicyForm() {
     OdrlPolicy.event_input = [""];
     OdrlPolicy.state_input = [""];
     OdrlPolicy.securityLevel_input = [""];
-    const dict = selectedComponents.availableComponents;
-    var state = {};
-    dict.forEach(function (item) {
-      state[item.id] = !item.isVisible;
+    var state = {page: "CreatePolicy"};
+    selectedComponents.availableComponents.forEach(function (item) {
+      state[item.id] = item.isVisible;
+    });
+    selectedPreDuties.availableComponents.forEach(function (item) {
+      state[item.id] = item.isVisible;
+    });
+    selectedPostDuties.availableComponents.forEach(function (item) {
+      state[item.id] = item.isVisible;
+    });
+    selectedDistributeDataComponents.availableComponents.forEach(function (item) {
+      state[item.id] = item.isVisible;
     });
     Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
   };
@@ -101,12 +119,14 @@ export default function ComplexPolicyForm() {
     setSelectedComponents({ ...selected_components });
     setSelectedPostDuties({ ...selected_postduties_components });
     setSelectedPreDuties({ ...selected_preduties_components });
+    setSelectedDistributeDataComponents({...selected_distribute_components});
   };
 
   const removeComponent = (type, id) => {
-    const states = [selectedComponents, selectedPostDuties, selectedPreDuties];
+    const states = [selectedComponents, selectedDistributeDataComponents, selectedPostDuties, selectedPreDuties];
     const setStates = [
       setSelectedComponents,
+      setSelectedDistributeDataComponents,
       setSelectedPostDuties,
       setSelectedPreDuties,
     ];
@@ -120,7 +140,9 @@ export default function ComplexPolicyForm() {
           if (item.id === id) {
             const obj = JSON.parse(JSON.stringify(state));
             obj.order = list.filter((e) => e !== id);
-            obj.availableComponents[key].isVisible = true;
+            obj.availableComponents[key].isVisible = false;
+            console.log(obj)
+
             setState({ ...obj });
           }
         });
@@ -157,11 +179,11 @@ export default function ComplexPolicyForm() {
                   errors={errors}
                 />
                 <AddRestrictions
-                  selectedComponents={selectedComponents}
                   values={values}
                   setValues={setValues}
                   errors={errors}
                   handleInputChange={handleInputChange}
+                  selectedComponents={selectedComponents}
                   removeComponent={removeComponent}
                   removeEnteredData={removeEnteredData}
                   classes={classes}
@@ -177,6 +199,9 @@ export default function ComplexPolicyForm() {
                 errors={errors}
                 handleInputChange={handleInputChange}
                 removeEnteredData={removeEnteredData}
+                selectedComponents={selectedDistributeDataComponents}
+                setSelectedComponents={setSelectedDistributeDataComponents}
+                removeComponent={removeComponent}
               />
             </Grid>
 

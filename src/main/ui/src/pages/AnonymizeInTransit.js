@@ -13,14 +13,13 @@ import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import Title from "../components/controls/Title";
 const selected_components = {
-  anonymizeInTransit: true,
+  page: "AnonymizeInTransit",
 };
 export default function AnonymizeInTransit() {
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -30,7 +29,7 @@ export default function AnonymizeInTransit() {
     Submit(
       "/policy/AnonymizeInTransitPolicyForm",
       values,
-      selectedComponents,
+      selected_components,
       setErrors,
       history,
       e

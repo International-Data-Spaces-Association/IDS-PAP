@@ -13,14 +13,14 @@ import ItemPicker from "../components/controls/ItemPicker";
 import Title from "../components/controls/Title";
 import { artifact_state_list } from "../components/controls/InitialFieldListValues";
 
-const selected_components = {show_distribute:true};
-
+const selected_components = {
+  page: "DistributeData",
+};
 export default function DistributeData() {
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -29,7 +29,7 @@ export default function DistributeData() {
     Submit(
       "/policy/DistributePolicyForm",
       values,
-      selectedComponents,
+      selected_components,
       setErrors,
       history,
       e

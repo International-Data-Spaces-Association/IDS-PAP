@@ -16,18 +16,18 @@ export default function ProvideAccess() {
   const selected_components = {
     order: [],
     availableComponents: [
-      { id: "application", name: "Application", isVisible: true },
-      { id: "connector", name: "Connector", isVisible: true },
-      { id: "duration", name: "Duration", isVisible: true },
-      { id: "endTime", name: "EndTime", isVisible: true },
-      { id: "event", name: "Event", isVisible: true },
-      { id: "interval", name: "Interval", isVisible: true },
-      { id: "location", name: "Location", isVisible: true },
-      { id: "payment", name: "Payment", isVisible: true },
-      { id: "purpose", name: "Purpose", isVisible: true },
-      { id: "role", name: "Role", isVisible: true },
-      { id: "securityLevel", name: "SecurityLevel", isVisible: true },
-      { id: "state", name: "State", isVisible: true },
+      { id: "application", name: "Application", isVisible: false },
+      { id: "connector", name: "Connector", isVisible: false },
+      { id: "duration", name: "Duration", isVisible: false },
+      { id: "endTime", name: "EndTime", isVisible: false },
+      { id: "event", name: "Event", isVisible: false },
+      { id: "interval", name: "Interval", isVisible: false },
+      { id: "location", name: "Location", isVisible: false },
+      { id: "payment", name: "Payment", isVisible: false },
+      { id: "purpose", name: "Purpose", isVisible: false },
+      { id: "role", name: "Role", isVisible: false },
+      { id: "securityLevel", name: "SecurityLevel", isVisible: false },
+      { id: "state", name: "State", isVisible: false },
     ],
   };
 
@@ -59,8 +59,9 @@ export default function ProvideAccess() {
   const handleSubmit = (e) => {
     const dict = selectedComponents.availableComponents;
     var state = {};
+    var state = {page: "ProvideAccess"};
     dict.forEach(function (item) {
-      state[item.id] = !item.isVisible;
+      state[item.id] = item.isVisible;
     });
     Submit("/policy/ProvideAccess", values, state, setErrors, history, e);
   };
@@ -91,7 +92,7 @@ export default function ProvideAccess() {
                 removeEnteredData={removeEnteredData}
               />
               {Object.values(selectedComponents.availableComponents).every(
-                (x) => x.isVisible === true
+                (x) => x.isVisible === false
               ) ? (
                 <Grid item xs={12} container justify="center">
                   <Grid item xs={2}>

@@ -7,11 +7,11 @@ export default function MenuItems(props) {
   const dict = selectedComponents.availableComponents;
 
   const items = dict.map((item) => (
-    (item.isVisible ? (
+    (!item.isVisible ? (
         <MenuItem
         key={item.id}
         onClick={() => {
-            item.isVisible = false;
+            item.isVisible = true;
             selectedComponents.order.push(item.id);
             setAnchorEl(null);
         }}

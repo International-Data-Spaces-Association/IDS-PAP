@@ -42,8 +42,8 @@ export default function AddRestrictions(props) {
   const addAll = () => {
     const dict = selectedComponents.availableComponents;
     dict.forEach(function (item) {
-      if (item.isVisible) {
-        item.isVisible = false;
+      if (!item.isVisible) {
+        item.isVisible = true;
         selectedComponents.order.push(item.id);
       }
     });
@@ -445,7 +445,7 @@ export default function AddRestrictions(props) {
                   className={classes.addBtn}
                   id="Add Component"
                 >
-                  Restriction
+                  Add Restriction
                 </Button>
               </Grid>
               <Menu

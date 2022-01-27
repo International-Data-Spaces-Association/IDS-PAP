@@ -15,8 +15,16 @@ import { useStyle } from "../Style";
 import Remove from "./Remove";
 
 export default function DistributeDataComplex(props) {
-  const { values, setValues, errors, handleInputChange, removeEnteredData } =
-    props;
+  const {
+    selectedComponents,
+    setSelectedComponents,
+    values,
+    setValues,
+    errors,
+    handleInputChange,
+    removeEnteredData,
+    removeComponent,
+  } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
@@ -24,30 +32,17 @@ export default function DistributeDataComplex(props) {
   };
   const classes = useStyle();
 
-  const selected_components = {
-    show_distribute: false,
-  };
-  const [selectedComponents, setSelectedComponents] =
-    useState(selected_components);
-
   const showDistribute = () => {
     setSelectedComponents({
       ["show_distribute"]: !selectedComponents.show_distribute,
     });
   };
-
-  const resetStates = (e) => {
-    setSelectedComponents({
-      ["show_distribute"]: false,
-    });
-    removeEnteredData(["artifactState", "policy"]);
-  };
   return (
     <>
-        {selectedComponents.show_distribute ? (
-          <>
-                <Paper elevation={3} className={classes.paper}>
-            <Grid container >
+      {selectedComponents.availableComponents[0].isVisible ? (
+        <>
+          <Paper elevation={3} className={classes.paper}>
+            <Grid container>
               <Grid item xs={12}>
                 <Title label="Distribute Data" />
               </Grid>
@@ -61,7 +56,12 @@ export default function DistributeDataComplex(props) {
                   error={errors.artifactState}
                 />
               </Grid>
-              <Remove onClick={resetStates} />
+              <Remove
+                onClick={() => {
+                  removeComponent("distributeData", "distribute");
+                  removeEnteredData(["artifactState", "policy"]);
+                }}
+              />
 
               <Grid item xs={11}>
                 <Input
@@ -74,25 +74,36 @@ export default function DistributeDataComplex(props) {
                 />
               </Grid>
             </Grid>
-            </Paper>
-
-          </>
-        ) : (
-          <Grid item xs={12} container justify="center">
-            <Grid item xs={5}>
-              <Button
-                color="primary"
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={showDistribute}
-                className={classes.addBtn}
-                id="Add Component"
-              >
-                Distribute Data
-              </Button>
-            </Grid>
+          </Paper>
+        </>
+      ) : (
+        <Grid item xs={12} container justify="center">
+          <Grid item xs={5}>
+            <Button
+              color="primary"
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={() => {
+                setSelectedComponents({
+                  type: "distributeData",
+                  order: [],
+                  availableComponents: [
+                    {
+                      id: "distribute",
+                      name: "Distribute Data",
+                      isVisible: true,
+                    },
+                  ],
+                });
+              }}
+              className={classes.addBtn}
+              id="Add Component"
+            >
+              Add Restriction to Distribute Data
+            </Button>
           </Grid>
-        )}
+        </Grid>
+      )}
     </>
   );
 }
