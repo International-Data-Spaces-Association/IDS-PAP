@@ -13,7 +13,7 @@ import ItemPicker from "../components/controls/ItemPicker";
 import Title from "../components/controls/Title";
 import { artifact_state_list } from "../components/controls/InitialFieldListValues";
 
-const selected_components = {};
+const selected_components = {show_distribute:true};
 
 export default function DistributeData() {
   const classes = useStyle();

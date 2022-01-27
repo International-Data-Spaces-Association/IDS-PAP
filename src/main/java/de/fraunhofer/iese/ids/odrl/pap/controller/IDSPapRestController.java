@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.jsonldjava.utils.JsonUtils;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.util.UcAppService;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Rule;
@@ -180,12 +182,18 @@ public class IDSPapRestController {
 		return dtPolicy;
 	}
 	
-	@PostMapping("/policy/initialTDP")
-	public String initialTDP(@RequestBody String odrl) {
+	@PostMapping("/policy/initialTechnologyDependentPolicy")
+	public String initialTechnologyDependentPolicy(@RequestBody String odrl) {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(odrl);
 		boolean tempProviderSide = true;
 		String dtPolicy = OdrlTranslator.translate(null, tempProviderSide, odrlPolicy);
-
 		return dtPolicy;
 	}
+	
+	@PostMapping("/policy/sendPolicy")
+	public String sendPolicy(@RequestBody JsonOdrlPolicy jsonOdrlPolicy) {
+		String returnedPolicy = UcAppService.sendPolicy(jsonOdrlPolicy);
+		return returnedPolicy;
+	}
+	
 }
