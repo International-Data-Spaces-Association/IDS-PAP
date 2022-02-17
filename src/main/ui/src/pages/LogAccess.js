@@ -11,7 +11,7 @@ import Submit from "../components/backend/Submit";
 import LogData from "../components/controls/LogData";
 
 const selected_components = {
-  logAccess: true,
+  page: "LogAccess",
 };
 
 export default function LogAccess() {
@@ -19,7 +19,6 @@ export default function LogAccess() {
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
 
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -29,7 +28,7 @@ export default function LogAccess() {
     Submit(
       "/policy/LogAccessPolicyForm",
       values,
-      selectedComponents,
+      selected_components,
       setErrors,
       history,
       e

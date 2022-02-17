@@ -210,7 +210,7 @@ export default function FormComponents(props) {
             <Date
               name="restrictTimeIntervalStart"
               label="Start Time*"
-              value={values.restrictTimeIntervalStart}
+              value={values}
               onChange={handleInputChange}
               error={errors.restrictTimeIntervalStart}
               sm={11}
@@ -220,7 +220,7 @@ export default function FormComponents(props) {
             <Date
               name="restrictTimeIntervalEnd"
               label="End Time*"
-              value={values.restrictTimeIntervalEnd}
+              value={values}
               onChange={handleInputChange}
               error={errors.restrictTimeIntervalEnd}
               sm={11}
@@ -301,7 +301,7 @@ export default function FormComponents(props) {
             <Date
               name="restrictEndTime"
               label="End Time"
-              value={values.restrictEndTime}
+              value={values}
               onChange={handleInputChange}
               error={errors.restrictEndTime}
               sm={11}
@@ -347,7 +347,7 @@ export default function FormComponents(props) {
             <Date
               name="specifyBeginTime"
               label="Begin Time (Optional)"
-              value={values.specifyBeginTime}
+              value={values}
               onChange={handleInputChange}
               error={errors.specifyBeginTime}
               sm={11}

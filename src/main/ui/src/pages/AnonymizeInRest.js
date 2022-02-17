@@ -14,9 +14,9 @@ export default function AnonymizeInRest() {
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [states] = useState({
-    selected: "null",
-  });
+  const selected_components = {
+    page: "AnonymizeInRest",
+  };
   const handleInputChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -24,7 +24,7 @@ export default function AnonymizeInRest() {
     Submit(
       "/policy/AnonymizeInRestPolicyForm",
       values,
-      states,
+      selected_components,
       setErrors,
       history,
       e

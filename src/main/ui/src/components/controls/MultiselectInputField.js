@@ -60,6 +60,7 @@ export default function MultiselectInputField(props) {
             placeholder={placeholder}
             value={values[name + "_input"][0]}
             onChange={handleInputChange}
+            error = {error[name + "_input_0"]}
             xs={11}
             sm={11}
             md={11}
@@ -73,6 +74,7 @@ export default function MultiselectInputField(props) {
             md={11}
             label={""}
             ItemList={itemList}
+            error = {error[name + "_input_0"]}
             value={values[name + "_input"][0]}
             onChange={handleInputChange}
           />
@@ -107,6 +109,7 @@ export default function MultiselectInputField(props) {
                       placeholder={placeholder}
                       value={data}
                       onChange={handleInputChange}
+                      error = {error[name + "_input_" + id]}
                       xs={9}
                       sm={9}
                       md={9}
@@ -121,6 +124,7 @@ export default function MultiselectInputField(props) {
                       label={""}
                       ItemList={itemList}
                       value={values[name + "_input"][0]}
+                      error = {error[name + "_input_" + id]}
                       onChange={handleInputChange}
                     />
                   )}
@@ -132,6 +136,7 @@ export default function MultiselectInputField(props) {
                     label={"Operator"}
                     ItemList={operator_list}
                     value={values[name + "_op"]}
+                    error = {error[name + "_op"]}
                     onChange={handleInputChange}
                   />
                 </>
@@ -145,6 +150,7 @@ export default function MultiselectInputField(props) {
                       placeholder={placeholder}
                       value={data}
                       onChange={handleInputChange}
+                      error = {error[name + "_input_" + id]}
                       xs={11}
                       sm={11}
                       md={11}
@@ -153,6 +159,7 @@ export default function MultiselectInputField(props) {
                   {inputType === "itempicker" && (
                     <ItemPicker
                       name={name+ "_input_" + id}
+                      error = {error[name + "_input_" + id]}
                       xs={11}
                       sm={11}
                       md={11}

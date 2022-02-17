@@ -37,12 +37,13 @@ export default function PostDuty(props) {
   const addAll = () => {
     const dict = selectedComponents.availableComponents;
     dict.forEach(function (item) {
-      if (item.isVisible) {
-        item.isVisible = false;
+      if (!item.isVisible) {
+        item.isVisible = true;
         selectedComponents.order.push(item.id);
       }
     });
   };
+
   const components = selectedComponents.order.map((c) => {
     switch (c) {
       case "log":
@@ -164,7 +165,7 @@ export default function PostDuty(props) {
             {components.map((c) => c())}
 
             {Object.values(selectedComponents.availableComponents).some(
-              (x) => x.isVisible === true
+              (x) => x.isVisible === false
             ) ? (
               <>
                 <Grid item xs={12} container justify="center">
@@ -209,8 +210,8 @@ export default function PostDuty(props) {
         </>
       ) : (
         <>
-          {Object.values(selectedComponents.availableComponents).some(
-            (x) => x.isVisible === true
+           {Object.values(selectedComponents.availableComponents).some(
+            (x) => x.isVisible === false
           ) ? (
             <>
               <Grid item xs={12} container justify="center">

@@ -44,8 +44,8 @@ export default function PreDuty(props) {
   const addAll = () => {
     const dict = selectedComponents.availableComponents;
     dict.forEach(function (item) {
-      if (item.isVisible) {
-        item.isVisible = false;
+      if (!item.isVisible) {
+        item.isVisible = true;
         selectedComponents.order.push(item.id);
       }
     });
@@ -127,7 +127,7 @@ export default function PreDuty(props) {
             {components.map((c) => c())}
 
             {Object.values(selectedComponents.availableComponents).some(
-              (x) => x.isVisible === true
+              (x) => x.isVisible === false
             ) ? (
               <>
                 <Grid item xs={12} container >
@@ -173,7 +173,7 @@ export default function PreDuty(props) {
       ) : (
         <>
           {Object.values(selectedComponents.availableComponents).some(
-            (x) => x.isVisible === true
+            (x) => x.isVisible === false
           ) ? (
             <>
               <Grid item xs={12} container justify="center">
