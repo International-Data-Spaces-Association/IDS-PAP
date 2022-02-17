@@ -3,6 +3,9 @@
 bin/
 tmp/
 target/
+#js-build
+src/main/ui/build
+
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -14,7 +17,6 @@ buildNumber.properties
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
-
 *.tmp
 *.bak
 *.swp
