@@ -6,11 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
-import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
