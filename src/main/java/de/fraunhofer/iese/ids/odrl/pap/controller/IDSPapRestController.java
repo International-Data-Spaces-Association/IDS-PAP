@@ -163,6 +163,7 @@ public class IDSPapRestController {
 		return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@PostMapping("/policy/InterpretOdrlPolicy")
 	public String interpretPolicy(@RequestBody String jsonPolicy) {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
