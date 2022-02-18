@@ -101,10 +101,10 @@ export default function ProvideAccess() {
                       aria-controls="simple-menu"
                       aria-haspopup="true"
                       onClick={handleClick}
-                      id="Add Component"
+                      id="Add Restriction"
                       className={classes.addBtn}
                     >
-                      Add Component
+                      Add Restriction
                     </Button>
                   </Grid>
                   <Menu

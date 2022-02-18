@@ -8,7 +8,7 @@ export default function Date(props) {
       <Grid item xs={xs} sm={sm} md={md}>
         <TextField
           name={name}
-          value={value}
+          value={value[name]}
           label={label}
           type="datetime-local"
           variant="outlined"
