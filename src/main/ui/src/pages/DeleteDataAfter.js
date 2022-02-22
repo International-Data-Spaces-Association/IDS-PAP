@@ -11,8 +11,8 @@ import Submit from "../components/backend/Submit";
 import DeleteData from "../components/controls/DeleteData";
 export default function DeleteDataAfter() {
   const selected_components = {
-    duration: false,
-    timeDate: false,
+    postduties_duration: false,
+    postduties_timeDate: false,
   };
   
   const classes = useStyle();
@@ -42,14 +42,14 @@ export default function DeleteDataAfter() {
   };
   const handleSubmit = (e) => {
     var state = {page: "DeleteDataAfter",
-        duration: false,
-        timeDate: false,};
+      postduties_duration: false,
+      postduties_timeDate: false,};
 
-    if (selectedComponents.duration) {
-      state.duration = true;
+    if (selectedComponents.postduties_duration) {
+      state.postduties_duration = true;
     }
-    if (selectedComponents.timeDate) {
-      state.timeDate = true;
+    if (selectedComponents.postduties_timeDate) {
+      state.postduties_timeDate = true;
     }
     if (Object.values(selectedComponents).some((x) => x === true)) {
       Submit(

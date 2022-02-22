@@ -82,12 +82,24 @@ export default function ODRLCreator() {
     query.ucAppUrl = values.AppUrl;
     if (isValidUrl(query.ucAppUrl) == "") {
       setErrors({ ...errors, ["AppUrl"]: "" });
-      console.log(query)
+      console.log(query);
       jsonOdrlPolicy("/policy/sendPolicy", query, setDtPolicy);
     } else {
       setErrors({ ...errors, ["AppUrl"]: "Please enter a valid URL" });
     }
   };
+
+  function download(content, fileName, contentType) {
+    const a = document.createElement("a");
+    const file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
+
+  function onDownload() {
+    download(JSON.stringify(JSON.parse(policy), null, 2), "policy.json", "text/plain");
+  }
 
   function isValidUrl(string) {
     if (string == "") return "The field should not be empty";
@@ -101,7 +113,52 @@ export default function ODRLCreator() {
   }
   return (
     <div className={classes.page}>
-      <Grid container spacing={1}>
+      <Grid item container xs={12} spacing={1}>
+        <Grid item xs={1}>
+          <Button
+            className={classes.translateBtn}
+            variant="contained"
+            color="secondary"
+            id="Transfer"
+            onClick={transfer}
+          >
+            Transfer
+          </Button>
+        </Grid>
+        <Grid item xs={1}>
+          <Button
+            className={classes.translateBtn}
+            variant="contained"
+            color="secondary"
+            onClick={onDownload}
+          >
+            Export
+          </Button>
+        </Grid>
+        <Grid item xs={1}>
+          <Button
+            className={classes.translateBtn}
+            variant="contained"
+            color="secondary"
+            id="Send"
+            onClick={send}
+          >
+            Send
+          </Button>
+        </Grid>
+        <Input
+          name={"AppUrl"}
+          label={""}
+          value={values["AppUrl"]}
+          placeholder=""
+          onChange={handleInputChange}
+          error={errors["AppUrl"]}
+          xs={9}
+          sm={9}
+          md={9}
+        />
+      </Grid>
+      <Grid item container spacing={1} xs={12}>
         <Grid item xs={12} md={6}>
           <Grid item xs={12}>
             <Typography variant="h5">Copy your IDS policy here:</Typography>
@@ -126,41 +183,6 @@ export default function ODRLCreator() {
                 autoFormatOnModeChange: true,
               }}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid item xs={3}>
-              <Button
-                className={classes.translateBtn}
-                variant="contained"
-                color="secondary"
-                id="Transfer"
-                onClick={transfer}
-              >
-                Transfer
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Input
-              name={"AppUrl"}
-              value={values["AppUrl"]}
-              placeholder=""
-              onChange={handleInputChange}
-              error={errors["AppUrl"]}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid item xs={3}>
-              <Button
-                className={classes.translateBtn}
-                variant="contained"
-                color="secondary"
-                id="Send"
-                onClick={send}
-              >
-                Send
-              </Button>
-            </Grid>
           </Grid>
         </Grid>
 
@@ -190,17 +212,6 @@ export default function ODRLCreator() {
                 autoFormatOnModeChange: true,
               }}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid item xs={3}>
-              <Button
-                className={classes.translateBtn}
-                variant="contained"
-                color="secondary"
-              >
-                Export
-              </Button>
-            </Grid>
           </Grid>
         </Grid>
       </Grid>

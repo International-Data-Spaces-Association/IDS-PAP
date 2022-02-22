@@ -13,6 +13,7 @@ export default function Submit(url, values, states, setErrors, history, e) {
       (response) => {
         axios.post(BASE_URL + "/policy/initialTechnologyDependentPolicy", response.data).then(
           (responseTDP) => {
+            console.log(response.data)
             var dict = {
               jsonPolicy: JSON.stringify(response.data, null, 2),
               dtPolicy: responseTDP.data,
@@ -55,7 +56,7 @@ export function jsonOdrlPolicy(url, values, setPolicy) {
 function convertDateToIso(values, states) {
   var isoValues = { ...values };
   isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime);
-  isoValues.restrictEndTime = addDateSuffix(isoValues.restrictEndTime);
+  isoValues.restrictpme = addDateSuffix(isoValues.restrictEndTime);
   isoValues.restrictTimeIntervalStart = addDateSuffix(
     isoValues.restrictTimeIntervalStart
   );
@@ -79,6 +80,7 @@ function validation(values, states, setErrors) {
   checkHeader(error_list, values);
   switch (states.page) {
     case "CreatePolicy":
+
       checkComplexPolicyFields(values, states, error_list);
       break;
 
@@ -91,7 +93,7 @@ function validation(values, states, setErrors) {
       break;
 
     case "DeleteDataAfter":
-      if (states.duration) {
+      if (states.postduties_duration) {
         error_list.postduties_durationDay = isValidInt(
           values.postduties_durationDay
         );
@@ -105,7 +107,7 @@ function validation(values, states, setErrors) {
           values.postduties_durationYear
         );
       }
-      if (states.timeDate) {
+      if (states.postduties_timeDate) {
         error_list.postduties_timeAndDate = isDateOrEmpty(values.postduties_timeAndDate)
         error_list.postduties_timeAndDate = isNotEmpty(values.postduties_timeAndDate)
       }
@@ -155,6 +157,7 @@ function validation(values, states, setErrors) {
     default:
       break;
   }
+  console.log(error_list)
  setErrors({
     ...error_list,
   });
@@ -246,7 +249,25 @@ function checkComplexPolicyFields(values, states, error_list) {
   }
 
   // Delete Data After
-
+  if (states.postduties_duration) {
+    error_list.postduties_durationDay = isValidInt(
+      values.postduties_durationDay
+    );
+    error_list.postduties_durationHour = isValidInt(
+      values.postduties_durationHour
+    );
+    error_list.postduties_durationMonth = isValidInt(
+      values.postduties_durationMonth
+    );
+    error_list.postduties_durationYear = isValidInt(
+      values.postduties_durationYear
+    );
+  }
+  if (states.postduties_timeDate) {
+    error_list.postduties_timeAndDate = isDateOrEmpty(values.postduties_timeAndDate)
+    error_list.postduties_timeAndDate = isNotEmpty(values.postduties_timeAndDate)
+  }
+  
   // Log Data Usage
   if (states["log"]) {
     error_list["postduties_systemDevice"] = isValidUrl(

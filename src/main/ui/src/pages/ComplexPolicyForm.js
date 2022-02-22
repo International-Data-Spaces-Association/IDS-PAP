@@ -14,6 +14,7 @@ import PreDuty from "../components/controls/PreDuty";
 import AddRestrictions from "../components/AddRestrictions";
 import DistributeDataComplex from "../components/controls/DistributeDataComplex";
 export default function ComplexPolicyForm() {
+  
   const selected_components = {
     type: "restrictions",
     order: [],
@@ -62,6 +63,11 @@ export default function ComplexPolicyForm() {
     ],
   };
 
+  const selected_delete_data_components = {
+    dda_duration: false,
+    dda_timeDate: false,
+  };
+
   const classes = useStyle();
   const [values, setValues] = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
@@ -75,6 +81,10 @@ export default function ComplexPolicyForm() {
 
   const [selectedPostDuties, setSelectedPostDuties] = useState(
     selected_postduties_components
+  );
+
+  const [selectedDeleteComponents, setSelectedDeleteComponents] = useState(
+    selected_delete_data_components
   );
 
   const handleInputChange = (e) => {
@@ -92,6 +102,7 @@ export default function ComplexPolicyForm() {
     OdrlPolicy.securityLevel_input = [""];
     var state = {page: "CreatePolicy"};
     selectedComponents.availableComponents.forEach(function (item) {
+      console.log(item.id)
       state[item.id] = item.isVisible;
     });
     selectedPreDuties.availableComponents.forEach(function (item) {
@@ -103,6 +114,9 @@ export default function ComplexPolicyForm() {
     selectedDistributeDataComponents.availableComponents.forEach(function (item) {
       state[item.id] = item.isVisible;
     });
+    for (const [key, value] of Object.entries(selectedDeleteComponents)) {
+      state[key] = value;
+    }
     Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
   };
 
@@ -115,6 +129,7 @@ export default function ComplexPolicyForm() {
     OdrlPolicy.event_input = [""];
     OdrlPolicy.state_input = [""];
     OdrlPolicy.securityLevel_input = [""];
+    OdrlPolicy.preduties_anomInRest ="";
     setValues({ ...OdrlPolicy });
     setSelectedComponents({ ...selected_components });
     setSelectedPostDuties({ ...selected_postduties_components });
@@ -141,8 +156,6 @@ export default function ComplexPolicyForm() {
             const obj = JSON.parse(JSON.stringify(state));
             obj.order = list.filter((e) => e !== id);
             obj.availableComponents[key].isVisible = false;
-            console.log(obj)
-
             setState({ ...obj });
           }
         });
@@ -159,6 +172,7 @@ export default function ComplexPolicyForm() {
         values[id] = "";
       }
     });
+    console.log(ids,  values[ids])
   };
 
   return (
@@ -224,6 +238,9 @@ export default function ComplexPolicyForm() {
             <Grid item xs={12}>
               <PostDuty
                 selectedComponents={selectedPostDuties}
+                setSelectedComponents={setSelectedDistributeDataComponents}
+                selectedDeleteComponents={selectedDeleteComponents}
+                setSelectedDeleteComponents={setSelectedDeleteComponents}
                 values={values}
                 setValues={setValues}
                 errors={errors}

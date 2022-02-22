@@ -10,6 +10,8 @@ import { Typography } from "@material-ui/core";
 export default function PostDuty(props) {
   const {
     selectedComponents,
+    selectedDeleteComponents,
+    setSelectedDeleteComponents,
     values,
     setValues,
     errors,
@@ -21,15 +23,6 @@ export default function PostDuty(props) {
     title = "",
     type = "",
   } = props;
-
-  const selected_delete_data_components = {
-    duration: false,
-    timeDate: false,
-  };
-  const [selectedDeleteComponents, setSelectedDeleteComponents] = useState(
-    selected_delete_data_components
-  );
-
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

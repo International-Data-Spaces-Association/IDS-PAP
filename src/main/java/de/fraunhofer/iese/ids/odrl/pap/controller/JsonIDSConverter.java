@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
@@ -75,7 +77,9 @@ public class JsonIDSConverter {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}**/
-		return jsonPolicyString.toString();
+		String response = new JSONObject(jsonPolicyString.toString()).toString(4);
+		System.out.println(response);
+		return response;
 
 	}
 	
@@ -396,6 +400,7 @@ public class JsonIDSConverter {
 			Party consumer = null;
 			try {
 				consumer = new Party(PartyType.CONSUMER, new URI(rp.getConsumer()));
+				System.out.println(new URI(rp.getConsumer()));
 				consumer.setType(PartyType.CONSUMER);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();

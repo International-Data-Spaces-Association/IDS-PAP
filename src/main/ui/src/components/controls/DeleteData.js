@@ -21,7 +21,6 @@ export default function DeleteData(props) {
     seperator = true,
   } = props;
 
-  
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyle();
 
@@ -33,14 +32,20 @@ export default function DeleteData(props) {
   };
 
   const handleSelectedClose = (e) => {
-    setSelectedComponents({ [e.target.id]: true });
+    var obj = {
+      [type + "duration"]: false,
+      [type + "timeDate"]: false,
+    }
+    obj[e.target.id] = true;
+    console.log(obj)
+    setSelectedComponents(obj);
     setAnchorEl(null);
   };
 
   const resetStates = (e) => {
     setSelectedComponents({
-      duration: false,
-      timeDate: false,
+      [type + "duration"]: false,
+      [type + "timeDate"]: false,
     });
     removeEnteredData([
       type + "durationYear",
@@ -53,7 +58,7 @@ export default function DeleteData(props) {
   return (
     <>
       <Grid item xs={xs} sm={sm} md={md}>
-        {selectedComponents.duration ? (
+        {selectedComponents[type + "duration"] ? (
           <>
             <Grid container className={classes.paperSubContainer}>
               <Title
@@ -107,7 +112,7 @@ export default function DeleteData(props) {
           </>
         ) : null}
 
-        {selectedComponents.timeDate ? (
+        {selectedComponents[type + "timeDate"] ? (
           <>
             <Grid container className={classes.paperSubContainer}>
               <Title
@@ -119,6 +124,7 @@ export default function DeleteData(props) {
                   name={type + "timeAndDate"}
                   label="Date and Time*"
                   defaultValue=""
+                  value={values}
                   onChange={handleInputChange}
                   error={errors[type + "timeAndDate"]}
                   sm={11}
@@ -151,10 +157,10 @@ export default function DeleteData(props) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleSelectedClose} id="duration">
+              <MenuItem onClick={handleSelectedClose} id= {type + "duration"}>
                 Specify a period to wait before deleting
               </MenuItem>
-              <MenuItem onClick={handleSelectedClose} id="timeDate">
+              <MenuItem onClick={handleSelectedClose} id= {type + "timeDate"}>
                 Specify exact time and date
               </MenuItem>
             </Menu>

@@ -228,10 +228,10 @@ public class RecievedOdrlPolicyTest {
 	 */
 	public void check(JSONObject jsonObject, String url, String path) {
 		try {
-			byte[] response = new JSONObject(send(jsonObject, url)).toString(4).getBytes();
+			String response = new JSONObject(send(jsonObject, url)).toString(4);
 			//writeFile(response, path); // This line will override all expected responses!
-			byte[] expectedResponse = new JSONObject(readFile(path)).toString(4).getBytes();
-			Assert.assertArrayEquals( expectedResponse, response );
+			String expectedResponse = new JSONObject(readFile(path)).toString(4);
+			Assert.assertEquals( expectedResponse, response );
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
