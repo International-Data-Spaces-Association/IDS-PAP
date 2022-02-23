@@ -20,11 +20,11 @@
             },
             "ids:rightOperand": [
                 {
-                    "@value": "http://example.com/ids-purpose/Marketing",
+                    "@value": "http://example.com/ids/purpose/Marketing",
                     "@type": "xsd:anyURI"
                 },
                 {
-                    "@value": "http://example.com/ids-purpose/Risk_Management",
+                    "@value": "http://example.com/ids/purpose/Risk_Management",
                     "@type": "xsd:anyURI"
                 }
             ],

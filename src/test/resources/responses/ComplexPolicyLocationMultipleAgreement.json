@@ -20,11 +20,11 @@
             },
             "ids:rightOperand": [
                 {
-                    "@value": "location1",
+                    "@value": "http://location1",
                     "@type": "xsd:anyURI"
                 },
                 {
-                    "@value": "location2",
+                    "@value": "http://location2",
                     "@type": "xsd:anyURI"
                 }
             ],

@@ -145,7 +145,7 @@ export default function DeleteData(props) {
                 aria-haspopup="true"
                 onClick={handleClick}
                 className={classes.addBtn}
-                id="Add Component"
+                id="Add Delete Component"
               >
                 Add Component
               </Button>

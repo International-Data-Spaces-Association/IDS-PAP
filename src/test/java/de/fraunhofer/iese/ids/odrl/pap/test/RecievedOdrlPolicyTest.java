@@ -1,5 +1,6 @@
 package de.fraunhofer.iese.ids.odrl.pap.test;
 
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -185,6 +186,7 @@ public class RecievedOdrlPolicyTest {
 			return mvcResult.getResponse().getContentAsString();
 			
 		} catch (Exception e) {
+			Assert.fail();
 			e.printStackTrace();
 		}
 		return "";
@@ -200,6 +202,7 @@ public class RecievedOdrlPolicyTest {
 		try {
 			content = new String(Files.readAllBytes(Paths.get(path)));
 		} catch (IOException e) {
+			Assert.fail();
 			e.printStackTrace();
 		}
 
@@ -211,10 +214,11 @@ public class RecievedOdrlPolicyTest {
 	 * @param response.toString() string to write in the file
 	 * @param path of the file
 	 */
-	public void writeFile(byte[] response, String path) {
+	public void writeFile(String response, String path) {
+		byte[] out = response.getBytes();
 		try {
 			new File(path).createNewFile();
-			Files.write(Paths.get(path), response);
+			Files.write(Paths.get(path), out);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -231,7 +235,8 @@ public class RecievedOdrlPolicyTest {
 			String response = new JSONObject(send(jsonObject, url)).toString(4);
 			//writeFile(response, path); // This line will override all expected responses!
 			String expectedResponse = new JSONObject(readFile(path)).toString(4);
-			Assert.assertEquals( expectedResponse, response );
+			boolean isCorrect = expectedResponse.equals(response);
+			Assert.assertTrue(isCorrect);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -254,7 +259,7 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray application = new JSONArray();
-		application.put("Application1");
+		application.put("http://Application1");
 		jsonObject.put("application_input", application);
 		check(jsonObject, url, expectedResponseFilePath);
 	}
@@ -265,8 +270,8 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray application = new JSONArray();
-		application.put("Application1");
-		application.put("Application2");
+		application.put("http://Application1");
+		application.put("http://Application2");
 		jsonObject.put("application_input", application);
 		jsonObject.put("application_op", "IN");
 		check(jsonObject, url, expectedResponseFilePath);
@@ -278,7 +283,7 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray connector = new JSONArray();
-		connector.put("Connector1");
+		connector.put("http://Connector1");
 		jsonObject.put("connector_input", connector);
 		check(jsonObject, url, expectedResponseFilePath);
 	}
@@ -289,8 +294,8 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray connector = new JSONArray();
-		connector.put("Connector1");
-		connector.put("Connector2");
+		connector.put("http://Connector1");
+		connector.put("http://Connector2");
 		jsonObject.put("connector_input", connector);
 		jsonObject.put("connector_op", "IN");
 		check(jsonObject, url, expectedResponseFilePath);
@@ -310,11 +315,11 @@ public class RecievedOdrlPolicyTest {
 		String expectedResponseFilePath = basePath + "ComplexPolicyDurationAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
-		jsonObject.put("durationDay", "21");
-		jsonObject.put("durationHour", "10");
-		jsonObject.put("durationMonth", "10");
-		jsonObject.put("durationYear", "2021");
-		jsonObject.put("specifyBeginTime", "2021-12-16T20:43");
+		jsonObject.put("durationDay", "10");
+		jsonObject.put("durationHour", "03");
+		jsonObject.put("durationMonth", "01");
+		jsonObject.put("durationYear", "2051");
+		jsonObject.put("specifyBeginTime", "2050-12-16T20:47");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 
@@ -323,7 +328,7 @@ public class RecievedOdrlPolicyTest {
 		String expectedResponseFilePath = basePath + "ComplexPolicyRestrictEndTimeAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
-		jsonObject.put("restrictEndTime", "2021-12-16T20:43");
+		jsonObject.put("restrictEndTime", "2051-12-16T20:47");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 
@@ -356,8 +361,8 @@ public class RecievedOdrlPolicyTest {
 		String expectedResponseFilePath = basePath + "ComplexPolicyIntervalAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
-		jsonObject.put("restrictTimeIntervalEnd", "2022-01-05T20:47");
-		jsonObject.put("restrictTimeIntervalStart", "2021-12-16T20:47");
+		jsonObject.put("restrictTimeIntervalEnd", "2052-01-05T20:47:00Z");
+		jsonObject.put("restrictTimeIntervalStart", "2051-12-16T20:47:00Z");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 
@@ -367,7 +372,7 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray location = new JSONArray();
-		location.put("location1");
+		location.put("http://location1");
 		jsonObject.put("location_input", location);
 		check(jsonObject, url, expectedResponseFilePath);
 	}
@@ -378,8 +383,8 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray location = new JSONArray();
-		location.put("location1");
-		location.put("location2");
+		location.put("http://location1");
+		location.put("http://location2");
 		jsonObject.put("location_input", location);
 		jsonObject.put("location_op", "IN");
 		check(jsonObject, url, expectedResponseFilePath);
@@ -391,7 +396,7 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray purpose = new JSONArray();
-		purpose.put("http://example.com/ids-purpose/Marketing");
+		purpose.put("http://example.com/ids/purpose/Marketing");
 		jsonObject.put("purpose_input", purpose);
 		check(jsonObject, url, expectedResponseFilePath);
 	}
@@ -402,8 +407,8 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray purpose = new JSONArray();
-		purpose.put("http://example.com/ids-purpose/Marketing");
-		purpose.put("http://example.com/ids-purpose/Risk_Management");
+		purpose.put("http://example.com/ids/purpose/Marketing");
+		purpose.put("http://example.com/ids/purpose/Risk_Management");
 		jsonObject.put("purpose_input", purpose);
 		jsonObject.put("purpose_op", "IN");
 		check(jsonObject, url, expectedResponseFilePath);
@@ -463,7 +468,7 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray event = new JSONArray();
-		event.put("event1");
+		event.put("http://Event1");
 		jsonObject.put("event_input", event);
 		check(jsonObject, url, expectedResponseFilePath);
 	}
@@ -474,8 +479,8 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		JSONArray event = new JSONArray();
-		event.put("event1");
-		event.put("event2");
+		event.put("http://Event1");
+		event.put("http://Event2");
 		jsonObject.put("event_input", event);
 		jsonObject.put("event_op", "IN");
 		check(jsonObject, url, expectedResponseFilePath);
@@ -497,7 +502,7 @@ public class RecievedOdrlPolicyTest {
 		String expectedResponseFilePath = basePath + "ComplexPolicyDistributeDataAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
-		jsonObject.put("policy", "Policy1");
+		jsonObject.put("policy", "http://Policy1");
 		jsonObject.put("artifactState", "idsc:ANONYMIZED");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
@@ -538,7 +543,7 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
 		jsonObject.put("postduties_logLevel", "idsc:ON_DUTY_EXERCISED");
-		jsonObject.put("postduties_systemDevice", "SystemDevice1");
+		jsonObject.put("postduties_systemDevice", "http://SystemDevice");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 
@@ -560,7 +565,7 @@ public class RecievedOdrlPolicyTest {
 		jsonObject.put("postduties_durationDay", "1");
 		jsonObject.put("postduties_durationHour", "2");
 		jsonObject.put("postduties_durationMonth", "3");
-		jsonObject.put("postduties_durationYear", "2021");
+		jsonObject.put("postduties_durationYear", "2051");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 
@@ -569,7 +574,7 @@ public class RecievedOdrlPolicyTest {
 		String expectedResponseFilePath = basePath + "ComplexPolicyDeleteDataAfterSpecificTimeAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
-		jsonObject.put("postduties_timeAndDate", "2021-12-16T21:08");
+		jsonObject.put("postduties_timeAndDate", "2051-12-16T21:08");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 
@@ -737,7 +742,7 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/LogAccessPolicyForm";
 		
 		jsonObject.put("postduties_logLevel", "idsc:ON_DENY");
-		jsonObject.put("postduties_systemDevice", "SystemDevice");
+		jsonObject.put("postduties_systemDevice", "http://SystemDevice");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
@@ -747,17 +752,19 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/LogAccessPolicyForm";
 		
 		jsonObject.put("postduties_logLevel", "idsc:ON_DUTY_EXERCISED");
-		jsonObject.put("postduties_systemDevice", "SystemDevice");
+		jsonObject.put("postduties_systemDevice", "http://SystemDevice");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 
 	// Inform Party
+	//Missing!
+	@Test
 	public void LogAccessOnDenyOnDenyAgreement() throws JSONException {
 		String expectedResponseFilePath = basePath + "LogAccessOnDenyOnDenyAgreement"+".json";
 		String url = baseUrl + "/policy/InformPolicyForm";
 		
 		jsonObject.put("postduties_notificationLevel", "idsc:ON_DENY");
-		jsonObject.put("postduties_informedParty", "SystemDevice");
+		jsonObject.put("postduties_informedParty", "http://SystemDevice");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
@@ -767,17 +774,18 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/InformPolicyForm";
 		
 		jsonObject.put("postduties_notificationLevel", "idsc:ON_DUTY_EXERCISED");
-		jsonObject.put("postduties_informedParty", "SystemDevice");
+		jsonObject.put("postduties_informedParty", "http://SystemDevice");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
 	// Distribute Party
+	@Test
 	public void DistributeANONYMIZEDAgreement() throws JSONException {
 		String expectedResponseFilePath = basePath + "DistributeANONYMIZEDAgreement"+".json";
 		String url = baseUrl + "/policy/DistributePolicyForm";
 		
 		jsonObject.put("artifactState", "idsc:ANONYMIZED");
-		jsonObject.put("policy", "Policy1");
+		jsonObject.put("policy", "http://Policy1");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
@@ -787,7 +795,7 @@ public class RecievedOdrlPolicyTest {
 		String url = baseUrl + "/policy/DistributePolicyForm";
 		
 		jsonObject.put("artifactState", "idsc:PSEUDONYMIZED");
-		jsonObject.put("policy", "Policy1");
+		jsonObject.put("policy", "http://Policy1");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 	

@@ -20,11 +20,11 @@
             },
             "ids:rightOperand": [
                 {
-                    "@value": "event1",
+                    "@value": "http://Event1",
                     "@type": "xsd:anyURI"
                 },
                 {
-                    "@value": "event2",
+                    "@value": "http://Event2",
                     "@type": "xsd:anyURI"
                 }
             ],

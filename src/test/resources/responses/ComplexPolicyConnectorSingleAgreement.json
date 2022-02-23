@@ -19,7 +19,7 @@
                 }
             },
             "ids:rightOperand": [{
-                "@value": "Connector1",
+                "@value": "http://Connector1",
                 "@type": "xsd:anyURI"
             }],
             "ids:leftOperand": {"@id": "idsc:CONNECTOR"},

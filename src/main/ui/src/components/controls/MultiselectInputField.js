@@ -83,6 +83,7 @@ export default function MultiselectInputField(props) {
         <Grid item container xs={1} justify="center" spacing={1}>
           <IconButton
             aria-label="add"
+            id={name+"_add"}
             color="primary"
             className={classes.formBtn}
             onClick={() => {
@@ -129,7 +130,7 @@ export default function MultiselectInputField(props) {
                     />
                   )}
                   <ItemPicker
-                    name={name + "_op_"}
+                    name={name + "_op"}
                     xs={2}
                     sm={2}
                     md={2}
@@ -175,6 +176,7 @@ export default function MultiselectInputField(props) {
                 <IconButton
                   aria-label="remove"
                   color="secondary"
+                  id={name+"_add"}
                   className={"btnAdd_" + id}
                   onClick={() => {
                     handleRemoveItem(id);

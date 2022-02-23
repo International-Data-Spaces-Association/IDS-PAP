@@ -78,7 +78,6 @@ public class JsonIDSConverter {
 			e.printStackTrace();
 		}**/
 		String response = new JSONObject(jsonPolicyString.toString()).toString(4);
-		System.out.println(response);
 		return response;
 
 	}
@@ -400,7 +399,6 @@ public class JsonIDSConverter {
 			Party consumer = null;
 			try {
 				consumer = new Party(PartyType.CONSUMER, new URI(rp.getConsumer()));
-				System.out.println(new URI(rp.getConsumer()));
 				consumer.setType(PartyType.CONSUMER);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();

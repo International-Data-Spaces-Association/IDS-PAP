@@ -19,7 +19,7 @@
                 }
             },
             "ids:rightOperand": [{
-                "@value": "event1",
+                "@value": "http://Event1",
                 "@type": "xsd:anyURI"
             }],
             "ids:leftOperand": {"@id": "idsc:EVENT"},

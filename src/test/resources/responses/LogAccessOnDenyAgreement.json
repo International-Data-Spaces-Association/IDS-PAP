@@ -32,7 +32,7 @@
                         "@type": "ids:Constraint",
                         "ids:comment": "  ",
                         "ids:rightOperand": [{
-                            "@value": "SystemDevice",
+                            "@value": "http://SystemDevice",
                             "@type": "xsd:anyURI"
                         }],
                         "ids:leftOperand": {"@id": "idsc:SYSTEM_DEVICE"},

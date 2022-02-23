@@ -194,7 +194,6 @@ public class IDSPapRestController {
 	@PostMapping("/policy/sendPolicy")
 	public String sendPolicy(@RequestBody JsonOdrlPolicy jsonOdrlPolicy) {
 		String returnedPolicy = UcAppService.sendPolicy(jsonOdrlPolicy);
-		System.out.println(returnedPolicy);
 		return returnedPolicy;
 	}
 	

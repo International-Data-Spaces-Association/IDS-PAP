@@ -20,7 +20,7 @@
             },
             "ids:comment": "  ",
             "ids:rightOperand": [{
-                "@value": "idsc:PSEUDONYMIZED",
+                "@value": "idsc:ANONYMIZED",
                 "@type": "xsd:string"
             }],
             "ids:leftOperand": {"@id": "idsc:ARTIFACT_STATE"},

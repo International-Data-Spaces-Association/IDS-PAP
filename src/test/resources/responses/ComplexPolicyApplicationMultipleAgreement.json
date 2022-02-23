@@ -20,11 +20,11 @@
             },
             "ids:rightOperand": [
                 {
-                    "@value": "Application1",
+                    "@value": "http://Application1",
                     "@type": "xsd:anyURI"
                 },
                 {
-                    "@value": "Application2",
+                    "@value": "http://Application2",
                     "@type": "xsd:anyURI"
                 }
             ],

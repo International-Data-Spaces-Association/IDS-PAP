@@ -19,7 +19,7 @@
                 }
             },
             "ids:rightOperand": [{
-                "@value": "location1",
+                "@value": "http://location1",
                 "@type": "xsd:anyURI"
             }],
             "ids:leftOperand": {"@id": "idsc:ABSOLUTE_SPATIAL_POSITION"},

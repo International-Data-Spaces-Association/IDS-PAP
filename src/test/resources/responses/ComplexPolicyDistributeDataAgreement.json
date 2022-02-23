@@ -48,7 +48,7 @@
                         "@type": "ids:Constraint",
                         "ids:comment": "  ",
                         "ids:rightOperand": [{
-                            "@value": "Policy1",
+                            "@value": "http://Policy1",
                             "@type": "xsd:anyURI"
                         }],
                         "ids:leftOperand": {"@id": "idsc:TARGET_POLICY"},

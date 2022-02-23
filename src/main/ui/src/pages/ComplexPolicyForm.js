@@ -30,7 +30,7 @@ export default function ComplexPolicyForm() {
       { id: "payment", name: "Payment", isVisible: false },
       { id: "purpose", name: "Purpose", isVisible: false },
       { id: "role", name: "Role", isVisible: false },
-      { id: "securityLevel", name: "SecurityLevel", isVisible: false },
+      { id: "securityLevel", name: "Security Level", isVisible: false },
       { id: "state", name: "State", isVisible: false },
     ],
   };
