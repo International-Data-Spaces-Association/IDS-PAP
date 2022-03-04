@@ -99,6 +99,7 @@ export default function ODRLCreator() {
 
   function onDownload() {
     download(JSON.stringify(JSON.parse(policy), null, 2), "policy.json", "text/plain");
+    download(dtPolicy, "policy.xml", "text/plain");
   }
 
   function isValidUrl(string) {
