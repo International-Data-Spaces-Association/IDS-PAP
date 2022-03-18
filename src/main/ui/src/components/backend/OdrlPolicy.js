@@ -2,7 +2,7 @@ export const OdrlPolicy = {
     id: 0,
     policyType: "Agreement",
     target: "",
-    provider: "My party",
+    provider: "",
     consumer: "",
 
     location_input: [""],

@@ -16,12 +16,14 @@ export default function DeleteDataAfter() {
   };
   
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] = useState(selected_components);
 
   const resetStates = () => {
+    const [values, setValues] = valueHook
+
     for (var key in selectedComponents) {
       if (selectedComponents.hasOwnProperty(key)) {
         selectedComponents[key] = false;
@@ -37,10 +39,8 @@ export default function DeleteDataAfter() {
     });
   };
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
   const handleSubmit = (e) => {
+    const [values, setValues] = valueHook
     var state = {page: "DeleteDataAfter",
       postduties_duration: false,
       postduties_timeDate: false,};
@@ -74,10 +74,10 @@ export default function DeleteDataAfter() {
   const removeEnteredData = (ids) => {
     ids.forEach(function (id) {
       if (OdrlPolicy[id] instanceof Array) {
-        values[id] = [""];
+        valueHook[0][id] = [""];
         OdrlPolicy[id] = [""];
       } else {
-        values[id] = "";
+        valueHook[0][id] = "";
       }
     });
   };
@@ -107,21 +107,18 @@ export default function DeleteDataAfter() {
         <Grid container>
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-              <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+            <IdentifyPolicy
+                valueHook={valueHook}
                 errors={errors}
-                resetStates={resetStates}
               />
 
               <DeleteData
-                handleInputChange={handleInputChange}
+                valueHook={valueHook}
                 errors={errors}
-                values={values}
                 selectedComponents={selectedComponents}
                 removeEnteredData={removeEnteredData}
                 setSelectedComponents={setSelectedComponents}
-                type = "postduties_"
+                prefix = "postduties_"
               />
             </Paper>
           </Grid>

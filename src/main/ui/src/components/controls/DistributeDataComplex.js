@@ -16,12 +16,10 @@ import Remove from "./Remove";
 
 export default function DistributeDataComplex(props) {
   const {
+    valueHook,
+    errors,
     selectedComponents,
     setSelectedComponents,
-    values,
-    setValues,
-    errors,
-    handleInputChange,
     removeEnteredData,
     removeComponent,
   } = props;
@@ -52,8 +50,8 @@ export default function DistributeDataComplex(props) {
                   defaultValue=""
                   label="Artifact State"
                   ItemList={artifact_state_list}
-                  onChange={handleInputChange}
-                  error={errors.artifactState}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
               <Remove
@@ -67,10 +65,9 @@ export default function DistributeDataComplex(props) {
                 <Input
                   name="policy"
                   label="Policy to be sent to the third party"
-                  value={values.policy}
                   placeholder="e.g. http://example.com/policy/offer-policy"
-                  onChange={handleInputChange}
-                  error={errors.policy}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
             </Grid>
@@ -85,7 +82,7 @@ export default function DistributeDataComplex(props) {
               aria-haspopup="true"
               onClick={() => {
                 setSelectedComponents({
-                  type: "distributeData",
+                  prefix: "distributeData",
                   order: [],
                   availableComponents: [
                     {

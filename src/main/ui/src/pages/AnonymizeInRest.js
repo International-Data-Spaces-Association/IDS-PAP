@@ -11,16 +11,15 @@ import Submit from "../components/backend/Submit";
 
 export default function AnonymizeInRest() {
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const selected_components = {
     page: "AnonymizeInRest",
   };
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+
   const handleSubmit = (e) => {
+    const [values, setValues] = valueHook
     Submit(
       "/policy/AnonymizeInRestPolicyForm",
       values,
@@ -42,10 +41,8 @@ export default function AnonymizeInRest() {
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
               <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+                valueHook={valueHook}
                 errors={errors}
-                type="submit"
               />
             </Paper>
           </Grid>

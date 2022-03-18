@@ -16,14 +16,13 @@ const selected_components = {
 
 export default function LogAccess() {
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
   const handleSubmit = (e) => {
+    const [values, setValues] = valueHook
+
     Submit(
       "/policy/InformPolicyForm",
       values,
@@ -45,15 +44,13 @@ export default function LogAccess() {
               <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
                 
           <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
+            valueHook={valueHook}
             errors={errors}
           />
           <InformParty
-          handleInputChange={handleInputChange}
-          errors={errors}
-          values={values}
-          type="postduties_"
+            valueHook={valueHook}
+            errors={errors}
+            prefix="postduties_"
           />
                         </Paper>
             </Grid>

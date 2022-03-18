@@ -12,18 +12,20 @@ import {
 import Date from "../components/controls/Date";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
-import MultiselectInputField from "../components/controls/MultiselectInputField";
+import MultiSelectInputField from "./controls/MultiSelectInputField";
+import {OdrlPolicy} from "../components/backend/OdrlPolicy";
 
 export default function FormComponents(props) {
   const {
-    selectedComponents,
-    values,
-    setValues,
+    valueHook,
     errors,
-    handleInputChange,
-    removeComponent,
-    removeEnteredData,
+    selectedComponents,
+    removeComponent
   } = props;
+  
+  function removeEnteredData(id1, id2) {
+    valueHook[1]({ ...valueHook[0], [id1]: OdrlPolicy[id1], [id2]: OdrlPolicy[id2] });
+  };
 
   const components = selectedComponents.order.map((c) => {
     switch (c) {
@@ -31,13 +33,11 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"location"}>
             <Title label="Restrict Location" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="location"
-              values={values}
-              setValues={setValues}
               placeholder="e.g. https://ontologi.es/place/DE"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
@@ -51,18 +51,16 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"application"}>
             <Title label="Restrict Application" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="application"
-              values={values}
-              setValues={setValues}
               placeholder="e.g. http://example.com/ids/application/smart-app"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
                 removeComponent("application");
-                removeEnteredData("application");
+                removeEnteredData("application", valueHook);
               }}
             />
           </Grid>
@@ -71,13 +69,11 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"connector"}>
             <Title label="Restrict Connector" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="connector"
-              values={values}
-              setValues={setValues}
               placeholder="e.g. http://example.com/ids/connector/connector1"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              errors={errors}
             />
             {}
             <Remove
@@ -92,15 +88,13 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"securityLevel"}>
             <Title label="Restrict Security Level" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="securityLevel"
-              values={values}
-              setValues={setValues}
               placeholder=""
-              onChange={handleInputChange}
-              error={errors}
               inputType={"itempicker"}
               itemList={security_level_list}
+              valueHook={valueHook}
+              errors={errors}
             />
             {}
             <Remove
@@ -115,15 +109,13 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"state"}>
             <Title label="Restrict State" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="state"
-              values={values}
-              setValues={setValues}
               placeholder=""
-              onChange={handleInputChange}
-              error={errors}
               inputType={"itempicker"}
               itemList={state_list}
+              valueHook={valueHook}
+              errors={errors}
             />
             {}
             <Remove
@@ -138,15 +130,13 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"role"}>
             <Title label="Restrict User Role" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="role"
-              values={values}
-              setValues={setValues}
               placeholder=""
-              onChange={handleInputChange}
-              error={errors}
               inputType={"itempicker"}
               itemList={role_list}
+              valueHook={valueHook}
+              errors={errors}
             />
 
             {}
@@ -165,15 +155,13 @@ export default function FormComponents(props) {
               label="Restrict Purpose"
               subtitle="Any certified application in the market place uses the data for a specified purpose. \n You can restrict the usage of your data to specific applications by choosing your intended purpose from the list below*:"
             />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="purpose"
-              values={values}
-              setValues={setValues}
               placeholder=""
-              onChange={handleInputChange}
-              error={errors}
               inputType={"itempicker"}
               itemList={purpose_list}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
@@ -187,13 +175,11 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"event"}>
             <Title label="Restrict Event" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="event"
-              values={values}
-              setValues={setValues}
               placeholder="e.g. http://example.com/ids/event/exhibition"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
@@ -210,9 +196,8 @@ export default function FormComponents(props) {
             <Date
               name="restrictTimeIntervalStart"
               label="Start Time*"
-              value={values}
-              onChange={handleInputChange}
-              error={errors.restrictTimeIntervalStart}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -220,9 +205,8 @@ export default function FormComponents(props) {
             <Date
               name="restrictTimeIntervalEnd"
               label="End Time*"
-              value={values}
-              onChange={handleInputChange}
-              error={errors.restrictTimeIntervalEnd}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -245,10 +229,9 @@ export default function FormComponents(props) {
             <Input
               name="price"
               label="Payment (Euro)*"
-              value={values.price}
               placeholder="e.g. 10"
-              onChange={handleInputChange}
-              error={errors.price}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -258,8 +241,8 @@ export default function FormComponents(props) {
               label="For Sale or Rent*"
               defaultValue=""
               ItemList={sale_rent_list}
-              onChange={handleInputChange}
-              error={errors.payment}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -279,10 +262,9 @@ export default function FormComponents(props) {
             <Title label="Restrict Number of Usage" />
             <Input
               name="counter"
-              value={values.counter}
               placeholder="e.g. 10"
-              onChange={handleInputChange}
-              error={errors.counter}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
@@ -301,9 +283,8 @@ export default function FormComponents(props) {
             <Date
               name="restrictEndTime"
               label="End Time"
-              value={values}
-              onChange={handleInputChange}
-              error={errors.restrictEndTime}
+              valueHook={valueHook}
+              errors={errors.restrictEndTime}
               sm={11}
               md={3}
             />
@@ -325,10 +306,9 @@ export default function FormComponents(props) {
             <Input
               name="durationYear"
               label="Year (Optional)"
-              value={values.durationYear}
               placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationYear}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -336,10 +316,9 @@ export default function FormComponents(props) {
             <Input
               name="durationMonth"
               label="Month (Optional)"
-              value={values.durationMonth}
               placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationMonth}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -347,9 +326,8 @@ export default function FormComponents(props) {
             <Date
               name="specifyBeginTime"
               label="Begin Time (Optional)"
-              value={values}
-              onChange={handleInputChange}
-              error={errors.specifyBeginTime}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -357,10 +335,9 @@ export default function FormComponents(props) {
             <Input
               name="durationDay"
               label="Day (Optional)"
-              value={values.durationDay}
               placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationDay}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -368,10 +345,9 @@ export default function FormComponents(props) {
             <Input
               name="durationHour"
               label="Hour (Optional)"
-              value={values.durationHour}
               placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationHour}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />

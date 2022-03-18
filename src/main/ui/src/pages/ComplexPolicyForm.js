@@ -16,7 +16,7 @@ import DistributeDataComplex from "../components/controls/DistributeDataComplex"
 export default function ComplexPolicyForm() {
   
   const selected_components = {
-    type: "restrictions",
+    prefix: "restrictions",
     order: [],
     availableComponents: [
       { id: "application", name: "Application", isVisible: false },
@@ -36,7 +36,7 @@ export default function ComplexPolicyForm() {
   };
 
   const selected_distribute_components = {
-    type: "distributeData",
+    prefix: "distributeData",
     order: [],
     availableComponents: [
       { id: "distribute", name: "Distribute Data", isVisible: false },
@@ -45,7 +45,7 @@ export default function ComplexPolicyForm() {
 
 
   const selected_preduties_components = {
-    type: "preduties",
+    prefix: "preduties",
     order: [],
     availableComponents: [
       { id: "anonymizeTransit", name: "Anonymize in Transit", isVisible: false },
@@ -54,7 +54,7 @@ export default function ComplexPolicyForm() {
   };
 
   const selected_postduties_components = {
-    type: "postduties",
+    prefix: "postduties",
     order: [],
     availableComponents: [
       { id: "delete", name: "Delete Data After", isVisible: false },
@@ -69,7 +69,7 @@ export default function ComplexPolicyForm() {
   };
 
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] =
@@ -87,11 +87,8 @@ export default function ComplexPolicyForm() {
     selected_delete_data_components
   );
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = (e) => {
+    const [values, setValues] = valueHook
     OdrlPolicy.location_input = [""];
     OdrlPolicy.application_input = [""];
     OdrlPolicy.connector_input = [""];
@@ -102,7 +99,6 @@ export default function ComplexPolicyForm() {
     OdrlPolicy.securityLevel_input = [""];
     var state = {page: "CreatePolicy"};
     selectedComponents.availableComponents.forEach(function (item) {
-      console.log(item.id)
       state[item.id] = item.isVisible;
     });
     selectedPreDuties.availableComponents.forEach(function (item) {
@@ -111,6 +107,8 @@ export default function ComplexPolicyForm() {
     selectedPostDuties.availableComponents.forEach(function (item) {
       state[item.id] = item.isVisible;
     });
+    console.log(selectedDeleteComponents)
+
     selectedDistributeDataComponents.availableComponents.forEach(function (item) {
       state[item.id] = item.isVisible;
     });
@@ -121,6 +119,7 @@ export default function ComplexPolicyForm() {
   };
 
   const resetStates = () => {
+    const [values, setValues] = valueHook
     OdrlPolicy.location_input = [""];
     OdrlPolicy.application_input = [""];
     OdrlPolicy.connector_input = [""];
@@ -132,12 +131,13 @@ export default function ComplexPolicyForm() {
     OdrlPolicy.preduties_anomInRest ="";
     setValues({ ...OdrlPolicy });
     setSelectedComponents({ ...selected_components });
-    setSelectedPostDuties({ ...selected_postduties_components });
+    setSelectedPostDuties({ ...selected_postduties_components});
     setSelectedPreDuties({ ...selected_preduties_components });
     setSelectedDistributeDataComponents({...selected_distribute_components});
+    setSelectedDeleteComponents({...selected_delete_data_components})
   };
 
-  const removeComponent = (type, id) => {
+  const removeComponent = (prefix, id) => {
     const states = [selectedComponents, selectedDistributeDataComponents, selectedPostDuties, selectedPreDuties];
     const setStates = [
       setSelectedComponents,
@@ -146,7 +146,7 @@ export default function ComplexPolicyForm() {
       setSelectedPreDuties,
     ];
     states.forEach(function (state, index) {
-      if (state.type === type) {
+      if (state.prefix === prefix) {
         const dict = state.availableComponents;
         const list = state.order;
         const setState = setStates[index];
@@ -164,6 +164,7 @@ export default function ComplexPolicyForm() {
   };
 
   const removeEnteredData = (ids) => {
+    const [values, setValues] = valueHook
     ids.forEach(function (id) {
       if (OdrlPolicy[id] instanceof Array) {
         values[id] = [""];
@@ -172,13 +173,12 @@ export default function ComplexPolicyForm() {
         values[id] = "";
       }
     });
-    console.log(ids,  values[ids])
   };
 
   return (
     <>
       <div className={classes.page}>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <PageHeader
             title="This policy gives permission to a specified IDS data consumer to use your data."
             icon={<PostAddIcon />}
@@ -187,31 +187,25 @@ export default function ComplexPolicyForm() {
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
                 <IdentifyPolicy
-                  classes={classes}
-                  values={values}
-                  handleInputChange={handleInputChange}
+                  valueHook={valueHook}
                   errors={errors}
                 />
                 <AddRestrictions
-                  values={values}
-                  setValues={setValues}
+                  valueHook={valueHook}
                   errors={errors}
-                  handleInputChange={handleInputChange}
                   selectedComponents={selectedComponents}
                   removeComponent={removeComponent}
                   removeEnteredData={removeEnteredData}
                   classes={classes}
-                  type={"preduties"}
+                  prefix={"preduties"}
                 />
               </Paper>
             </Grid>
 
             <Grid item xs={12}>
               <DistributeDataComplex
-                values={values}
-                setValues={setValues}
+                valueHook={valueHook}
                 errors={errors}
-                handleInputChange={handleInputChange}
                 removeEnteredData={removeEnteredData}
                 selectedComponents={selectedDistributeDataComponents}
                 setSelectedComponents={setSelectedDistributeDataComponents}
@@ -221,36 +215,32 @@ export default function ComplexPolicyForm() {
 
             <Grid item xs={12}>
               <PreDuty
-                selectedComponents={selectedPreDuties}
-                values={values}
-                setValues={setValues}
+                valueHook={valueHook}
                 errors={errors}
-                handleInputChange={handleInputChange}
+                selectedComponents={selectedPreDuties}
                 removeComponent={removeComponent}
                 removeEnteredData={removeEnteredData}
                 classes={classes}
                 name={"Pre Duty"}
                 title={"Pre Duties"}
-                type={"preduties"}
+                prefix={"preduties"}
               />
             </Grid>
 
             <Grid item xs={12}>
               <PostDuty
+                valueHook={valueHook}
+                errors={errors} 
                 selectedComponents={selectedPostDuties}
                 setSelectedComponents={setSelectedDistributeDataComponents}
                 selectedDeleteComponents={selectedDeleteComponents}
-                setSelectedDeleteComponents={setSelectedDeleteComponents}
-                values={values}
-                setValues={setValues}
-                errors={errors}
-                handleInputChange={handleInputChange}
+                setSelectedDeleteComponents={setSelectedDeleteComponents}        
                 removeComponent={removeComponent}
                 removeEnteredData={removeEnteredData}
                 classes={classes}
                 name={"Post Duty"}
                 title={"Post Duties"}
-                type={"postduties"}
+                prefix={"postduties"}
               />
             </Grid>
 
@@ -260,8 +250,9 @@ export default function ComplexPolicyForm() {
                   variant="contained"
                   color="secondary"
                   className={classes.saveBtn}
-                  type="submit"
+                  prefix="submit"
                   id="Save"
+                  onClick={handleSubmit}
                 >
                   Save
                 </Button>

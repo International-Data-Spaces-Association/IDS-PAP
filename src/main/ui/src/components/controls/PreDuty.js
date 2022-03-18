@@ -15,17 +15,16 @@ import Anonymize from "./Anonymize";
 
 export default function PreDuty(props) {
   const {
-    selectedComponents,
-    values,
-    setValues,
+    valueHook,
     errors,
+    selectedComponents,
     handleInputChange,
     removeComponent,
     removeEnteredData,
     classes,
     name = "",
     title = "",
-    type = "",
+    prefix = "",
   } = props;
 
   const selected_delete_data_components = {
@@ -55,12 +54,11 @@ export default function PreDuty(props) {
       case "anonymizeTransit":
         return () => (
           <>
-            <Grid container key={"anonymizeTransit" + type}>
+            <Grid container key={"anonymizeTransit" + prefix}>
               <Title label="Anonymize in Transit" seperator={true} xs={12} />
               <Grid container xs={11} spacing={2}>
                 <Anonymize
-                  values={values}
-                  handleInputChange={handleInputChange}
+                  valueHook={valueHook}
                   errors={errors}
                 />
               </Grid>
@@ -70,11 +68,11 @@ export default function PreDuty(props) {
                     duration: false,
                     timeDate: false,
                   });
-                  removeComponent(type, "anonymizeTransit");
+                  removeComponent(prefix, "anonymizeTransit");
                   removeEnteredData([
-                    type + "_modifier",
-                    type + "_valueToChange",
-                    type + "_fieldToChange",
+                    prefix + "_modifier",
+                    prefix + "_valueToChange",
+                    prefix + "_fieldToChange",
                   ]);
                 }}
               />
@@ -82,22 +80,22 @@ export default function PreDuty(props) {
           </>
         );
       case "anonymizeInRest":
-        const key = type + "_anomInRest"
-        if (values[key] === "") {
-          values[key] = "Active"
+        const key = prefix + "_anomInRest"
+        if (valueHook[0][key] === "") {
+          valueHook[0][key] = "Active"
         }
         return () => (
           <>
-            <Grid container key={"anonymizeInRest" + type}>
+            <Grid container key={"anonymizeInRest" + prefix}>
               <Title label="Anonymize in Rest" seperator={true} xs={12} />
               <Grid container xs={11} spacing={2}>
                   <Typography> Anonymize in Rest activated. </Typography>
               </Grid>
               <Remove
                 onClick={() => {
-                  removeComponent(type, "anonymizeInRest");
+                  removeComponent(prefix, "anonymizeInRest");
                   removeEnteredData([
-                    type + "_anomInRest"
+                    prefix + "_anomInRest"
                   ]);
                 }}
               />

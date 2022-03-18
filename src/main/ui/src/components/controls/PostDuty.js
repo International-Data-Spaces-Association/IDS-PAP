@@ -9,19 +9,17 @@ import Remove from "./Remove";
 import { Typography } from "@material-ui/core";
 export default function PostDuty(props) {
   const {
+    valueHook,
+    errors,
     selectedComponents,
     selectedDeleteComponents,
     setSelectedDeleteComponents,
-    values,
-    setValues,
-    errors,
-    handleInputChange,
     removeComponent,
     removeEnteredData,
     classes,
     name = "",
     title = "",
-    type = "",
+    prefix = "",
   } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
@@ -42,25 +40,24 @@ export default function PostDuty(props) {
       case "log":
         return () => (
           <>
-            <Grid container key={"log_" + type}>
+            <Grid container key={"log_" + prefix}>
               <Title label="Log Data Usage" seperator={false} xs={12} />
               <Grid container xs={11} spacing={2}>
                 <LogData
-                  handleInputChange={handleInputChange}
-                  values={values}
+                  valueHook={valueHook}
                   errors={errors}
                   xs={12}
                   sm={12}
                   md={12}
-                  type={type + "_"}
+                  prefix={prefix + "_"}
                 />
               </Grid>
               <Remove
                 onClick={() => {
-                  removeComponent(type, "log");
+                  removeComponent(prefix, "log");
                   removeEnteredData([
-                    type + "_logLevel",
-                    type + "_systemDevice",
+                    prefix + "_logLevel",
+                    prefix + "_systemDevice",
                   ]);
                 }}
               />
@@ -70,13 +67,11 @@ export default function PostDuty(props) {
       case "delete":
         return () => (
           <>
-            <Grid container key={"delete_" + type}>
+            <Grid container key={"delete_" + prefix}>
               <Title label="Delete Data After" seperator={true} xs={12} />
               <Grid container xs={11} spacing={2}>
                 <DeleteData
-                  handleInputChange={handleInputChange}
-                  errors={errors}
-                  values={values}
+                  valueHook={valueHook}
                   removeEnteredData={removeEnteredData}
                   selectedComponents={selectedDeleteComponents}
                   setSelectedComponents={setSelectedDeleteComponents}
@@ -84,7 +79,8 @@ export default function PostDuty(props) {
                   sm={11}
                   md={11}
                   seperator={false}
-                  type={type + "_"}
+                  errors={errors}
+                  prefix={prefix + "_"}
                 />
               </Grid>
               <Remove
@@ -93,13 +89,13 @@ export default function PostDuty(props) {
                     duration: false,
                     timeDate: false,
                   });
-                  removeComponent(type, "delete");
+                  removeComponent(prefix, "delete");
                   removeEnteredData([
-                    type + "_durationYear",
-                    type + "_durationMonth",
-                    type + "_durationDay",
-                    type + "_durationHour",
-                    type + "_timeAndDate",
+                    prefix + "_durationYear",
+                    prefix + "_durationMonth",
+                    prefix + "_durationDay",
+                    prefix + "_durationHour",
+                    prefix + "_timeAndDate",
                   ]);
                 }}
               />
@@ -110,25 +106,24 @@ export default function PostDuty(props) {
         return () => (
           <>
             {" "}
-            <Grid container key={"inform_" + type}>
+            <Grid container key={"inform_" + prefix}>
               <Title label="Inform Party" seperator={false} xs={11} />
               <Grid container xs={11} spacing={2}>
                 <InformParty
-                  handleInputChange={handleInputChange}
+                  valueHook={valueHook} 
                   errors={errors}
-                  values={values}
                   xs={12}
                   sm={12}
                   md={12}
-                  type={type + "_"}
+                  prefix={prefix + "_"}
                 />
               </Grid>
               <Remove
                 onClick={() => {
-                  removeComponent(type, "inform");
+                  removeComponent(prefix, "inform");
                   removeEnteredData([
-                    type + "_notificationLevel",
-                    type + "_informedParty",
+                    prefix + "_notificationLevel",
+                    prefix + "_informedParty",
                   ]);
                 }}
               />

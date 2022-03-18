@@ -6,29 +6,28 @@ import ItemPicker from "./ItemPicker";
 import Title from "./Title";
 
 export default function LogData(props) {
-  const {handleInputChange, values, errors, xs=12, sm=12, md=12, type=""} = props;
+  const {valueHook, errors, xs=12, sm=12, md=12, prefix=""} = props;
   return (
     <>
       <Grid item xs={xs} sm={sm} md={md}>
       <Grid container>
             <ItemPicker
               label="Log Level"
-              name= {type + "logLevel"}
+              name= {prefix + "logLevel"}
               defaultValue=""
               ItemList={log_level_list}
-              onChange={handleInputChange}
-              error={errors[type + "logLevel"]}
+              valueHook={valueHook}
+              errors={errors}
             />
           </Grid>
 
           <Grid container>
             <Input
              label="System Device"
-              name={type + "systemDevice"}
-              value={values[type + "systemDevice"]}
+              name={prefix + "systemDevice"}
               placeholder="e.g. http://example.com/ids/system/ESN-database"
-              onChange={handleInputChange}
-              error={errors[type + "systemDevice"]}
+              valueHook={valueHook}
+              errors={errors}
             />
           </Grid>
       </Grid>

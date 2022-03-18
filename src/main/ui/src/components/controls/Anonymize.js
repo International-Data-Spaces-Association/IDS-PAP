@@ -6,8 +6,7 @@ import ItemPicker from "./ItemPicker";
 
 export default function Anonymize(props) {
   const {
-    handleInputChange,
-    values,
+    valueHook,
     errors,
     xs = 12,
     sm = 12,
@@ -22,11 +21,11 @@ export default function Anonymize(props) {
             label={"Modify action"}
             defaultValue="Replace modification method"
             ItemList={modifier_list}
-            onChange={handleInputChange}
-            error={errors.preduties_modifier}
+            valueHook={valueHook}
+            errors={errors}
           />
         </Grid>
-        {values.preduties_modifier === "idsc:REPLACE" ? (
+        {valueHook[0].preduties_modifier === "idsc:REPLACE" ? (
           <>
             <Grid container>
               <Input
@@ -34,25 +33,23 @@ export default function Anonymize(props) {
                 label={
                   "Value that you want to replace the field with"
                 }
-                value={values.preduties_valueToChange}
                 placeholder="e.g. XXXX"
-                onChange={handleInputChange}
-                error={errors.preduties_valueToChange}
+                valueHook={valueHook}
+                errors={errors}
               />
             </Grid>
           </>
         ) : (
-          (values.preduties_valueToChange = "")
+          (valueHook[0].preduties_valueToChange = "")
         )}
 
         <Grid container>
           <Input
             label="Field (jsonPathQuery) you want to modify"
             name="preduties_fieldToChange"
-            value={values.preduties_fieldToChange}
             placeholder="e.g. $.name"
-            onChange={handleInputChange}
-            error={errors.preduties_fieldToChange}
+            valueHook={valueHook}
+            errors={errors}
           />
         </Grid>
       </Grid>

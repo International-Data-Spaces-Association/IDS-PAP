@@ -12,20 +12,19 @@ import Submit from "../components/backend/Submit";
 import ItemPicker from "../components/controls/ItemPicker";
 import Title from "../components/controls/Title";
 import { artifact_state_list } from "../components/controls/InitialFieldListValues";
+import {handleSubmit} from "../components/controls/Utils"
 
 const selected_components = {
   page: "DistributeData",
 };
 export default function DistributeData() {
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
   const handleSubmit = (e) => {
+    const [values, setValues] = valueHook
     Submit(
       "/policy/DistributePolicyForm",
       values,
@@ -47,8 +46,7 @@ export default function DistributeData() {
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
               <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+                valueHook={valueHook}
                 errors={errors}
               />
 
@@ -58,8 +56,8 @@ export default function DistributeData() {
                   name="artifactState"
                   defaultValue=""
                   ItemList={artifact_state_list}
-                  onChange={handleInputChange}
-                  error={errors.artifactState}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
 
@@ -67,10 +65,9 @@ export default function DistributeData() {
                 <Title label="Policy to be sent to the third party" />
                 <Input
                   name="policy"
-                  value={values.policy}
                   placeholder="e.g. http://example.com/policy/third-party-policy"
-                  onChange={handleInputChange}
-                  error={errors.policy}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
             </Paper>

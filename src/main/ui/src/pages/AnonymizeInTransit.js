@@ -17,15 +17,12 @@ const selected_components = {
 };
 export default function AnonymizeInTransit() {
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = (e) => {
+    const [values, setValues] = valueHook
     Submit(
       "/policy/AnonymizeInTransitPolicyForm",
       values,
@@ -46,8 +43,7 @@ export default function AnonymizeInTransit() {
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
               <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+                valueHook={valueHook}
                 errors={errors}
               />
 
@@ -58,11 +54,11 @@ export default function AnonymizeInTransit() {
                   label={"Modify action"}
                   defaultValue="Replace modification method"
                   ItemList={modifier_list}
-                  onChange={handleInputChange}
-                  error={errors.preduties_modifier}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
-              {values.preduties_modifier === "idsc:REPLACE" ? (
+              {valueHook[0].preduties_modifier === "idsc:REPLACE" ? (
                 <>
                   <Grid container>
                     <Input
@@ -70,25 +66,23 @@ export default function AnonymizeInTransit() {
                       label={
                         "Enter the value that you want to replace the field with"
                       }
-                      value={values.preduties_valueToChange}
                       placeholder="e.g. XXXX"
-                      onChange={handleInputChange}
-                      error={errors.preduties_valueToChange}
+                      valueHook={valueHook}
+                      errors={errors}
                     />
                   </Grid>
                 </>
               ) : (
-                (values.valueToChange = "")
+                (valueHook[0].valueToChange = "")
               )}
 
               <Grid container>
                 <Title label="Enter the field (jsonPathQuery) that you want to modify" />
                 <Input
                   name="preduties_fieldToChange"
-                  value={values.preduties_fieldToChange}
                   placeholder="e.g. $.name"
-                  onChange={handleInputChange}
-                  error={errors.preduties_fieldToChange}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
             </Paper>

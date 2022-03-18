@@ -32,7 +32,7 @@ export default function ProvideAccess() {
   };
 
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(OdrlPolicy);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] =
@@ -45,18 +45,13 @@ export default function ProvideAccess() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const removeEnteredData = (id1, id2) => {
-    setValues({ ...values, [id1]: OdrlPolicy[id1], [id2]: OdrlPolicy[id2] });
-  };
 
   const resetStates = () => {
     setSelectedComponents({ ...selected_components });
   };
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e) => {
+    const [values, setValues] = valueHook
     const dict = selectedComponents.availableComponents;
     var state = {};
     var state = {page: "ProvideAccess"};
@@ -78,18 +73,14 @@ export default function ProvideAccess() {
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
               <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+                valueHook={valueHook}
                 errors={errors}
               />
               <FormComponents
                 selectedComponents={selectedComponents}
-                values={values}
-                setValues={setValues}
+                valueHook={valueHook}
                 errors={errors}
-                handleInputChange={handleInputChange}
                 removeComponent={resetStates}
-                removeEnteredData={removeEnteredData}
               />
               {Object.values(selectedComponents.availableComponents).every(
                 (x) => x.isVisible === false

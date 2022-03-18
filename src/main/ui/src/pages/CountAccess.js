@@ -18,14 +18,13 @@ const selected_components = {
 export default function CountAccess() {
   const classes = useStyle();
   const [errors, setErrors] = useState({});
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(OdrlPolicy);
   const history = useHistory();
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+
   var state = {page: "CreatePolicy"};
 
   const handleSubmit = (e) => {
+    const [values, setValues] = valueHook
     Submit(
       "/policy/CountAccessPolicyForm",
       values,
@@ -46,8 +45,7 @@ export default function CountAccess() {
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
               <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+                valueHook={valueHook}
                 errors={errors}
               />
 
@@ -55,10 +53,9 @@ export default function CountAccess() {
                 <Title label="Count" />
                 <Input
                   name="counter"
-                  value={values.counter}
                   placeholder="0"
-                  onChange={handleInputChange}
-                  error={errors.counter}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
             </Paper>

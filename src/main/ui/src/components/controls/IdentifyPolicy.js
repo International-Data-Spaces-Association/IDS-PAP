@@ -10,25 +10,32 @@ import {
 import Title from "../controls/Title";
 
 export default function IdentifyPolicy(props) {
-  const {values, handleInputChange, errors } = props;
+  const {valueHook, errors } = props;
   const classes = useStyle();
+  const [values, setValues] = valueHook
 
   const handleInputChangeLocal = (e) => {
     if (e.target.value === "Offer") values.consumer = "";
     if (e.target.value === "Request") values.provider = "";
-    handleInputChange(e);
+    //handleInputChange(e);
   };
+
+  if (values.policyType === "Offer" || values.policyType === "Request") {
+    values.consumer = "";
+    values.provider = "";
+  }
+
+  
   return (
     <Grid container spacing={2}>
       <Grid item xs={4}>
         <Title label="Policy Type*" seperator={false} />
         <ItemPicker
           name="policyType"
-          value={values.policyType}
           defaultValue="Agreement"
           ItemList={policy_types}
-          onChange={handleInputChangeLocal}
-          error={errors.policyType}
+          valueHook={valueHook}
+          errors={errors}
           xs={12}
           sm={12}
           md={12}
@@ -42,10 +49,9 @@ export default function IdentifyPolicy(props) {
             <ItemPicker
               name="consumer"
               defaultValue=""
-              value={values.consumer}
               ItemList={data_consumers}
-              onChange={handleInputChange}
-              error={errors.consumer}
+              valueHook={valueHook}
+              errors={errors}
               xs={12}
               sm={12}
               md={12}
@@ -60,10 +66,9 @@ export default function IdentifyPolicy(props) {
           <Title label="Data Provider*" seperator={false} />
           <Input
             name="provider"
-            value={values.provider}
             placeholder="My party"
-            onChange={handleInputChange}
-            error={errors.provider}
+            valueHook={valueHook}
+            errors={errors}
             xs={12}
             sm={12}
             md={12}
@@ -76,10 +81,9 @@ export default function IdentifyPolicy(props) {
         <Title label="Data URI*" seperator={false} />
         <Input
           name="target"
-          value={values.target}
           placeholder="e.g. http://example.com/ids/data/production-plan"
-          onChange={handleInputChange}
-          error={errors.target}
+          valueHook={valueHook}
+          errors={errors}
           xs={12}
           sm={12}
           md={12}

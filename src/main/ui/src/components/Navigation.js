@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import logo from "../images/fhg.svg";
 import profile_img from "../images/John.jpg";
 
-import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import SearchIcon from '@material-ui/icons/Search';
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -28,9 +28,10 @@ import ShareIcon from "@material-ui/icons/Share";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import BallotIcon from '@material-ui/icons/Ballot';
 import iconSet from "../icons/selection.json";
 import IcomoonReact from "icomoon-react";
+import MergeTypeIcon from '@material-ui/icons/MergeType';
 import "../index.css";
 var drawerWidth = 324;
 
@@ -182,6 +183,21 @@ export default function Navigation(props) {
           {logedIn ? (
             <>
               <List>
+              <MenuItem
+                  button
+                  component={Link}
+                  to="/policy/NegotiatePolicy"
+                  onClick={() => updateSelected("Negotiate Policy")}
+                  selected={selected.selected === "Negotiate Policy"}
+                  className={classes.menuItem}
+                >
+                  <MergeTypeIcon className={classes.listitemicon} />
+
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Negotiate Policy
+                  </ListItemText>
+                </MenuItem>
+
                 <MenuItem
                   button
                   component={Link}
@@ -190,7 +206,7 @@ export default function Navigation(props) {
                   selected={selected.selected === "Interprete an IDS Policy"}
                   className={classes.menuItem}
                 >
-                  <SwapHorizIcon className={classes.listitemicon} />
+                  <SearchIcon className={classes.listitemicon} />
 
                   <ListItemText classes={{ primary: classes.navigation }}>
                     Interprete Policy
@@ -208,6 +224,20 @@ export default function Navigation(props) {
                   <PostAddIcon className={classes.listitemicon} />
                   <ListItemText classes={{ primary: classes.navigation }}>
                     Create Policy
+                  </ListItemText>
+                </MenuItem>
+
+                <MenuItem
+                  button
+                  component={Link}
+                  to="/policy/ManagePolicies"
+                  onClick={() => updateSelected("Manage Policies")}
+                  selected={selected.selected === "Manage Policies"}
+                  className={classes.menuItem}
+                >
+                  <BallotIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Manage Policies
                   </ListItemText>
                 </MenuItem>
 

@@ -8,8 +8,7 @@ import Remove from "./Remove";
 
 export default function DeleteData(props) {
   const {
-    handleInputChange,
-    values,
+    valueHook,
     errors,
     selectedComponents,
     removeEnteredData,
@@ -17,7 +16,7 @@ export default function DeleteData(props) {
     xs = 12,
     sm = 12,
     md = 12,
-    type = "",
+    prefix = "",
     seperator = true,
   } = props;
 
@@ -33,32 +32,32 @@ export default function DeleteData(props) {
 
   const handleSelectedClose = (e) => {
     var obj = {
-      [type + "duration"]: false,
-      [type + "timeDate"]: false,
+      [prefix + "duration"]: false,
+      [prefix + "timeDate"]: false,
     }
     obj[e.target.id] = true;
-    console.log(obj)
     setSelectedComponents(obj);
     setAnchorEl(null);
   };
 
   const resetStates = (e) => {
     setSelectedComponents({
-      [type + "duration"]: false,
-      [type + "timeDate"]: false,
+      [prefix + "duration"]: false,
+      [prefix + "timeDate"]: false,
     });
     removeEnteredData([
-      type + "durationYear",
-      type + "durationMonth",
-      type + "durationDay",
-      type + "durationHour",
-      type + "timeAndDate",
+      prefix + "durationYear",
+      prefix + "durationMonth",
+      prefix + "durationDay",
+      prefix + "durationHour",
+      prefix + "timeAndDate",
     ]);
   };
+
   return (
     <>
       <Grid item xs={xs} sm={sm} md={md}>
-        {selectedComponents[type + "duration"] ? (
+        {selectedComponents[prefix + "duration"] ? (
           <>
             <Grid container className={classes.paperSubContainer}>
               <Title
@@ -67,42 +66,38 @@ export default function DeleteData(props) {
               />
               <Grid container xs={11} spacing={2}>
                 <Input
-                  name={type + "durationYear"}
+                  name={prefix + "durationYear"}
                   label="Year"
-                  value={values[type + "durationYear"]}
                   placeholder="e.g. 2021"
-                  onChange={handleInputChange}
-                  error={errors[type + "durationYear"]}
+                  valueHook={valueHook}
+                  errors={errors}
                   sm={11}
                   md={3}
                 />
                 <Input
-                  name={type + "durationMonth"}
+                  name={prefix + "durationMonth"}
                   label="Month"
-                  value={values[type + "durationMonth"]}
                   placeholder="e.g. 01"
-                  onChange={handleInputChange}
-                  error={errors[type + "durationMonth"]}
+                  valueHook={valueHook}
+                  errors={errors}
                   sm={11}
                   md={3}
                 />
                 <Input
-                  name={type + "durationDay"}
+                  name={prefix + "durationDay"}
                   label="Day"
-                  value={values[type + "durationDay"]}
                   placeholder="e.g. 01"
-                  onChange={handleInputChange}
-                  error={errors[type + "durationDay"]}
+                  valueHook={valueHook}
+                  errors={errors}
                   sm={11}
                   md={3}
                 />
                 <Input
-                  name={type + "durationHour"}
+                  name={prefix + "durationHour"}
                   label="Hour"
-                  value={values[type + "durationHour"]}
                   placeholder="e.g. 10"
-                  onChange={handleInputChange}
-                  error={errors[type + "durationHour"]}
+                  valueHook={valueHook}
+                  errors={errors}
                   sm={11}
                   md={3}
                 />
@@ -112,7 +107,7 @@ export default function DeleteData(props) {
           </>
         ) : null}
 
-        {selectedComponents[type + "timeDate"] ? (
+        {selectedComponents[prefix + "timeDate"] ? (
           <>
             <Grid container className={classes.paperSubContainer}>
               <Title
@@ -121,12 +116,11 @@ export default function DeleteData(props) {
               />
               <Grid container xs={11} spacing={2}>
                 <Date
-                  name={type + "timeAndDate"}
+                  name={prefix + "timeAndDate"}
                   label="Date and Time*"
                   defaultValue=""
-                  value={values}
-                  onChange={handleInputChange}
-                  error={errors[type + "timeAndDate"]}
+                  valueHook={valueHook}
+                  errors={errors}
                   sm={11}
                   md={5}
                 />
@@ -157,10 +151,10 @@ export default function DeleteData(props) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleSelectedClose} id= {type + "duration"}>
+              <MenuItem onClick={handleSelectedClose} id= {prefix + "duration"}>
                 Specify a period to wait before deleting
               </MenuItem>
-              <MenuItem onClick={handleSelectedClose} id= {type + "timeDate"}>
+              <MenuItem onClick={handleSelectedClose} id= {prefix + "timeDate"}>
                 Specify exact time and date
               </MenuItem>
             </Menu>

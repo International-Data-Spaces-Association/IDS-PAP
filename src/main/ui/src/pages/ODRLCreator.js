@@ -150,10 +150,9 @@ export default function ODRLCreator() {
         <Input
           name={"AppUrl"}
           label={""}
-          value={values["AppUrl"]}
           placeholder=""
-          onChange={handleInputChange}
-          error={errors["AppUrl"]}
+          valueHook={[values, setValues]}
+          error={errors}
           xs={9}
           sm={9}
           md={9}
