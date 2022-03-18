@@ -19,7 +19,7 @@ import {
 import Date from "../components/controls/Date";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
-import MultiSelectInputField from "../components/controls/MultiSelectInputField";
+import MultiSelectInputField from "../components/controls/MultiselectInputField";
 import MenuItems from "../components/controls/MenuItems";
 import AddIcon from "@material-ui/icons/Add";
 

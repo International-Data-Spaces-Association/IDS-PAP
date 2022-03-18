@@ -12,7 +12,7 @@ import {
 import Date from "../components/controls/Date";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
-import MultiSelectInputField from "./controls/MultiSelectInputField";
+import MultiSelectInputField from "./controls/MultiselectInputField";
 import {OdrlPolicy} from "../components/backend/OdrlPolicy";
 
 export default function FormComponents(props) {
