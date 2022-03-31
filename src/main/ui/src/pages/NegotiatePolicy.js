@@ -1,129 +1,116 @@
 import React, { useState } from "react";
-import { Controlled as CodeMirror } from "react-codemirror2";
-import { Grid, Button, Typography, makeStyles } from "@material-ui/core";
-import { jsonOdrlPolicy } from "../components/backend/Submit";
+import { Grid, Button, Typography, makeStyles, Paper } from "@material-ui/core";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/mode/javascript/javascript.js";
 import Input from "../components/controls/Input";
+import Form from "../components/controls/Form";
+import IdentifyPolicy from "../components/controls/IdentifyPolicy";
+import { useStyle } from "../components/Style";
+import Title from "../components/controls/Title";
+import Date from "../components/controls/Date";
+import MultiSelectInputField from "../components/controls/MultiselectInputField";
+import { sale_rent_list } from "../components/controls/InitialFieldListValues";
+import ItemPicker from "../components/controls/ItemPicker";
+import LogData from "../components/controls/LogData";
+import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+
 require("codemirror/theme/eclipse.css");
 
-const useStyle = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    marginTop: "3em",
-    "& .MuiFormControl-root": {
-      width: "100%",
-    },
-    "& .MuiFormControlLabel-root": {
-      width: "100%",
-    },
-    "& .MuiButtonBase-root": {},
-  },
-  page: {
-    marginLeft: "2em",
-    marginRight: "2em",
-  },
-  translateBtn: {
-    height: "100%",
-    width: "100%",
-    fontSize: "1.25em",
-  },
-}));
-
-const defaultTranslation =
-  "The provider is an IDS party that is issuing the rule. Here the provider is the my-party party. This party is either the Data Owner or the Data Provider of the specified data asset in the IDS context.In this Policy OFFER example, the permission rule allows the Data Consumer to use the target asset.The identifier of this policy and the target asset are http://example.com/policy/sample and http://example.com/ids-data/sample, respectively.";
-const defaultPolicy =
-  '{\n \t "@context": {\n \t\t"ids":"https://w3id.org/idsa/core/",\n \t \t"idsc" : "https://w3id.org/idsa/code/"\n \t },    \n \t "@type": "ids:ContractOffer",\n \t "@id": "https://w3id.org/idsa/autogen/contract/sample",\n \t "profile": "http://example.com/ids-profile", \n \t "ids:provider": "http://example.com/party/my-party", \n \t "ids:permission": [{ \n \t "ids:target": {\n \t\t "@id":"http://example.com/ids-data/sample"\n \t }, \n \t "ids:action": [{\n \t\t "@id":"idsc:USE"\n \t \t}]\n \t }] \n  }';
 export default function NegotiatePolicy() {
-  const [policy, setPolicy] = useState(defaultPolicy);
-  const [dtPolicy, setDtPolicy] = useState(defaultTranslation);
-  const valueHook = useState({ ucAppUrl: "" });
+  const valueHook = useState(OdrlPolicy);
 
   const [errors, setErrors] = useState({});
 
   const classes = useStyle();
 
-  const transfer = () => {
-    //jsonOdrlPolicy("/policy/JsonOdrlPolicyMYDATA", policy, setDtPolicy)
-  };
   return (
     <div className={classes.page}>
-      <Grid container spacing={1}>
-        <Grid item xs={3}>
-          <Button
-            className={classes.translateBtn}
-            variant="contained"
-            color="secondary"
-            onClick={transfer}
-          >
-            Start Policy Negotiation
-          </Button>
+      <Form onSubmit={console.log("SENT")}>
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
+
+              <Grid container key={"interval"}>
+                <Title label="Restrict Time Interval" />
+                <Grid container xs={11} spacing={2}>
+                  <Date
+                    name="restrictTimeIntervalStart"
+                    label="Start Time*"
+                    valueHook={valueHook}
+                    errors={errors}
+                    sm={11}
+                    md={4}
+                  />
+                  <Date
+                    name="restrictTimeIntervalEnd"
+                    label="End Time*"
+                    valueHook={valueHook}
+                    errors={errors}
+                    sm={11}
+                    md={4}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container key={"location"}>
+                <Title label="Restrict Location" />
+                <MultiSelectInputField
+                  name="location"
+                  valueHook={valueHook}
+                  placeholder="e.g. https://ontologi.es/place/DE"
+                  errors={errors}
+                />
+              </Grid>
+              <Grid container key={"payment"}>
+                <Title label="Restrict Payment" />
+                <Grid container spacing={2} xs={11}>
+                  <Input
+                    name="price"
+                    label="Payment (Euro)*"
+                    placeholder="e.g. 10"
+                    valueHook={valueHook}
+                    errors={errors}
+                    sm={11}
+                    md={3}
+                  />
+                  <ItemPicker
+                    name="payment"
+                    label="For Sale or Rent*"
+                    defaultValue=""
+                    ItemList={sale_rent_list}
+                    valueHook={valueHook}
+                    errors={errors}
+                    sm={11}
+                    md={3}
+                  />
+                </Grid>
+              </Grid>
+              <Title label="Log Data Usage" />
+              <LogData
+                valueHook={valueHook}
+                errors={errors}
+                xs={12}
+                sm={12}
+                md={12}
+                prefix="postduties_"
+              />
+            </Paper>
+          </Grid>
+          <Grid item xs={2}>
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.saveBtn}
+              type="submit"
+              id="Save"
+            >
+              Save
+            </Button>
+          </Grid>
         </Grid>
-        <Input
-          name={"AppUrl"}
-          label={""}
-          placeholder={"e.g. http://example.com/send"}
-          valueHook={valueHook}
-          errors={errors}
-          xs={5}
-          sm={5}
-          md={5}
-        />
-        <Grid item xs={12} md={6}>
-          <Grid item xs={12}>
-            <Typography variant="h5">Copy your IDS policy here:</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <CodeMirror
-              value={policy}
-              onBeforeChange={(editor, data, value) => {
-                setPolicy(value);
-              }}
-              options={{
-                lineNumbers: true,
-                mode: "application/ld+json",
-                styleActiveLine: true,
-                line: true,
-                lint: true,
-                //lineWrapping: true,
-                theme: "eclipse",
-                matchBrackets: true,
-                enableCodeFormatting: true,
-                autoFormatOnStart: true,
-                autoFormatOnModeChange: true,
-              }}
-            />
-          </Grid>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Grid item xs={12}>
-            <Typography variant="h5">Translation</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <CodeMirror
-              value={dtPolicy}
-              onBeforeChange={(editor, data, value) => {
-                setDtPolicy(value);
-              }}
-              options={{
-                lineNumbers: true,
-                mode: "application/ld+json",
-                styleActiveLine: true,
-                line: true,
-                lint: true,
-                lineWrapping: true,
-                theme: "eclipse",
-                matchBrackets: true,
-                enableCodeFormatting: true,
-                autoFormatOnStart: true,
-                autoFormatOnModeChange: true,
-              }}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
+      </Form>
     </div>
   );
 }

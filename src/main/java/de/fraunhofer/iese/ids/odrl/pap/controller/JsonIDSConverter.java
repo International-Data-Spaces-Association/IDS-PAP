@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import de.fraunhofer.iese.ids.odrl.pap.entity.Policy;
+import de.fraunhofer.iese.ids.odrl.pap.repository.IPolicyRepo;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
@@ -46,7 +50,7 @@ public class JsonIDSConverter {
 		constraints.add(c);
 	}
 	
-	public String createPolicy(String policyUID) {
+	public String createPolicy(String policyUID, IPolicyRepo policyRepo) {
 		rules.get(0).setConstraints((ArrayList<Condition>) constraints);
 		if (postDuties.size() > 0) {
 			rules.get(0).setPostduties((ArrayList<Rule>) postDuties);
@@ -78,6 +82,17 @@ public class JsonIDSConverter {
 			e.printStackTrace();
 		}**/
 		String response = new JSONObject(jsonPolicyString.toString()).toString(4);
+		
+		// Store the policy in the database
+		Policy policy = new Policy();
+		policy.setDescription(rp.getPolicyType());
+		policy.setIDSPolicy(response);
+		policy.setPolicyID(policyUID);
+		try {
+			policyRepo.save(policy);
+		} catch (Exception e) {
+		}
+		
 		return response;
 
 	}

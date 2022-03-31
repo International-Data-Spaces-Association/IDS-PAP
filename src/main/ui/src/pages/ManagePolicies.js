@@ -25,6 +25,7 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import DeleteIcon from '@material-ui/icons/Delete';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import {getAllPolicies, exportPolicy, deletePolicy} from '../components/backend/Database'
 
 const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -48,21 +49,12 @@ const tableIcons: Icons = {
 
 export default function LogAccess() {
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
   const history = useHistory();
+  const columns = [ { title: 'Policy ID', field: 'policyID' },
+                    { title: 'Description', field: 'description' }]
 
-  const [state, setState] = React.useState({
-    columns: [
-      { title: 'Policy ID', field: 'policy_id' },
-      { title: 'Description', field: 'description' },
-    ],
-    data: [
-      { policy_id: 'anonymize-in-transit', description: 'Test description 1' },
-      { policy_id: 'log-access', description: 'Test description 2',},
-      { policy_id: 'restrict-access', description: 'Test description 3',},
-    ],
-  });
-
+  const [data, setData] = React.useState([]);
+  React.useEffect(() => getAllPolicies(data, setData), []);
   return (
     <div className={classes.page}>
       <Form >
@@ -75,18 +67,18 @@ export default function LogAccess() {
               <MaterialTable
                 icons={tableIcons}
                 title=""
-                columns={state.columns}
-                data={state.data}
+                columns={columns}
+                data={data}
                 actions={[
                   {
                     icon: () => <DeleteIcon color="primary"/>,
                     tooltip: "Delete",
-                    onClick: (event, data) => console.log(event,data),
+                    onClick: (event, data) => deletePolicy(data.id, data, setData),
                   },
                   {
                     icon: () => <GetAppIcon color="primary"/>,
                     tooltip: "Export",
-                    onClick: (event, data) => console.log(event, data),
+                    onClick: (event, data) => exportPolicy(data.id, `policy_${data.policyID}.json`, "text/plain"),
                   },
                 ]}
                 options={{

@@ -68,9 +68,6 @@ export default function ODRLCreator() {
   sessionStorage.setItem("jsonPolicy", stateLocal.jsonPolicy);
   sessionStorage.setItem("dtPolicy", stateLocal.dtPolicy);
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
 
   const transfer = () => {
     jsonOdrlPolicy("/policy/JsonOdrlPolicyMYDATA", policy, setDtPolicy);
