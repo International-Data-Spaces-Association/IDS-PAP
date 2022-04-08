@@ -17,7 +17,7 @@ export default function ItemPicker(props) {
     md = 11,
   } = props;
 
-  const [values, setValues] = valueHook;
+  const values = valueHook[0];
   var value = values[name];
   var error = "";
   var onChange = handleInputChange;
@@ -26,7 +26,6 @@ export default function ItemPicker(props) {
   }
   if (overrideValue !== null) {
     value= overrideValue;
-    console.log(value)
   }
   if (errors !== null && errors[name] !== undefined) {
     error = errors[name];

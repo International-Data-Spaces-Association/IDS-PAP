@@ -189,15 +189,15 @@ function checkComplexPolicyFields(values, states, error_list) {
   }
 
   // Restrict Time Duration
-  if (values.durationDay != "")
+  if (values.durationDay !=="")
     error_list.durationDay = isIntOrEmpty(values.durationDay);
-  if (values.durationHour != "")
+  if (values.durationHour !=="")
     error_list.durationHour = isIntOrEmpty(values.durationHour);
-  if (values.durationMonth != "")
+  if (values.durationMonth !=="")
     error_list.durationMonth = isIntOrEmpty(values.durationMonth);
-  if (values.durationYear != "")
+  if (values.durationYear !=="")
     error_list.durationYear = isIntOrEmpty(values.durationYear);
-  if (values.specifyBeginTime != "")
+  if (values.specifyBeginTime !=="")
     error_list.specifyBeginTime = isDateOrEmpty(values.specifyBeginTime);
 
   // Restrict Time Interval

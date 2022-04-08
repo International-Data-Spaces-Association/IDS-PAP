@@ -112,10 +112,10 @@ export default function Home() {
       </div>
       <div className={classes.infoBox}>
         <Grid container spacing={1}>
-          <Grid item xs={2} md={1} container justify="center">
+          <Grid item xs={2} md={1} container justifyContent="center">
             <Icon className="fas fa-question" style={{ color: '#FFFFFF', fontSize:"4em",}} />
           </Grid>
-          <Grid container xs={10} justify="Bottom center">
+          <Grid container xs={10} justifyContent="Bottom center">
             <Typography variant="body1">
               {" "}
               Please check our page on{" "}

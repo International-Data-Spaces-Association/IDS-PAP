@@ -10,21 +10,27 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import Title from "../components/controls/Title";
+import { useLocation } from "react-router-dom";
 
 const selected_components = {
   page: "CountAccess",
 };
 
 export default function CountAccess() {
+  var initialValues = OdrlPolicy()
+  var stateLocal = useLocation().state;
+  
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
+  const valueHook = useState(initialValues);
   const classes = useStyle();
   const [errors, setErrors] = useState({});
-  const valueHook = useState(OdrlPolicy);
   const history = useHistory();
 
-  var state = {page: "CreatePolicy"};
-
   const handleSubmit = (e) => {
-    const [values, setValues] = valueHook
+    const values = valueHook[0]
     Submit(
       "/policy/CountAccessPolicyForm",
       values,
@@ -44,10 +50,7 @@ export default function CountAccess() {
         <Grid container>
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-              <IdentifyPolicy
-                valueHook={valueHook}
-                errors={errors}
-              />
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
 
               <Grid container>
                 <Title label="Count" />

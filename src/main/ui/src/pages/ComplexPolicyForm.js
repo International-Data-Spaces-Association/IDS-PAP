@@ -6,15 +6,22 @@ import PageHeader from "../components/PageHeader";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+import {
+  OdrlPolicy,
+  recreateSelectedCompFromJson,
+  recreateSelectedDistriCompFromJson,
+  recreateSelectedPreduCompFromJson,
+  recreateSelectedPostduCompFromJson,
+} from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PostDuty from "../components/controls/PostDuty";
 import PreDuty from "../components/controls/PreDuty";
 import AddRestrictions from "../components/AddRestrictions";
 import DistributeDataComplex from "../components/controls/DistributeDataComplex";
+import { useLocation } from "react-router-dom";
+
 export default function ComplexPolicyForm() {
-  
   const selected_components = {
     prefix: "restrictions",
     order: [],
@@ -43,12 +50,15 @@ export default function ComplexPolicyForm() {
     ],
   };
 
-
   const selected_preduties_components = {
     prefix: "preduties",
     order: [],
     availableComponents: [
-      { id: "anonymizeTransit", name: "Anonymize in Transit", isVisible: false },
+      {
+        id: "anonymizeTransit",
+        name: "Anonymize in Transit",
+        isVisible: false,
+      },
       { id: "anonymizeInRest", name: "Anonymize in Rest", isVisible: false },
     ],
   };
@@ -64,12 +74,35 @@ export default function ComplexPolicyForm() {
   };
 
   const selected_delete_data_components = {
-    dda_duration: false,
-    dda_timeDate: false,
+    postduties_duration: false,
+    postduties_timeDate: false,
   };
+  // Used to recreate the state if an existing policy is shown
+  var initialValues = OdrlPolicy();
+  initialValues = recreateSelectedCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_components
+  );
+  recreateSelectedDistriCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_distribute_components
+  );
+  recreateSelectedPreduCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_preduties_components
+  );
+  recreateSelectedPostduCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_postduties_components,
+    selected_delete_data_components
+  );
 
   const classes = useStyle();
-  const valueHook = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] =
@@ -77,7 +110,10 @@ export default function ComplexPolicyForm() {
   const [selectedPreDuties, setSelectedPreDuties] = useState(
     selected_preduties_components
   );
-  const [selectedDistributeDataComponents, setSelectedDistributeDataComponents] = useState(selected_distribute_components);
+  const [
+    selectedDistributeDataComponents,
+    setSelectedDistributeDataComponents,
+  ] = useState(selected_distribute_components);
 
   const [selectedPostDuties, setSelectedPostDuties] = useState(
     selected_postduties_components
@@ -88,7 +124,7 @@ export default function ComplexPolicyForm() {
   );
 
   const handleSubmit = (e) => {
-    const [values, setValues] = valueHook
+    const values = valueHook[0];
     OdrlPolicy.location_input = [""];
     OdrlPolicy.application_input = [""];
     OdrlPolicy.connector_input = [""];
@@ -97,7 +133,7 @@ export default function ComplexPolicyForm() {
     OdrlPolicy.event_input = [""];
     OdrlPolicy.state_input = [""];
     OdrlPolicy.securityLevel_input = [""];
-    var state = {page: "CreatePolicy"};
+    var state = { page: "CreatePolicy" };
     selectedComponents.availableComponents.forEach(function (item) {
       state[item.id] = item.isVisible;
     });
@@ -107,9 +143,10 @@ export default function ComplexPolicyForm() {
     selectedPostDuties.availableComponents.forEach(function (item) {
       state[item.id] = item.isVisible;
     });
-    console.log(selectedDeleteComponents)
 
-    selectedDistributeDataComponents.availableComponents.forEach(function (item) {
+    selectedDistributeDataComponents.availableComponents.forEach(function (
+      item
+    ) {
       state[item.id] = item.isVisible;
     });
     for (const [key, value] of Object.entries(selectedDeleteComponents)) {
@@ -119,26 +156,22 @@ export default function ComplexPolicyForm() {
   };
 
   const resetStates = () => {
-    const [values, setValues] = valueHook
-    OdrlPolicy.location_input = [""];
-    OdrlPolicy.application_input = [""];
-    OdrlPolicy.connector_input = [""];
-    OdrlPolicy.role_input = [""];
-    OdrlPolicy.purpose_input = [""];
-    OdrlPolicy.event_input = [""];
-    OdrlPolicy.state_input = [""];
-    OdrlPolicy.securityLevel_input = [""];
-    OdrlPolicy.preduties_anomInRest ="";
-    setValues({ ...OdrlPolicy });
+    const setValues = valueHook[1];
+    setValues({ ...OdrlPolicy() });
     setSelectedComponents({ ...selected_components });
-    setSelectedPostDuties({ ...selected_postduties_components});
+    setSelectedPostDuties({ ...selected_postduties_components });
     setSelectedPreDuties({ ...selected_preduties_components });
-    setSelectedDistributeDataComponents({...selected_distribute_components});
-    setSelectedDeleteComponents({...selected_delete_data_components})
+    setSelectedDistributeDataComponents({ ...selected_distribute_components });
+    setSelectedDeleteComponents({ ...selected_delete_data_components });
   };
 
   const removeComponent = (prefix, id) => {
-    const states = [selectedComponents, selectedDistributeDataComponents, selectedPostDuties, selectedPreDuties];
+    const states = [
+      selectedComponents,
+      selectedDistributeDataComponents,
+      selectedPostDuties,
+      selectedPreDuties,
+    ];
     const setStates = [
       setSelectedComponents,
       setSelectedDistributeDataComponents,
@@ -164,11 +197,10 @@ export default function ComplexPolicyForm() {
   };
 
   const removeEnteredData = (ids) => {
-    const [values, setValues] = valueHook
+    const values = valueHook[0];
     ids.forEach(function (id) {
-      if (OdrlPolicy[id] instanceof Array) {
+      if (values[id] instanceof Array) {
         values[id] = [""];
-        OdrlPolicy[id] = [""];
       } else {
         values[id] = "";
       }
@@ -186,10 +218,7 @@ export default function ComplexPolicyForm() {
           <Grid container>
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-                <IdentifyPolicy
-                  valueHook={valueHook}
-                  errors={errors}
-                />
+                <IdentifyPolicy valueHook={valueHook} errors={errors} />
                 <AddRestrictions
                   valueHook={valueHook}
                   errors={errors}
@@ -230,11 +259,11 @@ export default function ComplexPolicyForm() {
             <Grid item xs={12}>
               <PostDuty
                 valueHook={valueHook}
-                errors={errors} 
+                errors={errors}
                 selectedComponents={selectedPostDuties}
                 setSelectedComponents={setSelectedDistributeDataComponents}
                 selectedDeleteComponents={selectedDeleteComponents}
-                setSelectedDeleteComponents={setSelectedDeleteComponents}        
+                setSelectedDeleteComponents={setSelectedDeleteComponents}
                 removeComponent={removeComponent}
                 removeEnteredData={removeEnteredData}
                 classes={classes}

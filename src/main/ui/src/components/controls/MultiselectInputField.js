@@ -11,9 +11,9 @@ export default function MultiSelectInputField(props) {
   const {
     name,
     placeholder,
-    valueHook={valueHook},
     inputType = "input",
     itemList,
+    valueHook,
     errors = null,
     xs = 11,
     sm = 11,
@@ -24,7 +24,6 @@ export default function MultiSelectInputField(props) {
   const classes = useStyle();
   const numberPattern = /\d+/g;
   const handleInputChange = (e, valueHook) => {
-    var sub_values
     const e_name = e.target.name;
     const id = e_name.match(numberPattern);
     var items = values;
@@ -33,7 +32,6 @@ export default function MultiSelectInputField(props) {
     } else if (e_name.includes("input")) {
       items[name + "_input"][id] = e.target.value;
     }
-    console.log(items)
     setValues({ ...items });
   };
 
@@ -83,7 +81,7 @@ export default function MultiSelectInputField(props) {
           />
         )}
 
-        <Grid item container xs={1} justify="center" spacing={1}>
+        <Grid item container xs={1} justifyContent="center" spacing={1}>
           <IconButton
             aria-label="add"
             id={name+"_add"}
@@ -179,7 +177,7 @@ export default function MultiSelectInputField(props) {
                   )}
                 </>
               )}
-              <Grid item container xs={1} justify="center" spacing={1}>
+              <Grid item container xs={1} justifyContent="center" spacing={1}>
                 <IconButton
                   aria-label="remove"
                   color="secondary"
@@ -193,7 +191,7 @@ export default function MultiSelectInputField(props) {
                 </IconButton>
               </Grid>
               {id + 1 === valueHook[0][name + "_input"].length && (
-                <Grid item container xs={12} justify="center" spacing={1}>
+                <Grid item container xs={12} justifyContent="center" spacing={1}>
                   <Button
                     color="primary"
                     aria-controls="simple-menu"

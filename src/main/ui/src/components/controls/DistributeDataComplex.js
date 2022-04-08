@@ -1,11 +1,7 @@
-import React, { useState } from "react";
 import {
   Grid,
-  MenuItem,
-  Menu,
   Button,
   Paper,
-  Typography,
 } from "@material-ui/core";
 import Input from "./Input";
 import ItemPicker from "./ItemPicker";
@@ -24,17 +20,7 @@ export default function DistributeDataComplex(props) {
     removeComponent,
   } = props;
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   const classes = useStyle();
-
-  const showDistribute = () => {
-    setSelectedComponents({
-      ["show_distribute"]: !selectedComponents.show_distribute,
-    });
-  };
   return (
     <>
       {selectedComponents.availableComponents[0].isVisible ? (
@@ -74,7 +60,7 @@ export default function DistributeDataComplex(props) {
           </Paper>
         </>
       ) : (
-        <Grid item xs={12} container justify="center">
+        <Grid item xs={12} container justifyContent="center">
           <Grid item xs={5}>
             <Button
               color="primary"

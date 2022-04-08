@@ -156,7 +156,7 @@ export default function PostDuty(props) {
               (x) => x.isVisible === false
             ) ? (
               <>
-                <Grid item xs={12} container justify="center">
+                <Grid item xs={12} container justifyContent="center">
                   <Grid item xs={5}>
                     <Button
                       color="primary"
@@ -202,7 +202,7 @@ export default function PostDuty(props) {
             (x) => x.isVisible === false
           ) ? (
             <>
-              <Grid item xs={12} container justify="center">
+              <Grid item xs={12} container justifyContent="center">
                 <Grid item xs={3}>
                   <Button
                     color="primary"

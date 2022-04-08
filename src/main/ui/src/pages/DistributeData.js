@@ -12,19 +12,26 @@ import Submit from "../components/backend/Submit";
 import ItemPicker from "../components/controls/ItemPicker";
 import Title from "../components/controls/Title";
 import { artifact_state_list } from "../components/controls/InitialFieldListValues";
-import {handleSubmit} from "../components/controls/Utils"
+import { useLocation } from "react-router-dom";
 
 const selected_components = {
   page: "DistributeData",
 };
 export default function DistributeData() {
+  var initialValues = OdrlPolicy()
+  var stateLocal = useLocation().state;
+  
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
   const classes = useStyle();
-  const valueHook = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
   const handleSubmit = (e) => {
-    const [values, setValues] = valueHook
+    const values = valueHook[0]
     Submit(
       "/policy/DistributePolicyForm",
       values,

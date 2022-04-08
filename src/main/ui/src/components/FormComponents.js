@@ -13,20 +13,16 @@ import Date from "../components/controls/Date";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
 import MultiSelectInputField from "./controls/MultiselectInputField";
-import {OdrlPolicy} from "../components/backend/OdrlPolicy";
 
 export default function FormComponents(props) {
   const {
     valueHook,
     errors,
     selectedComponents,
-    removeComponent
+    removeComponent,
+    removeEnteredData
   } = props;
   
-  function removeEnteredData(id1, id2) {
-    valueHook[1]({ ...valueHook[0], [id1]: OdrlPolicy[id1], [id2]: OdrlPolicy[id2] });
-  };
-
   const components = selectedComponents.order.map((c) => {
     switch (c) {
       case "location":
@@ -42,7 +38,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("location");
-                removeEnteredData("location");
+                removeEnteredData(["location_input", "location_op"]);
               }}
             />
           </Grid>
@@ -60,7 +56,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("application");
-                removeEnteredData("application", valueHook);
+                removeEnteredData(["application_input", "application_op"]);
               }}
             />
           </Grid>
@@ -79,7 +75,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("connector");
-                removeEnteredData("connector");
+                removeEnteredData(["connector_input", "connector_op"]);
               }}
             />
           </Grid>
@@ -100,7 +96,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("securityLevel");
-                removeEnteredData("securityLevel");
+                removeEnteredData(["securityLevel_input", "securityLevel_op"]);
               }}
             />
           </Grid>
@@ -121,7 +117,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("state");
-                removeEnteredData("state");
+                removeEnteredData(["state_input", "state_op"]);
               }}
             />
           </Grid>
@@ -143,7 +139,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("role");
-                removeEnteredData("role");
+                removeEnteredData(["role_input", "role_op"]);
               }}
             />
           </Grid>
@@ -166,7 +162,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("purpose");
-                removeEnteredData("purpose");
+                removeEnteredData(["purpose_input", "purpose_op"]);
               }}
             />
           </Grid>
@@ -184,7 +180,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("event");
-                removeEnteredData("event");
+                removeEnteredData(["event_input", "event_op"]);
               }}
             />
           </Grid>
@@ -213,10 +209,10 @@ export default function FormComponents(props) {
             <Grid item md={4} />
             <Remove
               onClick={() => {
-                removeEnteredData(
+                removeEnteredData([
                   "restrictTimeIntervalEnd",
                   "restrictTimeIntervalStart"
-                );
+                ]);
                 removeComponent("interval");
               }}
             />
@@ -249,7 +245,7 @@ export default function FormComponents(props) {
             <Grid item md={4} />
             <Remove
               onClick={() => {
-                removeEnteredData("price", "payment");
+                removeEnteredData(["price", "payment"]);
                 removeComponent("payment");
               }}
             />
@@ -269,7 +265,7 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeComponent("counter");
-                removeEnteredData("counter");
+                removeEnteredData(["counter"]);
               }}
             />
           </Grid>
@@ -291,7 +287,7 @@ export default function FormComponents(props) {
             <Grid item md={8} />
             <Remove
               onClick={() => {
-                removeEnteredData("restrictEndTime");
+                removeEnteredData(["restrictEndTime"]);
                 removeComponent("endTime");
               }}
             />
@@ -354,13 +350,13 @@ export default function FormComponents(props) {
             <Grid item md={4} />
             <Remove
               onClick={() => {
-                removeEnteredData(
+                removeEnteredData([
                   "durationYear",
                   "durationMonth",
                   "specifyBeginTime",
                   "durationDay",
                   "durationHour"
-                );
+                ]);
                 removeComponent("duration");
               }}
             />

@@ -273,7 +273,7 @@ export default function Navigation(props) {
                 <MenuItem
                   button
                   component={Link}
-                  to="/policy/DeletData"
+                  to="/policy/DeleteData"
                   onClick={() => updateSelected("Delete Data After")}
                   selected={selected.selected === "Delete Data After"}
                   className={classes.menuItem}

@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { Grid, Button, Paper } from "@material-ui/core";
+import React from "react";
+import { Grid} from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import { useStyle } from "../components/Style";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
-import { OdrlPolicy } from "../components/backend/OdrlPolicy";
-import MaterialTable, { Icons, Query, QueryResult } from "material-table";
+import MaterialTable, { Icons } from "material-table";
 import { forwardRef } from "react";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
@@ -25,7 +24,8 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import DeleteIcon from '@material-ui/icons/Delete';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import {getAllPolicies, exportPolicy, deletePolicy} from '../components/backend/Database'
+
+import {getAllPolicies, exportPolicy, deletePolicy, editPolicy, viewPolicy} from '../components/backend/Database'
 
 const tableIcons: Icons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -54,6 +54,7 @@ export default function LogAccess() {
                     { title: 'Description', field: 'description' }]
 
   const [data, setData] = React.useState([]);
+  //getAllPolicies(data, setData)
   React.useEffect(() => getAllPolicies(data, setData), []);
   return (
     <div className={classes.page}>
@@ -79,6 +80,16 @@ export default function LogAccess() {
                     icon: () => <GetAppIcon color="primary"/>,
                     tooltip: "Export",
                     onClick: (event, data) => exportPolicy(data.id, `policy_${data.policyID}.json`, "text/plain"),
+                  },
+                  {
+                    icon: () => <Edit color="primary"/>,
+                    tooltip: "Edit",
+                    onClick: (event, data) =>editPolicy(data.id, history),
+                  },
+                  {
+                    icon: () => <Search color="primary"/>,
+                    tooltip: "View",
+                    onClick: (event, data) =>viewPolicy(data.id, history),
                   },
                 ]}
                 options={{

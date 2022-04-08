@@ -4,7 +4,7 @@ import {handleInputChange} from "../controls/Utils"
 
 export default function Date(props) {
   const { name,label, valueHook, errors = null, xs=11, sm=11, md=11} = props;
-  const [values, setValues] = valueHook
+  const values = valueHook[0];
   var value = values[name]
   var error = ""
   if (value === undefined) {

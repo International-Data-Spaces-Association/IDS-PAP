@@ -6,7 +6,6 @@ import {
   Button,
   Typography,
   makeStyles,
-  TextField,
 } from "@material-ui/core";
 import { jsonOdrlPolicy } from "../components/backend/Submit";
 import "codemirror/addon/lint/lint.css";
@@ -77,9 +76,8 @@ export default function ODRLCreator() {
     var query = {};
     query.jsonString = policy;
     query.ucAppUrl = values.AppUrl;
-    if (isValidUrl(query.ucAppUrl) == "") {
+    if (isValidUrl(query.ucAppUrl) === "") {
       setErrors({ ...errors, ["AppUrl"]: "" });
-      console.log(query);
       jsonOdrlPolicy("/policy/sendPolicy", query, setDtPolicy);
     } else {
       setErrors({ ...errors, ["AppUrl"]: "Please enter a valid URL" });
@@ -100,7 +98,7 @@ export default function ODRLCreator() {
   }
 
   function isValidUrl(string) {
-    if (string == "") return "The field should not be empty";
+    if (string === "") return "The field should not be empty";
 
     try {
       new URL(string);

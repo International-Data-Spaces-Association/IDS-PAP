@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import {
   makeStyles,
-  Paper,
   ThemeProvider,
   AppBar,
   unstable_createMuiStrictModeTheme as createMuiTheme,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Menu, MenuItem, Button, makeStyles } from "@material-ui/core";
+import { Grid, Menu, MenuItem, Button } from "@material-ui/core";
 import { useStyle } from "../Style";
 import Input from "./Input";
 import Title from "./Title";
@@ -19,7 +19,6 @@ export default function DeleteData(props) {
     prefix = "",
     seperator = true,
   } = props;
-
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyle();
 
@@ -130,7 +129,7 @@ export default function DeleteData(props) {
           </>
         ) : null}
         {Object.values(selectedComponents).every((x) => x === false) ? (
-          <Grid item xs={12} container justify="center">
+          <Grid item xs={12} container justifyContent="center">
             <Grid item xs={2}>
               {" "}
               <Button

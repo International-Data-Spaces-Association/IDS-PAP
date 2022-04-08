@@ -173,7 +173,7 @@ export default function Duty(props) {
               (x) => x.isVisible === true
             ) ? (
               <>
-                <Grid item xs={12} container justify="center">
+                <Grid item xs={12} container justifyContent="center">
                   <Grid item xs={3}>
                     <Button
                       color="primary"
@@ -219,7 +219,7 @@ export default function Duty(props) {
             (x) => x.isVisible === true
           ) ? (
             <>
-              <Grid item xs={12} container justify="center">
+              <Grid item xs={12} container justifyContent="center">
                 <Grid item xs={3}>
                   <Button
                     color="primary"

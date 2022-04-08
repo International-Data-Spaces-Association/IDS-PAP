@@ -8,10 +8,18 @@ import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
+import { useLocation } from "react-router-dom";
 
 export default function AnonymizeInRest() {
+  var initialValues = OdrlPolicy()
+  var stateLocal = useLocation().state;
+  
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
   const classes = useStyle();
-  const valueHook = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const selected_components = {
@@ -19,7 +27,7 @@ export default function AnonymizeInRest() {
   };
 
   const handleSubmit = (e) => {
-    const [values, setValues] = valueHook
+    const values = valueHook[0]
     Submit(
       "/policy/AnonymizeInRestPolicyForm",
       values,

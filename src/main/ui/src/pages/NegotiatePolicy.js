@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button, Typography, makeStyles, Paper } from "@material-ui/core";
+import { Grid, Button, Paper } from "@material-ui/core";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
@@ -21,7 +21,7 @@ require("codemirror/theme/eclipse.css");
 export default function NegotiatePolicy() {
   const valueHook = useState(OdrlPolicy);
 
-  const [errors, setErrors] = useState({});
+  const errors= useState({})[0];
 
   const classes = useStyle();
 
@@ -35,7 +35,7 @@ export default function NegotiatePolicy() {
 
               <Grid container key={"interval"}>
                 <Title label="Restrict Time Interval" />
-                <Grid container xs={11} spacing={2}>
+                <Grid container spacing={2}>
                   <Date
                     name="restrictTimeIntervalStart"
                     label="Start Time*"

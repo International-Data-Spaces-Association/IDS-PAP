@@ -18,7 +18,6 @@ export default function PreDuty(props) {
     valueHook,
     errors,
     selectedComponents,
-    handleInputChange,
     removeComponent,
     removeEnteredData,
     classes,
@@ -31,9 +30,9 @@ export default function PreDuty(props) {
     duration: false,
     timeDate: false,
   };
-  const [selectedDeleteComponents, setSelectedDeleteComponents] = useState(
+  const setSelectedDeleteComponents = useState(
     selected_delete_data_components
-  );
+  )[1];
 
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
@@ -174,7 +173,7 @@ export default function PreDuty(props) {
             (x) => x.isVisible === false
           ) ? (
             <>
-              <Grid item xs={12} container justify="center">
+              <Grid item xs={12} container justifyContent="center">
                 <Grid item xs={5}>
                   <Button
                     color="primary"

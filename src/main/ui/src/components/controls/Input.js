@@ -15,7 +15,7 @@ export default function Input(props) {
     sm = 11,
     md = 11,
   } = props;
-  const [values, setValues] = valueHook;
+  const values = valueHook[0];
   var value = values[name];
   var error = "";
   var onChange = handleInputChange;

@@ -9,19 +9,27 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import InformParty from "../components/controls/InformParty";
+import { useLocation } from "react-router-dom";
 
 const selected_components = {
   page: "InformParty",
 };
 
 export default function LogAccess() {
+  var initialValues = OdrlPolicy()
+  var stateLocal = useLocation().state;
+  
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
   const classes = useStyle();
-  const valueHook = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
   const handleSubmit = (e) => {
-    const [values, setValues] = valueHook
+    const values = valueHook[0]
 
     Submit(
       "/policy/InformPolicyForm",

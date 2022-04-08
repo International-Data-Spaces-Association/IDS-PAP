@@ -6,14 +6,19 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+import {
+  OdrlPolicy,
+  recreateSelectedCompFromJson,
+} from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 
 import FormComponents from "../components/FormComponents";
 import MenuItems from "../components/controls/MenuItems";
+import { useLocation } from "react-router-dom";
 
 export default function ProvideAccess() {
   const selected_components = {
+    prefix: "components",
     order: [],
     availableComponents: [
       { id: "application", name: "Application", isVisible: false },
@@ -31,8 +36,15 @@ export default function ProvideAccess() {
     ],
   };
 
+  var initialValues = OdrlPolicy();
+  initialValues = recreateSelectedCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_components
+  );
+
   const classes = useStyle();
-  const valueHook = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] =
@@ -46,19 +58,54 @@ export default function ProvideAccess() {
     setAnchorEl(null);
   };
 
-  const resetStates = () => {
-    setSelectedComponents({ ...selected_components });
+  const removeComponent = (id) => {
+    const prefix = "components";
+    const states = [selectedComponents];
+    const setStates = [setSelectedComponents];
+    states.forEach(function (state, index) {
+      if (state.prefix === prefix) {
+        const dict = state.availableComponents;
+        const list = state.order;
+        const setState = setStates[index];
+
+        dict.forEach(function (item, key) {
+          if (item.id === id) {
+            const obj = JSON.parse(JSON.stringify(state));
+            obj.order = list.filter((e) => e !== id);
+            obj.availableComponents[key].isVisible = false;
+            setState({ ...obj });
+          }
+        });
+      }
+    });
+  };
+
+  const removeEnteredData = (ids) => {
+    const values = valueHook[0];
+    ids.forEach(function (id) {
+      if (values[id] instanceof Array) {
+        values[id] = [""];
+      } else {
+        values[id] = "";
+      }
+    });
   };
 
   const handleSubmit = (e) => {
-    const [values, setValues] = valueHook
+    const values = valueHook[0];
     const dict = selectedComponents.availableComponents;
-    var state = {};
-    var state = {page: "ProvideAccess"};
+    var state = { page: "ProvideAccess" };
     dict.forEach(function (item) {
       state[item.id] = item.isVisible;
     });
-    Submit("/policy/ProvideAccess", values, state, setErrors, history, e);
+    Submit(
+      "/policy/ProvideAccessPolicyForm",
+      values,
+      state,
+      setErrors,
+      history,
+      e
+    );
   };
 
   return (
@@ -72,20 +119,18 @@ export default function ProvideAccess() {
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-              <IdentifyPolicy
-                valueHook={valueHook}
-                errors={errors}
-              />
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
               <FormComponents
                 selectedComponents={selectedComponents}
                 valueHook={valueHook}
                 errors={errors}
-                removeComponent={resetStates}
+                removeComponent={removeComponent}
+                removeEnteredData={removeEnteredData}
               />
               {Object.values(selectedComponents.availableComponents).every(
                 (x) => x.isVisible === false
               ) ? (
-                <Grid item xs={12} container justify="center">
+                <Grid item xs={12} container justifyContent="center">
                   <Grid item xs={2}>
                     <Button
                       color="primary"

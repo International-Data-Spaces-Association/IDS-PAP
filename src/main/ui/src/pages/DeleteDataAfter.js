@@ -9,38 +9,34 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteData from "../components/controls/DeleteData";
+import { useLocation } from "react-router-dom";
+
 export default function DeleteDataAfter() {
   const selected_components = {
     postduties_duration: false,
     postduties_timeDate: false,
   };
+
+  var initialValues = OdrlPolicy()
+  var stateLocal = useLocation().state;
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+    if (initialValues.postduties_durationYear !== "") {
+      selected_components.postduties_duration = true
+    }
+    if (initialValues.postduties_timeAndDate !== "") {
+      selected_components.postduties_timeDate = true
+    }
+  }
   
   const classes = useStyle();
-  const valueHook = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] = useState(selected_components);
 
-  const resetStates = () => {
-    const [values, setValues] = valueHook
-
-    for (var key in selectedComponents) {
-      if (selectedComponents.hasOwnProperty(key)) {
-        selectedComponents[key] = false;
-      }
-    }
-    setValues({
-      ...values,
-      timeAndDate: "",
-      durationHour: "",
-      durationDay: "",
-      durationMonth: "",
-      durationYear: "",
-    });
-  };
-
   const handleSubmit = (e) => {
-    const [values, setValues] = valueHook
+    const values = valueHook[0]
     var state = {page: "DeleteDataAfter",
       postduties_duration: false,
       postduties_timeDate: false,};

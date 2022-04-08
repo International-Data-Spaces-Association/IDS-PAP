@@ -30,6 +30,11 @@ public class Policy {
 	
 	private String description;
 	
+	private String policyType;
+	
+	@Column(columnDefinition="text")
+	private String fieldValues;
+	
 	@Column(columnDefinition="text")
 	private String iDSPolicy;
 }

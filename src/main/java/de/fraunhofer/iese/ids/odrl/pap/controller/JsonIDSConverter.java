@@ -50,7 +50,7 @@ public class JsonIDSConverter {
 		constraints.add(c);
 	}
 	
-	public String createPolicy(String policyUID, IPolicyRepo policyRepo) {
+	public String createPolicy(String policyUID, IPolicyRepo policyRepo, String queryOrigin) {
 		rules.get(0).setConstraints((ArrayList<Condition>) constraints);
 		if (postDuties.size() > 0) {
 			rules.get(0).setPostduties((ArrayList<Rule>) postDuties);
@@ -88,6 +88,8 @@ public class JsonIDSConverter {
 		policy.setDescription(rp.getPolicyType());
 		policy.setIDSPolicy(response);
 		policy.setPolicyID(policyUID);
+		policy.setPolicyType(queryOrigin);
+		policy.setFieldValues(new JSONObject(rp).toString());
 		try {
 			policyRepo.save(policy);
 		} catch (Exception e) {

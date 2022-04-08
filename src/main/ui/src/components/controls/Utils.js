@@ -1,12 +1,11 @@
 import Submit from "../backend/Submit";
-import {OdrlPolicy} from "../backend/OdrlPolicy"
 function handleInputChange(e, valueHook) {
   const [values, setValues] = valueHook;
   setValues({ ...values, [e.target.name]: e.target.value });
 }
 
 function handleSubmit(e, valueHook, selected_components, setErrors, history) {
-  const [values, setValues] = valueHook;
+  const values = valueHook[0]
 
   Submit(
     "/policy/InformPolicyForm",

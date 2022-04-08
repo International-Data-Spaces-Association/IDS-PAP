@@ -50,7 +50,7 @@ export default function RouteToPage() {
         <CountAccess />
       </Route>
 
-      <Route exact path="/policy/DeletData">
+      <Route exact path="/policy/DeleteData">
         <DeleteDataAfter />
       </Route>
 

@@ -4,7 +4,6 @@ import {
   MenuItem,
   Menu,
   Button,
-  Paper,
   Typography,
 } from "@material-ui/core";
 import Input from "../components/controls/Input";
@@ -21,7 +20,6 @@ import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
 import MultiSelectInputField from "../components/controls/MultiselectInputField";
 import MenuItems from "../components/controls/MenuItems";
-import AddIcon from "@material-ui/icons/Add";
 
 export default function AddRestrictions(props) {
   const {
@@ -407,7 +405,7 @@ export default function AddRestrictions(props) {
           {components.map((c) => c())}
 
           {selectedComponents.order.length <= 12 ? (
-            <Grid item xs={12} container justify="center">
+            <Grid item xs={12} container justifyContent="center">
               <Grid item xs={5}>
                 <Button
                   color="primary"
@@ -446,7 +444,7 @@ export default function AddRestrictions(props) {
           ) : null}
         </>
       ) : (
-        <Grid item xs={12} container justify="center">
+        <Grid item xs={12} container justifyContent="center">
           <Grid item xs={5}>
             <Button
               color="primary"

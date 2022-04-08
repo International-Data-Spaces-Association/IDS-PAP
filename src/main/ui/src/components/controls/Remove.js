@@ -9,7 +9,7 @@ export default function Remove(props) {
   const { onClick } = props;
   const classes = useStyle();
   return (
-    <Grid item xs={1} container justify="center">
+    <Grid item xs={1} container justifyContent="center">
       <IconButton color="secondary" onClick={onClick} className={classes.formBtn}>
         <DeleteIcon />
       </IconButton>

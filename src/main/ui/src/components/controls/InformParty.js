@@ -3,7 +3,6 @@ import { Grid } from "@material-ui/core";
 import { log_level_list } from "./InitialFieldListValues";
 import Input from "./Input";
 import ItemPicker from "./ItemPicker";
-import Title from "./Title";
 
 export default function InformParty(props) {
     const {valueHook, errors, xs = 12, sm = 12, md = 12, prefix="" } = props;
