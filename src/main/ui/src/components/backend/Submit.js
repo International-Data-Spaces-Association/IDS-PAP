@@ -1,5 +1,4 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:9090";
 
 export default function Submit(url, values, states, setErrors, history, e) {
   console.log(values);
@@ -9,9 +8,9 @@ export default function Submit(url, values, states, setErrors, history, e) {
       states[key] = false;
     }
     const isoValues = convertDateToIso(values, states);
-    axios.post(BASE_URL + url, isoValues).then(
+    axios.post( url, isoValues).then(
       (response) => {
-        axios.post(BASE_URL + "/policy/initialTechnologyDependentPolicy", response.data).then(
+        axios.post("/policy/initialTechnologyDependentPolicy", response.data).then(
           (responseTDP) => {
             console.log(response.data)
             var dict = {
@@ -37,7 +36,7 @@ export default function Submit(url, values, states, setErrors, history, e) {
 
 export function jsonOdrlPolicy(url, values, setPolicy) {
   axios
-    .post(BASE_URL + url, values, {
+    .post(url, values, {
       headers: {
         // Overwrite Axios's automatically set Content-Type
         "Content-Type": "application/json",

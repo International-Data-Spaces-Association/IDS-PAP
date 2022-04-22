@@ -1,8 +1,7 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:9090";
 
 function getAllPolicies(data, setData) {
-  axios.get(BASE_URL + "/api/policies").then(
+  axios.get( "/api/policies").then(
     (response) => {
       setData(response.data);
     },
@@ -13,7 +12,7 @@ function getAllPolicies(data, setData) {
 }
 
 function exportPolicy(id, fileName, contentType) {
-  axios.get(BASE_URL + `/api/policies/export_${id}`).then(
+  axios.get(`/api/policies/export_${id}`).then(
     (response) => {
       const a = document.createElement("a");
       const file = new Blob([JSON.stringify(response.data, null, 2)], {
@@ -30,7 +29,7 @@ function exportPolicy(id, fileName, contentType) {
 }
 
 function deletePolicy(id, data, setData) {
-  axios.delete(BASE_URL + `/api/policies/${id}`).then(
+  axios.delete( `/api/policies/${id}`).then(
     (response) => {
       getAllPolicies(data, setData);
     },
@@ -41,7 +40,7 @@ function deletePolicy(id, data, setData) {
 }
 
 function editPolicy(id, history) {
-  axios.get(BASE_URL + `/api/policies/edit_${id}`).then(
+  axios.get( `/api/policies/edit_${id}`).then(
     (response) => {
       console.log(response.data);
       const policy = JSON.parse(response.data.fieldValues);
@@ -58,16 +57,16 @@ function editPolicy(id, history) {
 }
 
 function viewPolicy(id, history) {
-  axios.get(BASE_URL + `/api/policies/edit_${id}`).then(
+  axios.get( `/api/policies/edit_${id}`).then(
     (response) => {
       const fieldValues = JSON.parse(response.data.fieldValues);
       fieldValues.id = response.data.id
       const url = response.data.policyType
-      axios.post(BASE_URL + url, fieldValues).then(
+      axios.post( url, fieldValues).then(
         (response) => {
           axios
             .post(
-              BASE_URL + "/policy/initialTechnologyDependentPolicy",
+               "/policy/initialTechnologyDependentPolicy",
               response.data
             )
             .then(
