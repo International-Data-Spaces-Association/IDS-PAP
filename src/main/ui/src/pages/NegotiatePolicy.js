@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Grid, Button, Paper } from "@material-ui/core";
+import { Grid, Button, Paper, withStyles } from "@material-ui/core";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import "codemirror/addon/lint/lint.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
@@ -15,20 +17,57 @@ import { sale_rent_list } from "../components/controls/InitialFieldListValues";
 import ItemPicker from "../components/controls/ItemPicker";
 import LogData from "../components/controls/LogData";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+import { negotiatePolicyGetUUID, negotiatePolicyGetResponse } from "../components/backend/Submit";
+import { ContactSupportOutlined } from "@material-ui/icons";
 
 require("codemirror/theme/eclipse.css");
 
+const LimitedBackdrop = withStyles({
+  root: {
+    position: "absolute",
+    zIndex: 1,
+  },
+})(Backdrop);
+
 export default function NegotiatePolicy() {
   const valueHook = useState(OdrlPolicy);
+  const addressHook = useState({ url: "http://localhost:8080/negotiator/v1" });
+  const uuidHook = useState("");
+  const policyHook = useState("");
 
-  const errors= useState({})[0];
+  const errors = useState({})[0];
 
   const classes = useStyle();
+  const [showBackdrop, setShowBackdrop] = React.useState(false);
+  const handleToggle = () => {
+    setShowBackdrop(!showBackdrop);
+  };
+  const handleClose = () => {
+    setShowBackdrop(false);
+  };
+  
+  function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  async function handleButtonClick(url) {
+    setShowBackdrop(true);
+    let uuid = await negotiatePolicyGetUUID(url);
+    console.log(uuid, typeof(uuid))
+    await sleep(10000)
+    let response = await negotiatePolicyGetResponse(url, uuid);
+    setShowBackdrop(false);
+  };
 
   return (
     <div className={classes.page}>
-      <Form onSubmit={console.log("SENT")}>
+      <Form onSubmit={() => handleButtonClick(addressHook[0]["url"])}>
         <Grid container>
+          <LimitedBackdrop open={showBackdrop}>
+            <CircularProgress size={"4rem"} style={{ color: "#239b7e" }} />
+          </LimitedBackdrop>
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
               <IdentifyPolicy valueHook={valueHook} errors={errors} />
@@ -96,6 +135,18 @@ export default function NegotiatePolicy() {
                 md={12}
                 prefix="postduties_"
               />
+              <Grid container key={"url"}>
+                <Title label="Server URL" />
+                <Grid container spacing={2} xs={11}>
+                  <Input
+                    label="URL"
+                    name={"url"}
+                    placeholder="e.g. http://example.com/ids/system/ESN-database"
+                    valueHook={addressHook}
+                    errors={errors}
+                  />
+                </Grid>
+              </Grid>
             </Paper>
           </Grid>
           <Grid item xs={2}>

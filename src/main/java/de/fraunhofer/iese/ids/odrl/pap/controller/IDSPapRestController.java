@@ -27,6 +27,8 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.IdsOdrlUtil;
 import de.fraunhofer.iese.ids.odrl.pap.repository.IPolicyRepo;
 import de.fraunhofer.iese.ids.odrl.pap.entity.Policy;
+import de.fraunhofer.iese.ids.odrl.pap.entity.ShortPolicy;
+
 @RestController()
 @CrossOrigin
 public class IDSPapRestController {
@@ -89,13 +91,9 @@ public class IDSPapRestController {
 	}
 	
 	@GetMapping("/api/policies")
-	public ResponseEntity<List<Policy>> getAllPolicies() {
+	public ResponseEntity<List<ShortPolicy>> getAllPolicies() {
 		try {
-			List<Policy> list = policyRepo.findAll();
-			for (Policy p : list) {
-			   p.setFieldValues("");
-			   p.setIDSPolicy("");
-			}
+			List<ShortPolicy> list = policyRepo.findBy();
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

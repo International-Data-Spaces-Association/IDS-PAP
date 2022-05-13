@@ -1,4 +1,6 @@
 import axios from "axios";
+import negotiateTestResponse from "../negotiateExample.json";
+import axiosRetry from "axios-retry";
 
 export default function Submit(url, values, states, setErrors, history, e) {
   console.log(values);
@@ -8,24 +10,26 @@ export default function Submit(url, values, states, setErrors, history, e) {
       states[key] = false;
     }
     const isoValues = convertDateToIso(values, states);
-    axios.post( url, isoValues).then(
+    axios.post(url, isoValues).then(
       (response) => {
-        axios.post("/policy/initialTechnologyDependentPolicy", response.data).then(
-          (responseTDP) => {
-            console.log(response.data)
-            var dict = {
-              jsonPolicy: JSON.stringify(response.data, null, 2),
-              dtPolicy: responseTDP.data,
-            };
-            history.push({
-              pathname: "/ODRLCreator",
-              state: dict,
-            });
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+        axios
+          .post("/policy/initialTechnologyDependentPolicy", response.data)
+          .then(
+            (responseTDP) => {
+              console.log(response.data);
+              var dict = {
+                jsonPolicy: JSON.stringify(response.data, null, 2),
+                dtPolicy: responseTDP.data,
+              };
+              history.push({
+                pathname: "/ODRLCreator",
+                state: dict,
+              });
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       },
       (error) => {
         console.log(error);
@@ -50,6 +54,47 @@ export function jsonOdrlPolicy(url, values, setPolicy) {
         console.log(error);
       }
     );
+}
+const retryWrapper = (axios, options) => {
+  const max_time = options.retry_time;
+  const retry_status_code = options.retry_status_code;
+  let counter = 0;
+  axios.interceptors.response.use(null, (error) => {
+    /** @type {import("axios").AxiosRequestConfig} */
+    const config = error.config;
+    if (counter < max_time && error.response.status === retry_status_code) {
+      counter++;
+      return new Promise((resolve) => {
+        resolve(axios(config));
+      });
+    }
+    // ===== this is mock final one is a successful request, you could delete one in usage.
+    if (counter === max_time && error.response.status === retry_status_code) {
+      config.url = "https://api.ipify.org?format=json";
+      return new Promise((resolve) => {
+        resolve(axios(config));
+      });
+    }
+    return Promise.reject(error);
+  });
+};
+
+export async function negotiatePolicyGetUUID(url) {
+  let uuid = await axios.post(
+    `${url}/contract-negotiation`,
+    negotiateTestResponse,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return uuid.data;
+}
+
+export async function negotiatePolicyGetResponse(url, uuid) {
+  let policy = await axios.get(`${url}/${uuid}`);
+  return policy;
 }
 
 function convertDateToIso(values, states) {
@@ -79,7 +124,6 @@ function validation(values, states, setErrors) {
   checkHeader(error_list, values);
   switch (states.page) {
     case "CreatePolicy":
-
       checkComplexPolicyFields(values, states, error_list);
       break;
 
@@ -107,8 +151,12 @@ function validation(values, states, setErrors) {
         );
       }
       if (states.postduties_timeDate) {
-        error_list.postduties_timeAndDate = isDateOrEmpty(values.postduties_timeAndDate)
-        error_list.postduties_timeAndDate = isNotEmpty(values.postduties_timeAndDate)
+        error_list.postduties_timeAndDate = isDateOrEmpty(
+          values.postduties_timeAndDate
+        );
+        error_list.postduties_timeAndDate = isNotEmpty(
+          values.postduties_timeAndDate
+        );
       }
       break;
 
@@ -156,13 +204,12 @@ function validation(values, states, setErrors) {
     default:
       break;
   }
-  console.log(error_list)
- setErrors({
+  console.log(error_list);
+  setErrors({
     ...error_list,
   });
   return Object.values(error_list).every((x) => x === "");
 }
-
 
 function checkComplexPolicyFields(values, states, error_list) {
   //Restrict Application
@@ -188,15 +235,15 @@ function checkComplexPolicyFields(values, states, error_list) {
   }
 
   // Restrict Time Duration
-  if (values.durationDay !=="")
+  if (values.durationDay !== "")
     error_list.durationDay = isIntOrEmpty(values.durationDay);
-  if (values.durationHour !=="")
+  if (values.durationHour !== "")
     error_list.durationHour = isIntOrEmpty(values.durationHour);
-  if (values.durationMonth !=="")
+  if (values.durationMonth !== "")
     error_list.durationMonth = isIntOrEmpty(values.durationMonth);
-  if (values.durationYear !=="")
+  if (values.durationYear !== "")
     error_list.durationYear = isIntOrEmpty(values.durationYear);
-  if (values.specifyBeginTime !=="")
+  if (values.specifyBeginTime !== "")
     error_list.specifyBeginTime = isDateOrEmpty(values.specifyBeginTime);
 
   // Restrict Time Interval
@@ -263,10 +310,14 @@ function checkComplexPolicyFields(values, states, error_list) {
     );
   }
   if (states.postduties_timeDate) {
-    error_list.postduties_timeAndDate = isDateOrEmpty(values.postduties_timeAndDate)
-    error_list.postduties_timeAndDate = isNotEmpty(values.postduties_timeAndDate)
+    error_list.postduties_timeAndDate = isDateOrEmpty(
+      values.postduties_timeAndDate
+    );
+    error_list.postduties_timeAndDate = isNotEmpty(
+      values.postduties_timeAndDate
+    );
   }
-  
+
   // Log Data Usage
   if (states["log"]) {
     error_list["postduties_systemDevice"] = isValidUrl(
