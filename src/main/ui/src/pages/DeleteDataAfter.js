@@ -127,7 +127,7 @@ export default function DeleteDataAfter() {
                 type="submit"
                 id="Save"
               >
-                Save
+                Submit
               </Button>
             </Grid>
           </Grid>

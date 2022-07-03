@@ -168,7 +168,7 @@ export default function ProvideAccess() {
               type="submit"
               id="Save"
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

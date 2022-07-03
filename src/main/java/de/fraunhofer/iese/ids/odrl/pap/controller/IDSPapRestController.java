@@ -94,6 +94,7 @@ public class IDSPapRestController {
 	public ResponseEntity<List<ShortPolicy>> getAllPolicies() {
 		try {
 			List<ShortPolicy> list = policyRepo.findBy();
+			System.out.println(list.get(0));
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

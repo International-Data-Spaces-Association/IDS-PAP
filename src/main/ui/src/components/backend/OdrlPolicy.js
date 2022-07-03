@@ -57,6 +57,10 @@ function OdrlPolicy() {
     restrictEndTime: "",
     specifyBeginTime: "",
     artifactState: "",
+
+    is_template: false,
+    name: "",
+    comment:"",
   };
 }
 

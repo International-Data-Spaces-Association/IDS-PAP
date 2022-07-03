@@ -297,6 +297,29 @@ export default function AddRestrictions(props) {
           </Grid>
         );
 
+        case "startTime":
+          return () => (
+            <Grid container key={"startTime"}>
+              <Title label="Restrict Start Time" />
+              <Grid container xs={11} spacing={2}>
+                <Date
+                  name="restrictStartTime"
+                  label="Start Time"
+                  valueHook={valueHook}
+                  errors={errors}
+                  sm={11}
+                  md={5}
+                />
+              </Grid>
+              <Remove
+                onClick={() => {
+                  removeEnteredData(["restrictStartTime"]);
+                  removeComponent("restrictions", "startTime");
+                }}
+              />
+            </Grid>
+          );
+
       case "endTime":
         return () => (
           <Grid container key={"endTime"}>

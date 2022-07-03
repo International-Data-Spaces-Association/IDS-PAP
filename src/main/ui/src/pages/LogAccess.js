@@ -73,7 +73,7 @@ export default function LogAccess() {
               type="submit"
               id="Save"
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

@@ -104,7 +104,7 @@ export default function AnonymizeInTransit() {
               type="submit"
               id="Save"
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

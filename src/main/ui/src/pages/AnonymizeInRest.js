@@ -62,7 +62,7 @@ export default function AnonymizeInRest() {
               type="submit"
               id="Save"
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

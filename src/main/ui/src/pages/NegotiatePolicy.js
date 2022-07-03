@@ -157,7 +157,7 @@ export default function NegotiatePolicy() {
               type="submit"
               id="Save"
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

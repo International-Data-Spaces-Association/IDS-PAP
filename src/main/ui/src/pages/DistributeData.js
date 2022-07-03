@@ -87,7 +87,7 @@ export default function DistributeData() {
               type="submit"
               id="Save"
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

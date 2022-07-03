@@ -1,0 +1,85 @@
+import React, { useState } from "react";
+import { useStyle } from "../Style";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import { Grid, Button, TextField } from "@material-ui/core";
+
+export default function TemplateDialog(props) {
+  const { valueHook, handleSubmit } = props;
+  const [values, setValues] = valueHook;
+
+  const classes = useStyle();
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
+  const handleSave = () => {
+    var items = values;
+    items["is_template"] = true;
+
+    setValues({ ...items })
+    setOpenDialog(false);
+    handleSubmit();
+  };
+
+  return (
+    <>
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.saveBtn}
+        prefix="submit"
+        id="Save"
+        onClick={handleClickOpen}
+      >
+        Save as template
+      </Button>
+      <Dialog open={openDialog} onClose={handleClose}>
+        <DialogTitle>Save as Template</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To save the policy as a template, please enter a name and a comment
+            here.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            type="name"
+            fullWidth
+            variant="outlined"
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Comment"
+            type="comment"
+            fullWidth
+            multiline
+            variant="outlined"
+            InputLabelProps={{ shrink: true }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleSave} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}

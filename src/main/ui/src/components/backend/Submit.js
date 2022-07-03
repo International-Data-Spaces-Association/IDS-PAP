@@ -100,7 +100,8 @@ export async function negotiatePolicyGetResponse(url, uuid) {
 function convertDateToIso(values, states) {
   var isoValues = { ...values };
   isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime);
-  isoValues.restrictpme = addDateSuffix(isoValues.restrictEndTime);
+  isoValues.restrictEndTime = addDateSuffix(isoValues.restrictEndTime);
+  isoValues.restrictStartTime = addDateSuffix(isoValues.restrictStartTime);
   isoValues.restrictTimeIntervalStart = addDateSuffix(
     isoValues.restrictTimeIntervalStart
   );
