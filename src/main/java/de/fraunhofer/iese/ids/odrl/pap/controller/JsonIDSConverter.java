@@ -4,15 +4,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import de.fraunhofer.iese.ids.odrl.pap.entity.Policy;
 import de.fraunhofer.iese.ids.odrl.pap.repository.IPolicyRepo;
-import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
@@ -67,9 +63,7 @@ public class JsonIDSConverter {
 		// odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
-		String jsonPolicyString = OdrlCreator.createODRL(odrlPolicy);
-		Map map = null;
-		boolean tempProviderSide = true;
+		String jsonPolicyString = odrlPolicy.toString();
 		//String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
 		// String dtPolicy = policy(jsonPolicy);
 		
@@ -222,7 +216,7 @@ public class JsonIDSConverter {
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(startEntity);
 				entities.add(endEntity);
-				rightOperand.setEntities(entities);
+				rightOperand.setRightOperandEntities(entities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -242,7 +236,7 @@ public class JsonIDSConverter {
 
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(endEntity);
-				rightOperand.setEntities(entities);
+				rightOperand.setRightOperandEntities(entities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -306,7 +300,7 @@ public class JsonIDSConverter {
 			}
 
 			if (durationEntities.size() > 0) {
-				elapsedTimeRightOperand.setEntities(durationEntities);
+				elapsedTimeRightOperand.setRightOperandEntities(durationEntities);
 				ArrayList<RightOperand> elapsedTimeRightOperands = new ArrayList<>();
 				elapsedTimeRightOperands.add(elapsedTimeRightOperand);
 				Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME,
@@ -485,7 +479,7 @@ public class JsonIDSConverter {
 						RightOperandType.DATETIMESTAMP);
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(dateTimeEntity);
-				rightOperand.setEntities(entities);
+				rightOperand.setRightOperandEntities(entities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -521,7 +515,7 @@ public class JsonIDSConverter {
 				RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration,
 						RightOperandType.DURATION);
 				durationEntities.add(hasDurationEntity);
-				rightOperand.setEntities(durationEntities);
+				rightOperand.setRightOperandEntities(durationEntities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY,

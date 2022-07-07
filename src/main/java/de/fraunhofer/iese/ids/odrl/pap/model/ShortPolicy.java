@@ -1,7 +1,4 @@
-package de.fraunhofer.iese.ids.odrl.pap.entity;
-
-import javax.persistence.Entity;
-
+package de.fraunhofer.iese.ids.odrl.pap.model;
 
 public interface ShortPolicy {
 	 Long getId();

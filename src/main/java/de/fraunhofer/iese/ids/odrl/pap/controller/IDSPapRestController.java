@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.github.jsonldjava.utils.JsonUtils;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.ShortPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.UcAppService;
@@ -27,7 +29,6 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.IdsOdrlUtil;
 import de.fraunhofer.iese.ids.odrl.pap.repository.IPolicyRepo;
 import de.fraunhofer.iese.ids.odrl.pap.entity.Policy;
-import de.fraunhofer.iese.ids.odrl.pap.entity.ShortPolicy;
 
 @RestController()
 @CrossOrigin
@@ -241,7 +242,7 @@ public class IDSPapRestController {
 	}
 	
 	@PostMapping("/policy/JsonOdrlPolicyMYDATA")
-	public String policy(@RequestBody String jsonPolicy) {
+	public String policy(@RequestBody String jsonPolicy)  {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 		boolean tempProviderSide = true;
 		return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
@@ -249,7 +250,7 @@ public class IDSPapRestController {
 	
 	@SuppressWarnings("rawtypes")
 	@PostMapping("/policy/InterpretOdrlPolicy")
-	public String interpretPolicy(@RequestBody String jsonPolicy) {
+	public String interpretPolicy(@RequestBody String jsonPolicy)  {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 		Map map = null;
 		try {
@@ -268,7 +269,7 @@ public class IDSPapRestController {
 	}
 	
 	@PostMapping("/policy/initialTechnologyDependentPolicy")
-	public String initialTechnologyDependentPolicy(@RequestBody String odrl) {
+	public String initialTechnologyDependentPolicy(@RequestBody String odrl)  {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(odrl);
 		boolean tempProviderSide = true;
 		String dtPolicy = OdrlTranslator.translate(null, tempProviderSide, odrlPolicy);
