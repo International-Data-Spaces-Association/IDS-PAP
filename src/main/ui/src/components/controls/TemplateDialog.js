@@ -6,9 +6,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Grid, Button, TextField } from "@material-ui/core";
+import { handleInputChange } from "../controls/Utils";
 
 export default function TemplateDialog(props) {
-  const { valueHook, handleSubmit } = props;
+  const { valueHook, handleSubmit, originPath} = props;
   const [values, setValues] = valueHook;
 
   const classes = useStyle();
@@ -24,9 +25,11 @@ export default function TemplateDialog(props) {
   const handleSave = () => {
     var items = values;
     items["is_template"] = true;
+    items["originQuery"] = originPath;
 
     setValues({ ...items })
     setOpenDialog(false);
+    console.log(values)
     handleSubmit();
   };
 
@@ -50,6 +53,7 @@ export default function TemplateDialog(props) {
             here.
           </DialogContentText>
           <TextField
+            name="name"
             autoFocus
             margin="dense"
             id="name"
@@ -57,9 +61,13 @@ export default function TemplateDialog(props) {
             type="name"
             fullWidth
             variant="outlined"
+            onChange={(e) => {
+              handleInputChange(e, valueHook);
+            }}
             InputLabelProps={{ shrink: true }}
           />
           <TextField
+            name="comment"
             autoFocus
             margin="dense"
             id="name"
@@ -68,6 +76,9 @@ export default function TemplateDialog(props) {
             fullWidth
             multiline
             variant="outlined"
+            onChange={(e) => {
+              handleInputChange(e, valueHook);
+            }}
             InputLabelProps={{ shrink: true }}
           />
         </DialogContent>

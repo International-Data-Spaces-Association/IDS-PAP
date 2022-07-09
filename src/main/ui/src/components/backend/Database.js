@@ -3,6 +3,7 @@ import axios from "axios";
 function getAllPolicies(data, setData) {
   axios.get( "/api/policies").then(
     (response) => {
+      console.log(response.data)
       setData(response.data);
     },
     (error) => {
@@ -46,7 +47,7 @@ function editPolicy(id, history) {
       const policy = JSON.parse(response.data.fieldValues);
       policy.id = response.data.id;
       history.push({
-        pathname: response.data.policyType,
+        pathname: response.data.queryOrigin,
         state: policy,
       });
     },

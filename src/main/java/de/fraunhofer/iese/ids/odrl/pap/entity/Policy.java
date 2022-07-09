@@ -26,15 +26,17 @@ public class Policy {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	private String policyID;
-	
-	private String description;
+	private String name;
 	
 	private String policyType;
 	
+	private String queryOrigin;
+	
+	private String comment;
+		
 	@Column(columnDefinition="text")
 	private String fieldValues;
 	
-	@Column(columnDefinition="text")
-	private String iDSPolicy;
+	//@Column(columnDefinition="text")
+	//private String iDSPolicy;
 }

@@ -292,7 +292,8 @@ export default function ComplexPolicyForm() {
               <Grid item xs={2} xm={2}>
                 <TemplateDialog
                 valueHook={valueHook}
-                handleSubmit={handleSubmit} />
+                handleSubmit={handleSubmit}
+                originPath="/policy/ComplexPolicyForm" />
               </Grid>
               <Grid item xs={4} xm={8} />
 

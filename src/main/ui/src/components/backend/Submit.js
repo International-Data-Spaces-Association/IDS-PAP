@@ -4,37 +4,41 @@ import axiosRetry from "axios-retry";
 
 export default function Submit(url, values, states, setErrors, history, e) {
   console.log(values);
-  e.preventDefault();
+  //e.preventDefault();
   if (validation(values, states, setErrors)) {
     for (var key in states) {
       states[key] = false;
     }
     const isoValues = convertDateToIso(values, states);
-    axios.post(url, isoValues).then(
-      (response) => {
-        axios
-          .post("/policy/initialTechnologyDependentPolicy", response.data)
-          .then(
-            (responseTDP) => {
-              console.log(response.data);
-              var dict = {
-                jsonPolicy: JSON.stringify(response.data, null, 2),
-                dtPolicy: responseTDP.data,
-              };
-              history.push({
-                pathname: "/ODRLCreator",
-                state: dict,
-              });
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    if (values.is_template) {
+      axios.post("/policy/template", isoValues).then();
+    } else {
+      axios.post(url, isoValues).then(
+        (response) => {
+          axios
+            .post("/policy/initialTechnologyDependentPolicy", response.data)
+            .then(
+              (responseTDP) => {
+                console.log(response.data);
+                var dict = {
+                  jsonPolicy: JSON.stringify(response.data, null, 2),
+                  dtPolicy: responseTDP.data,
+                };
+                history.push({
+                  pathname: "/ODRLCreator",
+                  state: dict,
+                });
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   }
 }
 

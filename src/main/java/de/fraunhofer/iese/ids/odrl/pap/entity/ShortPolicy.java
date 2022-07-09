@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 public interface ShortPolicy {
 	 Long getId();
-	 String getPolicyID();	
-	 String getDescription();
+	 String getName();
 	 String getPolicyType();
+	 String getComment();
 }

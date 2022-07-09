@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +67,7 @@ public class IDSPapRestController {
 			Optional<Policy> policy = policyRepo.findById(id);
 			if (policy.isPresent()) {
 				Policy realPolicy = policy.get();
-				return new ResponseEntity<>(realPolicy.getIDSPolicy(), HttpStatus.OK);
+				return new ResponseEntity<>(realPolicy.getFieldValues(), HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -98,6 +99,22 @@ public class IDSPapRestController {
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/policy/template")
+	public void template(@RequestBody RecievedOdrlPolicy rp) {
+		// Store the policy in the database
+		Policy policy = new Policy();
+		policy.setName(rp.getName());
+		policy.setComment(rp.getComment());
+		policy.setPolicyType(rp.getPolicyType());
+		policy.setQueryOrigin(rp.getOriginQuery());
+		rp.setIsTemplate(false);
+		policy.setFieldValues(new JSONObject(rp).toString());
+		try {
+			policyRepo.save(policy);
+		} catch (Exception e) {
 		}
 	}
 	
@@ -142,7 +159,7 @@ public class IDSPapRestController {
 		if (converter.addElapsedTimeRightOperand()) {
 			uid = baseUid + "restrict-access-interval";
 		}
-		return converter.createPolicy(uid, policyRepo, "/policy/ProvideAccessPolicyForm");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/ComplexPolicyForm")
@@ -166,7 +183,7 @@ public class IDSPapRestController {
 		converter.addRuleDistributeData();			
 		converter.addPostDuties();
 		converter.addPreDuties();
-		return converter.createPolicy(uid, policyRepo, "/policy/ComplexPolicyForm");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/CountAccessPolicyForm")
@@ -176,7 +193,7 @@ public class IDSPapRestController {
 		String uid = baseUid + "count-access";
 		converter.addCounterCondition();
 		converter.addCounterToPostduties();
-		return converter.createPolicy(uid, policyRepo, "/policy/CountAccessPolicyForm");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/deletePolicyAfterUsage")
@@ -185,7 +202,7 @@ public class IDSPapRestController {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "delete-after-usage";
 		converter.addDeletePolicyAfterUsage();
-		return converter.createPolicy(uid, policyRepo, "/policy/DeleteData");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/deletePolicyAfterUsagePeriod")
@@ -194,7 +211,7 @@ public class IDSPapRestController {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "delete-after-usage";
 		converter.addDeletePolicyAfterUsagePeriod();
-		return converter.createPolicy(uid, policyRepo, "/policy/DeleteData");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/AnonymizeInRestPolicyForm")
@@ -202,7 +219,7 @@ public class IDSPapRestController {
 		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.OBLIGATION ,ActionType.ANONYMIZE);
 		String uid = baseUid + "anonymize-in-rest";
-		return converter.createPolicy(uid, policyRepo, "/policy/AnonymizeInRestPolicyForm");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/AnonymizeInTransitPolicyForm")
@@ -211,7 +228,7 @@ public class IDSPapRestController {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "anonymize-in-transit";
 		converter.addPreDuties();
-		return converter.createPolicy(uid, policyRepo, "/policy/AnonymizeInTransitPolicyForm");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/LogAccessPolicyForm")
@@ -220,7 +237,7 @@ public class IDSPapRestController {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "log-access";
 		converter.addPostDuties();
-		return converter.createPolicy(uid, policyRepo, "/policy/LogAccessPolicyForm");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/InformPolicyForm")
@@ -229,7 +246,7 @@ public class IDSPapRestController {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "notify";
 		converter.addPostDuties();
-		return converter.createPolicy(uid, policyRepo, "/policy/InformPolicyForm");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/DistributePolicyForm")
@@ -238,7 +255,7 @@ public class IDSPapRestController {
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.DISTRIBUTE);
 		String uid = baseUid + "restrict-access-encoding";
 		converter.distributeData();
-		return converter.createPolicy(uid, policyRepo, "/policy/DistributeData");
+		return converter.createPolicy(uid, policyRepo);
 	}
 	
 	@PostMapping("/policy/JsonOdrlPolicyMYDATA")
