@@ -1,6 +1,16 @@
+/**
+ * @file Manages the connection with the saved policies in the backend.
+ * @author Tom Kollmer 
+ */
+
 import axios from "axios";
 
-function getAllPolicies(data, setData) {
+/**
+ * Tries to connect to the backend to retrieve all stored template policies.
+ * The received data is then added to the data object using the setData hook.
+ * @param {func} setData react hook to change the value of the data object.
+ */
+function getAllPolicies(setData) {
   axios.get( "/api/policies").then(
     (response) => {
       console.log(response.data)
@@ -12,6 +22,13 @@ function getAllPolicies(data, setData) {
   );
 }
 
+/**
+ * Tries to connect to the backend to download the policy with the specified ID.
+ * The policy is then converted to a json file and downloaded automatically.
+ * @param {number} id the id of the required policy
+ * @param {string} fileName filename of the created file
+ * @param {string} contentType flag to specify the file type. Plain json "text/plain"
+ */
 function exportPolicy(id, fileName, contentType) {
   axios.get(`/api/policies/export_${id}`).then(
     (response) => {
@@ -29,6 +46,13 @@ function exportPolicy(id, fileName, contentType) {
   );
 }
 
+/**
+ * Tries to connect with the backend to delete the saved policy with the given ID.
+ * If the delete process was successful, all remaining policies are retrieved.
+ * @param {number} id the id of the policy that should be deleted
+ * @param {object} data object that contains a local copy of the saved policies
+ * @param {func} setData react hook to change the value of the data object.
+ */
 function deletePolicy(id, data, setData) {
   axios.delete( `/api/policies/${id}`).then(
     (response) => {
@@ -40,6 +64,14 @@ function deletePolicy(id, data, setData) {
   );
 }
 
+/**
+ * Tries to connect with the backend to retrieve the given policy.
+ * If the operation was successful, the page where the policy was created
+ * is opened and all values from the template policy are pre-filled in the 
+ * text fields.
+ * @param {number} id the id of the policy that should be deleted
+ * @param {object} history object that contains and controls the browser history.
+ */
 function editPolicy(id, history) {
   axios.get( `/api/policies/edit_${id}`).then(
     (response) => {
@@ -57,6 +89,15 @@ function editPolicy(id, history) {
   );
 }
 
+/**
+ * [Unused ad the moment!]
+* Tries to connect with the backend to retrieve the given policy.
+ * If the operation was successful, the policy viewer page is opened 
+ * and all values from the template policy are pre-filled in the 
+ * code areas.
+ * @param {number} id the id of the policy that should be deleted
+ * @param {object} history object that contains and controls the browser history.
+ */
 function viewPolicy(id, history) {
   axios.get( `/api/policies/edit_${id}`).then(
     (response) => {

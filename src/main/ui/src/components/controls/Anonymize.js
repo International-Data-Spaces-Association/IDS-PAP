@@ -1,9 +1,25 @@
+/**
+ * @file This file contains form components for the anonymize pages
+ * @author Tom Kollmer 
+ */
+
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { modifier_list } from "./InitialFieldListValues";
 import Input from "./Input";
 import ItemPicker from "./ItemPicker";
 
+/**
+ * Components for anonymize pages
+ * @component
+ * @deprecated
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {number} xs size of the component at small screens
+ * @param {number} sm size of the component at medium screens
+ * @param {number} md size of the component at large screens
+ * @returns components
+ */
 export default function Anonymize(props) {
   const {
     valueHook,

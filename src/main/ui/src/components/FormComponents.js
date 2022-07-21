@@ -1,3 +1,8 @@
+/**
+ * @file This contains the basic form component for the complex policy page and provide access page
+ * @author Tom Kollmer 
+ */
+
 import React from "react";
 import { Grid } from "@material-ui/core";
 import Input from "../components/controls/Input";
@@ -14,6 +19,15 @@ import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
 import MultiSelectInputField from "./controls/MultiselectInputField";
 
+/**
+ * The basic form component used by create complex policy page and provide access page
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {object} selectedComponents contains all selected components
+ * @param {func} removeComponent is called to remove components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @returns component
+ */
 export default function FormComponents(props) {
   const {
     valueHook,

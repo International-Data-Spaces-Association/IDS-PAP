@@ -1,3 +1,7 @@
+/**
+ * @file This contains the multi select input field component
+ * @author Tom Kollmer 
+ */
 import React from "react";
 import { IconButton, Grid, Button } from "@material-ui/core";
 import ItemPicker from "./ItemPicker";
@@ -7,6 +11,20 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { useStyle } from "../Style";
 
+/**
+ * Multi select input field component
+ * @component
+ * @param {string} name of the input field
+ * @param {string} placeholder that should be used
+ * @param {string} inputType that should be used "input" or "itempicker"
+ * @param {object} itemList that should be used
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {number} xs size of the component at small screens
+ * @param {number} sm size of the component at medium screens
+ * @param {number} md size of the component at large screens
+ * @returns component
+ */
 export default function MultiSelectInputField(props) {
   const {
     name,

@@ -1,3 +1,8 @@
+/**
+ * @file In this file is the template dialog defined 
+ * @author Tom Kollmer 
+ */
+
 import React, { useState } from "react";
 import { useStyle } from "../Style";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,6 +13,14 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { Grid, Button, TextField } from "@material-ui/core";
 import { handleInputChange } from "../controls/Utils";
 
+/**
+ * Components for the template dialog box
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {func} handleSubmit is called when the user presses the button to submit the form
+ * @param {string} originPath url of the current page
+ * @returns component
+ */
 export default function TemplateDialog(props) {
   const { valueHook, handleSubmit, originPath} = props;
   const [values, setValues] = valueHook;

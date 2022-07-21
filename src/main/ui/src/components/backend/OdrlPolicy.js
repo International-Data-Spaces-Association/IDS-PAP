@@ -1,3 +1,13 @@
+/**
+ * @file Manages the construction and recovery of the initial object through a given 
+ * template policy, which later contains all user input
+ * @author Tom Kollmer 
+ */
+
+/**
+ * Creates an object that manages all user input
+ * @returns {object} with all field names and values.
+ */
 function OdrlPolicy() {
   return {
     id: -1,
@@ -64,9 +74,17 @@ function OdrlPolicy() {
   };
 }
 
-function recreateSelectedCompFromJson(statelocal, initialValues, selected_components) {
-  if (statelocal !== undefined) {
-    initialValues = statelocal;
+/**
+ * Used to recreate the selectedComponents object that controls all selected form fields. 
+ * This function is mainly used for editing a saved policy. 
+ * @param {object} stateLocal local state object that contains the template policy.
+ * @param {object} initialValues initial field values 
+ * @param {object} selected_components initial selected component values
+ * @returns {object} selected components with added values if stateLocal is not undefined.
+ */
+function recreateSelectedCompFromJson(stateLocal, initialValues, selected_components) {
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
     var order = [];
     if (initialValues.application_input[0] !== "") {
       order.push("application");
@@ -119,9 +137,17 @@ function recreateSelectedCompFromJson(statelocal, initialValues, selected_compon
   return initialValues;
 }
 
-function recreateSelectedDistriCompFromJson(statelocal, initialValues, selected_distribute_components) {
-  if (statelocal !== undefined) {
-    initialValues = statelocal;
+/**
+ * Used to recreate the selectedDistributeComponents object that controls the distribute form fields. 
+ * This function is mainly used for editing a saved policy. 
+ * @param {object} stateLocal local state object that contains the template policy.
+ * @param {object} initialValues initial field values 
+ * @param {object} selected_distribute_components initial selected distribute component values
+ * @returns {object} selected distribute components with added values if stateLocal is not undefined.
+ */
+function recreateSelectedDistriCompFromJson(stateLocal, initialValues, selected_distribute_components) {
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
     var order = [];
     if (initialValues.artifactState !== "") {
       order.push("distribute");
@@ -138,9 +164,17 @@ function recreateSelectedDistriCompFromJson(statelocal, initialValues, selected_
   return initialValues;
 }
 
-function recreateSelectedPreduCompFromJson(statelocal, initialValues, selected_preduties_components) {
-  if (statelocal !== undefined) {
-    initialValues = statelocal;
+/**
+ * Used to recreate the selectedPredutyComponents object that controls the preduty form fields. 
+ * This function is mainly used for editing a saved policy. 
+ * @param {object} stateLocal local state object that contains the template policy.
+ * @param {object} initialValues initial field values 
+ * @param {object} selected_preduties_components initial selected preduty component values
+ * @returns {object} selected preduties components with added values if stateLocal is not undefined.
+ */
+function recreateSelectedPreduCompFromJson(stateLocal, initialValues, selected_preduties_components) {
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
     var order = [];
     if (initialValues.preduties_modifier !== "") {
       order.push("anonymizeTransit");
@@ -160,9 +194,18 @@ function recreateSelectedPreduCompFromJson(statelocal, initialValues, selected_p
   return initialValues;
 }
 
-function recreateSelectedPostduCompFromJson(statelocal, initialValues, selected_postduties_components, selected_delete_data_components) {
-  if (statelocal !== undefined) {
-    initialValues = statelocal;
+/**
+ * Used to recreate the selectedPostdutyComponents object that controls the postdury form fields. 
+ * This function is mainly used for editing a saved policy. 
+ * @param {object} stateLocal local state object that contains the template policy.
+ * @param {object} initialValues initial field values 
+ * @param {object} selected_postduties_components initial selected postduty component values
+ * @param {object} selected_delete_data_components initial selected delete data component values
+ * @returns {object} selected postduty and delete data components with added values if stateLocal is not undefined.
+ */
+function recreateSelectedPostduCompFromJson(stateLocal, initialValues, selected_postduties_components, selected_delete_data_components) {
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
     var order = [];
     if (initialValues.postduties_durationYear !== "") {
       selected_delete_data_components.postduties_duration = true

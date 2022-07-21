@@ -1,10 +1,23 @@
+/**
+ * @file Manages the connection with the backend when new policies are created 
+ * @author Tom Kollmer 
+ */
+
 import axios from "axios";
 import negotiateTestResponse from "../negotiateExample.json";
-import axiosRetry from "axios-retry";
 
+/**
+ * Main function that is called when a new policy is created. First the inputs are validated then
+ * transformed and finally send to the backend.
+ * @param {string} url that is used to send the data to the backend
+ * @param {object} values that contains all user input
+ * @param {object} states that determine all selected components 
+ * @param {func} setErrors function to show error messages on the UI
+ * @param {object} history that controls the currently shown page
+ * @param {object} e sender to determine the origin [Not used at the moment]
+ */
 export default function Submit(url, values, states, setErrors, history, e) {
   console.log(values);
-  //e.preventDefault();
   if (validation(values, states, setErrors)) {
     for (var key in states) {
       states[key] = false;
@@ -42,6 +55,12 @@ export default function Submit(url, values, states, setErrors, history, e) {
   }
 }
 
+/**
+ * Connects with the backend to translate the user input to a valid policy.
+ * @param {string} url that is used to send the data to the backend
+ * @param {object} values that contains all user input
+ * @param {func} setPolicy function to set policy
+ */
 export function jsonOdrlPolicy(url, values, setPolicy) {
   axios
     .post(url, values, {
@@ -59,12 +78,17 @@ export function jsonOdrlPolicy(url, values, setPolicy) {
       }
     );
 }
+
+/**
+ * [Not used!] Tries to access the negotiated policy and retries if the policy is still stuck in the negotiation process. 
+ * @param {object} axios object
+ * @param {object} options json object with retry_time and retry_status_code
+ */
 const retryWrapper = (axios, options) => {
   const max_time = options.retry_time;
   const retry_status_code = options.retry_status_code;
   let counter = 0;
   axios.interceptors.response.use(null, (error) => {
-    /** @type {import("axios").AxiosRequestConfig} */
     const config = error.config;
     if (counter < max_time && error.response.status === retry_status_code) {
       counter++;
@@ -83,6 +107,11 @@ const retryWrapper = (axios, options) => {
   });
 };
 
+/**
+ * Tries to get the uuid of the negotiated policy after it is exported.
+ * @param {string} url that is used to send the data to the backend
+ * @returns {string} the uuid of the negotiated policy
+ */
 export async function negotiatePolicyGetUUID(url) {
   let uuid = await axios.post(
     `${url}/contract-negotiation`,
@@ -96,11 +125,23 @@ export async function negotiatePolicyGetUUID(url) {
   return uuid.data;
 }
 
+/**
+ * Tries to get the negotiated policy with the given uuid
+ * @param {string} url that is used to send the data to the backend
+ * @param {string} uuid of the negotiated policy
+ * @returns {object} negotiated policy
+ */
 export async function negotiatePolicyGetResponse(url, uuid) {
   let policy = await axios.get(`${url}/${uuid}`);
   return policy;
 }
 
+/**
+ * Converts the date to iso standard
+ * @param {object} values object with all the user input
+ * @param {object} states object with all the selected states
+ * @returns {string} the date in iso format
+ */
 function convertDateToIso(values, states) {
   var isoValues = { ...values };
   isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime);
@@ -116,6 +157,11 @@ function convertDateToIso(values, states) {
   return isoValues;
 }
 
+/**
+ * Adds a suffix to the date string
+ * @param {String} date that should be converted 
+ * @returns {string} converted date
+ */
 function addDateSuffix(date) {
   if (date === "") {
     return "";
@@ -123,6 +169,13 @@ function addDateSuffix(date) {
   return date + ":00Z";
 }
 
+/**
+ * Used to validate the user input and checks if all requirements are satisfied.
+ * @param {object} values containing the user input
+ * @param {object} states that determine all selected components 
+ * @param {func} setErrors function to show error messages on the UI
+ * @returns {boolean} true when all requirements are satisfied
+ */
 function validation(values, states, setErrors) {
   console.log(states, states.page);
   let error_list = {};
@@ -216,6 +269,12 @@ function validation(values, states, setErrors) {
   return Object.values(error_list).every((x) => x === "");
 }
 
+/**
+ * Checks the user input of the complex policy page
+ * @param {object} values containing the user input
+ * @param {object} states that determine all selected components 
+ * @param {object} error_list that contains all error messages 
+ */
 function checkComplexPolicyFields(values, states, error_list) {
   //Restrict Application
   checkMultiInputField("application", isValidUrl, values, states, error_list);
@@ -344,6 +403,11 @@ function checkComplexPolicyFields(values, states, error_list) {
   }
 }
 
+/**
+ * Checks if the user input to the header of the policy is correct
+ * @param {object} error_list that contains all error messages 
+ * @param {object} values containing the user input
+ */
 function checkHeader(error_list, values) {
   error_list.policyType = isNotEmpty(values.policyType);
   error_list.target = isValidUrl(values.target);
@@ -355,6 +419,14 @@ function checkHeader(error_list, values) {
   }
 }
 
+/**
+ * Checks if the input of a multi input field is valid
+ * @param {string} key  
+ * @param {func} func 
+ * @param {object} values containing the user input
+ * @param {object} states that determine all selected components 
+ * @param {object} error_list that contains all error messages 
+ */
 function checkMultiInputField(key, func, values, states, error_list) {
   if (states[key]) {
     if (1 < values[key + "_input"].length) {
@@ -366,6 +438,11 @@ function checkMultiInputField(key, func, values, states, error_list) {
   }
 }
 
+/**
+ * Checks if the parameter is a valid url
+ * @param {string} string that should be checked if it is a valid url
+ * @returns {string} error message if the input is incorrect
+ */
 function isValidUrl(string) {
   const error = isNotEmpty(string);
   if (error !== "") return error;
@@ -378,6 +455,11 @@ function isValidUrl(string) {
   return "";
 }
 
+/**
+ * Checks if the parameter is a valid date and in the future
+ * @param {string} date to be checked if it is valid
+ * @returns {string} error message if the input is incorrect
+ */
 function isValidDate(date) {
   const error = isNotEmpty(date);
   if (error !== "") return error;
@@ -395,6 +477,11 @@ function isValidDate(date) {
   }
 }
 
+/**
+ *  Checks if the input is a valid date and not empty
+ * @param {string} date that should be checked 
+ * @returns {string} error message if the input is incorrect
+ */
 function isDateOrEmpty(date) {
   if (date === "") return "";
   try {
@@ -410,6 +497,12 @@ function isDateOrEmpty(date) {
   }
 }
 
+/**
+ * Checks if both dates define a valid interval
+ * @param {string} date1 start date
+ * @param {string} date2 end date
+ * @returns {string} error message if the input is incorrect
+ */
 function isValidDateInterval(date1, date2) {
   const error = isNotEmpty(date2);
   if (error !== "") return error;
@@ -423,6 +516,11 @@ function isValidDateInterval(date1, date2) {
   }
 }
 
+/**
+ * Checks if the input is a valid price
+ * @param {number} price that should be checked
+ * @returns {string} error message if the input is incorrect
+ */
 function isValidFloat(price) {
   const error = isNotEmpty(price);
   if (error !== "") return error;
@@ -436,6 +534,11 @@ function isValidFloat(price) {
   }
 }
 
+/**
+ * Checks if the input is empty or a valid int
+ * @param {number} n that should be checked 
+ * @returns {string} error message if the input is incorrect
+ */
 function isIntOrEmpty(n) {
   if (n === "") return "";
   if (parseInt(n) < 0) {
@@ -447,6 +550,11 @@ function isIntOrEmpty(n) {
   }
 }
 
+/**
+ * Checks if the input is an int and not empty
+ * @param {number} count that should be checked 
+ * @returns {string} error message if the input is incorrect
+ */
 function isValidInt(count) {
   const error = isNotEmpty(count);
   if (error !== "") return error;
@@ -459,6 +567,12 @@ function isValidInt(count) {
     return "Not a valid number";
   }
 }
+
+/**
+ * Checks if the string is not empty
+ * @param {string} str 
+ * @returns {string} error message if the input is incorrect
+ */
 function isNotEmpty(str) {
   if (str === "") {
     return "The field should not be empty";

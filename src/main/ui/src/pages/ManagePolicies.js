@@ -33,7 +33,7 @@ import {
   viewPolicy,
 } from "../components/backend/Database";
 
-const tableIcons: Icons = {
+const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
@@ -67,8 +67,8 @@ export default function LogAccess() {
   ];
 
   const [data, setData] = React.useState([]);
-  //getAllPolicies(data, setData)
-  React.useEffect(() => getAllPolicies(data, setData), []);
+  //getAllPolicies(setData)
+  React.useEffect(() => getAllPolicies(setData), []);
   return (
     <div className={classes.page}>
       <Form>

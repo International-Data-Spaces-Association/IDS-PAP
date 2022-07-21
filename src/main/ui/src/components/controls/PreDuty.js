@@ -1,3 +1,8 @@
+/**
+ * @file This contains the pre duty component 
+ * @author Tom Kollmer 
+ */
+
 import React, { useState } from "react";
 import {
   Grid,
@@ -12,7 +17,20 @@ import Remove from "./Remove";
 import { Typography } from "@material-ui/core";
 import Anonymize from "./Anonymize";
 
-
+/**
+ * Components for the pre duty component
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {object} selectedComponents contains all selected components
+ * @param {func} removeComponent is called to remove components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {object} classes contains the css definitions
+ * @param {string} name that should be used for the components
+ * @param {string} title that should be used for the components
+ * @param {string} prefix that should be used for the components
+ * @returns component
+ */
 export default function PreDuty(props) {
   const {
     valueHook,
@@ -54,7 +72,7 @@ export default function PreDuty(props) {
         return () => (
           <>
             <Grid container key={"anonymizeTransit" + prefix}>
-              <Title label="Anonymize in Transit" seperator={true} xs={12} />
+              <Title label="Anonymize in Transit" separator={true} xs={12} />
               <Grid container xs={11} spacing={2}>
                 <Anonymize
                   valueHook={valueHook}
@@ -86,7 +104,7 @@ export default function PreDuty(props) {
         return () => (
           <>
             <Grid container key={"anonymizeInRest" + prefix}>
-              <Title label="Anonymize in Rest" seperator={true} xs={12} />
+              <Title label="Anonymize in Rest" separator={true} xs={12} />
               <Grid container xs={11} spacing={2}>
                   <Typography> Anonymize in Rest activated. </Typography>
               </Grid>

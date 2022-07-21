@@ -1,3 +1,7 @@
+/**
+ * @file This file contains components for the delete data page
+ * @author Tom Kollmer 
+ */
 import React, { useState } from "react";
 import { Grid, Menu, MenuItem, Button } from "@material-ui/core";
 import { useStyle } from "../Style";
@@ -6,6 +10,21 @@ import Title from "./Title";
 import Date from "./Date";
 import Remove from "./Remove";
 
+/**
+ * Components for the delete data pages
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {object} selectedComponents contains all selected components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {func} setSelectedComponents is called to change the selected components
+ * @param {number} xs size of the component at small screens
+ * @param {number} sm size of the component at medium screens
+ * @param {number} md size of the component at large screens
+ * @param {number} prefix is added before all component names
+ * @param {number} separator if a line should be added between the components 
+ * @returns component
+ */
 export default function DeleteData(props) {
   const {
     valueHook,
@@ -17,7 +36,7 @@ export default function DeleteData(props) {
     sm = 12,
     md = 12,
     prefix = "",
-    seperator = true,
+    separator = true,
   } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyle();
@@ -60,7 +79,7 @@ export default function DeleteData(props) {
           <>
             <Grid container className={classes.paperSubContainer}>
               <Title
-                seperator={seperator}
+                separator={separator}
                 label="Specify a time duration that the application has to wait before deleting the data"
               />
               <Grid container xs={11} spacing={2}>
@@ -110,7 +129,7 @@ export default function DeleteData(props) {
           <>
             <Grid container className={classes.paperSubContainer}>
               <Title
-                seperator={seperator}
+                separator={separator}
                 label="Specify an exact date and time to delete the data:"
               />
               <Grid container xs={11} spacing={2}>

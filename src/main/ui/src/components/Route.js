@@ -1,3 +1,8 @@
+/**
+ * @file Here are all paths defined that are used by the UI 
+ * @author Tom Kollmer 
+ */
+
 import { Route, Switch } from "react-router-dom";
 import React from "react";
 import CountAccess from "../pages/CountAccess";
@@ -19,6 +24,11 @@ import SignUp from "../pages/SignUp";
 import ForgotPassword from "../pages/ForgotPassword";
 import HowTo from "../pages/HowTo";
 import NegotiatePolicy from "../pages/NegotiatePolicy";
+/**
+ * Here are all routes to the pages defined. To add a new 
+ * page just add a new route and add the page component
+ * @returns Router
+ */
 export default function RouteToPage() {
   return (
     <Switch>

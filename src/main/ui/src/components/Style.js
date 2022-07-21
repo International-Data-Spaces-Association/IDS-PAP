@@ -1,5 +1,12 @@
+/**
+ * @file This contains the style definition
+ * @author Tom Kollmer 
+ */
 import { makeStyles } from "@material-ui/core";
 
+/**
+ * Css definitions for the frontend design
+ */
 export const useStyle = makeStyles((theme) => ({
   root: {
     flexGrow: 1,

@@ -1,3 +1,7 @@
+/**
+ * @file This file contains the add restrictions components
+ * @author Tom Kollmer 
+ */
 import React, { useState } from "react";
 import {
   Grid,
@@ -21,6 +25,17 @@ import Title from "../components/controls/Title";
 import MultiSelectInputField from "../components/controls/MultiselectInputField";
 import MenuItems from "../components/controls/MenuItems";
 
+/**
+ * Components for the add restrictions component
+ * @component
+ * @param {object} selectedComponents contains all selected components
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {func} removeComponent is called to remove components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {object} classes contains the css definitions
+ * @returns component
+ */
 export default function AddRestrictions(props) {
   const {
     selectedComponents,
