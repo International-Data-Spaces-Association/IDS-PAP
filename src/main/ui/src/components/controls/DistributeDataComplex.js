@@ -1,3 +1,8 @@
+/**
+ * @file This file contains components for the distribute data page
+ * @author Tom Kollmer 
+ */
+
 import {
   Grid,
   Button,
@@ -10,6 +15,16 @@ import { artifact_state_list } from "./InitialFieldListValues";
 import { useStyle } from "../Style";
 import Remove from "./Remove";
 
+/**
+ * Components for the distribute data pages
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {object} selectedComponents contains all selected components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {func} removeComponent is called to remove components from the UI
+  * @returns component
+ */
 export default function DistributeDataComplex(props) {
   const {
     valueHook,

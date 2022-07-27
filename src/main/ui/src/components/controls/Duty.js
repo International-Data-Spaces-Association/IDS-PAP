@@ -1,3 +1,7 @@
+/**
+ * @file This file contains components for the preduty and postduty components
+ * @author Tom Kollmer 
+ */
 import React, { useState } from "react";
 import { Grid, MenuItem, Menu, Button, Paper } from "@material-ui/core";
 import InformParty from "./InformParty";
@@ -7,6 +11,22 @@ import MenuItems from "./MenuItems";
 import Title from "./Title";
 import Remove from "./Remove";
 import { Typography } from "@material-ui/core";
+
+/**
+ * Components for the delete data pages
+ * @component
+ * @param {object} selectedComponents contains all selected components
+ * @param {object} value access to the user input
+ * @param {object} setValues access to the user input
+ * @param {object} errors contains all error messages
+ * @param {func} handleInputChange is called when user input is recognized
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {object} classes containing the css definition
+ * @param {string} name that should be used for the components
+ * @param {string} title that should be used for the components
+ * @param {string} type that should be used for the components
+ * @returns component
+ */
 export default function Duty(props) {
   const {
     selectedComponents,
@@ -48,7 +68,7 @@ export default function Duty(props) {
       case "log":
         return () => (
           <>
-            <Title label="Log Data Usage" seperator={false} xs={11} />
+            <Title label="Log Data Usage" separator={false} xs={11} />
             <Grid container key={"log_" + type}>
               <Grid item xs={1} />
               <LogData
@@ -78,7 +98,7 @@ export default function Duty(props) {
             <Grid container key={"delete_" + type}>
               <Grid xs={12}>
                 <Grid xs={12}>
-                  <Title label="Delete Data After" seperator={true} xs={12} />
+                  <Title label="Delete Data After" separator={true} xs={12} />
                 </Grid>
                 <Grid container>
                   <Grid item xs={1}></Grid>
@@ -94,7 +114,7 @@ export default function Duty(props) {
                         xs={11}
                         sm={11}
                         md={11}
-                        seperator={false}
+                        separator={false}
                         type={type + "_"}
                       />
                     </Grid>
@@ -123,7 +143,7 @@ export default function Duty(props) {
       case "inform":
         return () => (
           <>
-            <Title label="Inform Party" seperator={false} xs={11} />
+            <Title label="Inform Party" separator={false} xs={11} />
             <Grid container key={"inform_" + type}>
               <Grid item xs={1} />
               <InformParty

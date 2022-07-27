@@ -1,3 +1,8 @@
+/**
+ * @file This contains the navigation component
+ * @author Tom Kollmer 
+ */
+
 import React from "react";
 import clsx from "clsx";
 import {
@@ -99,6 +104,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * This component is used to show the toolbar and navigation menu. 
+ * The menu can also be minimized
+ * @param {object} open react hook that contains a boolean if the navigation is open
+ * @param {func} setOpen function to set the state of open
+ * @returns 
+ */
 export default function Navigation(props) {
   const { open, setOpen } = props;
   const classes = useStyles();

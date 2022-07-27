@@ -1,9 +1,24 @@
+/**
+ * @file This contains the log data component 
+ * @author Tom Kollmer 
+ */
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { log_level_list } from "./InitialFieldListValues";
 import Input from "./Input";
 import ItemPicker from "./ItemPicker";
 
+/**
+ * Components for the delete data pages
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {number} xs size of the component at small screens
+ * @param {number} sm size of the component at medium screens
+ * @param {number} md size of the component at large screens
+ * @param {string} prefix that should be added to the name
+ * @returns component
+ */
 export default function LogData(props) {
   const {valueHook, errors, xs=12, sm=12, md=12, prefix=""} = props;
   return (

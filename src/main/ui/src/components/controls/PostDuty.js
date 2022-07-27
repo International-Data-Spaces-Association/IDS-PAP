@@ -1,3 +1,8 @@
+/**
+ * @file This contains the post duty component 
+ * @author Tom Kollmer 
+ */
+
 import React, { useState } from "react";
 import { Grid, MenuItem, Menu, Button, Paper } from "@material-ui/core";
 import InformParty from "./InformParty";
@@ -7,6 +12,23 @@ import MenuItems from "./MenuItems";
 import Title from "./Title";
 import Remove from "./Remove";
 import { Typography } from "@material-ui/core";
+
+/**
+ * Components for the post duty data component
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {object} selectedComponents contains all selected components
+ * @param {object} selectedDeleteComponents contains all selected delete components
+ * @param {func} setSelectedDeleteComponents is called to set delete components
+ * @param {func} removeComponent is called to remove components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {object} classes contains the css definitions
+ * @param {string} name that should be used for the components
+ * @param {string} title that should be used for the components
+ * @param {string} prefix that should be used for the components
+ * @returns component
+ */
 export default function PostDuty(props) {
   const {
     valueHook,
@@ -41,7 +63,7 @@ export default function PostDuty(props) {
         return () => (
           <>
             <Grid container key={"log_" + prefix}>
-              <Title label="Log Data Usage" seperator={false} xs={12} />
+              <Title label="Log Data Usage" separator={false} xs={12} />
               <Grid container xs={11} spacing={2}>
                 <LogData
                   valueHook={valueHook}
@@ -68,7 +90,7 @@ export default function PostDuty(props) {
         return () => (
           <>
             <Grid container key={"delete_" + prefix}>
-              <Title label="Delete Data After" seperator={true} xs={12} />
+              <Title label="Delete Data After" separator={true} xs={12} />
               <Grid container xs={11} spacing={2}>
                 <DeleteData
                   valueHook={valueHook}
@@ -78,7 +100,7 @@ export default function PostDuty(props) {
                   xs={11}
                   sm={11}
                   md={11}
-                  seperator={false}
+                  separator={false}
                   errors={errors}
                   prefix={prefix + "_"}
                 />
@@ -107,7 +129,7 @@ export default function PostDuty(props) {
           <>
             {" "}
             <Grid container key={"inform_" + prefix}>
-              <Title label="Inform Party" seperator={false} xs={11} />
+              <Title label="Inform Party" separator={false} xs={11} />
               <Grid container xs={11} spacing={2}>
                 <InformParty
                   valueHook={valueHook} 
