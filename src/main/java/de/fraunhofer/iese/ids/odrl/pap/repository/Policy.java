@@ -1,4 +1,4 @@
-package de.fraunhofer.iese.ids.odrl.pap.entity;
+package de.fraunhofer.iese.ids.odrl.pap.repository;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -22,6 +22,18 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Policy {
+	
+	public Policy(String name, String policyType, String queryOrigin, String comment, String fieldValues) {
+		this.name = name;
+		this.policyType = policyType;
+		this.queryOrigin = queryOrigin;
+		this.comment = comment;
+		this.fieldValues = fieldValues;
+	}
+
+	public Policy() {
+	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;

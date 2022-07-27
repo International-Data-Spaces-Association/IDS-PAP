@@ -1,4 +1,4 @@
-package de.fraunhofer.iese.ids.odrl.pap.entity;
+package de.fraunhofer.iese.ids.odrl.pap.repository;
 
 import javax.persistence.Entity;
 
