@@ -1,19 +1,10 @@
 package de.fraunhofer.iese.ids.odrl.pap.test;
 
-import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -25,8 +16,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,6 +31,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import de.fraunhofer.iese.ids.odrl.pap.OdrlPapApplication;
+import de.fraunhofer.iese.ids.odrl.pap.controller.IDSPapRestController;
 
 /**
  * 
@@ -42,11 +39,15 @@ import de.fraunhofer.iese.ids.odrl.pap.OdrlPapApplication;
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OdrlPapApplication.class)
-@EntityScan(basePackages = "de.fraunhofer.iese.ide.odrl.pap")
+@EnableAutoConfiguration(exclude = JacksonAutoConfiguration.class)
 @WebAppConfiguration
+@ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
+@SpringBootTest(classes = IDSPapRestController.class)
+@EntityScan(basePackages = "de.fraunhofer.iese.ide.odrl.pap")
+@ComponentScan(basePackageClasses =  OdrlPapApplication.class)
 //@DirtiesContext
 public class RecievedOdrlPolicyTest {
+	
 	@Autowired
 	private WebApplicationContext wac;
 	

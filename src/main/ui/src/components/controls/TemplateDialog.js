@@ -53,7 +53,7 @@ export default function TemplateDialog(props) {
         color="secondary"
         className={classes.saveBtn}
         prefix="submit"
-        id="Save"
+        id="Template"
         onClick={handleClickOpen}
       >
         Save as template

@@ -79,7 +79,7 @@ export default function DeleteDataAfter() {
   };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         {Object.values(selectedComponents).every((x) => x === false) ? (
           <PageHeader
             title="The assumption is that your data is stored in a database on consumer side."
@@ -120,15 +120,16 @@ export default function DeleteDataAfter() {
           </Grid>
           <Grid item xs={12}>
             <Grid item xs={2}>
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.saveBtn}
-                type="submit"
-                id="Save"
-              >
-                Submit
-              </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.saveBtn}
+              prefix="submit"
+              id="Save"
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
             </Grid>
           </Grid>
         </Grid>

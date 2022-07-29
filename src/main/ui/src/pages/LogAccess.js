@@ -43,7 +43,7 @@ export default function LogAccess() {
 
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy gives permission to a specified IDS data consumer to use your data and requests to log the usage information on a specified system device."
           icon={<AssignmentIcon />}
@@ -66,12 +66,13 @@ export default function LogAccess() {
             </Paper>
           </Grid>
           <Grid item xs={2}>
-            <Button
+          <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               className={classes.saveBtn}
-              type="submit"
+              prefix="submit"
               id="Save"
+              onClick={handleSubmit}
             >
               Submit
             </Button>

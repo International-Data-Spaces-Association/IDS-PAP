@@ -12,9 +12,9 @@ import de.fraunhofer.iese.ids.odrl.pap.repository.ShortPolicy;
 
 @Service
 public class PolicyServiceImpl implements PolicyService {
-	@Autowired
 	private IPolicyRepo policyRepo;
-
+	
+	@Autowired
     public PolicyServiceImpl(IPolicyRepo policyRepo) {
         this.policyRepo = policyRepo;
     }

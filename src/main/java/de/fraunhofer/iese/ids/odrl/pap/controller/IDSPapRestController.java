@@ -37,7 +37,8 @@ public class IDSPapRestController {
 	
 	PolicyService policyService;
 	
-    public IDSPapRestController(PolicyService policyService) {
+	@Autowired
+    public IDSPapRestController(PolicyService policyService ) {
         this.policyService = policyService;
     }
 
