@@ -14,6 +14,7 @@ function getAllPolicies(setData) {
   axios.get( "/api/policies").then(
     (response) => {
       console.log(response.data)
+      console.log("SetData", setData)
       setData(response.data);
     },
     (error) => {
@@ -56,7 +57,7 @@ function exportPolicy(id, fileName, contentType) {
 function deletePolicy(id, data, setData) {
   axios.delete( `/api/policies/${id}`).then(
     (response) => {
-      getAllPolicies(data, setData);
+      getAllPolicies(setData);
     },
     (error) => {
       console.log(error);
