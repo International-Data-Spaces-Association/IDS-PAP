@@ -19,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +28,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import de.fraunhofer.iese.ids.odrl.pap.OdrlPapApplication;
-import de.fraunhofer.iese.ids.odrl.pap.controller.IDSPapRestController;
 
 /**
  * 
@@ -39,13 +35,8 @@ import de.fraunhofer.iese.ids.odrl.pap.controller.IDSPapRestController;
  *
  */
 @RunWith(SpringRunner.class)
-@EnableAutoConfiguration(exclude = JacksonAutoConfiguration.class)
 @WebAppConfiguration
-@ContextConfiguration(initializers = ConfigFileApplicationContextInitializer.class)
-@SpringBootTest(classes = IDSPapRestController.class)
-@EntityScan(basePackages = "de.fraunhofer.iese.ide.odrl.pap")
-@ComponentScan(basePackageClasses =  OdrlPapApplication.class)
-//@DirtiesContext
+@SpringBootTest(classes =  OdrlPapApplication.class)
 public class RecievedOdrlPolicyTest {
 	
 	@Autowired
