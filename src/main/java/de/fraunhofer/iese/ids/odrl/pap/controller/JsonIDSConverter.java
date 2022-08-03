@@ -231,6 +231,26 @@ public class JsonIDSConverter {
 			return false;
 		}
 
+		public boolean addRestrictStartTimeCondition() {
+			if (rp.getRestrictStartTime() != "") {
+				RightOperand rightOperand = new RightOperand();
+				rightOperand.setType(RightOperandType.INSTANT);
+				RightOperandEntity startEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictStartTime(),
+						RightOperandType.DATETIMESTAMP);
+
+				ArrayList<RightOperandEntity> entities = new ArrayList<>();
+				entities.add(startEntity);
+				rightOperand.setEntities(entities);
+				ArrayList<RightOperand> rightOperands = new ArrayList<>();
+				rightOperands.add(rightOperand);
+				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
+						Operator.AFTER, rightOperands, null);
+				constraints.add(dateTimeCondition);
+				return true;
+			}
+			return false;
+		}
+		
 		public boolean addRestrictEndTimeCondition() {
 			if (rp.getRestrictEndTime() != "") {
 				RightOperand rightOperand = new RightOperand();

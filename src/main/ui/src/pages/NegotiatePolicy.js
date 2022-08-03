@@ -55,7 +55,6 @@ export default function NegotiatePolicy() {
   async function handleButtonClick(url) {
     setShowBackdrop(true);
     let uuid = await negotiatePolicyGetUUID(url);
-    console.log(uuid, typeof(uuid))
     await sleep(10000)
     let response = await negotiatePolicyGetResponse(url, uuid);
     setShowBackdrop(false);

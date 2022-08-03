@@ -184,6 +184,7 @@ public class IDSPapRestController {
 		converter.addCounterCondition();
 		converter.addRestrictTimeIntervalCondition();
 		converter.addRestrictEndTimeCondition();
+		converter.addRestrictStartTimeCondition();
 		converter.addPaymentCondition();
 		converter.addElapsedTimeRightOperand();
 		converter.addRuleDistributeData();			
