@@ -556,9 +556,9 @@ public class JsonIDSConverter {
 		public void anonymizeInTransit(String fieldToChange, String valueToChange, String modifier) {
 			ArrayList<Condition> refinements = new ArrayList<>();
 
-			if (fieldToChange != "") {
+			if (valueToChange != "") {
 				RightOperand replaceWithRightOperand = new RightOperand();
-				replaceWithRightOperand.setValue(fieldToChange);
+				replaceWithRightOperand.setValue(valueToChange);
 				replaceWithRightOperand.setType(RightOperandType.STRING);
 				ArrayList<RightOperand> replaceWithRightOperands = new ArrayList<>();
 				replaceWithRightOperands.add(replaceWithRightOperand);
@@ -568,7 +568,7 @@ public class JsonIDSConverter {
 			}
 
 			RightOperand subsetSpecificationRightOperand = new RightOperand();
-			subsetSpecificationRightOperand.setValue(valueToChange);
+			subsetSpecificationRightOperand.setValue(fieldToChange);
 			subsetSpecificationRightOperand.setType(RightOperandType.STRING);
 			ArrayList<RightOperand> subsetSpecificationRightOperands = new ArrayList<>();
 			subsetSpecificationRightOperands.add(subsetSpecificationRightOperand);
@@ -616,7 +616,7 @@ public class JsonIDSConverter {
 
 		public void addPreDuties() {
 			if (rp.getPreduties_modifier() != "" && rp.getPreduties_fieldToChange() != "") {
-				anonymizeInTransit(rp.getPreduties_fieldToChange(), rp.getPreduties_valueToChange(), rp.getPreduties_modifier());
+				anonymizeInTransit(rp.getPreduties_fieldToChange(),rp.getPreduties_valueToChange(), rp.getPreduties_modifier());
 			}
 			
 			if (rp.getPreduties_anomInRest() != "") {
