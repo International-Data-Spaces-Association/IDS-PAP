@@ -9,7 +9,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
-import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
+import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
@@ -64,9 +64,9 @@ public class JsonIDSConverter {
 		// odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
-		String jsonPolicyString = OdrlCreator.createODRL(odrlPolicy);
-		Map map = null;
-		boolean tempProviderSide = true;
+		String jsonPolicyString = TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, false);
+		//Map map = null;
+		//boolean tempProviderSide = true;
 		//String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
 		// String dtPolicy = policy(jsonPolicy);
 		
@@ -205,8 +205,6 @@ public class JsonIDSConverter {
 
 		public boolean addRestrictTimeIntervalCondition() {
 			if (rp.getRestrictTimeIntervalStart() != "" && rp.getRestrictTimeIntervalEnd()!="") {
-				RightOperand rightOperand = new RightOperand();
-				rightOperand.setType(RightOperandType.INTERVAL);
 				RightOperandEntity startInnerEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictTimeIntervalStart(),
 						RightOperandType.DATETIMESTAMP);
 				RightOperandEntity startEntity = new RightOperandEntity(EntityType.BEGIN, startInnerEntity,
@@ -220,7 +218,7 @@ public class JsonIDSConverter {
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(startEntity);
 				entities.add(endEntity);
-				rightOperand.setEntities(entities);
+				RightOperand rightOperand = new RightOperand(entities, RightOperandType.INTERVAL);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -233,14 +231,12 @@ public class JsonIDSConverter {
 
 		public boolean addRestrictStartTimeCondition() {
 			if (rp.getRestrictStartTime() != "") {
-				RightOperand rightOperand = new RightOperand();
-				rightOperand.setType(RightOperandType.INSTANT);
 				RightOperandEntity startEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictStartTime(),
 						RightOperandType.DATETIMESTAMP);
 
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(startEntity);
-				rightOperand.setEntities(entities);
+				RightOperand rightOperand = new RightOperand(entities, RightOperandType.INSTANT);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -253,14 +249,12 @@ public class JsonIDSConverter {
 		
 		public boolean addRestrictEndTimeCondition() {
 			if (rp.getRestrictEndTime() != "") {
-				RightOperand rightOperand = new RightOperand();
-				rightOperand.setType(RightOperandType.INSTANT);
 				RightOperandEntity endEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictEndTime(),
 						RightOperandType.DATETIMESTAMP);
 
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(endEntity);
-				rightOperand.setEntities(entities);
+				RightOperand rightOperand = new RightOperand(entities, RightOperandType.INSTANT);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -288,8 +282,6 @@ public class JsonIDSConverter {
 
 		public boolean addElapsedTimeRightOperand() {
 			ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
-			RightOperand elapsedTimeRightOperand = new RightOperand();
-			elapsedTimeRightOperand.setType(RightOperandType.DURATIONENTITY);
 			if (rp.getSpecifyBeginTime() != "") {
 				RightOperandEntity beginInnerEntity = new RightOperandEntity(EntityType.DATETIME, rp.getSpecifyBeginTime(),
 						RightOperandType.DATETIMESTAMP);
@@ -324,7 +316,7 @@ public class JsonIDSConverter {
 			}
 
 			if (durationEntities.size() > 0) {
-				elapsedTimeRightOperand.setEntities(durationEntities);
+				RightOperand elapsedTimeRightOperand = new RightOperand(durationEntities, RightOperandType.DURATIONENTITY);
 				ArrayList<RightOperand> elapsedTimeRightOperands = new ArrayList<>();
 				elapsedTimeRightOperands.add(elapsedTimeRightOperand);
 				Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME,
@@ -496,21 +488,18 @@ public class JsonIDSConverter {
 			String durationDay = rp.getPostduties_durationDay();
 			String durationHour = rp.getPostduties_durationHour(); 
 			ArrayList<Condition> refinements = new ArrayList<>();
-			RightOperand rightOperand = new RightOperand();
 			if (timeAndDate != "") {
-				rightOperand.setType(RightOperandType.INSTANT);
 				RightOperandEntity dateTimeEntity = new RightOperandEntity(EntityType.DATETIME, timeAndDate,
 						RightOperandType.DATETIMESTAMP);
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(dateTimeEntity);
-				rightOperand.setEntities(entities);
+				RightOperand rightOperand = new RightOperand(entities, RightOperandType.INSTANT);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
 						Operator.BEFORE, rightOperands, null);
 				refinements.add(timeIntervalCondition);
 			} else {
-				rightOperand.setType(RightOperandType.DURATIONENTITY);
 				ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
 
 				String hour = "";
@@ -539,8 +528,8 @@ public class JsonIDSConverter {
 				RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration,
 						RightOperandType.DURATION);
 				durationEntities.add(hasDurationEntity);
-				rightOperand.setEntities(durationEntities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
+				RightOperand rightOperand = new RightOperand(durationEntities, RightOperandType.DURATIONENTITY);
 				rightOperands.add(rightOperand);
 				Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY,
 						Operator.DURATION_EQ, rightOperands, "");

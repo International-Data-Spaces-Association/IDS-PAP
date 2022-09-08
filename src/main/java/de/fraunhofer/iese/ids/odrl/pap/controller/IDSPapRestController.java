@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.github.jsonldjava.utils.JsonUtils;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
-import de.fraunhofer.iese.ids.odrl.pap.model.ShortPolicy;
+//import de.fraunhofer.iese.ids.odrl.pap.model.ShortPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.repository.ShortPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.UcAppService;
@@ -29,9 +29,7 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.IdsOdrlUtil;
 import de.fraunhofer.iese.ids.odrl.pap.repository.Policy;
-import de.fraunhofer.iese.ids.odrl.pap.repository.ShortPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
-import de.fraunhofer.iese.ids.odrl.pap.services.PolicyServiceImpl;
 
 @RestController()
 @CrossOrigin
