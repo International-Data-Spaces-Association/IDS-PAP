@@ -163,7 +163,7 @@ function convertDateToIso(values, states) {
  * @returns {string} converted date
  */
 function addDateSuffix(date) {
-  if (date === "") {
+  if (date === "" || date === undefined) {
     return "";
   }
   return date + ":00Z";
