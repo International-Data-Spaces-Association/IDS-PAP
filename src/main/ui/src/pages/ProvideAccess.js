@@ -110,7 +110,7 @@ export default function ProvideAccess() {
 
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy gives permission to a specified IDS data consumer to use your data."
           icon={<LockOpenIcon />}
@@ -161,14 +161,15 @@ export default function ProvideAccess() {
           </Grid>
 
           <Grid item xs={2}>
-            <Button
+          <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               className={classes.saveBtn}
-              type="submit"
+              prefix="submit"
               id="Save"
+              onClick={handleSubmit}
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

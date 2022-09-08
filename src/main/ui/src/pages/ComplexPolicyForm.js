@@ -20,6 +20,7 @@ import PreDuty from "../components/controls/PreDuty";
 import AddRestrictions from "../components/AddRestrictions";
 import DistributeDataComplex from "../components/controls/DistributeDataComplex";
 import { useLocation } from "react-router-dom";
+import TemplateDialog from "../components/controls/TemplateDialog";
 
 export default function ComplexPolicyForm() {
   const selected_components = {
@@ -30,6 +31,7 @@ export default function ComplexPolicyForm() {
       { id: "connector", name: "Connector", isVisible: false },
       { id: "counter", name: "Counter", isVisible: false },
       { id: "duration", name: "Duration", isVisible: false },
+      { id: "startTime", name: "StartTime", isVisible: false },
       { id: "endTime", name: "EndTime", isVisible: false },
       { id: "event", name: "Event", isVisible: false },
       { id: "interval", name: "Interval", isVisible: false },
@@ -277,16 +279,23 @@ export default function ComplexPolicyForm() {
               <Grid item xs={2} xm={1}>
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   className={classes.saveBtn}
                   prefix="submit"
                   id="Save"
                   onClick={handleSubmit}
                 >
-                  Save
+                  Submit
                 </Button>
               </Grid>
-              <Grid item xs={7} xm={9} />
+
+              <Grid item xs={2} xm={2}>
+                <TemplateDialog
+                valueHook={valueHook}
+                handleSubmit={handleSubmit}
+                originPath="/policy/ComplexPolicyForm" />
+              </Grid>
+              <Grid item xs={4} xm={8} />
 
               <Grid item xs={2} xm={1}>
                 <Button

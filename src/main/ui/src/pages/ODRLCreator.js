@@ -118,7 +118,7 @@ export default function ODRLCreator() {
             id="Transfer"
             onClick={transfer}
           >
-            Transfer
+            Translate
           </Button>
         </Grid>
         <Grid item xs={1}>

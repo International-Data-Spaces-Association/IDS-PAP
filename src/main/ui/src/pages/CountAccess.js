@@ -17,9 +17,9 @@ const selected_components = {
 };
 
 export default function CountAccess() {
-  var initialValues = OdrlPolicy()
+  var initialValues = OdrlPolicy();
   var stateLocal = useLocation().state;
-  
+
   if (stateLocal !== undefined) {
     initialValues = stateLocal;
   }
@@ -30,7 +30,7 @@ export default function CountAccess() {
   const history = useHistory();
 
   const handleSubmit = (e) => {
-    const values = valueHook[0]
+    const values = valueHook[0];
     Submit(
       "/policy/CountAccessPolicyForm",
       values,
@@ -42,7 +42,7 @@ export default function CountAccess() {
   };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy restricts the numeric count of using your data by a specified IDS data consumer."
           icon={<EqualizerIcon />}
@@ -66,12 +66,13 @@ export default function CountAccess() {
           <Grid item xs={2}>
             <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               className={classes.saveBtn}
-              type="submit"
+              prefix="submit"
               id="Save"
+              onClick={handleSubmit}
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

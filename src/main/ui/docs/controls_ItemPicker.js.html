@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controls/ItemPicker.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controls/ItemPicker.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file This contains the input picker component 
+ * @author Tom Kollmer 
+ */
+import React from "react";
+import { TextField, MenuItem, Grid } from "@material-ui/core";
+import { handleInputChange } from "../controls/Utils";
+
+/**
+ * Components for the delete data pages
+ * @component
+ * @param {string} name of the input field
+ * @param {string} label of the input field
+ * @param {object} valueHook access to the user input
+ * @param {string} defaultValue that should be used
+ * @param {object} ItemList that defines all the accepted values and how they should be translated
+ * @param {string} overrideValue is used to override the value without changing the value object
+ * @param {func} overrideOnChange overrides the onChange function 
+ * @param {object} errors contains all error messages
+ * @param {number} xs size of the component at small screens
+ * @param {number} sm size of the component at medium screens
+ * @param {number} md size of the component at large screens
+ * @returns component
+ */
+export default function ItemPicker(props) {
+  const {
+    name,
+    label,
+    valueHook,
+    defaultValue,
+    ItemList,
+    overrideValue = null,
+    overrideOnChange = null,
+    errors = null,
+    xs = 11,
+    sm = 11,
+    md = 11,
+  } = props;
+
+  const values = valueHook[0];
+  var value = values[name];
+  var error = "";
+  var onChange = handleInputChange;
+  if (value === undefined) {
+    value = "";
+  }
+  if (overrideValue !== null) {
+    value= overrideValue;
+  }
+  if (errors !== null &amp;&amp; errors[name] !== undefined) {
+    error = errors[name];
+  }
+  if (overrideOnChange !== null) {
+    onChange = overrideOnChange;
+  }
+  if (values[name]=== undefined) {
+    values[name] = "";
+  }
+  return (
+    &lt;>
+      &lt;Grid item xs={xs} sm={sm} md={md}>
+        &lt;TextField
+          select
+          name={name}
+          label={label}
+          value={value}
+          defaultValue={defaultValue}
+          variant="outlined"
+          onChange={(e) => {
+            onChange(e, valueHook);
+          }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...(error &amp;&amp; { error: true, helperText: error })}
+        >
+          {ItemList.map((option) => (
+            &lt;MenuItem key={option.value} value={option.value}>
+              {option.id}
+            &lt;/MenuItem>
+          ))}
+        &lt;/TextField>
+      &lt;/Grid>
+    &lt;/>
+  );
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addDateSuffix">addDateSuffix</a></li><li><a href="global.html#application_list">application_list</a></li><li><a href="global.html#artifact_state_list">artifact_state_list</a></li><li><a href="global.html#checkComplexPolicyFields">checkComplexPolicyFields</a></li><li><a href="global.html#checkHeader">checkHeader</a></li><li><a href="global.html#checkMultiInputField">checkMultiInputField</a></li><li><a href="global.html#connector_list">connector_list</a></li><li><a href="global.html#convertDateToIso">convertDateToIso</a></li><li><a href="global.html#data_consumers">data_consumers</a></li><li><a href="global.html#deletePolicy">deletePolicy</a></li><li><a href="global.html#editPolicy">editPolicy</a></li><li><a href="global.html#event_list">event_list</a></li><li><a href="global.html#exportPolicy">exportPolicy</a></li><li><a href="global.html#getAllPolicies">getAllPolicies</a></li><li><a href="global.html#handleClick">handleClick</a></li><li><a href="global.html#handleClose">handleClose</a></li><li><a href="global.html#handleInputChange">handleInputChange</a></li><li><a href="global.html#handleSubmit">handleSubmit</a></li><li><a href="global.html#isDateOrEmpty">isDateOrEmpty</a></li><li><a href="global.html#isIntOrEmpty">isIntOrEmpty</a></li><li><a href="global.html#isNotEmpty">isNotEmpty</a></li><li><a href="global.html#isValidDate">isValidDate</a></li><li><a href="global.html#isValidDateInterval">isValidDateInterval</a></li><li><a href="global.html#isValidFloat">isValidFloat</a></li><li><a href="global.html#isValidInt">isValidInt</a></li><li><a href="global.html#isValidUrl">isValidUrl</a></li><li><a href="global.html#jsonOdrlPolicy">jsonOdrlPolicy</a></li><li><a href="global.html#log_level_list">log_level_list</a></li><li><a href="global.html#modifier_list">modifier_list</a></li><li><a href="global.html#negotiatePolicyGetResponse">negotiatePolicyGetResponse</a></li><li><a href="global.html#negotiatePolicyGetUUID">negotiatePolicyGetUUID</a></li><li><a href="global.html#OdrlPolicy">OdrlPolicy</a></li><li><a href="global.html#operator_list">operator_list</a></li><li><a href="global.html#policy_types">policy_types</a></li><li><a href="global.html#purpose_list">purpose_list</a></li><li><a href="global.html#recreateSelectedCompFromJson">recreateSelectedCompFromJson</a></li><li><a href="global.html#recreateSelectedDistriCompFromJson">recreateSelectedDistriCompFromJson</a></li><li><a href="global.html#recreateSelectedPostduCompFromJson">recreateSelectedPostduCompFromJson</a></li><li><a href="global.html#recreateSelectedPreduCompFromJson">recreateSelectedPreduCompFromJson</a></li><li><a href="global.html#resetStates">resetStates</a></li><li><a href="global.html#retryWrapper">retryWrapper</a></li><li><a href="global.html#role_list">role_list</a></li><li><a href="global.html#sale_rent_list">sale_rent_list</a></li><li><a href="global.html#security_level_list">security_level_list</a></li><li><a href="global.html#state_list">state_list</a></li><li><a href="global.html#time_units">time_units</a></li><li><a href="global.html#validation">validation</a></li><li><a href="global.html#viewPolicy">viewPolicy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jul 20 2022 16:20:02 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

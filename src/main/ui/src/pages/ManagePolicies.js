@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import PageHeader from "../components/PageHeader";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import { useStyle } from "../components/Style";
@@ -22,24 +22,34 @@ import Remove from "@material-ui/icons/Remove";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
-import DeleteIcon from '@material-ui/icons/Delete';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import DeleteIcon from "@material-ui/icons/Delete";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
-import {getAllPolicies, exportPolicy, deletePolicy, editPolicy, viewPolicy} from '../components/backend/Database'
+import {
+  getAllPolicies,
+  exportPolicy,
+  deletePolicy,
+  editPolicy,
+  viewPolicy,
+} from "../components/backend/Database";
 
-const tableIcons: Icons = {
+const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
   Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => (<ChevronRight {...props} ref={ref} />)),
+  DetailPanel: forwardRef((props, ref) => (
+    <ChevronRight {...props} ref={ref} />
+  )),
   Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
   Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
   Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
   FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
   LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
   NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => (<ChevronLeft {...props} ref={ref} />)),
+  PreviousPage: forwardRef((props, ref) => (
+    <ChevronLeft {...props} ref={ref} />
+  )),
   ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
   Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
   SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref} />),
@@ -50,56 +60,65 @@ const tableIcons: Icons = {
 export default function LogAccess() {
   const classes = useStyle();
   const history = useHistory();
-  const columns = [ { title: 'Policy ID', field: 'policyID' },
-                    { title: 'Description', field: 'description' }]
+  const columns = [
+    { title: "Name", field: "name" },
+    { title: "PolicyType", field: "policyType" },
+    { title: "Description", field: "comment" },
+  ];
 
   const [data, setData] = React.useState([]);
-  //getAllPolicies(data, setData)
-  React.useEffect(() => getAllPolicies(data, setData), []);
+  //getAllPolicies(setData)
+  React.useEffect(() => getAllPolicies(setData), []);
   return (
     <div className={classes.page}>
-      <Form >
+      <Form>
         <PageHeader
           title="Download or Delete Policies"
           icon={<NotificationsActiveIcon />}
         />
         <Grid container>
           <Grid item xs={12}>
-              <MaterialTable
-                icons={tableIcons}
-                title=""
-                columns={columns}
-                data={data}
-                actions={[
-                  {
-                    icon: () => <DeleteIcon color="primary"/>,
-                    tooltip: "Delete",
-                    onClick: (event, data) => deletePolicy(data.id, data, setData),
-                  },
-                  {
-                    icon: () => <GetAppIcon color="primary"/>,
-                    tooltip: "Export",
-                    onClick: (event, data) => exportPolicy(data.id, `policy_${data.policyID}.json`, "text/plain"),
-                  },
-                  {
-                    icon: () => <Edit color="primary"/>,
-                    tooltip: "Edit",
-                    onClick: (event, data) =>editPolicy(data.id, history),
-                  },
-                  {
+            <MaterialTable
+              icons={tableIcons}
+              title=""
+              columns={columns}
+              data={data}
+              actions={[
+                {
+                  icon: () => <DeleteIcon color="primary" />,
+                  tooltip: "Delete",
+                  onClick: (event, data) =>
+                    deletePolicy(data.id, data, setData),
+                },
+                {
+                  icon: () => <GetAppIcon color="primary" />,
+                  tooltip: "Export",
+                  onClick: (event, data) =>
+                    exportPolicy(
+                      data.id,
+                      `policy_${data.policyID}.json`,
+                      "text/plain"
+                    ),
+                },
+                {
+                  icon: () => <Edit color="primary" />,
+                  tooltip: "Edit",
+                  onClick: (event, data) => editPolicy(data.id, history),
+                },
+                /*{
                     icon: () => <Search color="primary"/>,
                     tooltip: "View",
                     onClick: (event, data) =>viewPolicy(data.id, history),
-                  },
-                ]}
-                options={{
-                  actionsColumnIndex: -1,
-                  exportButton: false,
-                  headerStyle: {
-                    fontWeight: "bold",
-                  },
-                }}
-              />
+                  },*/
+              ]}
+              options={{
+                actionsColumnIndex: -1,
+                exportButton: false,
+                headerStyle: {
+                  fontWeight: "bold",
+                },
+              }}
+            />
           </Grid>
         </Grid>
       </Form>

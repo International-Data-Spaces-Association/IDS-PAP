@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Database.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Database.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Manages the connection with the saved policies in the backend.
+ * @author Tom Kollmer 
+ */
+
+import axios from "axios";
+
+/**
+ * Tries to connect to the backend to retrieve all stored template policies.
+ * The received data is then added to the data object using the setData hook.
+ * @param {func} setData react hook to change the value of the data object.
+ */
+function getAllPolicies(setData) {
+  axios.get( "/api/policies").then(
+    (response) => {
+      console.log(response.data)
+      setData(response.data);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+}
+
+/**
+ * Tries to connect to the backend to download the policy with the specified ID.
+ * The policy is then converted to a json file and downloaded automatically.
+ * @param {number} id the id of the required policy
+ * @param {string} fileName filename of the created file
+ * @param {string} contentType flag to specify the file type. Plain json "text/plain"
+ */
+function exportPolicy(id, fileName, contentType) {
+  axios.get(`/api/policies/export_${id}`).then(
+    (response) => {
+      const a = document.createElement("a");
+      const file = new Blob([JSON.stringify(response.data, null, 2)], {
+        type: contentType,
+      });
+      a.href = URL.createObjectURL(file);
+      a.download = fileName;
+      a.click();
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+}
+
+/**
+ * Tries to connect with the backend to delete the saved policy with the given ID.
+ * If the delete process was successful, all remaining policies are retrieved.
+ * @param {number} id the id of the policy that should be deleted
+ * @param {object} data object that contains a local copy of the saved policies
+ * @param {func} setData react hook to change the value of the data object.
+ */
+function deletePolicy(id, data, setData) {
+  axios.delete( `/api/policies/${id}`).then(
+    (response) => {
+      getAllPolicies(data, setData);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+}
+
+/**
+ * Tries to connect with the backend to retrieve the given policy.
+ * If the operation was successful, the page where the policy was created
+ * is opened and all values from the template policy are pre-filled in the 
+ * text fields.
+ * @param {number} id the id of the policy that should be deleted
+ * @param {object} history object that contains and controls the browser history.
+ */
+function editPolicy(id, history) {
+  axios.get( `/api/policies/edit_${id}`).then(
+    (response) => {
+      console.log(response.data);
+      const policy = JSON.parse(response.data.fieldValues);
+      policy.id = response.data.id;
+      history.push({
+        pathname: response.data.queryOrigin,
+        state: policy,
+      });
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+}
+
+/**
+ * [Unused ad the moment!]
+* Tries to connect with the backend to retrieve the given policy.
+ * If the operation was successful, the policy viewer page is opened 
+ * and all values from the template policy are pre-filled in the 
+ * code areas.
+ * @param {number} id the id of the policy that should be deleted
+ * @param {object} history object that contains and controls the browser history.
+ */
+function viewPolicy(id, history) {
+  axios.get( `/api/policies/edit_${id}`).then(
+    (response) => {
+      const fieldValues = JSON.parse(response.data.fieldValues);
+      fieldValues.id = response.data.id
+      const url = response.data.policyType
+      axios.post( url, fieldValues).then(
+        (response) => {
+          axios
+            .post(
+               "/policy/initialTechnologyDependentPolicy",
+              response.data
+            )
+            .then(
+              (responseTDP) => {
+                var dict = {
+                  jsonPolicy: JSON.stringify(response.data, null, 2),
+                  dtPolicy: responseTDP.data,
+                };
+                history.push({
+                  pathname: "/ODRLCreator",
+                  state: dict,
+                });
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+}
+
+export { getAllPolicies, exportPolicy, deletePolicy, editPolicy, viewPolicy };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addDateSuffix">addDateSuffix</a></li><li><a href="global.html#checkComplexPolicyFields">checkComplexPolicyFields</a></li><li><a href="global.html#checkHeader">checkHeader</a></li><li><a href="global.html#checkMultiInputField">checkMultiInputField</a></li><li><a href="global.html#convertDateToIso">convertDateToIso</a></li><li><a href="global.html#deletePolicy">deletePolicy</a></li><li><a href="global.html#editPolicy">editPolicy</a></li><li><a href="global.html#exportPolicy">exportPolicy</a></li><li><a href="global.html#getAllPolicies">getAllPolicies</a></li><li><a href="global.html#isDateOrEmpty">isDateOrEmpty</a></li><li><a href="global.html#isIntOrEmpty">isIntOrEmpty</a></li><li><a href="global.html#isNotEmpty">isNotEmpty</a></li><li><a href="global.html#isValidDate">isValidDate</a></li><li><a href="global.html#isValidDateInterval">isValidDateInterval</a></li><li><a href="global.html#isValidFloat">isValidFloat</a></li><li><a href="global.html#isValidInt">isValidInt</a></li><li><a href="global.html#isValidUrl">isValidUrl</a></li><li><a href="global.html#jsonOdrlPolicy">jsonOdrlPolicy</a></li><li><a href="global.html#negotiatePolicyGetResponse">negotiatePolicyGetResponse</a></li><li><a href="global.html#negotiatePolicyGetUUID">negotiatePolicyGetUUID</a></li><li><a href="global.html#OdrlPolicy">OdrlPolicy</a></li><li><a href="global.html#recreateSelectedCompFromJson">recreateSelectedCompFromJson</a></li><li><a href="global.html#recreateSelectedDistriCompFromJson">recreateSelectedDistriCompFromJson</a></li><li><a href="global.html#recreateSelectedPostduCompFromJson">recreateSelectedPostduCompFromJson</a></li><li><a href="global.html#recreateSelectedPreduCompFromJson">recreateSelectedPreduCompFromJson</a></li><li><a href="global.html#retryWrapper">retryWrapper</a></li><li><a href="global.html#validation">validation</a></li><li><a href="global.html#viewPolicy">viewPolicy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Jul 20 2022 13:00:40 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -5,6 +5,11 @@ import lombok.Getter;
 @Getter
 public class RecievedOdrlPolicy {
 	private int id;
+	private boolean is_template;
+	private String comment;
+	private String name;
+	private String originQuery;
+	
 	private String policyType;
 	private String target;
 	private String provider;
@@ -53,6 +58,7 @@ public class RecievedOdrlPolicy {
 	private String timeAndDate;
 	private String restrictTimeIntervalStart;
 	private String restrictTimeIntervalEnd;
+	private String restrictStartTime;
 	private String restrictEndTime;
 	private String specifyBeginTime;
 	private String durationHour;
@@ -60,4 +66,8 @@ public class RecievedOdrlPolicy {
 	private String durationMonth;
 	private String durationYear;
 	private String artifactState;
+	
+	public void setIsTemplate(boolean b) {
+		is_template = b;
+	}
 }

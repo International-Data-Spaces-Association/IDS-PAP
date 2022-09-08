@@ -16,9 +16,9 @@ const selected_components = {
 };
 
 export default function LogAccess() {
-  var initialValues = OdrlPolicy()
+  var initialValues = OdrlPolicy();
   var stateLocal = useLocation().state;
-  
+
   if (stateLocal !== undefined) {
     initialValues = stateLocal;
   }
@@ -29,7 +29,7 @@ export default function LogAccess() {
   const history = useHistory();
 
   const handleSubmit = (e) => {
-    const values = valueHook[0]
+    const values = valueHook[0];
 
     Submit(
       "/policy/InformPolicyForm",
@@ -42,35 +42,32 @@ export default function LogAccess() {
   };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy allows a specified IDS data consumer to use your data and requests notifications on each data usage."
           icon={<NotificationsActiveIcon />}
         />
         <Grid container>
-        <Grid item xs={12}>
-              <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-                
-          <IdentifyPolicy
-            valueHook={valueHook}
-            errors={errors}
-          />
-          <InformParty
-            valueHook={valueHook}
-            errors={errors}
-            prefix="postduties_"
-          />
-                        </Paper>
-            </Grid>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
+              <InformParty
+                valueHook={valueHook}
+                errors={errors}
+                prefix="postduties_"
+              />
+            </Paper>
+          </Grid>
           <Grid item xs={2}>
             <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               className={classes.saveBtn}
-              type="submit"
+              prefix="submit"
               id="Save"
+              onClick={handleSubmit}
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

@@ -1,7 +1,28 @@
+/**
+ * @file This contains the input component 
+ * @author Tom Kollmer 
+ */
+
 import React from "react";
 import { TextField, Grid } from "@material-ui/core";
 import { handleInputChange } from "../controls/Utils";
 
+/**
+ * Components for the delete data pages
+ * @component
+ * @param {string} name of the input field
+ * @param {string} label of the input field
+ * @param {string} placeholder that should be used
+ * @param {object} valueHook access to the user input
+ * @param {string} overrideValue is used to override the value without changing the value object
+ * @param {func} overrideOnChange overrides the onChange function 
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {object} errors contains all error messages
+ * @param {number} xs size of the component at small screens
+ * @param {number} sm size of the component at medium screens
+ * @param {number} md size of the component at large screens
+ * @returns component
+ */
 export default function Input(props) {
   const {
     name,

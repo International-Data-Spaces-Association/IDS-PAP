@@ -4,11 +4,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 
-import de.fraunhofer.iese.ids.odrl.pap.entity.Policy;
-import de.fraunhofer.iese.ids.odrl.pap.repository.IPolicyRepo;
+import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
+import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
@@ -46,7 +47,7 @@ public class JsonIDSConverter {
 		constraints.add(c);
 	}
 	
-	public String createPolicy(String policyUID, IPolicyRepo policyRepo, String queryOrigin) {
+	public String createPolicy(String policyUID, PolicyService policyRepo) {
 		rules.get(0).setConstraints((ArrayList<Condition>) constraints);
 		if (postDuties.size() > 0) {
 			rules.get(0).setPostduties((ArrayList<Rule>) postDuties);
@@ -63,7 +64,9 @@ public class JsonIDSConverter {
 		// odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
-		String jsonPolicyString = odrlPolicy.toString();
+		String jsonPolicyString = OdrlCreator.createODRL(odrlPolicy);
+		Map map = null;
+		boolean tempProviderSide = true;
 		//String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
 		// String dtPolicy = policy(jsonPolicy);
 		
@@ -77,6 +80,7 @@ public class JsonIDSConverter {
 		}**/
 		String response = new JSONObject(jsonPolicyString.toString()).toString(4);
 		
+		/*
 		// Store the policy in the database
 		Policy policy = new Policy();
 		policy.setDescription(rp.getPolicyType());
@@ -88,7 +92,7 @@ public class JsonIDSConverter {
 			policyRepo.save(policy);
 		} catch (Exception e) {
 		}
-		
+		*/
 		return response;
 
 	}
@@ -216,7 +220,7 @@ public class JsonIDSConverter {
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(startEntity);
 				entities.add(endEntity);
-				rightOperand.setRightOperandEntities(entities);
+				rightOperand.setEntities(entities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -227,6 +231,26 @@ public class JsonIDSConverter {
 			return false;
 		}
 
+		public boolean addRestrictStartTimeCondition() {
+			if (rp.getRestrictStartTime() != "") {
+				RightOperand rightOperand = new RightOperand();
+				rightOperand.setType(RightOperandType.INSTANT);
+				RightOperandEntity startEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictStartTime(),
+						RightOperandType.DATETIMESTAMP);
+
+				ArrayList<RightOperandEntity> entities = new ArrayList<>();
+				entities.add(startEntity);
+				rightOperand.setEntities(entities);
+				ArrayList<RightOperand> rightOperands = new ArrayList<>();
+				rightOperands.add(rightOperand);
+				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
+						Operator.AFTER, rightOperands, null);
+				constraints.add(dateTimeCondition);
+				return true;
+			}
+			return false;
+		}
+		
 		public boolean addRestrictEndTimeCondition() {
 			if (rp.getRestrictEndTime() != "") {
 				RightOperand rightOperand = new RightOperand();
@@ -236,7 +260,7 @@ public class JsonIDSConverter {
 
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(endEntity);
-				rightOperand.setRightOperandEntities(entities);
+				rightOperand.setEntities(entities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -300,7 +324,7 @@ public class JsonIDSConverter {
 			}
 
 			if (durationEntities.size() > 0) {
-				elapsedTimeRightOperand.setRightOperandEntities(durationEntities);
+				elapsedTimeRightOperand.setEntities(durationEntities);
 				ArrayList<RightOperand> elapsedTimeRightOperands = new ArrayList<>();
 				elapsedTimeRightOperands.add(elapsedTimeRightOperand);
 				Condition elapsedTimeConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ELAPSED_TIME,
@@ -479,7 +503,7 @@ public class JsonIDSConverter {
 						RightOperandType.DATETIMESTAMP);
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
 				entities.add(dateTimeEntity);
-				rightOperand.setRightOperandEntities(entities);
+				rightOperand.setEntities(entities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
@@ -515,7 +539,7 @@ public class JsonIDSConverter {
 				RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration,
 						RightOperandType.DURATION);
 				durationEntities.add(hasDurationEntity);
-				rightOperand.setRightOperandEntities(durationEntities);
+				rightOperand.setEntities(durationEntities);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY,
@@ -532,9 +556,9 @@ public class JsonIDSConverter {
 		public void anonymizeInTransit(String fieldToChange, String valueToChange, String modifier) {
 			ArrayList<Condition> refinements = new ArrayList<>();
 
-			if (fieldToChange != "") {
+			if (valueToChange != "") {
 				RightOperand replaceWithRightOperand = new RightOperand();
-				replaceWithRightOperand.setValue(fieldToChange);
+				replaceWithRightOperand.setValue(valueToChange);
 				replaceWithRightOperand.setType(RightOperandType.STRING);
 				ArrayList<RightOperand> replaceWithRightOperands = new ArrayList<>();
 				replaceWithRightOperands.add(replaceWithRightOperand);
@@ -544,7 +568,7 @@ public class JsonIDSConverter {
 			}
 
 			RightOperand subsetSpecificationRightOperand = new RightOperand();
-			subsetSpecificationRightOperand.setValue(valueToChange);
+			subsetSpecificationRightOperand.setValue(fieldToChange);
 			subsetSpecificationRightOperand.setType(RightOperandType.STRING);
 			ArrayList<RightOperand> subsetSpecificationRightOperands = new ArrayList<>();
 			subsetSpecificationRightOperands.add(subsetSpecificationRightOperand);
@@ -592,7 +616,7 @@ public class JsonIDSConverter {
 
 		public void addPreDuties() {
 			if (rp.getPreduties_modifier() != "" && rp.getPreduties_fieldToChange() != "") {
-				anonymizeInTransit(rp.getPreduties_fieldToChange(), rp.getPreduties_valueToChange(), rp.getPreduties_modifier());
+				anonymizeInTransit(rp.getPreduties_fieldToChange(),rp.getPreduties_valueToChange(), rp.getPreduties_modifier());
 			}
 			
 			if (rp.getPreduties_anomInRest() != "") {

@@ -18,9 +18,9 @@ const selected_components = {
   page: "DistributeData",
 };
 export default function DistributeData() {
-  var initialValues = OdrlPolicy()
+  var initialValues = OdrlPolicy();
   var stateLocal = useLocation().state;
-  
+
   if (stateLocal !== undefined) {
     initialValues = stateLocal;
   }
@@ -31,7 +31,7 @@ export default function DistributeData() {
   const history = useHistory();
 
   const handleSubmit = (e) => {
-    const values = valueHook[0]
+    const values = valueHook[0];
     Submit(
       "/policy/DistributePolicyForm",
       values,
@@ -43,7 +43,7 @@ export default function DistributeData() {
   };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy allows a specified IDS data consumer to distribute your data only if the data is encoded (compressed or encrypted)."
           icon={<ShareIcon />}
@@ -52,10 +52,7 @@ export default function DistributeData() {
         <Grid container>
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-              <IdentifyPolicy
-                valueHook={valueHook}
-                errors={errors}
-              />
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
 
               <Grid container>
                 <Title label="Artifact State" />
@@ -82,12 +79,13 @@ export default function DistributeData() {
           <Grid item xs={2}>
             <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               className={classes.saveBtn}
-              type="submit"
+              prefix="submit"
               id="Save"
+              onClick={handleSubmit}
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>

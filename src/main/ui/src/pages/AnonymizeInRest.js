@@ -39,7 +39,7 @@ export default function AnonymizeInRest() {
   };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="The assumption is that your data is stored in a database on consumer side.
                 This policy requests a specified IDS data consumer to anonymize your stored data."
@@ -55,14 +55,15 @@ export default function AnonymizeInRest() {
             </Paper>
           </Grid>
           <Grid item xs={2}>
-            <Button
+          <Button
               variant="contained"
-              color="secondary"
+              color="primary"
               className={classes.saveBtn}
-              type="submit"
+              prefix="submit"
               id="Save"
+              onClick={handleSubmit}
             >
-              Save
+              Submit
             </Button>
           </Grid>
         </Grid>
