@@ -9,7 +9,6 @@ import java.util.Map;
 import org.json.JSONObject;
 
 import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
-import de.fraunhofer.iese.ids.odrl.pap.util.OdrlCreator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
@@ -64,7 +63,7 @@ public class JsonIDSConverter {
 		// odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
-		String jsonPolicyString = OdrlCreator.createODRL(odrlPolicy);
+		String jsonPolicyString = odrlPolicy.toString();
 		//Map map = null;
 		//boolean tempProviderSide = true;
 		//String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
