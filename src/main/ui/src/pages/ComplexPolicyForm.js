@@ -21,7 +21,7 @@ import AddRestrictions from "../components/AddRestrictions";
 import DistributeDataComplex from "../components/controls/DistributeDataComplex";
 import { useLocation } from "react-router-dom";
 import TemplateDialog from "../components/controls/TemplateDialog";
-
+import SplitButtons from "../components/controls/SplitButtons";
 export default function ComplexPolicyForm() {
   const selected_components = {
     prefix: "restrictions",
@@ -124,6 +124,7 @@ export default function ComplexPolicyForm() {
   const [selectedDeleteComponents, setSelectedDeleteComponents] = useState(
     selected_delete_data_components
   );
+  const [selectedLanguage, setSelectedLanguage] = React.useState(1);
 
   const handleSubmit = (e) => {
     const values = valueHook[0];
@@ -154,6 +155,7 @@ export default function ComplexPolicyForm() {
     for (const [key, value] of Object.entries(selectedDeleteComponents)) {
       state[key] = value;
     }
+    console.log(values);
     Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
   };
 
@@ -277,23 +279,20 @@ export default function ComplexPolicyForm() {
 
             <Grid container>
               <Grid item xs={2} xm={1}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.saveBtn}
-                  prefix="submit"
-                  id="Save"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </Button>
+                <SplitButtons
+                  valueHook={valueHook}
+                  selectedLanguage={selectedLanguage}
+                  setSelectedLanguage={setSelectedLanguage}
+                  handleClick={handleSubmit}
+                />
               </Grid>
 
               <Grid item xs={2} xm={2}>
                 <TemplateDialog
-                valueHook={valueHook}
-                handleSubmit={handleSubmit}
-                originPath="/policy/ComplexPolicyForm" />
+                  valueHook={valueHook}
+                  handleSubmit={handleSubmit}
+                  originPath="/policy/ComplexPolicyForm"
+                />
               </Grid>
               <Grid item xs={4} xm={8} />
 

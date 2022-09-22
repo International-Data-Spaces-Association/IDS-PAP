@@ -1,6 +1,6 @@
 /**
- * @file Manages the connection with the backend when new policies are created 
- * @author Tom Kollmer 
+ * @file Manages the connection with the backend when new policies are created
+ * @author Tom Kollmer
  */
 
 import axios from "axios";
@@ -11,13 +11,23 @@ import negotiateTestResponse from "../negotiateExample.json";
  * transformed and finally send to the backend.
  * @param {string} url that is used to send the data to the backend
  * @param {object} values that contains all user input
- * @param {object} states that determine all selected components 
+ * @param {object} states that determine all selected components
  * @param {func} setErrors function to show error messages on the UI
  * @param {object} history that controls the currently shown page
  * @param {object} e sender to determine the origin [Not used at the moment]
  */
 export default function Submit(url, values, states, setErrors, history, e) {
   console.log(values);
+  const replacer = (key, value) =>
+    value instanceof Object && !(value instanceof Array)
+      ? Object.keys(value)
+          .sort()
+          .reduce((sorted, key) => {
+            sorted[key] = value[key];
+            return sorted;
+          }, {})
+      : value;
+
   if (validation(values, states, setErrors)) {
     for (var key in states) {
       states[key] = false;
@@ -34,7 +44,7 @@ export default function Submit(url, values, states, setErrors, history, e) {
               (responseTDP) => {
                 console.log(response.data);
                 var dict = {
-                  jsonPolicy: JSON.stringify(response.data, null, 2),
+                  jsonPolicy: JSON.stringify(response.data, replacer, 2),
                   dtPolicy: responseTDP.data,
                 };
                 history.push({
@@ -80,7 +90,7 @@ export function jsonOdrlPolicy(url, values, setPolicy) {
 }
 
 /**
- * [Not used!] Tries to access the negotiated policy and retries if the policy is still stuck in the negotiation process. 
+ * [Not used!] Tries to access the negotiated policy and retries if the policy is still stuck in the negotiation process.
  * @param {object} axios object
  * @param {object} options json object with retry_time and retry_status_code
  */
@@ -159,7 +169,7 @@ function convertDateToIso(values, states) {
 
 /**
  * Adds a suffix to the date string
- * @param {String} date that should be converted 
+ * @param {String} date that should be converted
  * @returns {string} converted date
  */
 function addDateSuffix(date) {
@@ -172,7 +182,7 @@ function addDateSuffix(date) {
 /**
  * Used to validate the user input and checks if all requirements are satisfied.
  * @param {object} values containing the user input
- * @param {object} states that determine all selected components 
+ * @param {object} states that determine all selected components
  * @param {func} setErrors function to show error messages on the UI
  * @returns {boolean} true when all requirements are satisfied
  */
@@ -272,8 +282,8 @@ function validation(values, states, setErrors) {
 /**
  * Checks the user input of the complex policy page
  * @param {object} values containing the user input
- * @param {object} states that determine all selected components 
- * @param {object} error_list that contains all error messages 
+ * @param {object} states that determine all selected components
+ * @param {object} error_list that contains all error messages
  */
 function checkComplexPolicyFields(values, states, error_list) {
   //Restrict Application
@@ -405,7 +415,7 @@ function checkComplexPolicyFields(values, states, error_list) {
 
 /**
  * Checks if the user input to the header of the policy is correct
- * @param {object} error_list that contains all error messages 
+ * @param {object} error_list that contains all error messages
  * @param {object} values containing the user input
  */
 function checkHeader(error_list, values) {
@@ -421,11 +431,11 @@ function checkHeader(error_list, values) {
 
 /**
  * Checks if the input of a multi input field is valid
- * @param {string} key  
- * @param {func} func 
+ * @param {string} key
+ * @param {func} func
  * @param {object} values containing the user input
- * @param {object} states that determine all selected components 
- * @param {object} error_list that contains all error messages 
+ * @param {object} states that determine all selected components
+ * @param {object} error_list that contains all error messages
  */
 function checkMultiInputField(key, func, values, states, error_list) {
   if (states[key]) {
@@ -479,7 +489,7 @@ function isValidDate(date) {
 
 /**
  *  Checks if the input is a valid date and not empty
- * @param {string} date that should be checked 
+ * @param {string} date that should be checked
  * @returns {string} error message if the input is incorrect
  */
 function isDateOrEmpty(date) {
@@ -536,7 +546,7 @@ function isValidFloat(price) {
 
 /**
  * Checks if the input is empty or a valid int
- * @param {number} n that should be checked 
+ * @param {number} n that should be checked
  * @returns {string} error message if the input is incorrect
  */
 function isIntOrEmpty(n) {
@@ -552,7 +562,7 @@ function isIntOrEmpty(n) {
 
 /**
  * Checks if the input is an int and not empty
- * @param {number} count that should be checked 
+ * @param {number} count that should be checked
  * @returns {string} error message if the input is incorrect
  */
 function isValidInt(count) {
@@ -570,7 +580,7 @@ function isValidInt(count) {
 
 /**
  * Checks if the string is not empty
- * @param {string} str 
+ * @param {string} str
  * @returns {string} error message if the input is incorrect
  */
 function isNotEmpty(str) {

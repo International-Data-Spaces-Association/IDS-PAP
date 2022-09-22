@@ -69,6 +69,7 @@ function OdrlPolicy() {
     artifactState: "",
 
     is_template: false,
+    language: "IDS",
     name: "",
     comment:"",
   };

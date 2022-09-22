@@ -6,6 +6,7 @@ import lombok.Getter;
 public class RecievedOdrlPolicy {
 	private int id;
 	private boolean is_template;
+	private String language;
 	private String comment;
 	private String name;
 	private String originQuery;

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.IdsPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Party;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
@@ -26,6 +27,7 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.PolicyType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RightOperandType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
+import de.fraunhofer.iese.ids.odrl.policy.library.model.interfaces.IPolicy;
 
 public class JsonIDSConverter {
 	private RecievedOdrlPolicy rp;
@@ -54,8 +56,12 @@ public class JsonIDSConverter {
 		if (preDuties.size() > 0) {
 			rules.get(0).setPreduties((ArrayList<Rule>) preDuties);
 		}
-		
-		OdrlPolicy odrlPolicy = new OdrlPolicy();
+		IPolicy odrlPolicy = null;
+		if (rp.getLanguage().equals("IDS")) {
+			odrlPolicy = new IdsPolicy();
+		} else if (rp.getLanguage().equals("ODRL")) {
+			odrlPolicy = new OdrlPolicy();
+		}
 		odrlPolicy.setConsumer(createConsumer());
 		odrlPolicy.setRules((ArrayList<Rule>) rules);
 		odrlPolicy.setPolicyId(URI.create(policyUID));
