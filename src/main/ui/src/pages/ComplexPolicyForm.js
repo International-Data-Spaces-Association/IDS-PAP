@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Button, Paper } from "@material-ui/core";
 import { useStyle } from "../components/Style";
+import Alert from '@material-ui/lab/Alert';
 import { useHistory } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import PostAddIcon from "@material-ui/icons/PostAdd";
@@ -220,6 +221,10 @@ export default function ComplexPolicyForm() {
             icon={<PostAddIcon />}
           />
           <Grid container>
+          {errors.odrlLanguageError !== undefined && errors.odrlLanguageError !== ""? (
+            <Grid item xs={12}>
+              <Alert severity="error">{errors.odrlLanguageError} </Alert>
+            </Grid>):null}
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
                 <IdentifyPolicy valueHook={valueHook} errors={errors} />
@@ -278,7 +283,7 @@ export default function ComplexPolicyForm() {
             </Grid>
 
             <Grid container>
-              <Grid item xs={2} xm={1}>
+              <Grid item xs={3} xm={2}>
                 <SplitButtons
                   valueHook={valueHook}
                   selectedLanguage={selectedLanguage}

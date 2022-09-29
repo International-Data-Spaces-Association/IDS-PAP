@@ -5,6 +5,11 @@ import { loadCSS } from 'fg-loadcss';
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
+  container:{
+    minHeight: "89vh",
+    display: "flex",
+    flexDirection: "column",
+  },
   content: {
     fontSize: "100px",
   },
@@ -25,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
   infoBox: {
     backgroundColor: "#179c7d",
-    marginTop:'1em',
     padding:'1em',
     color:'white',
     textAlign:'justify',
+    marginTop: "auto",
   },
   text:{
     marginLeft:'1em',
@@ -62,7 +67,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={classes.root}>
+    <div className={classes.container}>
       <div className={classes.text}>
         <Typography variant="h3" className={classes.title}> Data Usage Control Scenario </Typography>
         <img className={classes.img} src={papEditor} alt=""></img>

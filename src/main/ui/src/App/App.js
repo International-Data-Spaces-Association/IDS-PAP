@@ -68,8 +68,6 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const [open, setOpen] = React.useState(window.innerWidth > 600);
   const classes = useStyles();
-  document.title = 'IDS PAP'
-
   return (
     <ThemeProvider theme={theme}>
       <Router history={history}>

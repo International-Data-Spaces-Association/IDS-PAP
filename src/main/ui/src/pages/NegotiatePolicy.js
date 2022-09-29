@@ -18,7 +18,6 @@ import ItemPicker from "../components/controls/ItemPicker";
 import LogData from "../components/controls/LogData";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import { negotiatePolicyGetUUID, negotiatePolicyGetResponse } from "../components/backend/Submit";
-import { ContactSupportOutlined } from "@material-ui/icons";
 
 require("codemirror/theme/eclipse.css");
 
@@ -32,19 +31,12 @@ const LimitedBackdrop = withStyles({
 export default function NegotiatePolicy() {
   const valueHook = useState(OdrlPolicy);
   const addressHook = useState({ url: "http://localhost:8080/negotiator/v1" });
-  const uuidHook = useState("");
-  const policyHook = useState("");
 
   const errors = useState({})[0];
 
   const classes = useStyle();
   const [showBackdrop, setShowBackdrop] = React.useState(false);
-  const handleToggle = () => {
-    setShowBackdrop(!showBackdrop);
-  };
-  const handleClose = () => {
-    setShowBackdrop(false);
-  };
+
   
   function sleep(ms) {
     return new Promise((resolve) => {

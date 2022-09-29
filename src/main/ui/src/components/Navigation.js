@@ -115,11 +115,12 @@ export default function Navigation(props) {
   const { open, setOpen } = props;
   const classes = useStyles();
   const [logedIn] = React.useState(true);
-  const [selected, setSelected] = React.useState({ selected: null });
+  const [selected, setSelected] = React.useState({ selected: "" });
 
+  console.log(selected)
   React.useEffect(() => {
-    const parsedSelected = String(localStorage.getItem("selected") || "")
-    setSelected({ selected: parsedSelected });
+    //const parsedSelected = String(localStorage.getItem("selected") || "")
+    //setSelected({ selected: parsedSelected });
   }, [])
 
   React.useEffect(() => {

@@ -1,7 +1,6 @@
 import * as React from "react";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import {
-  Grid,
   ClickAwayListener,
   Grow,
   Paper,
@@ -31,6 +30,7 @@ export default function SplitButton(props) {
   const handleMenuItemClick = (event, index) => {
     const values = valueHook[0];
     const setValues = valueHook[1];
+
     setValues({ ...values, ["language"]: languages[index] });
     setSelectedLanguage(index);
     setOpenLanguage(false);
@@ -50,13 +50,12 @@ export default function SplitButton(props) {
 
   return (
     <>
-      <Grid container>
-        <ButtonGroup ref={anchorRef} aria-label="split button">
+        <ButtonGroup ref={anchorRef} aria-label="split button" className={classes.saveBtn}>
           <Button
             onClick={handleClick}
             variant="contained"
-            color="primary"
             className={classes.saveBtn}
+            color="primary"
           >
             {options[selectedLanguage]}
           </Button>
@@ -110,7 +109,6 @@ export default function SplitButton(props) {
             </Grow>
           )}
         </Popper>
-      </Grid>
     </>
   );
 }

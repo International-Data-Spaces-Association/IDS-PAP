@@ -3,6 +3,7 @@
  * @author Tom Kollmer
  */
 
+import { Language } from "@material-ui/icons";
 import axios from "axios";
 import negotiateTestResponse from "../negotiateExample.json";
 
@@ -189,6 +190,7 @@ function addDateSuffix(date) {
 function validation(values, states, setErrors) {
   console.log(states, states.page);
   let error_list = {};
+
   checkHeader(error_list, values);
   switch (states.page) {
     case "CreatePolicy":
@@ -272,11 +274,43 @@ function validation(values, states, setErrors) {
     default:
       break;
   }
+  error_list.odrlLanguageError = languageError(values.language, states, error_list)
   console.log(error_list);
   setErrors({
     ...error_list,
   });
   return Object.values(error_list).every((x) => x === "");
+}
+
+
+/**
+ * Checks if the given input is comatible to the selected language
+ * @param {*} language selected language
+ * @param {*} states selected fields
+ * @param {object} error_list that contains all error messages
+ */
+function languageError(language, states, error_list) {
+  var languageError = ""
+  var errors = ""
+  // ODRL 
+  if (language === "ODRL"){
+    const notAllowedStatesODRL = ["securityLevel", "connector", "anonymizeInRest", "anonymizeTransit", "delete", "distribute", "inform", "log"];
+    for (const [key, value] of Object.entries(states)) {
+      if (value && notAllowedStatesODRL.includes(key)) {
+        errors += `${key}, `
+        //const res = Object.keys(error_list).filter(v => v.startsWith(key));
+       //res.forEach(e => 
+        //  error_list[e] = "Not Allowed in ODRL"
+         // );
+      }
+    }
+    if (errors !== ""){
+      languageError = `This input combination is not allowed in ODRL: [${errors}]`
+    }
+  }
+  // IDS
+  console.log("language", error_list)
+  return languageError
 }
 
 /**

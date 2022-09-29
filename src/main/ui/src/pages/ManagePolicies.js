@@ -5,7 +5,7 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import { useStyle } from "../components/Style";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
-import MaterialTable, { Icons } from "material-table";
+import MaterialTable from "material-table";
 import { forwardRef } from "react";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
@@ -30,7 +30,6 @@ import {
   exportPolicy,
   deletePolicy,
   editPolicy,
-  viewPolicy,
 } from "../components/backend/Database";
 
 const tableIcons = {
