@@ -23,12 +23,6 @@ export default function IdentifyPolicy(props) {
   const {valueHook, errors } = props;
   const values = valueHook[0];
 
-  if (values.policyType === "Offer" || values.policyType === "Request") {
-    values.consumer = "";
-    values.provider = "";
-  }
-
-  
   return (
     <Grid container spacing={2}>
       <Grid item xs={4}>

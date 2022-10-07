@@ -1,5 +1,7 @@
 package de.fraunhofer.iese.ids.odrl.pap.controller;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -65,11 +67,20 @@ public class JsonIDSConverter {
 		odrlPolicy.setConsumer(createConsumer());
 		odrlPolicy.setRules((ArrayList<Rule>) rules);
 		odrlPolicy.setPolicyId(URI.create(policyUID));
-		odrlPolicy.setType(PolicyType.getFromIdsString("ids:Contract" + rp.getPolicyType()));
+		odrlPolicy.setType(PolicyType.getFromString(rp.getPolicyType()));
 		// odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
 		String jsonPolicyString = odrlPolicy.toString();
+		try {
+			PrintWriter out = new PrintWriter("D:\\Desktop\\out.txt");
+			out.println(jsonPolicyString);
+			out.flush();
+			out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//Map map = null;
 		//boolean tempProviderSide = true;
 		//String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);

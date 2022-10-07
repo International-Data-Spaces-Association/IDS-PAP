@@ -6,7 +6,7 @@
 import { Language } from "@material-ui/icons";
 import axios from "axios";
 import negotiateTestResponse from "../negotiateExample.json";
-
+import { ids_policy_types, odrl_policy_types } from "../controls/InitialFieldListValues";
 /**
  * Main function that is called when a new policy is created. First the inputs are validated then
  * transformed and finally send to the backend.
@@ -18,7 +18,6 @@ import negotiateTestResponse from "../negotiateExample.json";
  * @param {object} e sender to determine the origin [Not used at the moment]
  */
 export default function Submit(url, values, states, setErrors, history, e) {
-  console.log(values);
   const replacer = (key, value) =>
     value instanceof Object && !(value instanceof Array)
       ? Object.keys(value)
@@ -33,7 +32,9 @@ export default function Submit(url, values, states, setErrors, history, e) {
     for (var key in states) {
       states[key] = false;
     }
-    const isoValues = convertDateToIso(values, states);
+    var isoValues = convertDateToIso(values, states);
+    //setPolicyType(isoValues)
+    console.log(isoValues)
     if (values.is_template) {
       axios.post("/policy/template", isoValues).then();
     } else {
@@ -43,7 +44,6 @@ export default function Submit(url, values, states, setErrors, history, e) {
             .post("/policy/initialTechnologyDependentPolicy", response.data)
             .then(
               (responseTDP) => {
-                console.log(response.data);
                 var dict = {
                   jsonPolicy: JSON.stringify(response.data, replacer, 2),
                   dtPolicy: responseTDP.data,
@@ -147,6 +147,26 @@ export async function negotiatePolicyGetResponse(url, uuid) {
   return policy;
 }
 
+
+/**
+ * Sets policy type according to selected language
+ * @param {object} values object with all the user input
+ */
+ function setPolicyType(values) {
+  if (values.language === "IDS") {
+    for (const type of ids_policy_types) { 
+      if (type.id === values.policyType) {
+        values["policyType"] = type.value
+      }    
+    }
+  } else if (values.language === "ODRL"){
+    for (const type of odrl_policy_types) { 
+      if (type.id === values.policyType) {
+        values["policyType"] = type.value
+      }    
+    }  }
+ }
+ 
 /**
  * Converts the date to iso standard
  * @param {object} values object with all the user input
@@ -294,7 +314,7 @@ function languageError(language, states, error_list) {
   var errors = ""
   // ODRL 
   if (language === "ODRL"){
-    const notAllowedStatesODRL = ["securityLevel", "connector", "anonymizeInRest", "anonymizeTransit", "delete", "distribute", "inform", "log"];
+    const notAllowedStatesODRL = [ "anonymizeInRest", "anonymizeTransit", "delete", "distribute", "inform", "log"];
     for (const [key, value] of Object.entries(states)) {
       if (value && notAllowedStatesODRL.includes(key)) {
         errors += `${key}, `

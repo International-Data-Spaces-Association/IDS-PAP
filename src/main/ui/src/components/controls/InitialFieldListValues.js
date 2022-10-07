@@ -53,7 +53,19 @@ export const modifier_list = [
 /**
  * Different policy types and how they should be translated for the backend
  */
-export const policy_types = [
+ export const policy_types = [
+  { id: "Agreement", value: "Agreement" },
+  { id: "Offer", value: "Offer" },
+  { id: "Request", value: "Request" },
+];
+
+export const ids_policy_types = [
+  { id: "Agreement", value: "ids:ContractAgreement" },
+  { id: "Offer", value: "ids:ContractOffer" },
+  { id: "Request", value: "ids:ContractRequest" },
+];
+
+export const odrl_policy_types = [
   { id: "Agreement", value: "Agreement" },
   { id: "Offer", value: "Offer" },
   { id: "Request", value: "Request" },

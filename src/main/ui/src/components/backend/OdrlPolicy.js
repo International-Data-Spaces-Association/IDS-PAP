@@ -13,7 +13,7 @@ function OdrlPolicy() {
     id: -1,
     policyType: "Agreement",
     target: "",
-    provider: "",
+    provider: "My Party",
     consumer: "",
 
     location_input: [""],
