@@ -62,6 +62,7 @@ public class RecievedOdrlPolicyTest {
 
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("id", 0);
+		jsonObject.put("language", "IDS");
 		jsonObject.put("policyType", "");
 		jsonObject.put("target", "");
 		jsonObject.put("provider", "");
@@ -178,8 +179,8 @@ public class RecievedOdrlPolicyTest {
 			return mvcResult.getResponse().getContentAsString();
 			
 		} catch (Exception e) {
-			Assert.fail();
 			e.printStackTrace();
+			Assert.fail();
 		}
 		return "";
 	}
@@ -228,6 +229,10 @@ public class RecievedOdrlPolicyTest {
 			//writeFile(response, path); // This line will override all expected responses!
 			String expectedResponse = new JSONObject(readFile(path)).toString(4);
 			boolean isCorrect = expectedResponse.equals(response);
+			if (!isCorrect) {
+				System.out.println("Expected: \n" + expectedResponse);
+				System.out.println("Repsonse: \n" + response);
+			} 
 			Assert.assertTrue(isCorrect);
 		} catch (JSONException e) {
 			e.printStackTrace();

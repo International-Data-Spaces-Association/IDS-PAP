@@ -94,6 +94,8 @@ public class JsonIDSConverter {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}**/
+		
+		System.out.println(jsonPolicyString.toString());
 		String response = new JSONObject(jsonPolicyString.toString()).toString(4);
 		
 		/*

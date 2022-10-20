@@ -314,7 +314,7 @@ function languageError(language, states, error_list) {
   var errors = ""
   // ODRL 
   if (language === "ODRL"){
-    const notAllowedStatesODRL = [ "anonymizeInRest", "anonymizeTransit", "delete", "distribute", "inform", "log"];
+    const notAllowedStatesODRL = [ ];
     for (const [key, value] of Object.entries(states)) {
       if (value && notAllowedStatesODRL.includes(key)) {
         errors += `${key}, `
