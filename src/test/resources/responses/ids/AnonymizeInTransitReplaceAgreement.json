@@ -1,5 +1,5 @@
 {
-    "ids:consumer": "http://example.com/ids/party/consumer-party/",
+    "ids:consumer": "http://example.com/ids/party/consumer-party",
     "@type": "ids:ContractAgreement",
     "ids:provider": "http://example.com/party/my-party",
     "profile": "http://example.com/ids-profile",
@@ -22,7 +22,7 @@
                     {
                         "@type": "ids:Constraint",
                         "ids:rightOperand": [{
-                            "@value": "FieldToChange",
+                            "@value": "ValueToChange",
                             "@type": "xsd:string"
                         }],
                         "ids:leftOperand": {"@id": "idsc:REPLACE_WITH"},
@@ -31,7 +31,7 @@
                     {
                         "@type": "ids:Constraint",
                         "ids:rightOperand": [{
-                            "@value": "ValueToChange",
+                            "@value": "FieldToChange",
                             "@type": "xsd:string"
                         }],
                         "ids:leftOperand": {"@id": "idsc:JSON_PATH"},

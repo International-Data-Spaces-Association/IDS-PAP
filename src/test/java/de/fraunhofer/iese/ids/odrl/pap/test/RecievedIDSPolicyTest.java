@@ -132,7 +132,7 @@ public class RecievedIDSPolicyTest {
 	 */
 	JSONObject createAgreementHeader(JSONObject jsonObject) throws JSONException {
 		jsonObject.put("policyType", "Agreement");
-		jsonObject.put("consumer", "http://example.com/ids/party/consumer-party/");
+		jsonObject.put("consumer", "http://example.com/ids/party/consumer-party");
 		jsonObject.put("provider", "My party");
 		jsonObject.put("target", "http://target/");
 		return jsonObject;

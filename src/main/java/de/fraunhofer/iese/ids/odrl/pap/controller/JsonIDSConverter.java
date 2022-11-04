@@ -73,15 +73,6 @@ public class JsonIDSConverter {
 		// .create(recievedPolicy.getProvider())));
 		String jsonPolicyString = odrlPolicy.toString();
 
-		try {
-			PrintWriter out = new PrintWriter("D:\\Desktop\\out.txt");
-			out.println(jsonPolicyString);
-			out.flush();
-			out.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		//Map map = null;
 		//boolean tempProviderSide = true;
 		//String dtPolicy = OdrlTranslator.translate(map, tempProviderSide, odrlPolicy);
@@ -222,9 +213,13 @@ public class JsonIDSConverter {
 			LeftOperand lo = LeftOperand.DATE_TIME;
 			return singleInputField(rp.getTimeAndDate(), "BEFORE","BEFORE", rot, ct, lo);
 		}
+		
+		private boolean checkIfAdded(String s) {
+			return s != "" && s != null;
+		}
 
 		public boolean addRestrictTimeIntervalCondition() {
-			if (rp.getRestrictTimeIntervalStart() != "" && rp.getRestrictTimeIntervalEnd()!="") {
+			if (checkIfAdded(rp.getRestrictTimeIntervalStart()) && checkIfAdded(rp.getRestrictTimeIntervalEnd())) {
 				RightOperandEntity startInnerEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictTimeIntervalStart(),
 						RightOperandType.DATETIMESTAMP);
 				RightOperandEntity startEntity = new RightOperandEntity(EntityType.BEGIN, startInnerEntity,
@@ -250,7 +245,7 @@ public class JsonIDSConverter {
 		}
 
 		public boolean addRestrictStartTimeCondition() {
-			if (rp.getRestrictStartTime() != "") {
+			if (checkIfAdded(rp.getRestrictStartTime())) {
 				RightOperandEntity startEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictStartTime(),
 						RightOperandType.DATETIMESTAMP);
 
@@ -268,7 +263,7 @@ public class JsonIDSConverter {
 		}
 		
 		public boolean addRestrictEndTimeCondition() {
-			if (rp.getRestrictEndTime() != "") {
+			if (checkIfAdded(rp.getRestrictEndTime())) {
 				RightOperandEntity endEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictEndTime(),
 						RightOperandType.DATETIMESTAMP);
 
@@ -286,7 +281,7 @@ public class JsonIDSConverter {
 		}
 
 		public boolean addPaymentCondition() {
-			if (rp.getPayment() != "") {
+			if (checkIfAdded(rp.getPayment())) {
 				RightOperand paymentRightOperand = new RightOperand(String.valueOf(rp.getPrice()), RightOperandType.DOUBLE);
 				ArrayList<RightOperand> paymentRightOperands = new ArrayList<>();
 				paymentRightOperands.add(paymentRightOperand);
@@ -349,7 +344,7 @@ public class JsonIDSConverter {
 		}
 
 		public boolean addCounterCondition() {
-			if (rp.getCounter() != "") {
+			if (checkIfAdded(rp.getCounter())) {
 				RightOperand rightOperand = new RightOperand(rp.getCounter(), RightOperandType.DECIMAL);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
@@ -364,7 +359,7 @@ public class JsonIDSConverter {
 
 
 		public boolean addTime() {
-			if (rp.getTime() != "") {
+			if (checkIfAddedrp.getTime())) {
 				RightOperand delayPeriodRightOperand = new RightOperand(rp.getTime(), RightOperandType.DURATION);
 				ArrayList<RightOperand> delayPeriodRightOperands = new ArrayList<>();
 				delayPeriodRightOperands.add(delayPeriodRightOperand);
@@ -378,7 +373,7 @@ public class JsonIDSConverter {
 		}
 		
 		public void addRuleDistributeData() {
-			if (rp.getArtifactState() != "" && rp.getPolicy() != "") {
+			if (checkIfAdded(rp.getArtifactState()) && checkIfAdded(rp.getPolicy())) {
 				RightOperand dutyRightOperand = new RightOperand();
 				dutyRightOperand.setType(RightOperandType.ANYURI);
 				dutyRightOperand.setValue(rp.getPolicy());
@@ -414,7 +409,7 @@ public class JsonIDSConverter {
 		}
 		
 		public void distributeData() {	
-			if (rp.getArtifactState() != "" && rp.getPolicy() != "") {
+			if (checkIfAdded(rp.getArtifactState()) && checkIfAdded(rp.getPolicy())) {
 				RightOperand dutyRightOperand = new RightOperand();
 				dutyRightOperand.setType(RightOperandType.ANYURI);
 				dutyRightOperand.setValue(rp.getPolicy());
@@ -600,15 +595,15 @@ public class JsonIDSConverter {
 		}
 		
 		public void addPostDuties() {
-			if (rp.getPostduties_logLevel() != "" && rp.getPostduties_systemDevice() != "") {
+			if (checkIfAdded(rp.getPostduties_logLevel()) && checkIfAdded(rp.getPostduties_systemDevice())) {
 				logDuty(rp.getPostduties_logLevel(), rp.getPostduties_systemDevice(), RuleType.POSTDUTY);
 			}
-			if (rp.getPostduties_notificationLevel() != "" && rp.getPostduties_informedParty() != "") {
+			if (checkIfAdded(rp.getPostduties_notificationLevel()) && checkIfAdded(rp.getPostduties_informedParty())) {
 				informDuty(rp.getPostduties_notificationLevel(), rp.getPostduties_informedParty(), RuleType.POSTDUTY);
 			}
-			if (rp.getPostduties_timeAndDate() != ""
-					|| (rp.getPostduties_durationYear() != "" && rp.getPostduties_durationMonth() != ""
-							&& rp.getPostduties_durationDay() != "" && rp.getPostduties_durationHour() != "")) {
+			if (checkIfAdded(rp.getPostduties_timeAndDate())
+					|| (checkIfAdded(rp.getPostduties_durationYear()) && checkIfAdded(rp.getPostduties_durationMonth())
+							&& checkIfAdded(rp.getPostduties_durationDay()) && checkIfAdded(rp.getPostduties_durationHour()))) {
 				deleteDuty(RuleType.POSTDUTY);
 			}
 		}
