@@ -1,0 +1,61 @@
+{
+    "@context": {
+      "ids": "https://w3id.org/idsa/core/",
+      "idsc": "https://w3id.org/idsa/code/"
+    },
+    "@id": "https://w3id.org/idsa/autogen/contract/anonymize-in-transit",
+    "@type": "ids:ContractAgreement",
+    "ids:consumer": "http://example.com/ids/party/consumer-party",
+    "ids:permission": [
+      {
+        "ids:action": [
+          {
+            "@id": "idsc:USE"
+          }
+        ],
+        "ids:preDuty": [
+          {
+            "@type": "ids:Duty",
+            "ids:action": [
+              {
+                "@id": "idsc:DELETE",
+                "ids:pxpEndpoint": {
+                  "@type": "ids:PXP",
+                  "ids:endpointURI": {
+                    "@type": "anyURI",
+                    "@value": "https://example.com/ids/PXPendpoint/delete"
+                  },
+                  "ids:interfaceDescription": {
+                    "@type": "anyURI",
+                    "@value": "https://example.com/ids/PXP/interfaceDescription/delete"
+                  }
+                },
+                "ids:refinement": [
+                  {
+                    "@type": "ids:Constraint",
+                    "ids:leftOperand": {
+                      "@id": "idsc:JSON_PATH"
+                    },
+                    "ids:operator": {
+                      "@id": "idsc:DEFINES_AS"
+                    },
+                    "ids:rightOperand": [
+                      {
+                        "@type": "xsd:string",
+                        "@value": "FieldToChange"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "ids:target": {
+          "@id": "http://target/"
+        }
+      }
+    ],
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile"
+  }

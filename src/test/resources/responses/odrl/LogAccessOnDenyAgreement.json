@@ -1,0 +1,60 @@
+{
+    "uid": "https://w3id.org/idsa/autogen/contract/log-access",
+    "@type": "Agreement",
+    "profile": "http://example.com/ids-profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "duty": [{
+            "ids:pxpEndpoint": [{
+                "@type": "ids:PXP",
+                "ids:interfaceDescription": {
+                    "@value": "https://example.com/ids/PXP/interfaceDescription/log",
+                    "@type": "anyURI"
+                },
+                "ids:endpointURI": {
+                    "@value": "https://example.com/ids/PXPendpoint/log",
+                    "@type": "anyURI"
+                }
+            }],
+            "action": [{
+                "refinement": [
+                    {
+                        "leftOperand": "idsc:LOG_LEVEL",
+                        "rightOperand": {
+                            "@value": "idsc:ON_DENY",
+                            "@type": "xsd:string"
+                        },
+                        "ids:comment": "  ",
+                        "operator": "eq"
+                    },
+                    {
+                        "leftOperand": "systemDevice",
+                        "rightOperand": {
+                            "@value": "http://SystemDevice",
+                            "@type": "xsd:anyURI"
+                        },
+                        "ids:comment": "  ",
+                        "operator": "eq"
+                    }
+                ],
+                "rdf:value": {"@id": "idsc:log"}
+            }],
+            "constraint": [{
+                "leftOperand": "event",
+                "rightOperand": {"@id": "odrl:policyUsage"},
+                "operator": "lt"
+            }]
+        }],
+        "assignee": "http://example.com/ids/party/consumer-party/",
+        "target": "http://target/"
+    }],
+    "@context": [
+        "http://www.w3.org/ns/odrl.jsonld",
+        {
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/",
+            "dc": "http://purl.org/dc/terms/"
+        }
+    ]
+}

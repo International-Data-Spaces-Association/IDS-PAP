@@ -72,6 +72,7 @@ public class JsonIDSConverter {
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
 		String jsonPolicyString = odrlPolicy.toString();
+
 		try {
 			PrintWriter out = new PrintWriter("D:\\Desktop\\out.txt");
 			out.println(jsonPolicyString);
@@ -94,6 +95,7 @@ public class JsonIDSConverter {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}**/
+
 		
 		System.out.println(jsonPolicyString.toString());
 		String response = new JSONObject(jsonPolicyString.toString()).toString(4);

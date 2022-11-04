@@ -227,16 +227,16 @@ function validation(values, states, setErrors) {
 
     case "DeleteDataAfter":
       if (states.postduties_duration) {
-        error_list.postduties_durationDay = isValidInt(
+        error_list.postduties_durationDay = isIntOrEmpty(
           values.postduties_durationDay
         );
-        error_list.postduties_durationHour = isValidInt(
+        error_list.postduties_durationHour = isIntOrEmpty(
           values.postduties_durationHour
         );
-        error_list.postduties_durationMonth = isValidInt(
+        error_list.postduties_durationMonth = isIntOrEmpty(
           values.postduties_durationMonth
         );
-        error_list.postduties_durationYear = isValidInt(
+        error_list.postduties_durationYear = isIntOrEmpty(
           values.postduties_durationYear
         );
       }
@@ -424,16 +424,16 @@ function checkComplexPolicyFields(values, states, error_list) {
 
   // Delete Data After
   if (states.postduties_duration) {
-    error_list.postduties_durationDay = isValidInt(
+    error_list.postduties_durationDay = isIntOrEmpty(
       values.postduties_durationDay
     );
-    error_list.postduties_durationHour = isValidInt(
+    error_list.postduties_durationHour = isIntOrEmpty(
       values.postduties_durationHour
     );
-    error_list.postduties_durationMonth = isValidInt(
+    error_list.postduties_durationMonth = isIntOrEmpty(
       values.postduties_durationMonth
     );
-    error_list.postduties_durationYear = isValidInt(
+    error_list.postduties_durationYear = isIntOrEmpty(
       values.postduties_durationYear
     );
   }

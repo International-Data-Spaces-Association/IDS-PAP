@@ -15,6 +15,7 @@ import Submit from "../components/backend/Submit";
 import FormComponents from "../components/FormComponents";
 import MenuItems from "../components/controls/MenuItems";
 import { useLocation } from "react-router-dom";
+import SplitButtons from "../components/controls/SplitButtons";
 
 export default function ProvideAccess() {
   const selected_components = {
@@ -91,6 +92,8 @@ export default function ProvideAccess() {
     });
   };
 
+  const [selectedLanguage, setSelectedLanguage] = React.useState(1);
+
   const handleSubmit = (e) => {
     const values = valueHook[0];
     const dict = selectedComponents.availableComponents;
@@ -159,19 +162,14 @@ export default function ProvideAccess() {
               ) : null}
             </Paper>
           </Grid>
-
-          <Grid item xs={2}>
-          <Button
-              variant="contained"
-              color="primary"
-              className={classes.saveBtn}
-              prefix="submit"
-              id="Save"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-          </Grid>
+          <Grid item xs={3} xm={2}>
+                <SplitButtons
+                  valueHook={valueHook}
+                  selectedLanguage={selectedLanguage}
+                  setSelectedLanguage={setSelectedLanguage}
+                  handleClick={handleSubmit}
+                />
+              </Grid>
         </Grid>
       </Form>
     </div>

@@ -1,0 +1,45 @@
+{
+    "uid": "https://w3id.org/idsa/autogen/contract/count-access",
+    "@type": "Agreement",
+    "profile": "http://example.com/ids-profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "duty": [{
+            "action": [{"rdf:value": {"@id": "idsc:increment_counter"}}],
+            "constraint": [{
+                "leftOperand": "event",
+                "rightOperand": {"@id": "odrl:policyUsage"},
+                "operator": "lt"
+            }]
+        }],
+        "constraint": [{
+            "leftOperand": "count",
+            "ids:pipEndpoint": {
+                "@type": "ids:PIP",
+                "ids:interfaceDescription": {
+                    "@value": "https://example.com/ids/PIP/interfaceDescription/count",
+                    "@type": "xsd:anyURI"
+                },
+                "ids:endpointURI": {
+                    "@value": "https://example.com/ids/PXPendpoint/count",
+                    "@type": "xsd:anyURI"
+                }
+            },
+            "rightOperand": {
+                "@value": "22",
+                "@type": "xsd:decimal"
+            },
+            "operator": "le"
+        }],
+        "assignee": "http://example.com/ids/party/consumer-party/",
+        "target": "http://target/"
+    }],
+    "@context": [
+        "http://www.w3.org/ns/odrl.jsonld",
+        {
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/"
+        }
+    ]
+}

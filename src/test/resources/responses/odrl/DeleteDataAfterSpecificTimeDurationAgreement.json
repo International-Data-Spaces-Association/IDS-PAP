@@ -1,0 +1,51 @@
+{
+    "uid": "https://w3id.org/idsa/autogen/contract/delete-after-usage",
+    "@type": "Agreement",
+    "profile": "http://example.com/ids-profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "duty": [{
+            "action": [{
+                "refinement": [{
+                    "leftOperand": "delayPeriod",
+                    "ids:pipEndpoint": {
+                        "@type": "ids:PIP",
+                        "ids:interfaceDescription": {
+                            "@value": "https://example.com/ids/PIP/interfaceDescription/delay",
+                            "@type": "xsd:anyURI"
+                        },
+                        "ids:endpointURI": {
+                            "@value": "https://example.com/ids/PXPendpoint/delay",
+                            "@type": "xsd:anyURI"
+                        }
+                    },
+                    "rightOperand": {
+                        "@type": "ids:durationEntity",
+                        "ids:hasDuration": {
+                            "@value": "P2021Y11M1DT10H",
+                            "@type": "xsd:duration"
+                        }
+                    },
+                    "ids:comment": "  ",
+                    "operator": "eq"
+                }],
+                "rdf:value": {"@id": "idsc:delete"}
+            }],
+            "constraint": [{
+                "leftOperand": "event",
+                "rightOperand": {"@id": "odrl:policyUsage"},
+                "operator": "lt"
+            }]
+        }],
+        "assignee": "http://example.com/ids/party/consumer-party/",
+        "target": "http://target/"
+    }],
+    "@context": [
+        "http://www.w3.org/ns/odrl.jsonld",
+        {
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/"
+        }
+    ]
+}

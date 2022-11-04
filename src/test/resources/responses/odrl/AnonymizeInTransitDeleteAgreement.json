@@ -1,0 +1,36 @@
+{
+    "uid": "https://w3id.org/idsa/autogen/contract/anonymize-in-transit",
+    "@type": "Agreement",
+    "profile": "http://example.com/ids-profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "duty": [{
+            "action": [{
+                "refinement": [{
+                    "leftOperand": "idsc:JSON_PATH",
+                    "rightOperand": {
+                        "@value": "FieldToChange",
+                        "@type": "xsd:string"
+                    },
+                    "operator": "eq"
+                }],
+                "rdf:value": {"@id": "idsc:delete"}
+            }],
+            "constraint": [{
+                "leftOperand": "event",
+                "rightOperand": {"@id": "odrl:policyUsage"},
+                "operator": "lt"
+            }]
+        }],
+        "assignee": "http://example.com/ids/party/consumer-party/",
+        "target": "http://target/"
+    }],
+    "@context": [
+        "http://www.w3.org/ns/odrl.jsonld",
+        {
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/"
+        }
+    ]
+}

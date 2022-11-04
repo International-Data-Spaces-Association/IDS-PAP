@@ -10,6 +10,7 @@ import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteData from "../components/controls/DeleteData";
 import { useLocation } from "react-router-dom";
+import SplitButtons from "../components/controls/SplitButtons";
 
 export default function DeleteDataAfter() {
   const selected_components = {
@@ -34,6 +35,7 @@ export default function DeleteDataAfter() {
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] = useState(selected_components);
+  const [selectedLanguage, setSelectedLanguage] = React.useState(1);
 
   const handleSubmit = (e) => {
     const values = valueHook[0]
@@ -119,18 +121,14 @@ export default function DeleteDataAfter() {
             </Paper>
           </Grid>
           <Grid item xs={12}>
-            <Grid item xs={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.saveBtn}
-              prefix="submit"
-              id="Save"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-            </Grid>
+          <Grid item xs={3} xm={2}>
+                <SplitButtons
+                  valueHook={valueHook}
+                  selectedLanguage={selectedLanguage}
+                  setSelectedLanguage={setSelectedLanguage}
+                  handleClick={handleSubmit}
+                />
+              </Grid>
           </Grid>
         </Grid>
       </Form>

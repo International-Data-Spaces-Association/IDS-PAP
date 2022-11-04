@@ -10,6 +10,7 @@ import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import LogData from "../components/controls/LogData";
 import { useLocation } from "react-router-dom";
+import SplitButtons from "../components/controls/SplitButtons";
 
 const selected_components = {
   page: "LogAccess",
@@ -27,6 +28,7 @@ export default function LogAccess() {
   const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
+  const [selectedLanguage, setSelectedLanguage] = React.useState(1);
 
 
   const handleSubmit = (e) => {
@@ -65,18 +67,14 @@ export default function LogAccess() {
               />
             </Paper>
           </Grid>
-          <Grid item xs={2}>
-          <Button
-              variant="contained"
-              color="primary"
-              className={classes.saveBtn}
-              prefix="submit"
-              id="Save"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-          </Grid>
+          <Grid item xs={3} xm={2}>
+                <SplitButtons
+                  valueHook={valueHook}
+                  selectedLanguage={selectedLanguage}
+                  setSelectedLanguage={setSelectedLanguage}
+                  handleClick={handleSubmit}
+                />
+              </Grid>
         </Grid>
       </Form>
     </div>

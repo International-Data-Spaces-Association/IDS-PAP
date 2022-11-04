@@ -13,6 +13,7 @@ import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import Title from "../components/controls/Title";
 import { useLocation } from "react-router-dom";
+import SplitButtons from "../components/controls/SplitButtons";
 
 const selected_components = {
   page: "AnonymizeInTransit",
@@ -29,6 +30,7 @@ export default function AnonymizeInTransit() {
   const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
+  const [selectedLanguage, setSelectedLanguage] = React.useState(1);
 
   const handleSubmit = (e) => {
     const values = valueHook[0]
@@ -96,18 +98,14 @@ export default function AnonymizeInTransit() {
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={2}>
-          <Button
-              variant="contained"
-              color="primary"
-              className={classes.saveBtn}
-              prefix="submit"
-              id="Save"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-          </Grid>
+          <Grid item xs={3} xm={2}>
+                <SplitButtons
+                  valueHook={valueHook}
+                  selectedLanguage={selectedLanguage}
+                  setSelectedLanguage={setSelectedLanguage}
+                  handleClick={handleSubmit}
+                />
+              </Grid>
         </Grid>
       </Form>
     </div>
