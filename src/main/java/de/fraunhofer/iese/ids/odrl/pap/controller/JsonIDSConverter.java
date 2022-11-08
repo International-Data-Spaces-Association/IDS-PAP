@@ -1,13 +1,12 @@
 package de.fraunhofer.iese.ids.odrl.pap.controller;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import de.fraunhofer.iese.ids.odrl.pap.util.PapUtil;
+import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 
 import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
@@ -31,15 +30,16 @@ import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.TimeUnit;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.interfaces.IPolicy;
 
+@Log4j2
 public class JsonIDSConverter {
-	private RecievedOdrlPolicy rp;
+	private RecievedOdrlPolicy recievedOdrlPolicy;
 	private List<Condition> constraints = new ArrayList<>();
 	private List<Rule> rules = new ArrayList<>();
 	private List<Rule> postDuties = new ArrayList<>();
 	private List<Rule> preDuties = new ArrayList<>();
 	
 	public JsonIDSConverter(RecievedOdrlPolicy rp, RuleType rt, ActionType at) {
-		this.rp = rp;
+		this.recievedOdrlPolicy = rp;
 		Action useAction = new Action(at);
 		Rule rule = new Rule(rt, useAction);
 		rule.setTarget(URI.create(rp.getTarget()));
@@ -59,15 +59,15 @@ public class JsonIDSConverter {
 			rules.get(0).setPreduties((ArrayList<Rule>) preDuties);
 		}
 		IPolicy odrlPolicy = null;
-		if (rp.getLanguage().equals("IDS")) {
+		if (recievedOdrlPolicy.getLanguage().equals("IDS")) {
 			odrlPolicy = new IdsPolicy();
-		} else if (rp.getLanguage().equals("ODRL")) {
+		} else {
 			odrlPolicy = new OdrlPolicy();
 		}
 		odrlPolicy.setConsumer(createConsumer());
 		odrlPolicy.setRules((ArrayList<Rule>) rules);
 		odrlPolicy.setPolicyId(URI.create(policyUID));
-		odrlPolicy.setType(PolicyType.getFromString(rp.getPolicyType()));
+		odrlPolicy.setType(PolicyType.getFromString(recievedOdrlPolicy.getPolicyType()));
 		// odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
@@ -87,9 +87,8 @@ public class JsonIDSConverter {
 			e.printStackTrace();
 		}**/
 
-		
-		System.out.println(jsonPolicyString.toString());
-		String response = new JSONObject(jsonPolicyString.toString()).toString(4);
+		log.debug(jsonPolicyString);
+		String response = new JSONObject(jsonPolicyString).toString(4);
 		
 		/*
 		// Store the policy in the database
@@ -148,84 +147,84 @@ public class JsonIDSConverter {
 			RightOperandType rot = RightOperandType.ANYURI;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.ABSOLUTE_SPATIAL_POSITION;
-			return multiInputField(rp.getLocation_input(), rp.getLocation_op(),"SAME_AS", rot, ct, lo);
+			return multiInputField(recievedOdrlPolicy.getLocation_input(), recievedOdrlPolicy.getLocation_op(),"SAME_AS", rot, ct, lo);
 		}
 
 		public boolean addSystemCondition() {
 			RightOperandType rot = RightOperandType.ANYURI;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.SYSTEM;
-			return singleInputField(rp.getSystem(), "SAME_AS","SAME_AS", rot, ct, lo);
+			return singleInputField(recievedOdrlPolicy.getSystem(), "SAME_AS","SAME_AS", rot, ct, lo);
 		}
 
 		public boolean addConnectorCondition() {
 			RightOperandType rot = RightOperandType.ANYURI;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.CONNECTOR;
-			return multiInputField(rp.getConnector_input(), rp.getConnector_op(),"SAME_AS", rot, ct, lo);
+			return multiInputField(recievedOdrlPolicy.getConnector_input(), recievedOdrlPolicy.getConnector_op(),"SAME_AS", rot, ct, lo);
 		}
 
 		public boolean addApplicationCondition() {
 			RightOperandType rot = RightOperandType.ANYURI;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.APPLICATION;
-			return multiInputField(rp.getApplication_input(), rp.getApplication_op(),"SAME_AS", rot, ct, lo);
+			return multiInputField(recievedOdrlPolicy.getApplication_input(), recievedOdrlPolicy.getApplication_op(),"SAME_AS", rot, ct, lo);
 		}
 
 		public boolean addStateCondition() {
 			RightOperandType rot = RightOperandType.STRING;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.STATE;
-			return multiInputField(rp.getState_input(), rp.getState_op(),"EQUALS", rot, ct, lo);
+			return multiInputField(recievedOdrlPolicy.getState_input(), recievedOdrlPolicy.getState_op(),"EQUALS", rot, ct, lo);
 		}
 
 		public boolean addUserRoleCondition() {
 			RightOperandType rot = RightOperandType.STRING;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.ROLE;
-			return multiInputField(rp.getRole_input(), rp.getRole_op(),"EQUALS", rot, ct, lo);
+			return multiInputField(recievedOdrlPolicy.getRole_input(), recievedOdrlPolicy.getRole_op(),"EQUALS", rot, ct, lo);
 		}
 
 		public boolean addSecurityLevelCondition() {
 			RightOperandType rot = RightOperandType.STRING;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.SECURITY_LEVEL;
-			return multiInputField(rp.getSecurityLevel_input(), rp.getSecurityLevel_op(),"EQUALS", rot, ct, lo);
+			return multiInputField(recievedOdrlPolicy.getSecurityLevel_input(), recievedOdrlPolicy.getSecurityLevel_op(),"EQUALS", rot, ct, lo);
 		}
 
 		public boolean addPurposeCondition() {
 			RightOperandType rot = RightOperandType.ANYURI;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.PURPOSE;
-			return multiInputField(rp.getPurpose_input(), rp.getPurpose_op(),"SAME_AS", rot, ct, lo);
+			return multiInputField(recievedOdrlPolicy.getPurpose_input(), recievedOdrlPolicy.getPurpose_op(),"SAME_AS", rot, ct, lo);
 		}
 
 		public boolean addEventCondition() {
 			RightOperandType rot = RightOperandType.ANYURI;
 			ConditionType ct = ConditionType.CONSTRAINT;
 			LeftOperand lo = LeftOperand.EVENT;
-			return multiInputField(rp.getEvent_input(), rp.getEvent_op(),"SAME_AS", rot, ct, lo);
+			return multiInputField(recievedOdrlPolicy.getEvent_input(), recievedOdrlPolicy.getEvent_op(),"SAME_AS", rot, ct, lo);
 		}
 		
 		public boolean addTimeAndDate() {
 			RightOperandType rot = RightOperandType.DATETIMESTAMP;
 			ConditionType ct = ConditionType.REFINEMENT;
 			LeftOperand lo = LeftOperand.DATE_TIME;
-			return singleInputField(rp.getTimeAndDate(), "BEFORE","BEFORE", rot, ct, lo);
+			return singleInputField(recievedOdrlPolicy.getTimeAndDate(), "BEFORE","BEFORE", rot, ct, lo);
 		}
-		
-		private boolean checkIfAdded(String s) {
+		/*
+		private boolean PapUtil.isNotNullOrEmpty(String s) {
 			return s != "" && s != null;
-		}
+		}*/
 
 		public boolean addRestrictTimeIntervalCondition() {
-			if (checkIfAdded(rp.getRestrictTimeIntervalStart()) && checkIfAdded(rp.getRestrictTimeIntervalEnd())) {
-				RightOperandEntity startInnerEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictTimeIntervalStart(),
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictTimeIntervalStart()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictTimeIntervalEnd())) {
+				RightOperandEntity startInnerEntity = new RightOperandEntity(EntityType.DATETIME, recievedOdrlPolicy.getRestrictTimeIntervalStart(),
 						RightOperandType.DATETIMESTAMP);
 				RightOperandEntity startEntity = new RightOperandEntity(EntityType.BEGIN, startInnerEntity,
 						RightOperandType.INSTANT);
 
-				RightOperandEntity endInnerEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictTimeIntervalEnd(),
+				RightOperandEntity endInnerEntity = new RightOperandEntity(EntityType.DATETIME, recievedOdrlPolicy.getRestrictTimeIntervalEnd(),
 						RightOperandType.DATETIMESTAMP);
 				RightOperandEntity endEntity = new RightOperandEntity(EntityType.END, endInnerEntity,
 						RightOperandType.INSTANT);
@@ -245,8 +244,8 @@ public class JsonIDSConverter {
 		}
 
 		public boolean addRestrictStartTimeCondition() {
-			if (checkIfAdded(rp.getRestrictStartTime())) {
-				RightOperandEntity startEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictStartTime(),
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictStartTime())) {
+				RightOperandEntity startEntity = new RightOperandEntity(EntityType.DATETIME, recievedOdrlPolicy.getRestrictStartTime(),
 						RightOperandType.DATETIMESTAMP);
 
 				ArrayList<RightOperandEntity> entities = new ArrayList<>();
@@ -263,17 +262,14 @@ public class JsonIDSConverter {
 		}
 		
 		public boolean addRestrictEndTimeCondition() {
-			if (checkIfAdded(rp.getRestrictEndTime())) {
-				RightOperandEntity endEntity = new RightOperandEntity(EntityType.DATETIME, rp.getRestrictEndTime(),
-						RightOperandType.DATETIMESTAMP);
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictEndTime())) {
 
-				ArrayList<RightOperandEntity> entities = new ArrayList<>();
-				entities.add(endEntity);
-				RightOperand rightOperand = new RightOperand(entities, RightOperandType.INSTANT);
+				RightOperand dateTimeRightOperand = new RightOperand(String.valueOf(recievedOdrlPolicy.getRestrictEndTime()), RightOperandType.DATETIMESTAMP);
+
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
-				rightOperands.add(rightOperand);
+				rightOperands.add(dateTimeRightOperand);
 				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
-						Operator.BEFORE, rightOperands, null);
+						Operator.LTEQ, rightOperands, null);
 				constraints.add(dateTimeCondition);
 				return true;
 			}
@@ -281,14 +277,14 @@ public class JsonIDSConverter {
 		}
 
 		public boolean addPaymentCondition() {
-			if (checkIfAdded(rp.getPayment())) {
-				RightOperand paymentRightOperand = new RightOperand(String.valueOf(rp.getPrice()), RightOperandType.DOUBLE);
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPayment())) {
+				RightOperand paymentRightOperand = new RightOperand(String.valueOf(recievedOdrlPolicy.getPrice()), RightOperandType.DOUBLE);
 				ArrayList<RightOperand> paymentRightOperands = new ArrayList<>();
 				paymentRightOperands.add(paymentRightOperand);
 				Condition paymentCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.PAY_AMOUNT, Operator.EQ,
 						paymentRightOperands, null);
 				paymentCondition.setUnit("http://dbpedia.org/resource/Euro");
-				paymentCondition.setContract(rp.getPayment());
+				paymentCondition.setContract(recievedOdrlPolicy.getPayment());
 				constraints.add(paymentCondition);
 				return true;
 			}
@@ -297,8 +293,8 @@ public class JsonIDSConverter {
 
 		public boolean addElapsedTimeRightOperand() {
 			ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
-			if (rp.getSpecifyBeginTime() != "") {
-				RightOperandEntity beginInnerEntity = new RightOperandEntity(EntityType.DATETIME, rp.getSpecifyBeginTime(),
+			if (recievedOdrlPolicy.getSpecifyBeginTime() != "") {
+				RightOperandEntity beginInnerEntity = new RightOperandEntity(EntityType.DATETIME, recievedOdrlPolicy.getSpecifyBeginTime(),
 						RightOperandType.DATETIMESTAMP);
 				RightOperandEntity beginEntity = new RightOperandEntity(EntityType.BEGIN, beginInnerEntity,
 						RightOperandType.INSTANT);
@@ -309,17 +305,17 @@ public class JsonIDSConverter {
 			String day = "";
 			String month = "";
 			String year = "";
-			if (rp.getDurationHour() != null && !rp.getDurationHour().isEmpty()) {
-				hour = "T" + rp.getDurationHour() + TimeUnit.HOURS.getOdrlXsdDuration();
+			if (recievedOdrlPolicy.getDurationHour() != null && !recievedOdrlPolicy.getDurationHour().isEmpty()) {
+				hour = "T" + recievedOdrlPolicy.getDurationHour() + TimeUnit.HOURS.getOdrlXsdDuration();
 			}
-			if (rp.getDurationDay() != null && !rp.getDurationDay().isEmpty()) {
-				day = rp.getDurationDay() + TimeUnit.DAYS.getOdrlXsdDuration();
+			if (recievedOdrlPolicy.getDurationDay() != null && !recievedOdrlPolicy.getDurationDay().isEmpty()) {
+				day = recievedOdrlPolicy.getDurationDay() + TimeUnit.DAYS.getOdrlXsdDuration();
 			}
-			if (rp.getDurationMonth() != null && !rp.getDurationMonth().isEmpty()) {
-				month = rp.getDurationMonth() + TimeUnit.MONTHS.getOdrlXsdDuration();
+			if (recievedOdrlPolicy.getDurationMonth() != null && !recievedOdrlPolicy.getDurationMonth().isEmpty()) {
+				month = recievedOdrlPolicy.getDurationMonth() + TimeUnit.MONTHS.getOdrlXsdDuration();
 			}
-			if (rp.getDurationYear() != null && !rp.getDurationYear().isEmpty()) {
-				year = rp.getDurationYear() + TimeUnit.YEARS.getOdrlXsdDuration();
+			if (recievedOdrlPolicy.getDurationYear() != null && !recievedOdrlPolicy.getDurationYear().isEmpty()) {
+				year = recievedOdrlPolicy.getDurationYear() + TimeUnit.YEARS.getOdrlXsdDuration();
 			}
 			String duration = "P" + year + month + day + hour;
 
@@ -344,8 +340,8 @@ public class JsonIDSConverter {
 		}
 
 		public boolean addCounterCondition() {
-			if (checkIfAdded(rp.getCounter())) {
-				RightOperand rightOperand = new RightOperand(rp.getCounter(), RightOperandType.DECIMAL);
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getCounter())) {
+				RightOperand rightOperand = new RightOperand(recievedOdrlPolicy.getCounter(), RightOperandType.DECIMAL);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ,
@@ -359,13 +355,13 @@ public class JsonIDSConverter {
 
 
 		public boolean addTime() {
-			if (checkIfAddedrp.getTime())) {
-				RightOperand delayPeriodRightOperand = new RightOperand(rp.getTime(), RightOperandType.DURATION);
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getTime())) {
+				RightOperand delayPeriodRightOperand = new RightOperand(recievedOdrlPolicy.getTime(), RightOperandType.DURATION);
 				ArrayList<RightOperand> delayPeriodRightOperands = new ArrayList<>();
 				delayPeriodRightOperands.add(delayPeriodRightOperand);
 				Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY,
 						Operator.DURATION_EQ, delayPeriodRightOperands, null);
-				delayPeriodRefinement.setUnit(TimeUnit.valueOf(rp.getTimeUnit()).toString());
+				delayPeriodRefinement.setUnit(TimeUnit.valueOf(recievedOdrlPolicy.getTimeUnit()).toString());
 				constraints.add(delayPeriodRefinement);
 				return true;
 			}
@@ -373,10 +369,10 @@ public class JsonIDSConverter {
 		}
 		
 		public void addRuleDistributeData() {
-			if (checkIfAdded(rp.getArtifactState()) && checkIfAdded(rp.getPolicy())) {
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getArtifactState()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPolicy())) {
 				RightOperand dutyRightOperand = new RightOperand();
 				dutyRightOperand.setType(RightOperandType.ANYURI);
-				dutyRightOperand.setValue(rp.getPolicy());
+				dutyRightOperand.setValue(recievedOdrlPolicy.getPolicy());
 				ArrayList<RightOperand> dutyRightOperands = new ArrayList<>();
 				dutyRightOperands.add(dutyRightOperand);
 				Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY,
@@ -386,7 +382,7 @@ public class JsonIDSConverter {
 		
 				RightOperand rightOperand = new RightOperand();
 				rightOperand.setType(RightOperandType.STRING);
-				rightOperand.setValue(rp.getArtifactState());
+				rightOperand.setValue(recievedOdrlPolicy.getArtifactState());
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition artifactStateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ARTIFACT_STATE,
@@ -398,7 +394,7 @@ public class JsonIDSConverter {
 				Action nextPolicyDutyAction = new Action(ActionType.NEXT_POLICY);
 				nextPolicyDutyAction.setRefinements(dutyRefinements);
 				Rule rule = new Rule(RuleType.PERMISSION, distributeAction);
-				rule.setTarget(URI.create(rp.getTarget()));
+				rule.setTarget(URI.create(recievedOdrlPolicy.getTarget()));
 				Rule preDuties = new Rule(RuleType.PREDUTY, nextPolicyDutyAction);
 				ArrayList<Rule> preDutiess = new ArrayList<>();
 				preDutiess.add(preDuties);
@@ -409,10 +405,10 @@ public class JsonIDSConverter {
 		}
 		
 		public void distributeData() {	
-			if (checkIfAdded(rp.getArtifactState()) && checkIfAdded(rp.getPolicy())) {
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getArtifactState()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPolicy())) {
 				RightOperand dutyRightOperand = new RightOperand();
 				dutyRightOperand.setType(RightOperandType.ANYURI);
-				dutyRightOperand.setValue(rp.getPolicy());
+				dutyRightOperand.setValue(recievedOdrlPolicy.getPolicy());
 				ArrayList<RightOperand> dutyRightOperands = new ArrayList<>();
 				dutyRightOperands.add(dutyRightOperand);
 				Condition thirdPartyRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.TARGET_POLICY,
@@ -422,7 +418,7 @@ public class JsonIDSConverter {
 		
 				RightOperand rightOperand = new RightOperand();
 				rightOperand.setType(RightOperandType.STRING);
-				rightOperand.setValue(rp.getArtifactState());
+				rightOperand.setValue(recievedOdrlPolicy.getArtifactState());
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition artifactStateConstraint = new Condition(ConditionType.CONSTRAINT, LeftOperand.ARTIFACT_STATE,
@@ -440,7 +436,7 @@ public class JsonIDSConverter {
 		private Party createConsumer() {
 			Party consumer = null;
 			try {
-				consumer = new Party(PartyType.CONSUMER, new URI(rp.getConsumer()));
+				consumer = new Party(PartyType.CONSUMER, new URI(recievedOdrlPolicy.getConsumer()));
 				consumer.setType(PartyType.CONSUMER);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
@@ -497,11 +493,11 @@ public class JsonIDSConverter {
 		}
 
 		public void deleteDuty(RuleType type) {
-			String timeAndDate = rp.getPostduties_timeAndDate();
-			String durationYear = rp.getPostduties_durationYear();
-			String durationMonth = rp.getPostduties_durationMonth();
-			String durationDay = rp.getPostduties_durationDay();
-			String durationHour = rp.getPostduties_durationHour(); 
+			String timeAndDate = recievedOdrlPolicy.getPostduties_timeAndDate();
+			String durationYear = recievedOdrlPolicy.getPostduties_durationYear();
+			String durationMonth = recievedOdrlPolicy.getPostduties_durationMonth();
+			String durationDay = recievedOdrlPolicy.getPostduties_durationDay();
+			String durationHour = recievedOdrlPolicy.getPostduties_durationHour();
 			ArrayList<Condition> refinements = new ArrayList<>();
 			if (timeAndDate != "") {
 				RightOperandEntity dateTimeEntity = new RightOperandEntity(EntityType.DATETIME, timeAndDate,
@@ -587,7 +583,7 @@ public class JsonIDSConverter {
 			preDuties.add(preDuty);
 		}
 		public void addCounterToPostduties() {
-			if (rp.getCounter() != "") {
+			if (recievedOdrlPolicy.getCounter() != "") {
 				Action countDutyAction = new Action(ActionType.INCREMENT_COUNTER);
 				Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
 				postDuties.add(postobligation);
@@ -595,15 +591,15 @@ public class JsonIDSConverter {
 		}
 		
 		public void addPostDuties() {
-			if (checkIfAdded(rp.getPostduties_logLevel()) && checkIfAdded(rp.getPostduties_systemDevice())) {
-				logDuty(rp.getPostduties_logLevel(), rp.getPostduties_systemDevice(), RuleType.POSTDUTY);
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_logLevel()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_systemDevice())) {
+				logDuty(recievedOdrlPolicy.getPostduties_logLevel(), recievedOdrlPolicy.getPostduties_systemDevice(), RuleType.POSTDUTY);
 			}
-			if (checkIfAdded(rp.getPostduties_notificationLevel()) && checkIfAdded(rp.getPostduties_informedParty())) {
-				informDuty(rp.getPostduties_notificationLevel(), rp.getPostduties_informedParty(), RuleType.POSTDUTY);
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_notificationLevel()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_informedParty())) {
+				informDuty(recievedOdrlPolicy.getPostduties_notificationLevel(), recievedOdrlPolicy.getPostduties_informedParty(), RuleType.POSTDUTY);
 			}
-			if (checkIfAdded(rp.getPostduties_timeAndDate())
-					|| (checkIfAdded(rp.getPostduties_durationYear()) && checkIfAdded(rp.getPostduties_durationMonth())
-							&& checkIfAdded(rp.getPostduties_durationDay()) && checkIfAdded(rp.getPostduties_durationHour()))) {
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_timeAndDate())
+					|| (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_durationYear()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_durationMonth())
+							&& PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_durationDay()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getPostduties_durationHour()))) {
 				deleteDuty(RuleType.POSTDUTY);
 			}
 		}
@@ -619,11 +615,11 @@ public class JsonIDSConverter {
 		}
 
 		public void addPreDuties() {
-			if (rp.getPreduties_modifier() != "" && rp.getPreduties_fieldToChange() != "") {
-				anonymizeInTransit(rp.getPreduties_fieldToChange(),rp.getPreduties_valueToChange(), rp.getPreduties_modifier());
+			if (recievedOdrlPolicy.getPreduties_modifier() != "" && recievedOdrlPolicy.getPreduties_fieldToChange() != "") {
+				anonymizeInTransit(recievedOdrlPolicy.getPreduties_fieldToChange(), recievedOdrlPolicy.getPreduties_valueToChange(), recievedOdrlPolicy.getPreduties_modifier());
 			}
 			
-			if (rp.getPreduties_anomInRest() != "") {
+			if (recievedOdrlPolicy.getPreduties_anomInRest() != "") {
 				anonymizeInRest();
 			}
 		}
