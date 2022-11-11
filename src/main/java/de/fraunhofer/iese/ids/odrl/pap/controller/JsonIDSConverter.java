@@ -217,45 +217,37 @@ public class JsonIDSConverter {
 			return s != "" && s != null;
 		}*/
 
-		public boolean addRestrictTimeIntervalCondition() {
+/*		public boolean addRestrictTimeIntervalCondition() {
 			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictTimeIntervalStart()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictTimeIntervalEnd())) {
-				RightOperandEntity startInnerEntity = new RightOperandEntity(EntityType.DATETIME, recievedOdrlPolicy.getRestrictTimeIntervalStart(),
-						RightOperandType.DATETIMESTAMP);
-				RightOperandEntity startEntity = new RightOperandEntity(EntityType.BEGIN, startInnerEntity,
-						RightOperandType.INSTANT);
+				RightOperand startRightOperand = new RightOperand(recievedOdrlPolicy.getRestrictTimeIntervalStart(), RightOperandType.DATETIMESTAMP);
+				ArrayList<RightOperand> startRightOperands = new ArrayList<>();
+				startRightOperands.add(startRightOperand);
+				Condition startCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
+						Operator.AFTER, startRightOperands, null);
 
-				RightOperandEntity endInnerEntity = new RightOperandEntity(EntityType.DATETIME, recievedOdrlPolicy.getRestrictTimeIntervalEnd(),
-						RightOperandType.DATETIMESTAMP);
-				RightOperandEntity endEntity = new RightOperandEntity(EntityType.END, endInnerEntity,
-						RightOperandType.INSTANT);
+				RightOperand endRightOperand = new RightOperand(recievedOdrlPolicy.getRestrictTimeIntervalEnd(), RightOperandType.DATETIMESTAMP);
+				ArrayList<RightOperand> endRightOperands = new ArrayList<>();
+				endRightOperands.add(endRightOperand);
+				Condition endCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
+						Operator.BEFORE, endRightOperands, null);
 
-				ArrayList<RightOperandEntity> entities = new ArrayList<>();
-				entities.add(startEntity);
-				entities.add(endEntity);
-				RightOperand rightOperand = new RightOperand(entities, RightOperandType.INTERVAL);
-				ArrayList<RightOperand> rightOperands = new ArrayList<>();
-				rightOperands.add(rightOperand);
-				Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
-						Operator.TEMPORAL_EQUALS, rightOperands, null);
-				constraints.add(timeIntervalCondition);
+				constraints.add(startCondition);
+				constraints.add(endCondition);
 				return true;
 			}
 			return false;
-		}
+		}*/
 
 		public boolean addRestrictStartTimeCondition() {
 			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictStartTime())) {
-				RightOperandEntity startEntity = new RightOperandEntity(EntityType.DATETIME, recievedOdrlPolicy.getRestrictStartTime(),
-						RightOperandType.DATETIMESTAMP);
+				RightOperand dateTimeRightOperand = new RightOperand(recievedOdrlPolicy.getRestrictStartTime(), RightOperandType.DATETIMESTAMP);
 
-				ArrayList<RightOperandEntity> entities = new ArrayList<>();
-				entities.add(startEntity);
-				RightOperand rightOperand = new RightOperand(entities, RightOperandType.INSTANT);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
-				rightOperands.add(rightOperand);
+				rightOperands.add(dateTimeRightOperand);
 				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
 						Operator.AFTER, rightOperands, null);
 				constraints.add(dateTimeCondition);
+
 				return true;
 			}
 			return false;
@@ -264,12 +256,12 @@ public class JsonIDSConverter {
 		public boolean addRestrictEndTimeCondition() {
 			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictEndTime())) {
 
-				RightOperand dateTimeRightOperand = new RightOperand(String.valueOf(recievedOdrlPolicy.getRestrictEndTime()), RightOperandType.DATETIMESTAMP);
+				RightOperand dateTimeRightOperand = new RightOperand(recievedOdrlPolicy.getRestrictEndTime(), RightOperandType.DATETIMESTAMP);
 
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(dateTimeRightOperand);
 				Condition dateTimeCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
-						Operator.LTEQ, rightOperands, null);
+						Operator.BEFORE, rightOperands, null);
 				constraints.add(dateTimeCondition);
 				return true;
 			}

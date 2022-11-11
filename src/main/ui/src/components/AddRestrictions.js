@@ -227,7 +227,7 @@ export default function AddRestrictions(props) {
             <Title label="Restrict Time Interval" />
             <Grid container xs={11} spacing={2}>
               <Date
-                name="restrictTimeIntervalStart"
+                name="restrictStartTime"
                 label="Start Time*"
                 valueHook={valueHook}
                 errors={errors}
@@ -235,7 +235,7 @@ export default function AddRestrictions(props) {
                 md={4}
               />
               <Date
-                name="restrictTimeIntervalEnd"
+                name="restrictEndTime"
                 label="End Time*"
                 valueHook={valueHook}
                 errors={errors}
@@ -246,8 +246,8 @@ export default function AddRestrictions(props) {
             <Remove
               onClick={() => {
                 removeEnteredData([
-                  "restrictTimeIntervalEnd",
-                  "restrictTimeIntervalStart",
+                  "restrictEndTime",
+                  "restrictStartTime",
                 ]);
                 removeComponent("restrictions", "interval");
               }}

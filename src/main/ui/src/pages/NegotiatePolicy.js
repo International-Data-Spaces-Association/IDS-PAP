@@ -67,7 +67,7 @@ export default function NegotiatePolicy() {
                 <Title label="Restrict Time Interval" />
                 <Grid container spacing={2}>
                   <Date
-                    name="restrictTimeIntervalStart"
+                    name="restrictStartTime"
                     label="Start Time*"
                     valueHook={valueHook}
                     errors={errors}
@@ -75,7 +75,7 @@ export default function NegotiatePolicy() {
                     md={4}
                   />
                   <Date
-                    name="restrictTimeIntervalEnd"
+                    name="restrictEndTime"
                     label="End Time*"
                     valueHook={valueHook}
                     errors={errors}

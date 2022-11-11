@@ -62,8 +62,7 @@ function OdrlPolicy() {
     durationDay: "",
     durationMonth: "",
     durationYear: "",
-    restrictTimeIntervalStart: "",
-    restrictTimeIntervalEnd: "",
+    restrictStartTime: "",
     restrictEndTime: "",
     specifyBeginTime: "",
     artifactState: "",
@@ -105,10 +104,10 @@ function recreateSelectedCompFromJson(stateLocal, initialValues, selected_compon
     if (initialValues.event_input[0] !== "") {
       order.push("event");
     }
-    if (initialValues.restrictTimeIntervalStart !== "") {
+    if (initialValues.restrictStartTime !== "") {
       order.push("interval");
     }
-    if (initialValues.location_input[0] !== "") {
+     if (initialValues.location_input[0] !== "") {
       order.push("location");
     }
     if (initialValues.payment !== "") {

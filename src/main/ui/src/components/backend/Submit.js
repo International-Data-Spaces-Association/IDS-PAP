@@ -178,12 +178,6 @@ function convertDateToIso(values, states) {
   isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime);
   isoValues.restrictEndTime = addDateSuffix(isoValues.restrictEndTime);
   isoValues.restrictStartTime = addDateSuffix(isoValues.restrictStartTime);
-  isoValues.restrictTimeIntervalStart = addDateSuffix(
-    isoValues.restrictTimeIntervalStart
-  );
-  isoValues.restrictTimeIntervalEnd = addDateSuffix(
-    isoValues.restrictTimeIntervalEnd
-  );
   isoValues.timeDate = addDateSuffix(isoValues.timeAndDate);
   return isoValues;
 }
@@ -353,7 +347,12 @@ function checkComplexPolicyFields(values, states, error_list) {
 
   //Restrict End Time
   if (states["endTime"]) {
-    error_list.restrictEndTime = isValidDate(values.restrictEndTime);
+       error_list.restrictEndTime = isValidDate(values.restrictEndTime);
+     }
+
+  //Restrict Start Time
+  if (states["startTime"]) {
+    error_list.restrictStartTime = isValidDate(values.restrictStartTime);
   }
 
   // Restrict Payment
@@ -376,12 +375,12 @@ function checkComplexPolicyFields(values, states, error_list) {
 
   // Restrict Time Interval
   if (states["interval"]) {
-    error_list.restrictTimeIntervalStart = isValidDate(
-      values.restrictTimeIntervalStart
+    error_list.restrictStartTime = isValidDate(
+      values.restrictStartTime
     );
-    error_list.restrictTimeIntervalEnd = isValidDateInterval(
-      values.restrictTimeIntervalStart,
-      values.restrictTimeIntervalEnd
+    error_list.restrictEndTime = isValidDateInterval(
+      values.restrictStartTime,
+      values.restrictEndTime
     );
   }
 
