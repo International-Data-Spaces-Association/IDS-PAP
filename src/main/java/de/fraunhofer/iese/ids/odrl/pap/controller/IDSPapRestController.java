@@ -152,7 +152,7 @@ public class IDSPapRestController {
 		if (converter.addEventCondition()) {
 			uid = baseUid + "restrict-access-event";
 		}
-		if (converter.addRestrictTimeIntervalCondition()) {
+		if (converter.addRestrictStartTimeCondition()) {
 			uid = baseUid + "restrict-access-interval";
 		}
 		if (converter.addRestrictEndTimeCondition()) {
@@ -181,7 +181,6 @@ public class IDSPapRestController {
 		converter.addPurposeCondition();
 		converter.addEventCondition();
 		converter.addCounterCondition();
-		converter.addRestrictTimeIntervalCondition();
 		converter.addRestrictEndTimeCondition();
 		converter.addRestrictStartTimeCondition();
 		converter.addPaymentCondition();

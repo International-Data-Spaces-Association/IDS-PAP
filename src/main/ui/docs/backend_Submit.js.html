@@ -175,11 +175,11 @@ function convertDateToIso(values, states) {
   isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime);
   isoValues.restrictEndTime = addDateSuffix(isoValues.restrictEndTime);
   isoValues.restrictStartTime = addDateSuffix(isoValues.restrictStartTime);
-  isoValues.restrictTimeIntervalStart = addDateSuffix(
-    isoValues.restrictTimeIntervalStart
+  isoValues.restrictStartTime = addDateSuffix(
+    isoValues.restrictStartTime
   );
-  isoValues.restrictTimeIntervalEnd = addDateSuffix(
-    isoValues.restrictTimeIntervalEnd
+  isoValues.restrictEndTime = addDateSuffix(
+    isoValues.restrictEndTime
   );
   isoValues.timeDate = addDateSuffix(isoValues.timeAndDate);
   return isoValues;
@@ -340,12 +340,12 @@ function checkComplexPolicyFields(values, states, error_list) {
 
   // Restrict Time Interval
   if (states["interval"]) {
-    error_list.restrictTimeIntervalStart = isValidDate(
-      values.restrictTimeIntervalStart
+    error_list.restrictStartTime = isValidDate(
+      values.restrictStartTime
     );
-    error_list.restrictTimeIntervalEnd = isValidDateInterval(
-      values.restrictTimeIntervalStart,
-      values.restrictTimeIntervalEnd
+    error_list.restrictEndTime = isValidDateInterval(
+      values.restrictStartTime,
+      values.restrictEndTime
     );
   }
 

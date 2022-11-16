@@ -112,8 +112,7 @@ public class RecievedIDSPolicyTest {
 		jsonObject.put("durationDay", "");
 		jsonObject.put("durationMonth", "");
 		jsonObject.put("durationYear", "");
-		jsonObject.put("restrictTimeIntervalStart", "");
-		jsonObject.put("restrictTimeIntervalEnd", "");
+		jsonObject.put("restrictStartTime", "");
 		jsonObject.put("restrictEndTime", "");
 		jsonObject.put("specifyBeginTime", "");
 		jsonObject.put("artifactState", "");
@@ -362,8 +361,8 @@ public class RecievedIDSPolicyTest {
 		String expectedResponseFilePath = basePath + "ComplexPolicyIntervalAgreement.json";
 		String url = baseUrl + "/policy/ComplexPolicyForm";
 		
-		jsonObject.put("restrictTimeIntervalEnd", "2052-01-05T20:47:00Z");
-		jsonObject.put("restrictTimeIntervalStart", "2051-12-16T20:47:00Z");
+		jsonObject.put("restrictEndTime", "2052-01-05T20:47:00Z");
+		jsonObject.put("restrictStartTime", "2051-12-16T20:47:00Z");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 
@@ -608,8 +607,8 @@ public class RecievedIDSPolicyTest {
 		securityLevel.put("idsc:TRUST_SECURITY_PROFILE");
 		jsonObject.put("securityLevel_input", securityLevel);
 
-		jsonObject.put("restrictTimeIntervalEnd", "2022-01-05T20:47");
-		jsonObject.put("restrictTimeIntervalStart", "2021-12-16T20:47");
+		jsonObject.put("restrictEndTime", "2022-01-05T20:47");
+		jsonObject.put("restrictStartTime", "2021-12-16T20:47");
 	
 		JSONArray location = new JSONArray();
 		location.put("location1");

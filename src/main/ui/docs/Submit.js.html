@@ -175,12 +175,6 @@ function convertDateToIso(values, states) {
   isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime);
   isoValues.restrictEndTime = addDateSuffix(isoValues.restrictEndTime);
   isoValues.restrictStartTime = addDateSuffix(isoValues.restrictStartTime);
-  isoValues.restrictTimeIntervalStart = addDateSuffix(
-    isoValues.restrictTimeIntervalStart
-  );
-  isoValues.restrictTimeIntervalEnd = addDateSuffix(
-    isoValues.restrictTimeIntervalEnd
-  );
   isoValues.timeDate = addDateSuffix(isoValues.timeAndDate);
   return isoValues;
 }
@@ -320,6 +314,11 @@ function checkComplexPolicyFields(values, states, error_list) {
     error_list.restrictEndTime = isValidDate(values.restrictEndTime);
   }
 
+  //Restrict start Time
+  if (states["startTime"]) {
+    error_list.restrictStartTime = isValidDate(values.restrictStartTime);
+  }
+
   // Restrict Payment
   if (states.payment) {
     error_list.payment = isNotEmpty(values.payment);
@@ -337,17 +336,6 @@ function checkComplexPolicyFields(values, states, error_list) {
     error_list.durationYear = isIntOrEmpty(values.durationYear);
   if (values.specifyBeginTime !== "")
     error_list.specifyBeginTime = isDateOrEmpty(values.specifyBeginTime);
-
-  // Restrict Time Interval
-  if (states["interval"]) {
-    error_list.restrictTimeIntervalStart = isValidDate(
-      values.restrictTimeIntervalStart
-    );
-    error_list.restrictTimeIntervalEnd = isValidDateInterval(
-      values.restrictTimeIntervalStart,
-      values.restrictTimeIntervalEnd
-    );
-  }
 
   // Restrict Event
   checkMultiInputField("event", isValidUrl, values, states, error_list);

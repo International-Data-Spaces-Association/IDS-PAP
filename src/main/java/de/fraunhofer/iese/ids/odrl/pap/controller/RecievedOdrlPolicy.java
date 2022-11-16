@@ -57,8 +57,6 @@ public class RecievedOdrlPolicy {
 	private String time;
 	private String timeUnit;
 	private String timeAndDate;
-	private String restrictTimeIntervalStart;
-	private String restrictTimeIntervalEnd;
 	private String restrictStartTime;
 	private String restrictEndTime;
 	private String specifyBeginTime;

@@ -204,7 +204,7 @@ export default function FormComponents(props) {
           <Grid container key={"interval"}>
             <Title label="Restrict Time Interval" />
             <Date
-              name="restrictTimeIntervalStart"
+              name="restrictStartTime"
               label="Start Time*"
               valueHook={valueHook}
               errors={errors}
@@ -213,7 +213,7 @@ export default function FormComponents(props) {
             />
             <Grid item sm={1} />
             <Date
-              name="restrictTimeIntervalEnd"
+              name="restrictEndTime"
               label="End Time*"
               valueHook={valueHook}
               errors={errors}
@@ -224,8 +224,8 @@ export default function FormComponents(props) {
             <Remove
               onClick={() => {
                 removeEnteredData([
-                  "restrictTimeIntervalEnd",
-                  "restrictTimeIntervalStart"
+                  "restrictEndTime",
+                  "restrictStartTime"
                 ]);
                 removeComponent("interval");
               }}
