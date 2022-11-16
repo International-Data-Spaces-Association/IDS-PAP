@@ -1,36 +1,64 @@
 {
-    "uid": "https://w3id.org/idsa/autogen/contract/anonymize-in-transit",
-    "@type": "Agreement",
-    "profile": "http://example.com/ids-profile",
-    "permission": [{
-        "assigner": "http://example.com/party/my-party",
-        "action": "use",
-        "duty": [{
-            "action": [{
-                "refinement": [{
-                    "leftOperand": "idsc:JSON_PATH",
-                    "rightOperand": {
-                        "@value": "FieldToChange",
-                        "@type": "xsd:string"
-                    },
-                    "operator": "eq"
-                }],
-                "rdf:value": {"@id": "idsc:delete"}
-            }],
-            "constraint": [{
-                "leftOperand": "event",
-                "rightOperand": {"@id": "odrl:policyUsage"},
-                "operator": "lt"
-            }]
-        }],
-        "assignee": "http://example.com/ids/party/consumer-party/",
-        "target": "http://target/"
-    }],
     "@context": [
         "http://www.w3.org/ns/odrl.jsonld",
         {
+            "dc": "http://purl.org/dc/terms/",
             "ids": "https://w3id.org/idsa/core/",
             "idsc": "https://w3id.org/idsa/code/"
         }
-    ]
+    ],
+    "@type": "Agreement",
+    "permission": [
+        {
+            "action": "use",
+            "assignee": "http://example.com/ids/party/consumer-party",
+            "assigner": "http://example.com/party/my-party",
+            "duty": [
+                {
+                    "action": [
+                        {
+                            "rdf:value": {
+                                "@id": "delete"
+                            },
+                            "refinement": [
+                                {
+                                    "leftOperand": "idsc:JSON_PATH",
+                                    "operator": "eq",
+                                    "rightOperand": {
+                                        "@type": "xsd:string",
+                                        "@value": "FieldToChange"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "constraint": [
+                        {
+                            "leftOperand": "event",
+                            "operator": "lt",
+                            "rightOperand": {
+                                "@id": "odrl:policyUsage"
+                            }
+                        }
+                    ],
+                    "ids:pxpEndpoint": [
+                        {
+                            "@type": "ids:PXP",
+                            "ids:endpointURI": {
+                                "@type": "anyURI",
+                                "@value": "https://example.com/ids/PXPendpoint/delete"
+                            },
+                            "ids:interfaceDescription": {
+                                "@type": "anyURI",
+                                "@value": "https://example.com/ids/PXP/interfaceDescription/delete"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "target": "http://localhost:3000/#/policy/AnonymizeInTransitPolicyForm"
+        }
+    ],
+    "profile": "http://example.com/ids-profile",
+    "uid": "https://w3id.org/idsa/autogen/contract/anonymize-in-transit"
 }

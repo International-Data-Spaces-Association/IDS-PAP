@@ -49,6 +49,7 @@ export default function DeleteDataAfter() {
     if (selectedComponents.postduties_timeDate) {
       state.postduties_timeDate = true;
     }
+    console.log(values)
     if (Object.values(selectedComponents).some((x) => x === true)) {
       Submit(
         "/policy/deletePolicyAfterUsage",
