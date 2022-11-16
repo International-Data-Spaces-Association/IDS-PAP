@@ -252,6 +252,21 @@ public class RecievedOdrlPolicyTest {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	
+// ##################### New Tests #####################
+	// Complex Policy
+	@Test
+	public void ComplexPolicyShort() throws Exception {
+		String expectedResponseFilePath = basePath + "ComplexPolicyShort.json";
+		String url = baseUrl + "/policy/ComplexPolicyForm";
+		JSONObject json = createAgreementHeader(emptyPolicy());
+		check(json, url, expectedResponseFilePath);
+
+	}
+	
 // ##################### Tests #####################
 	
 	// Complex Policy

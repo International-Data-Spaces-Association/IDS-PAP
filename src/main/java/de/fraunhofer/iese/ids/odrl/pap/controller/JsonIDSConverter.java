@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.IdsPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Party;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.RightOperand;
@@ -58,20 +57,21 @@ public class JsonIDSConverter {
 		if (preDuties.size() > 0) {
 			rules.get(0).setPreduties((ArrayList<Rule>) preDuties);
 		}
-		IPolicy odrlPolicy = null;
-		if (recievedOdrlPolicy.getLanguage().equals("IDS")) {
-			odrlPolicy = new IdsPolicy();
-		} else {
-			odrlPolicy = new OdrlPolicy();
-		}
-		odrlPolicy.setConsumer(createConsumer());
-		odrlPolicy.setRules((ArrayList<Rule>) rules);
-		odrlPolicy.setPolicyId(URI.create(policyUID));
-		odrlPolicy.setType(PolicyType.getFromString(recievedOdrlPolicy.getPolicyType()));
+		IPolicy policy = new OdrlPolicy();;
+
+		policy.setConsumer(createConsumer());
+		policy.setRules((ArrayList<Rule>) rules);
+		policy.setPolicyId(URI.create(policyUID));
+		policy.setType(PolicyType.getFromString(recievedOdrlPolicy.getPolicyType()));
 		// odrlPolicy.setTarget(URI.create(target));
 		// odrlPolicy.setProvider(new Party(PartyType.CONSUMER, URI
 		// .create(recievedPolicy.getProvider())));
-		String jsonPolicyString = odrlPolicy.toString();
+		String jsonPolicyString = "";
+		if (recievedOdrlPolicy.getLanguage().equals("IDS")) {
+			jsonPolicyString = policy.toString();
+		} else {
+			jsonPolicyString = policy.toOdrlString();
+		}
 
 		//Map map = null;
 		//boolean tempProviderSide = true;
@@ -87,9 +87,9 @@ public class JsonIDSConverter {
 			e.printStackTrace();
 		}**/
 
-		log.debug(jsonPolicyString);
+		//log.debug(jsonPolicyString);
 		String response = new JSONObject(jsonPolicyString).toString(4);
-		
+		System.out.println(response);
 		/*
 		// Store the policy in the database
 		Policy policy = new Policy();
