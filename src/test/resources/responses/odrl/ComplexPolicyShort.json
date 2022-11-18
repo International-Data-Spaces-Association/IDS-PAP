@@ -5,7 +5,7 @@
     "permission": [{
         "assigner": "http://example.com/party/my-party",
         "action": "use",
-        "assignee": "http://example.com/ids/party/consumer-party/",
+        "assignee": "http://example.com/ids/party/consumer-party",
         "target": "http://target/"
     }],
     "@context": [

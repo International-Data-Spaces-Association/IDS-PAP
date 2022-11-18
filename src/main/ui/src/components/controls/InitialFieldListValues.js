@@ -45,8 +45,8 @@ export const modifier_list = [
     value: "idsc:REPLACE",
   },
   {
-    id: "Delete modification method",
-    value: "idsc:DELETE",
+    id: "Drop modification method",
+    value: "idsc:DROP",
   },
 ];
 

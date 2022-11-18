@@ -133,7 +133,7 @@ public class RecievedOdrlPolicyTest {
 	 */
 	JSONObject createAgreementHeader(JSONObject jsonObject) throws JSONException {
 		jsonObject.put("policyType", "Agreement");
-		jsonObject.put("consumer", "http://example.com/ids/party/consumer-party/");
+		jsonObject.put("consumer", "http://example.com/ids/party/consumer-party");
 		jsonObject.put("provider", "My party");
 		jsonObject.put("target", "http://target/");
 		return jsonObject;
@@ -160,7 +160,7 @@ public class RecievedOdrlPolicyTest {
 	 */
 	JSONObject createRequestHeader(JSONObject jsonObject) throws JSONException {
 		jsonObject.put("policyType", "Request");
-		jsonObject.put("consumer", "http://example.com/ids/party/consumer-party/");
+		jsonObject.put("consumer", "http://example.com/ids/party/consumer-party");
 		jsonObject.put("target", "http://target/");
 		return jsonObject;
 	}
@@ -272,7 +272,7 @@ public class RecievedOdrlPolicyTest {
 		String expectedResponseFilePath = basePath + "CountAgreement.json";
 		String url = baseUrl + "/policy/CountAccessPolicyForm";
 		
-		jsonObject.put("counter", "22");
+		jsonObject.put("counter", "10");
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
@@ -331,11 +331,11 @@ public class RecievedOdrlPolicyTest {
 	}
 	
 	@Test
-	public void AnonymizeInTransitDeleteAgreement() throws JSONException {
-		String expectedResponseFilePath = basePath + "AnonymizeInTransitDeleteAgreement"+".json";
+	public void AnonymizeInTransitDropAgreement() throws JSONException {
+		String expectedResponseFilePath = basePath + "AnonymizeInTransitDropAgreement"+".json";
 		String url = baseUrl + "/policy/AnonymizeInTransitPolicyForm";
 		
-		jsonObject.put("preduties_modifier", "idsc:DELETE");
+		jsonObject.put("preduties_modifier", "idsc:DROP");
 		jsonObject.put("preduties_fieldToChange", "FieldToChange");
 		check(jsonObject, url, expectedResponseFilePath);
 	}

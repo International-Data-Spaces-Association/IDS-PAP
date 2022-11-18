@@ -11,7 +11,7 @@
     "permission": [
         {
             "action": "use",
-            "assignee": "http://example.com/ids/party/consumer-party/",
+            "assignee": "http://example.com/ids/party/consumer-party",
             "assigner": "http://example.com/party/my-party",
             "duty": [
                 {
@@ -25,31 +25,17 @@
                     "constraint": [
                         {
                             "leftOperand": "event",
-                            "operator": "gt",
+                            "operator": "lt",
                             "rightOperand": {
                                 "@id": "odrl:policyUsage"
                             }
                         }
-                    ],
-                    "ids:pxpEndpoint": [
-                        {
-                            "@type": "ids:PXP",
-                            "ids:endpointURI": {
-                                "@type": "xsd:anyURI",
-                                "@value": "?endPointURI"
-                            },
-                            "ids:interfaceDescription": {
-                                "@type": "xsd:anyURI",
-                                "@value": "?interfaceURI"
-                            }
-                        }
-                    ],
-                    "informedParty": "http://example.com/ids/party/123"
+                    ]
                 }
             ],
-            "target": "http://example.com/ids/data/789"
+            "target": "http://target/"
         }
     ],
-    "profile": "http://www.w3.org/ns/odrl/2/core",
-    "uid": "http://example.com/policy/delete-data/42"
+    "profile": "http://example.com/ids-profile",
+    "uid": "https://w3id.org/idsa/autogen/contract/delete-after-usage"
 }

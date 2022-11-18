@@ -17,9 +17,8 @@
                 {
                     "action": [
                         {
-                            "includedIn": "anonymize",
                             "rdf:value": {
-                                "@id": "idsc:replace"
+                                "@id": "replace"
                             },
                             "refinement": [
                                 {
@@ -52,7 +51,7 @@
                     ]
                 }
             ],
-            "target": "http://localhost:3000/#/policy/AnonymizeInTransitPolicyForm"
+            "target": "http://target/"
         }
     ],
     "profile": "http://example.com/ids-profile",

@@ -6,14 +6,14 @@
         "idsc" : "https://w3id.org/idsa/code/" }
     ],
     "@type": "Agreement",
-    "uid": "http://example.com/policy/modify-in-rest/12",
-    "profile": "http://www.w3.org/ns/odrl/2/core",
+    "profile": "http://example.com/ids-profile",
+    "uid": "https://w3id.org/idsa/autogen/contract/anonymize-in-rest",
     "obligation": [{
-        "target": "http://example.com/ids/data/789",
-        "assigner": "http://example.com/ids/party/123",
-        "assignee": "http://example.com/ids/party/456",
+        "target": "http://target/",
+        "assignee": "http://example.com/ids/party/consumer-party",
+        "assigner": "http://example.com/party/my-party",
         "action": [{
            "rdf:value": { "@id": "anonymize" }
-        }],
+        }]
     }]
 }

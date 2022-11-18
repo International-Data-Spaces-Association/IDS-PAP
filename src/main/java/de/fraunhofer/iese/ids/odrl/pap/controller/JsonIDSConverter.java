@@ -333,7 +333,7 @@ public class JsonIDSConverter {
 
 		public boolean addCounterCondition() {
 			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getCounter())) {
-				RightOperand rightOperand = new RightOperand(recievedOdrlPolicy.getCounter(), RightOperandType.DECIMAL);
+				RightOperand rightOperand = new RightOperand(recievedOdrlPolicy.getCounter(), RightOperandType.INTEGER);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
 				rightOperands.add(rightOperand);
 				Condition countCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.COUNT, Operator.LTEQ,
@@ -575,7 +575,7 @@ public class JsonIDSConverter {
 			preDuties.add(preDuty);
 		}
 		public void addCounterToPostduties() {
-			if (recievedOdrlPolicy.getCounter() != "") {
+			if (recievedOdrlPolicy.getCounter() != "" && recievedOdrlPolicy.getLanguage() == "ids") {
 				Action countDutyAction = new Action(ActionType.INCREMENT_COUNTER);
 				Rule postobligation = new Rule(RuleType.POSTDUTY, countDutyAction);
 				postDuties.add(postobligation);

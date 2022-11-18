@@ -23,11 +23,11 @@
                   "@type": "ids:PXP",
                   "ids:endpointURI": {
                     "@type": "anyURI",
-                    "@value": "https://example.com/ids/PXPendpoint/delete"
+                    "@value": "https://example.com/ids/PXPendpoint/drop"
                   },
                   "ids:interfaceDescription": {
                     "@type": "anyURI",
-                    "@value": "https://example.com/ids/PXP/interfaceDescription/delete"
+                    "@value": "https://example.com/ids/PXP/interfaceDescription/drop"
                   }
                 },
                 "ids:refinement": [

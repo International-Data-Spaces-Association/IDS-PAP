@@ -19,11 +19,8 @@
                 }
             },
             "ids:rightOperand": [{
-                "ids:dateTime": {
-                    "@value": "2051-12-16T20:47",
-                    "@type": "xsd:datetimeStamp"
-                },
-                "@type": "ids:Instant"
+                "@value": "2051-12-16T20:47",
+                "@type": "xsd:datetimeStamp"
             }],
             "ids:leftOperand": {"@id": "idsc:DATE_TIME"},
             "ids:operator": {"@id": "idsc:BEFORE"}

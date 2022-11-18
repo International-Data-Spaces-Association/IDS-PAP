@@ -38,15 +38,10 @@
                         "operator": "eq"
                     }
                 ],
-                "rdf:value": {"@id": "idsc:notify"}
-            }],
-            "constraint": [{
-                "leftOperand": "event",
-                "rightOperand": {"@id": "odrl:policyUsage"},
-                "operator": "lt"
+                "rdf:value": {"@id": "notify"}
             }]
         }],
-        "assignee": "http://example.com/ids/party/consumer-party/",
+        "assignee": "http://example.com/ids/party/consumer-party",
         "target": "http://target/"
     }],
     "@context": [

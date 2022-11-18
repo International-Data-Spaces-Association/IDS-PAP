@@ -18,7 +18,7 @@
                     "action": [
                         {
                             "rdf:value": {
-                                "@id": "delete"
+                                "@id": "drop"
                             },
                             "refinement": [
                                 {
@@ -40,23 +40,10 @@
                                 "@id": "odrl:policyUsage"
                             }
                         }
-                    ],
-                    "ids:pxpEndpoint": [
-                        {
-                            "@type": "ids:PXP",
-                            "ids:endpointURI": {
-                                "@type": "anyURI",
-                                "@value": "https://example.com/ids/PXPendpoint/delete"
-                            },
-                            "ids:interfaceDescription": {
-                                "@type": "anyURI",
-                                "@value": "https://example.com/ids/PXP/interfaceDescription/delete"
-                            }
-                        }
                     ]
                 }
             ],
-            "target": "http://localhost:3000/#/policy/AnonymizeInTransitPolicyForm"
+            "target": "http://target/"
         }
     ],
     "profile": "http://example.com/ids-profile",
