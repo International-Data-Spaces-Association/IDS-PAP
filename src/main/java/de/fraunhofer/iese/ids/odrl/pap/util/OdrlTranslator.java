@@ -91,7 +91,7 @@ public class OdrlTranslator {
 									for (Condition refinement : rule.getAction().getRefinements()) {
 										for(RightOperand rightOperand: refinement.getRightOperands()) {
 											switch (refinement.getLeftOperand()) {
-												case DELAY:
+												case DELAY_PERIOD:
 													RightOperandEntity delayEntity = rightOperand.getRightOperandEntities().get(0);
 													String delayPeriod = delayEntity.getValue();
 													//Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(delayPeriod);
@@ -243,15 +243,15 @@ public class OdrlTranslator {
 											for(RightOperand rightOperand: refinement.getRightOperands())
 											{
 												switch (refinement.getLeftOperand()) {
-													case DELAY:
-														RightOperandEntity rightOperandEntity = rightOperand.getRightOperandEntities().get(0);
-														String delayPeriod = rightOperandEntity.getValue();
+													case DELAY_PERIOD:
+														//RightOperandEntity rightOperandEntity = rightOperand.getRightOperandEntities().get(0);
+														String delayPeriod = rightOperand.getValue();
 														//Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(delayPeriod);
 														translation = translation.concat("The Data Consumer may delay exercising the duty. Here the specified delay value is: " + delayPeriod + " .\n");
 														break;
 													case DATE_TIME:
-														RightOperandEntity dateTimeEntity = rightOperand.getRightOperandEntities().get(0);
-														String dateTimeRefinement = dateTimeEntity.getValue();
+														//RightOperandEntity dateTimeEntity = rightOperand.getRightOperandEntities().get(0);
+														String dateTimeRefinement = rightOperand.getValue();
 														translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider " + refinement.getOperator().toString().toLowerCase() + " "
 																+ dateTimeRefinement + ".\n");
 														break;

@@ -341,7 +341,7 @@ public class JsonIDSConverter {
 				RightOperand delayPeriodRightOperand = new RightOperand(recievedOdrlPolicy.getTime(), RightOperandType.DURATION);
 				ArrayList<RightOperand> delayPeriodRightOperands = new ArrayList<>();
 				delayPeriodRightOperands.add(delayPeriodRightOperand);
-				Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY,
+				Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY_PERIOD,
 						Operator.DURATION_EQ, delayPeriodRightOperands, null);
 				delayPeriodRefinement.setUnit(TimeUnit.valueOf(recievedOdrlPolicy.getTimeUnit()).toString());
 				constraints.add(delayPeriodRefinement);
@@ -483,18 +483,13 @@ public class JsonIDSConverter {
 			String durationHour = recievedOdrlPolicy.getPostduties_durationHour();
 			ArrayList<Condition> refinements = new ArrayList<>();
 			if (timeAndDate != "") {
-				RightOperandEntity dateTimeEntity = new RightOperandEntity(EntityType.DATETIME, timeAndDate,
-						RightOperandType.DATETIMESTAMP);
-				ArrayList<RightOperandEntity> entities = new ArrayList<>();
-				entities.add(dateTimeEntity);
-				RightOperand rightOperand = new RightOperand(entities, RightOperandType.INSTANT);
+				RightOperand rightOperandDateTime = new RightOperand(timeAndDate, RightOperandType.DATETIMESTAMP);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
-				rightOperands.add(rightOperand);
+				rightOperands.add(rightOperandDateTime);
 				Condition timeIntervalCondition = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
 						Operator.BEFORE, rightOperands, null);
 				refinements.add(timeIntervalCondition);
 			} else {
-				ArrayList<RightOperandEntity> durationEntities = new ArrayList<>();
 
 				String hour = "";
 				String day = "";
@@ -519,13 +514,10 @@ public class JsonIDSConverter {
 					duration = "P0D";
 				}
 
-				RightOperandEntity hasDurationEntity = new RightOperandEntity(EntityType.HASDURATION, duration,
-						RightOperandType.DURATION);
-				durationEntities.add(hasDurationEntity);
 				ArrayList<RightOperand> rightOperands = new ArrayList<>();
-				RightOperand rightOperand = new RightOperand(durationEntities, RightOperandType.DURATIONENTITY);
+				RightOperand rightOperand = new RightOperand(duration, RightOperandType.DURATION);
 				rightOperands.add(rightOperand);
-				Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY,
+				Condition delayPeriodRefinement = new Condition(ConditionType.REFINEMENT, LeftOperand.DELAY_PERIOD,
 						Operator.DURATION_EQ, rightOperands, "");
 				refinements.add(delayPeriodRefinement);
 			}
