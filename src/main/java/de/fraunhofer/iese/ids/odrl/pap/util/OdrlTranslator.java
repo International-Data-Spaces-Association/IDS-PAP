@@ -79,7 +79,7 @@ public class OdrlTranslator {
 
 						switch (action){
 							case ANONYMIZE:
-								translation = translation.concat("In this Policy " + policyType + " example, the " + ruleType.getType() + " rule demands the Data Consumer to " +
+								translation = translation.concat("In this Policy " + policyType + " example, the " + ruleType.getOdrlRepresentation() + " rule demands the Data Consumer to " +
 										action.toString().toLowerCase() + " the target asset.\n");
 								translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
 								break;
@@ -110,7 +110,7 @@ public class OdrlTranslator {
 
 					}else {
 
-						translation = translation.concat("In this Policy " + policyType + " example, the " + ruleType.getType() + " rule " +
+						translation = translation.concat("In this Policy " + policyType + " example, the " + ruleType.getOdrlRepresentation() + " rule " +
 								MyDataUtil.getMyDataDecision(ruleType) + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
 						translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
 
@@ -208,8 +208,8 @@ public class OdrlTranslator {
 											break;
 										case ELAPSED_TIME:
 											//Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(rightOperandValue);
-											RightOperandEntity elapsedTimeEntity = rightOperand.getRightOperandEntities().get(0);
-											translation = translation.concat("The Data Consumer can use the data for the duration of " + elapsedTimeEntity.getValue() + " "
+											//RightOperandEntity elapsedTimeEntity = rightOperand.getRightOperandEntities().get(0);
+											translation = translation.concat("The Data Consumer can use the data for the duration of " + rightOperandValue + " "
 													+ "(from the date that the agreement policy was issued!).\n");
 											break;
 										case COUNT:
@@ -225,57 +225,41 @@ public class OdrlTranslator {
 						}
 
 						Action dutyAction = null;
-						Boolean preDutyDelete = false;
-						if(null != rule.getPreduties() && rule.getPreduties().size() > 0)
-						{
-							dutyAction = (Action) rule.getPreduties().get(0).getAction();
-							if(dutyAction.getType().equals(ActionType.DELETE))
-							{
-								preDutyDelete = true;
-							}
 
-						}
-
-						if(null != rule.getPostduties() && rule.getPostduties().size() > 0)
+						if(null != rule.getDuties() && rule.getDuties().size() > 0)
 						{
-							dutyAction = (Action) rule.getPostduties().get(0).getAction();
+							dutyAction = (Action) rule.getDuties().get(0).getAction();
 						}
 
 						if(null != dutyAction) {
 							ActionType actionType = dutyAction.getType();
 							switch (actionType) {
 								case DELETE:
-									if(preDutyDelete.equals(true))
-									{
-										translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
-												+ actionType.toString().toLowerCase() + " a subset of the data.\n");
-										break;
-									}else{
-										translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
-												actionType.toString().toLowerCase() + "s the data asset after it is used.\n\n");
-										if (null != dutyAction.getRefinements()) {
-											for (Condition refinement : dutyAction.getRefinements()) {
-												for(RightOperand rightOperand: refinement.getRightOperands())
-												{
-													switch (refinement.getLeftOperand()) {
-														case DELAY:
-															RightOperandEntity rightOperandEntity = rightOperand.getRightOperandEntities().get(0);
-															String delayPeriod = rightOperandEntity.getValue();
-															//Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(delayPeriod);
-															translation = translation.concat("The Data Consumer may delay exercising the duty. Here the specified delay value is: " + delayPeriod + " .\n");
-															break;
-														case DATE_TIME:
-															RightOperandEntity dateTimeEntity = rightOperand.getRightOperandEntities().get(0);
-															String dateTimeRefinement = dateTimeEntity.getValue();
-															translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider " + refinement.getOperator().toString().toLowerCase() + " "
-																	+ dateTimeRefinement + ".\n");
-															break;
-													}
+
+									translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
+											actionType.toString().toLowerCase() + "s the data asset after it is used.\n\n");
+									if (null != dutyAction.getRefinements()) {
+										for (Condition refinement : dutyAction.getRefinements()) {
+											for(RightOperand rightOperand: refinement.getRightOperands())
+											{
+												switch (refinement.getLeftOperand()) {
+													case DELAY:
+														RightOperandEntity rightOperandEntity = rightOperand.getRightOperandEntities().get(0);
+														String delayPeriod = rightOperandEntity.getValue();
+														//Duration d = BuildMydataPolicyUtils.getDurationFromPeriodValue(delayPeriod);
+														translation = translation.concat("The Data Consumer may delay exercising the duty. Here the specified delay value is: " + delayPeriod + " .\n");
+														break;
+													case DATE_TIME:
+														RightOperandEntity dateTimeEntity = rightOperand.getRightOperandEntities().get(0);
+														String dateTimeRefinement = dateTimeEntity.getValue();
+														translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider " + refinement.getOperator().toString().toLowerCase() + " "
+																+ dateTimeRefinement + ".\n");
+														break;
 												}
 											}
 										}
-										break;
 									}
+									break;
 
 								case ANONYMIZE:
 									translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
@@ -312,6 +296,22 @@ public class OdrlTranslator {
 													case REPLACE_WITH:
 														String replaceWith = rightOperand.getValue();
 														translation = translation.concat("The addressed field shall be replaced with the given value \"" + replaceWith + "\".\n");
+														break;
+												}
+											}
+										}
+									}
+									break;
+								case DROP:
+									translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
+											+ actionType.toString().toLowerCase() + " a subset of the data.\n");
+									if (null != dutyAction.getRefinements()) {
+										for (Condition refinement : dutyAction.getRefinements()) {
+											for(RightOperand rightOperand: refinement.getRightOperands()) {
+												switch (refinement.getLeftOperand()) {
+													case JSON_PATH:
+														String jsonPath = rightOperand.getValue();
+														translation = translation.concat("The " + jsonPath + " field of the data asset (given as jsonPathQuery) is requested to be modified (deleted, hashed, replaced, etc.).\n");
 														break;
 												}
 											}
