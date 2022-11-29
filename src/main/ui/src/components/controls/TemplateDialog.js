@@ -42,7 +42,6 @@ export default function TemplateDialog(props) {
 
     setValues({ ...items })
     setOpenDialog(false);
-    console.log(values)
     handleSubmit();
   };
 

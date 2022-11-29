@@ -76,8 +76,12 @@ function deletePolicy(id, data, setData) {
 function editPolicy(id, history) {
   axios.get( `/api/policies/edit_${id}`).then(
     (response) => {
-      console.log(response.data);
       const policy = JSON.parse(response.data.fieldValues);
+
+      policy.specifyBeginTime = removeDateSuffix(policy.specifyBeginTime);
+      policy.restrictEndTime = removeDateSuffix(policy.restrictEndTime);
+      policy.restrictStartTime = removeDateSuffix(policy.restrictStartTime);
+      policy.timeDate = removeDateSuffix(policy.timeAndDate);
       policy.id = response.data.id;
       history.push({
         pathname: response.data.queryOrigin,
@@ -88,6 +92,18 @@ function editPolicy(id, history) {
       console.log(error);
     }
   );
+}
+
+/**
+ * Removes a suffix from the date string
+ * @param {String} date that should be converted
+ * @returns {string} converted date
+ */
+ function removeDateSuffix(date) {
+  if (date === "" || date === undefined) {
+    return "";
+  }
+  return date.replace(":00Z", "");
 }
 
 /**

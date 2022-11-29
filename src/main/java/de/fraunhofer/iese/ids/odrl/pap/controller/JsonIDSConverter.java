@@ -9,6 +9,7 @@ import de.fraunhofer.iese.ids.odrl.pap.util.PapUtil;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.RecievedOdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.Condition;
@@ -238,6 +239,30 @@ public class JsonIDSConverter {
 			return false;
 		}*/
 
+		public boolean addRestrictInterval() {
+			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictStartTimeInterval()) && PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictEndTimeInterval())) {
+
+				RightOperand dateTimeRightOperandStart = new RightOperand(recievedOdrlPolicy.getRestrictEndTimeInterval(), RightOperandType.DATETIMESTAMP);
+
+				ArrayList<RightOperand> rightOperandsStart = new ArrayList<>();
+				rightOperandsStart.add(dateTimeRightOperandStart);
+				Condition dateTimeConditionStart = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
+						Operator.BEFORE, rightOperandsStart, null);
+				constraints.add(dateTimeConditionStart);
+					
+				RightOperand dateTimeRightOperandEnd = new RightOperand(recievedOdrlPolicy.getRestrictStartTimeInterval(), RightOperandType.DATETIMESTAMP);
+
+				ArrayList<RightOperand> rightOperandsEnd = new ArrayList<>();
+				rightOperandsEnd.add(dateTimeRightOperandEnd);
+				Condition dateTimeConditionEnd = new Condition(ConditionType.CONSTRAINT, LeftOperand.DATE_TIME,
+						Operator.AFTER, rightOperandsEnd, null);
+				constraints.add(dateTimeConditionEnd);
+
+				return true;
+			}
+			return false;
+		}
+		
 		public boolean addRestrictStartTimeCondition() {
 			if (PapUtil.isNotNullOrEmpty(recievedOdrlPolicy.getRestrictStartTime())) {
 				RightOperand dateTimeRightOperand = new RightOperand(recievedOdrlPolicy.getRestrictStartTime(), RightOperandType.DATETIMESTAMP);

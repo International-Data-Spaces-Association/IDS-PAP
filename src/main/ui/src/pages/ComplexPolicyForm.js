@@ -129,6 +129,7 @@ export default function ComplexPolicyForm() {
 
   const handleSubmit = (e) => {
     const values = valueHook[0];
+
     OdrlPolicy.location_input = [""];
     OdrlPolicy.application_input = [""];
     OdrlPolicy.connector_input = [""];
@@ -156,7 +157,8 @@ export default function ComplexPolicyForm() {
     for (const [key, value] of Object.entries(selectedDeleteComponents)) {
       state[key] = value;
     }
-    console.log(values);
+    console.log("Values", values);
+    console.log("State", state);
     Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
   };
 

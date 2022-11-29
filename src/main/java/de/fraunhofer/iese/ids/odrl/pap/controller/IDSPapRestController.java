@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.jsonldjava.utils.JsonUtils;
 
 import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.RecievedOdrlPolicy;
 //import de.fraunhofer.iese.ids.odrl.pap.model.ShortPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.repository.ShortPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
@@ -181,6 +182,7 @@ public class IDSPapRestController {
 		converter.addPurposeCondition();
 		converter.addEventCondition();
 		converter.addCounterCondition();
+		converter.addRestrictInterval();
 		converter.addRestrictEndTimeCondition();
 		converter.addRestrictStartTimeCondition();
 		converter.addPaymentCondition();

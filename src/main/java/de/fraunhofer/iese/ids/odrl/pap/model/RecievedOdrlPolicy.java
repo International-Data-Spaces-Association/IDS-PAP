@@ -1,4 +1,4 @@
-package de.fraunhofer.iese.ids.odrl.pap.controller;
+package de.fraunhofer.iese.ids.odrl.pap.model;
 import java.util.List;
 import lombok.Getter;
 
@@ -59,6 +59,8 @@ public class RecievedOdrlPolicy {
 	private String timeAndDate;
 	private String restrictStartTime;
 	private String restrictEndTime;
+	private String restrictStartTimeInterval;
+	private String restrictEndTimeInterval;
 	private String specifyBeginTime;
 	private String durationHour;
 	private String durationDay;

@@ -34,9 +34,13 @@ export default function Submit(url, values, states, setErrors, history, e) {
     }
     var isoValues = convertDateToIso(values, states);
     //setPolicyType(isoValues)
-    console.log(isoValues)
     if (values.is_template) {
-      axios.post("/policy/template", isoValues).then();
+      axios.post("/policy/template", isoValues).then(
+        () => {
+          values["is_template"] = false
+          values["originQuery"] = ""
+        }
+      );
     } else {
       axios.post(url, isoValues).then(
         (response) => {
@@ -202,7 +206,6 @@ function addDateSuffix(date) {
  * @returns {boolean} true when all requirements are satisfied
  */
 function validation(values, states, setErrors) {
-  console.log(states, states.page);
   let error_list = {};
 
   checkHeader(error_list, values);
@@ -289,7 +292,6 @@ function validation(values, states, setErrors) {
       break;
   }
   error_list.odrlLanguageError = languageError(values.language, states, error_list)
-  console.log(error_list);
   setErrors({
     ...error_list,
   });
@@ -323,7 +325,6 @@ function languageError(language, states, error_list) {
     }
   }
   // IDS
-  console.log("language", error_list)
   return languageError
 }
 
@@ -375,12 +376,12 @@ function checkComplexPolicyFields(values, states, error_list) {
 
   // Restrict Time Interval
   if (states["interval"]) {
-    error_list.restrictStartTime = isValidDate(
-      values.restrictStartTime
+    error_list.restrictStartTimeInterval = isValidDate(
+      values.restrictStartTimeInterval
     );
-    error_list.restrictEndTime = isValidDateInterval(
-      values.restrictStartTime,
-      values.restrictEndTime
+    error_list.restrictEndTimeInterval = isValidDateInterval(
+      values.restrictStartTimeInterval,
+      values.restrictEndTimeInterval
     );
   }
 
