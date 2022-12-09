@@ -70,22 +70,23 @@ public class OdrlTranslator {
 					//set target
 					String target = "";
 					if(null != rule.getTarget()) {
-						target = rule.getTarget().toString();
+						target = rule.getTarget().getUri().toString();
 					}
 
 					RuleType ruleType = rule.getRuleType();
-					ActionType action = rule.getAction().getType();
+					ActionType actionType = rule.getAction().getType();
+					String action = actionType.name().replaceAll("_", " ").toLowerCase();
 					if(RuleType.OBLIGATION.equals(ruleType)){
 
-						switch (action){
+						switch (actionType){
 							case ANONYMIZE:
 								translation = translation.concat("In this Policy " + policyType + " example, the " + ruleType.getOdrlRepresentation() + " rule demands the Data Consumer to " +
-										action.toString().toLowerCase() + " the target asset.\n");
+										action + " the target asset.\n");
 								translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
 								break;
 							case DELETE:
 								translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
-										action.toString().toLowerCase() + "s the data asset at a specified date and time.\n");
+										action + "s the data asset at a specified date and time.\n");
 
 								if (null != rule.getAction().getRefinements()) {
 									for (Condition refinement : rule.getAction().getRefinements()) {
@@ -111,7 +112,7 @@ public class OdrlTranslator {
 					}else {
 
 						translation = translation.concat("In this Policy " + policyType + " example, the " + ruleType.getOdrlRepresentation() + " rule " +
-								MyDataUtil.getMyDataDecision(ruleType) + "s the Data Consumer to " + action.toString().toLowerCase() + " the target asset.\n");
+								MyDataUtil.getMyDataDecision(ruleType) + "s the Data Consumer to " + action + " the target asset.\n");
 						translation = translation.concat("The identifier of this policy and the target asset are " + pid + " and " + target + ", respectively.\n\n");
 
 						if(null != rule.getConstraints()) {
@@ -121,47 +122,47 @@ public class OdrlTranslator {
 									switch (constraint.getLeftOperand()) {
 										case EVENT:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific event; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset when the " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset when the " +
 													getLastSplitElement(rightOperandValue) + " event has been triggered.\n\n");
 											break;
 										case PURPOSE:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific purpose; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset for " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset for " +
 													getLastSplitElement(rightOperandValue) + " purpose.\n\n");
 											break;
 										case SYSTEM:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific system; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset when the system which will process the data is " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset when the system which will process the data is " +
 													getLastSplitElement(rightOperandValue) + ".\n\n");
 											break;
 										case APPLICATION:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific Data App; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset when the Data App which will process the data is " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset when the Data App which will process the data is " +
 													getLastSplitElement(rightOperandValue) + ".\n\n");
 											break;
 										case CONNECTOR:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific Connector of a specific Data Consumer; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset when the connector which will process the data is " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset when the connector which will process the data is " +
 													getLastSplitElement(rightOperandValue) + ".\n\n");
 											break;
 										case STATE:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific State of a Data Consumer connector; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset when the state in which the data will be processed is " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset when the state in which the data will be processed is " +
 													getLastSplitElement(rightOperandValue) + ".\n\n");
 											break;
 										case SECURITY_LEVEL:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific Data Consumer with a specific connector security level; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset when the security level of the connector which will process the data is " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset when the security level of the connector which will process the data is " +
 													getLastSplitElement(rightOperandValue) + ".\n\n");
 											break;
 										case ROLE:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific user roles in the user group of a specific Data Consumer; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset when the user which will use the data has the role " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset when the user which will use the data has the role " +
 													getLastSplitElement(rightOperandValue) + ".\n\n");
 											break;
 										case ABSOLUTE_SPATIAL_POSITION:
 											translation = translation.concat("The " + provider + " party restricts the usage of the data asset to a specific location; the Data Consumer is " +
-													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data asset when it's connector is located in " +
+													MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data asset when it's connector is located in " +
 													getLastElement(rightOperandValue) + ".\n\n");
 											break;
 										case PAY_AMOUNT:
@@ -179,7 +180,7 @@ public class OdrlTranslator {
 												switch (entity.getEntityType()) {
 													case BEGIN:
 														String begin = entity.getInnerEntity().getValue();
-														translation = translation.concat("The Data Consumer is " + decision.getMydataDecision() + "ed to " + action.toString().toLowerCase() + " the data from this date: " + begin + " .\n" );
+														translation = translation.concat("The Data Consumer is " + decision.getMydataDecision() + "ed to " + action + " the data from this date: " + begin + " .\n" );
 														break;
 													case END:
 														String end = entity.getInnerEntity().getValue();
@@ -196,7 +197,7 @@ public class OdrlTranslator {
 												switch (entity.getEntityType()) {
 													case BEGIN:
 														String begin = entity.getInnerEntity().getValue();
-														translation = translation.concat("The Data Consumer is " + MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action.toString().toLowerCase() + " the data from this date: " + begin + " .\n" );
+														translation = translation.concat("The Data Consumer is " + MyDataUtil.getMyDataDecision(ruleType) + "ed to " + action + " the data from this date: " + begin + " .\n" );
 														break;
 													case END:
 														String end = entity.getInnerEntity().getValue();
@@ -214,7 +215,7 @@ public class OdrlTranslator {
 											break;
 										case COUNT:
 											translation = translation.concat("This policy specifies that the Data Consumer is " + MyDataUtil.getMyDataDecision(ruleType) + "ed to " +
-													action.toString().toLowerCase() + " the data asset (not more than) " + rightOperandValue + " times.\n\n");
+													action + " the data asset (not more than) " + rightOperandValue + " times.\n\n");
 											break;
 //										case ENCODING:
 //											translation = translation.concat("The data asset must be encoded (compressed or encrypted) before it is distributed.\n\n");
@@ -232,12 +233,13 @@ public class OdrlTranslator {
 						}
 
 						if(null != dutyAction) {
-							ActionType actionType = dutyAction.getType();
+							ActionType dutyActionType = dutyAction.getType();
+							String dutyActionName = dutyActionType.name().replaceAll("_", " ").toLowerCase();
 							switch (actionType) {
 								case DELETE:
 
 									translation = translation.concat("The " + provider + " party demands that the Data Consumer " +
-											actionType.toString().toLowerCase() + "s the data asset after it is used.\n\n");
+											dutyActionName + "s the data asset after it is used.\n\n");
 									if (null != dutyAction.getRefinements()) {
 										for (Condition refinement : dutyAction.getRefinements()) {
 											for(RightOperand rightOperand: refinement.getRightOperands())
@@ -263,7 +265,7 @@ public class OdrlTranslator {
 
 								case ANONYMIZE:
 									translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
-											+ actionType.toString().toLowerCase() + " the data.\n");
+											+ dutyActionName + " the data.\n");
 									if (null != dutyAction.getRefinements()) {
 										for (Condition refinement : dutyAction.getRefinements()) {
 											for(RightOperand rightOperand: refinement.getRightOperands())
@@ -284,7 +286,7 @@ public class OdrlTranslator {
 									break;
 								case REPLACE:
 									translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
-											+ actionType.toString().toLowerCase() + " a subset of the data with a given value.\n");
+											+ dutyActionName + " a subset of the data with a given value.\n");
 									if (null != dutyAction.getRefinements()) {
 										for (Condition refinement : dutyAction.getRefinements()) {
 											for(RightOperand rightOperand: refinement.getRightOperands()) {
@@ -304,7 +306,7 @@ public class OdrlTranslator {
 									break;
 								case DROP:
 									translation = translation.concat("The Data Consumer has to exercise the action which is demanded by the Data Provider before the usage of the data asset. Here, the policy specifies that the Data Consumer must "
-											+ actionType.toString().toLowerCase() + " a subset of the data.\n");
+											+ dutyActionName + " a subset of the data.\n");
 									if (null != dutyAction.getRefinements()) {
 										for (Condition refinement : dutyAction.getRefinements()) {
 											for(RightOperand rightOperand: refinement.getRightOperands()) {
