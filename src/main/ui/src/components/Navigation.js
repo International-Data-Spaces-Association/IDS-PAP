@@ -352,7 +352,7 @@ export default function Navigation(props) {
                     Inform Party
                   </ListItemText>
                 </MenuItem>
-
+                
                 <MenuItem
                   button
                   component={Link}
@@ -366,6 +366,7 @@ export default function Navigation(props) {
                     Distribute Data
                   </ListItemText>
                 </MenuItem>
+                <MenuItem/>
               </List>
             </>
           ) : null}

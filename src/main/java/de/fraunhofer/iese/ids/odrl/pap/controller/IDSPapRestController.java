@@ -50,6 +50,7 @@ public class IDSPapRestController {
 			Optional<Policy> policy = policyService.findPolicyById((long) rp.getId());
 			if (policy.isPresent()) {
 				policyService.deletePolicy(policy.get());
+				template(rp);
 			}
 		} catch (Exception e) {
 		}

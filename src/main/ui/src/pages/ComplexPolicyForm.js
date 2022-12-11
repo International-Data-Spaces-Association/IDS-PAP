@@ -127,7 +127,8 @@ export default function ComplexPolicyForm() {
   );
   const [selectedLanguage, setSelectedLanguage] = React.useState(1);
 
-  const handleSubmit = (e) => {
+
+  function preprocessSubmit(){
     const values = valueHook[0];
 
     OdrlPolicy.location_input = [""];
@@ -157,10 +158,23 @@ export default function ComplexPolicyForm() {
     for (const [key, value] of Object.entries(selectedDeleteComponents)) {
       state[key] = value;
     }
-    console.log("Values", values);
-    console.log("State", state);
+    return {values, state}
+  }
+  const handleSubmit = (e) => {
+    var {values, state} = preprocessSubmit()
+    values["is_template"] = false
+    //values["originQuery"] = ""
     Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
   };
+
+  const handleSubmitTemplate = (e) => {
+    var {values, state} = preprocessSubmit()
+
+    Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
+    values["is_template"] = false
+    //values["originQuery"] = ""
+  };
+  
 
   const resetStates = () => {
     const setValues = valueHook[1];
@@ -297,7 +311,7 @@ export default function ComplexPolicyForm() {
               <Grid item xs={2} xm={2}>
                 <TemplateDialog
                   valueHook={valueHook}
-                  handleSubmit={handleSubmit}
+                  handleSubmit={handleSubmitTemplate}
                   originPath="/policy/ComplexPolicyForm"
                 />
               </Grid>

@@ -41,6 +41,7 @@ export default function Submit(url, values, states, setErrors, history, e) {
           values["originQuery"] = ""
         }
       );
+
     } else {
       axios.post(url, isoValues).then(
         (response) => {
