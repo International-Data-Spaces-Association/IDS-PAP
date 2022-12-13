@@ -241,6 +241,12 @@ export default function ComplexPolicyForm() {
             <Grid item xs={12}>
               <Alert severity="error">{errors.odrlLanguageError} </Alert>
             </Grid>):null}
+
+            {!Object.values(errors).every((x) => x === "") && valueHook[0].is_template? (
+            <Grid item xs={12}>
+              <Alert severity="error">Unable to save template! </Alert>
+            </Grid>):null}
+
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
                 <IdentifyPolicy valueHook={valueHook} errors={errors} />

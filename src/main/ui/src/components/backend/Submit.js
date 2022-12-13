@@ -374,6 +374,7 @@ function checkComplexPolicyFields(values, states, error_list) {
     error_list.durationYear = isIntOrEmpty(values.durationYear);
   if (values.specifyBeginTime !== "")
     error_list.specifyBeginTime = isDateOrEmpty(values.specifyBeginTime);
+  //isValidDate(`${values.durationYear}-${values.durationMonth}-${values.durationDay}T${values.durationHour}:00`)
 
   // Restrict Time Interval
   if (states["interval"]) {

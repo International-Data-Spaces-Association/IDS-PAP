@@ -95,7 +95,7 @@ export default function LogAccess() {
                   onClick: (event, data) =>
                     exportPolicy(
                       data.id,
-                      `policy_${data.policyID}.json`,
+                      `policy_${data.name}.json`,
                       "text/plain"
                     ),
                 },

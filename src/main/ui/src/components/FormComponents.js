@@ -333,15 +333,6 @@ export default function FormComponents(props) {
               md={3}
             />
             <Grid item sm={1} />
-            <Date
-              name="specifyBeginTime"
-              label="Begin Time (Optional)"
-              valueHook={valueHook}
-              errors={errors}
-              sm={11}
-              md={3}
-            />
-            <Grid item sm={1} />
             <Input
               name="durationDay"
               label="Day (Optional)"
@@ -356,6 +347,15 @@ export default function FormComponents(props) {
               name="durationHour"
               label="Hour (Optional)"
               placeholder="e.g. 3"
+              valueHook={valueHook}
+              errors={errors}
+              sm={11}
+              md={3}
+            />
+            <Grid item sm={1} />
+            <Date
+              name="specifyBeginTime"
+              label="Begin Time (Optional)"
               valueHook={valueHook}
               errors={errors}
               sm={11}
