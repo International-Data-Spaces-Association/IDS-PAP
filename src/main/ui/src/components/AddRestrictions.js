@@ -366,7 +366,7 @@ export default function AddRestrictions(props) {
               <Input
                 name="durationYear"
                 label="Year (Optional)"
-                placeholder="e.g. 2021"
+                placeholder="e.g. 1"
                 valueHook={valueHook}
                 errors={errors}
                 sm={11}
@@ -375,7 +375,7 @@ export default function AddRestrictions(props) {
               <Input
                 name="durationMonth"
                 label="Month (Optional)"
-                placeholder="e.g. 01"
+                placeholder="e.g. 1"
                 valueHook={valueHook}
                 errors={errors}
                 sm={11}
@@ -385,7 +385,7 @@ export default function AddRestrictions(props) {
               <Input
                 name="durationDay"
                 label="Day (Optional)"
-                placeholder="e.g. 01"
+                placeholder="e.g. 1"
                 valueHook={valueHook}
                 errors={errors}
                 sm={11}

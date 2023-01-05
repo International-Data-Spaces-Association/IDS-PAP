@@ -86,7 +86,7 @@ export default function DeleteData(props) {
                 <Input
                   name={prefix + "durationYear"}
                   label="Year"
-                  placeholder="e.g. 2021"
+                  placeholder="e.g. 1"
                   valueHook={valueHook}
                   errors={errors}
                   sm={11}
@@ -95,7 +95,7 @@ export default function DeleteData(props) {
                 <Input
                   name={prefix + "durationMonth"}
                   label="Month"
-                  placeholder="e.g. 01"
+                  placeholder="e.g. 1"
                   valueHook={valueHook}
                   errors={errors}
                   sm={11}
@@ -104,7 +104,7 @@ export default function DeleteData(props) {
                 <Input
                   name={prefix + "durationDay"}
                   label="Day"
-                  placeholder="e.g. 01"
+                  placeholder="e.g. 1"
                   valueHook={valueHook}
                   errors={errors}
                   sm={11}

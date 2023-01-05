@@ -1,46 +1,31 @@
 {
     "uid": "https://w3id.org/idsa/autogen/contract/notify",
     "@type": "Agreement",
-    "profile": "http://example.com/ids-profile",
+    "profile": "http://example.com/odrl:profile",
     "permission": [{
         "assigner": "http://example.com/party/my-party",
         "action": "use",
-        "duty": [{
-            "ids:pxpEndpoint": [{
-                "@type": "ids:PXP",
-                "ids:interfaceDescription": {
-                    "@value": "https://example.com/ids/PXP/interfaceDescription/notify",
-                    "@type": "anyURI"
+        "duty": [{"action": [{
+            "refinement": [
+                {
+                    "leftOperand": "idsc:NOTIFICATION_LEVEL",
+                    "rightOperand": [{
+                        "@value": "idsc:ON_DENY",
+                        "@type": "xsd:string"
+                    }],
+                    "operator": "eq"
                 },
-                "ids:endpointURI": {
-                    "@value": "https://example.com/ids/PXPendpoint/notify",
-                    "@type": "anyURI"
+                {
+                    "leftOperand": "recipient",
+                    "rightOperand": [{
+                        "@value": "http://SystemDevice",
+                        "@type": "xsd:anyURI"
+                    }],
+                    "operator": "eq"
                 }
-            }],
-            "action": [{
-                "refinement": [
-                    {
-                        "leftOperand": "notificationLevel",
-                        "rightOperand": {
-                            "@value": "idsc:ON_DENY",
-                            "@type": "xsd:string"
-                        },
-                        "ids:comment": "  ",
-                        "operator": "eq"
-                    },
-                    {
-                        "leftOperand": "recipient",
-                        "rightOperand": {
-                            "@value": "http://SystemDevice",
-                            "@type": "xsd:anyURI"
-                        },
-                        "ids:comment": "  ",
-                        "operator": "eq"
-                    }
-                ],
-                "rdf:value": {"@id": "notify"}
-            }]
-        }],
+            ],
+            "rdf:value": {"@id": "idsc:NOTIFY"}
+        }]}],
         "assignee": "http://example.com/ids/party/consumer-party",
         "target": "http://target/"
     }],
