@@ -400,21 +400,12 @@ export default function AddRestrictions(props) {
                 sm={11}
                 md={3}
               />
-              <Date
-                name="specifyBeginTime"
-                label="Begin Time (Optional)"
-                valueHook={valueHook}
-                errors={errors}
-                sm={11}
-                md={5}
-              />
             </Grid>
             <Remove
               onClick={() => {
                 removeEnteredData([
                   "durationYear",
                   "durationMonth",
-                  "specifyBeginTime",
                   "durationDay",
                   "durationHour",
                 ]);

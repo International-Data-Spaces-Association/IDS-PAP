@@ -367,7 +367,6 @@ export default function FormComponents(props) {
                 removeEnteredData([
                   "durationYear",
                   "durationMonth",
-                  "specifyBeginTime",
                   "durationDay",
                   "durationHour"
                 ]);
