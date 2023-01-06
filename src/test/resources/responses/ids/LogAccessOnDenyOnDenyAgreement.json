@@ -1,54 +1,40 @@
 {
-    "ids:consumer": "http://example.com/ids/party/consumer-party",
-    "@type": "ids:ContractAgreement",
-    "ids:provider": "http://example.com/party/my-party",
-    "profile": "http://example.com/ids-profile",
-    "ids:permission": [{
-        "ids:postDuty": [{
-            "ids:action": [{
-                "ids:pxpEndpoint": {
-                    "@type": "ids:PXP",
-                    "ids:interfaceDescription": {
-                        "@value": "https://example.com/ids/PXP/interfaceDescription/notify",
-                        "@type": "anyURI"
-                    },
-                    "ids:endpointURI": {
-                        "@value": "https://example.com/ids/PXPendpoint/notify",
-                        "@type": "anyURI"
-                    }
+    "uid": "https://w3id.org/idsa/autogen/contract/notify",
+    "@type": "Agreement",
+    "profile": "http://example.com/odrl:profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "duty": [{"action": [{
+            "refinement": [
+                {
+                    "leftOperand": "idsc:NOTIFICATION_LEVEL",
+                    "rightOperand": [{
+                        "@value": "idsc:ON_DENY",
+                        "@type": "xsd:string"
+                    }],
+                    "operator": "eq"
                 },
-                "ids:refinement": [
-                    {
-                        "@type": "ids:Constraint",
-                        "ids:comment": "  ",
-                        "ids:rightOperand": [{
-                            "@value": "idsc:ON_DENY",
-                            "@type": "xsd:string"
-                        }],
-                        "ids:leftOperand": {"@id": "idsc:NOTIFICATION_LEVEL"},
-                        "ids:operator": {"@id": "idsc:DEFINES_AS"}
-                    },
-                    {
-                        "@type": "ids:Constraint",
-                        "ids:comment": "  ",
-                        "ids:rightOperand": [{
-                            "@value": "http://SystemDevice",
-                            "@type": "xsd:anyURI"
-                        }],
-                        "ids:leftOperand": {"@id": "idsc:RECIPIENT"},
-                        "ids:operator": {"@id": "idsc:DEFINES_AS"}
-                    }
-                ],
-                "@id": "idsc:NOTIFY"
-            }],
-            "@type": "ids:Duty"
-        }],
-        "ids:action": [{"@id": "idsc:USE"}],
-        "ids:target": {"@id": "http://target/"}
+                {
+                    "leftOperand": "recipient",
+                    "rightOperand": [{
+                        "@value": "http://SystemDevice",
+                        "@type": "xsd:anyURI"
+                    }],
+                    "operator": "eq"
+                }
+            ],
+            "rdf:value": {"@id": "idsc:NOTIFY"}
+        }]}],
+        "assignee": "http://example.com/ids/party/consumer-party",
+        "target": "http://target/"
     }],
-    "@id": "https://w3id.org/idsa/autogen/contract/notify",
-    "@context": {
-        "ids": "https://w3id.org/idsa/core/",
-        "idsc": "https://w3id.org/idsa/code/"
-    }
+    "@context": [
+        "http://www.w3.org/ns/odrl.jsonld",
+        {
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/",
+            "dc": "http://purl.org/dc/terms/"
+        }
+    ]
 }
