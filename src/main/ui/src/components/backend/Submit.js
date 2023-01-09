@@ -183,6 +183,8 @@ function convertDateToIso(values, states) {
   isoValues.specifyBeginTime = addDateSuffix(isoValues.specifyBeginTime);
   isoValues.restrictEndTime = addDateSuffix(isoValues.restrictEndTime);
   isoValues.restrictStartTime = addDateSuffix(isoValues.restrictStartTime);
+  isoValues.restrictEndTimeInterval = addDateSuffix(isoValues.restrictEndTimeInterval);
+  isoValues.restrictStartTimeInterval = addDateSuffix(isoValues.restrictStartTimeInterval);
   isoValues.timeDate = addDateSuffix(isoValues.timeAndDate);
   return isoValues;
 }
