@@ -62,6 +62,7 @@ export default function MultiSelectInputField(props) {
     const items = values;
     if (index !== -1) {
       items[name + "_input"].splice(index, 1);
+      items[name + "_op"] = ""
       setValues({ ...items });
     }
     setValues({ ...items });

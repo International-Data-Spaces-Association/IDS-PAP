@@ -149,10 +149,10 @@ export const data_consumers = [
   { id: "Consumer Party", value: "http://example.com/ids/party/consumer-party" },
 ];
 
-/**
- * Different operator types and how they should be translated for the backend
- */
+
 export const operator_list = [
-{ id: "", value: "" },
-{id: "IN", value: "IN"},
-];
+{ id: "", value: "", odrl: "", ids:  ""},
+{id: "IS ANY OF", value: "IS ANY OF",  odrl: "isAnyOf", ids:  "IN"},
+{id: "IS PART OF", value: "IS PART OF",  odrl: "isPartOf", ids:  "IN"},
+{id: "IS ALL OF", value: "IS ALL OF", odrl: "isAllOf", ids:  "EQUALS"},
+]

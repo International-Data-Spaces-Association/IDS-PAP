@@ -6,7 +6,7 @@
 import { Language } from "@material-ui/icons";
 import axios from "axios";
 import negotiateTestResponse from "../negotiateExample.json";
-import { ids_policy_types, odrl_policy_types } from "../controls/InitialFieldListValues";
+import { operator_list, ids_policy_types, odrl_policy_types } from "../controls/InitialFieldListValues";
 /**
  * Main function that is called when a new policy is created. First the inputs are validated then
  * transformed and finally send to the backend.
@@ -33,7 +33,6 @@ export default function Submit(url, values, states, setErrors, history, e) {
       states[key] = false;
     }
     var isoValues = convertDateToIso(values, states);
-    //setPolicyType(isoValues)
     if (values.is_template) {
       axios.post("/policy/template", isoValues).then(
         () => {
@@ -43,6 +42,7 @@ export default function Submit(url, values, states, setErrors, history, e) {
       );
 
     } else {
+      translateOperatorToLanguage(isoValues)
       axios.post(url, isoValues).then(
         (response) => {
           axios
@@ -189,6 +189,21 @@ function convertDateToIso(values, states) {
   return isoValues;
 }
 
+/**
+ * Converts all operators to ids or odrl operators defined in operator_list
+ * @param {object} values object with all the user input
+ */
+function translateOperatorToLanguage(values) {
+  Object.entries(values).forEach(([key, value]) => {  
+    if (value !== "" && typeof value === 'string' || value instanceof String){
+      operator_list.forEach(function (item, index) {
+        if (value  == item.id) {
+          values[key] = item[values.language.toLowerCase()]
+        }
+      });
+    }
+  })
+}
 /**
  * Adds a suffix to the date string
  * @param {String} date that should be converted
