@@ -103,7 +103,18 @@ public class JsonIDSConverter {
 	
 	private String checkIfEmptyValue(String value, String defaultValue) {
 		if (value.length() > 0) {
-			return value;
+			switch (value){
+				case "isAnyOf":
+					return "IS_ANY_OF";
+				case "isAllOf":
+					return "IS_ALL_OF";
+				case "isPartOf":
+					return "IS_PART_OF";
+				case "isNoneOf":
+					return "IS_NONE_OF";
+				default:
+					return value;
+			}
 		} else {
 			return defaultValue;
 		}
