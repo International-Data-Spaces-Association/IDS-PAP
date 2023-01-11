@@ -196,6 +196,7 @@ export default function Navigation(props) {
           {logedIn ? (
             <>
               <List>
+                {/*
               <MenuItem
                   button
                   component={Link}
@@ -210,19 +211,19 @@ export default function Navigation(props) {
                     Negotiate Policy
                   </ListItemText>
                 </MenuItem>
-
+                */}
                 <MenuItem
                   button
                   component={Link}
                   to="/policy/InterpretOdrlPolicy"
-                  onClick={() => updateSelected("Interprete an IDS Policy")}
-                  selected={selected.selected === "Interprete an IDS Policy"}
+                  onClick={() => updateSelected("Interpret an IDS Policy")}
+                  selected={selected.selected === "Interpret an IDS Policy"}
                   className={classes.menuItem}
                 >
                   <SearchIcon className={classes.listitemicon} />
 
                   <ListItemText classes={{ primary: classes.navigation }}>
-                    Interprete Policy
+                    Interpret Policy
                   </ListItemText>
                 </MenuItem>
 
