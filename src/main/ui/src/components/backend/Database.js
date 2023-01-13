@@ -82,6 +82,9 @@ function editPolicy(id, history) {
       policy.restrictEndTime = removeDateSuffix(policy.restrictEndTime);
       policy.restrictStartTime = removeDateSuffix(policy.restrictStartTime);
       policy.timeDate = removeDateSuffix(policy.timeAndDate);
+      policy.restrictEndTimeInterval = removeDateSuffix(policy.restrictEndTimeInterval);
+      policy.restrictStartTimeInterval = removeDateSuffix(policy.restrictStartTimeInterval);
+
       policy.is_template = false;
       policy.id = response.data.id;
       history.push({
