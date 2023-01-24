@@ -41,7 +41,7 @@ export default function InterpretOdrlPolicy() {
   const classes = useStyle();
 
   const transfer = () =>{
-    jsonOdrlPolicy("/policy/JsonOdrlPolicyMYDATA", policy, setDtPolicy)
+    jsonOdrlPolicy("/policy/InterpretOdrlPolicy", policy, setDtPolicy)
   }
   return (
     <div className={classes.page}>
