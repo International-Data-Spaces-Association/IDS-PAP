@@ -10,7 +10,6 @@ import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteData from "../components/controls/DeleteData";
 import { useLocation } from "react-router-dom";
-import SplitButtons from "../components/controls/SplitButtons";
 
 export default function DeleteDataAfter() {
   const selected_components = {
@@ -35,7 +34,6 @@ export default function DeleteDataAfter() {
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] = useState(selected_components);
-  const [selectedLanguage, setSelectedLanguage] = React.useState(1);
 
   const handleSubmit = (e) => {
     const values = valueHook[0]
@@ -80,6 +78,19 @@ export default function DeleteDataAfter() {
       }
     });
   };
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
+  };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
   return (
     <div className={classes.page}>
       <Form>
@@ -121,16 +132,27 @@ export default function DeleteDataAfter() {
               />
             </Paper>
           </Grid>
-          <Grid item xs={12}>
-          <Grid item xs={3} xm={2}>
-                <SplitButtons
-                  valueHook={valueHook}
-                  selectedLanguage={selectedLanguage}
-                  setSelectedLanguage={setSelectedLanguage}
-                  handleClick={handleSubmit}
-                />
+          <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
               </Grid>
-          </Grid>
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
         </Grid>
       </Form>
     </div>

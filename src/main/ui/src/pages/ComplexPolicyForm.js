@@ -22,7 +22,6 @@ import AddRestrictions from "../components/AddRestrictions";
 import DistributeDataComplex from "../components/controls/DistributeDataComplex";
 import { useLocation } from "react-router-dom";
 import TemplateDialog from "../components/controls/TemplateDialog";
-import SplitButtons from "../components/controls/SplitButtons";
 export default function ComplexPolicyForm() {
   const selected_components = {
     prefix: "restrictions",
@@ -125,7 +124,6 @@ export default function ComplexPolicyForm() {
   const [selectedDeleteComponents, setSelectedDeleteComponents] = useState(
     selected_delete_data_components
   );
-  const [selectedLanguage, setSelectedLanguage] = React.useState(1);
 
 
   function preprocessSubmit(){
@@ -217,6 +215,21 @@ export default function ComplexPolicyForm() {
     });
   };
 
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
+  };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
+
+
   const removeEnteredData = (ids) => {
     const values = valueHook[0];
     ids.forEach(function (id) {
@@ -305,14 +318,29 @@ export default function ComplexPolicyForm() {
             </Grid>
 
             <Grid container>
-              <Grid item xs={3} xm={2}>
-                <SplitButtons
-                  valueHook={valueHook}
-                  selectedLanguage={selectedLanguage}
-                  setSelectedLanguage={setSelectedLanguage}
-                  handleClick={handleSubmit}
-                />
+              
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
               </Grid>
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
+
 
               <Grid item xs={2} xm={2}>
                 <TemplateDialog
