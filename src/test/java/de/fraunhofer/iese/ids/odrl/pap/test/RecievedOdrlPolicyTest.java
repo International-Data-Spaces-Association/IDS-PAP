@@ -1,43 +1,20 @@
 package de.fraunhofer.iese.ids.odrl.pap.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import org.json.JSONArray;
+import de.fraunhofer.iese.ids.odrl.pap.OdrlPapApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import de.fraunhofer.iese.ids.odrl.pap.OdrlPapApplication;
 
 /**
  * 
  * This class is used to check the integrity of the pap backend.
  *
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @SpringBootTest(classes =  OdrlPapApplication.class)
 public class RecievedOdrlPolicyTest extends SuperTest {

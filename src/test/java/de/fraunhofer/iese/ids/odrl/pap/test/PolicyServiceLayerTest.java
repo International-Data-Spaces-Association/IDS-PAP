@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.junit.Assert;
 
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -80,7 +79,7 @@ public class PolicyServiceLayerTest {
         when(policyRepo.findAll()).thenReturn(policyList);
 
         List<Policy> fetchedPolicies = policyService.fetchAllPolicies();
-        Assert.assertTrue(fetchedPolicies.size() == 2);
+        Assertions.assertTrue(fetchedPolicies.size() == 2);
     }
     
     @Test
@@ -96,7 +95,7 @@ public class PolicyServiceLayerTest {
         when(policyRepo.findBy()).thenReturn(policyList);
 
         List<ShortPolicy> fetchedPolicies = policyService.shortPolicyFindById();
-        Assert.assertTrue(fetchedPolicies.size() == 2);
+        Assertions.assertTrue(fetchedPolicies.size() == 2);
     }
     
     
@@ -104,7 +103,7 @@ public class PolicyServiceLayerTest {
     public void policySaveSuccess() {
         when(policyRepo.save(any(Policy.class))).thenReturn(new Policy("Example Policy", "Agreement", "/policy/ComplexPolicyForm", "Example Comment", ""));
         Policy savedPolicy = policyService.savePolicy("Example Policy", "Agreement", "/policy/ComplexPolicyForm", "Example Comment", "");
-        assertNotNull(savedPolicy.getName(), "Policy Repository is not available!");
+        Assertions.assertNotNull(savedPolicy.getName(), "Policy Repository is not available!");
     }
     
     @Test
@@ -115,7 +114,7 @@ public class PolicyServiceLayerTest {
         when(policyRepo.save(any(Policy.class))).thenReturn(policy);
 
         Policy savedPolicy = policyService.savePolicy(policy);
-        assertNotNull(savedPolicy.getName());
+        Assertions.assertNotNull(savedPolicy.getName());
     }
     
 }

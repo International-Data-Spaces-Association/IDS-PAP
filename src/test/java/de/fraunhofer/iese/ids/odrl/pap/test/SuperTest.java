@@ -1,9 +1,21 @@
 package de.fraunhofer.iese.ids.odrl.pap.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,28 +23,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.JavascriptExecutor;		
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 public class SuperTest {
@@ -53,15 +47,15 @@ public class SuperTest {
 		this.language = language;
 	}
 	
-	@BeforeClass
-	public static void setUpWebdirver() {
+	@BeforeAll
+	public static void setUpWebDriver() {
 	    if (activateVisualizeDifferences) {
 			WebDriverManager.chromedriver().browserVersion("77.0.3865.40").setup();
 			driver = new ChromeDriver(); 
 	    }
 	}
 	
-	  @Before
+	  @BeforeEach
 	  public void setup() throws JSONException {
 	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	    this.jsonObject = createAgreementHeader(emptyPolicy());
@@ -74,10 +68,10 @@ public class SuperTest {
 		    driver.switchTo().window(tabs.get(tabs.size()-1)); //switches to new tab
 		    driver.get("https://jsondiff.com/");
 		    
-	        WebElement textareal = driver.findElement(By.id("textarealeft"));
-	        textareal.sendKeys(expected);
-	        WebElement textarear = driver.findElement(By.id("textarearight"));
-	        textarear.sendKeys(output);
+	        WebElement textAreaLeft = driver.findElement(By.id("textarealeft"));
+	        textAreaLeft.sendKeys(expected);
+	        WebElement textAreaRight = driver.findElement(By.id("textarearight"));
+	        textAreaRight.sendKeys(output);
 	        WebElement button = driver.findElement(By.id("compare"));
 	        button.click();
 	        String script = "var h1 = document.createElement('h1');" +
@@ -155,7 +149,7 @@ public class SuperTest {
 	
 	/**
 	 *  Creates an agreement header
-	 * @param json that contains arguments
+	 * @param jsonObject that contains arguments
 	 * @return json object with header
 	 * @throws JSONException
 	 */
@@ -169,7 +163,7 @@ public class SuperTest {
 	
 	/**
 	 *  Creates an offer header
-	 * @param json that contains arguments
+	 * @param jsonObject that contains arguments
 	 * @return json object with header
 	 * @throws JSONException
 	 */
@@ -182,7 +176,7 @@ public class SuperTest {
 	
 	/**
 	 * Creates a request header
-	 * @param json that contains arguments
+	 * @param jsonObject that contains arguments
 	 * @return json object with header
 	 * @throws JSONException
 	 */
@@ -195,7 +189,7 @@ public class SuperTest {
 
 	/**
 	 * Send a json object to an rest end point specified by urlString
-	 * @param json that contains arguments
+	 * @param jsonObject that contains arguments
 	 * @param urlString of rest end point
 	 * @return response of rest end point
 	 */
@@ -234,7 +228,8 @@ public class SuperTest {
 
 	/**
 	 * All expected responses are saved as .json files and this method can save a response as a file
-	 * @param response.toString() string to write in the file
+	 * @param jsonObject
+	 * @param url
 	 * @param path of the file
 	 */
 	public void writeFile(JSONObject jsonObject, String url, String path) {
@@ -257,7 +252,7 @@ public class SuperTest {
 	
 	/**
 	 * All expected responses are saved as .json files and this method can save a response as a file
-	 * @param response.toString() string to write in the file
+	 * @param response string to write in the file
 	 * @param path of the file
 	 */
 	public void writeFile(String response, String path) {
@@ -272,7 +267,7 @@ public class SuperTest {
 	
 	/**
 	 * 
-	 * @param json with arguments to be sent
+	 * @param jsonObject with arguments to be sent
 	 * @param url rest end point
 	 * @param path of file which contains the expected response
 	 */
