@@ -31,16 +31,13 @@
                         }
                     },
                     "ids:rightOperand": [{
-                        "ids:dateTime": {
-                            "@value": "2021-12-16T11:10",
-                            "@type": "xsd:datetimeStamp"
-                        },
-                        "@type": "ids:Instant"
+                        "@value": "2021-12-16T11:10",
+                        "@type": "xsd:datetimeStamp"
                     }],
                     "ids:leftOperand": {"@id": "idsc:DATE_TIME"},
                     "ids:operator": {"@id": "idsc:BEFORE"}
                 }],
-                "@id": "idsc:DELETE"
+                "rdf:value": {"@id": "idsc:DELETE"}
             }],
             "@type": "ids:Duty"
         }],

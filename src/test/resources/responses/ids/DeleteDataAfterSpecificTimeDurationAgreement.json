@@ -22,26 +22,23 @@
                     "ids:pipEndpoint": {
                         "@type": "ids:PIP",
                         "ids:interfaceDescription": {
-                            "@value": "https://example.com/ids/PIP/interfaceDescription/delay",
+                            "@value": "https://example.com/ids/PIP/interfaceDescription/delay_period",
                             "@type": "anyURI"
                         },
                         "ids:endpointURI": {
-                            "@value": "https://example.com/ids/PXPendpoint/delay",
+                            "@value": "https://example.com/ids/PXPendpoint/delay_period",
                             "@type": "anyURI"
                         }
                     },
                     "ids:comment": "  ",
                     "ids:rightOperand": [{
-                        "@type": "ids:durationEntity",
-                        "ids:hasDuration": {
-                            "@value": "P2021Y11M1DT10H",
-                            "@type": "xsd:duration"
-                        }
+                        "@value": "P2021Y11M1DT10H",
+                        "@type": "xsd:duration"
                     }],
-                    "ids:leftOperand": {"@id": "idsc:DELAY"},
+                    "ids:leftOperand": {"@id": "idsc:DELAY_PERIOD"},
                     "ids:operator": {"@id": "idsc:DURATION_EQ"}
                 }],
-                "@id": "idsc:DELETE"
+                "rdf:value": {"@id": "idsc:DELETE"}
             }],
             "@type": "ids:Duty"
         }],

@@ -18,11 +18,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @SpringBootTest(classes =  OdrlPapApplication.class)
 public class RecievedOdrlPolicyTest extends SuperTest {
-    private String basePath = "src/test/resources/responses/ids/";
+    private String basePath = "src/test/resources/responses/odrl/";
 
 	public RecievedOdrlPolicyTest() {
 		super("ODRL");
-		// TODO Auto-generated constructor stub
 	}
 
 // ##################### New Tests #####################

@@ -54,7 +54,7 @@
                         "ids:leftOperand": {"@id": "idsc:TARGET_POLICY"},
                         "ids:operator": {"@id": "idsc:DEFINES_AS"}
                     }],
-                    "@id": "idsc:NEXT_POLICY"
+                    "rdf:value": {"@id": "idsc:NEXT_POLICY"}
                 }],
                 "@type": "ids:Duty"
             }],

@@ -1,7 +1,7 @@
 {
     "uid": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
     "@type": "Agreement",
-    "profile": "http://example.com/ids-profile",
+    "profile": "http://example.com/odrl:profile",
     "permission": [{
         "assigner": "http://example.com/party/my-party",
         "action": "use",

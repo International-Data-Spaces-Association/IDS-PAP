@@ -31,14 +31,14 @@
                     {
                         "@type": "ids:Constraint",
                         "ids:rightOperand": [{
-                            "@value": "Field1", 
+                            "@value": "Field1",
                             "@type": "xsd:string"
                         }],
                         "ids:leftOperand": {"@id": "idsc:JSON_PATH"},
                         "ids:operator": {"@id": "idsc:DEFINES_AS"}
                     }
                 ],
-                "@id": "idsc:REPLACE"
+                "rdf:value": {"@id": "idsc:REPLACE"}
             }],
             "@type": "ids:Duty"
         }],

@@ -1,46 +1,31 @@
 {
     "uid": "https://w3id.org/idsa/autogen/contract/log-access",
     "@type": "Agreement",
-    "profile": "http://example.com/ids-profile",
+    "profile": "http://example.com/odrl:profile",
     "permission": [{
         "assigner": "http://example.com/party/my-party",
         "action": "use",
-        "duty": [{
-            "ids:pxpEndpoint": [{
-                "@type": "ids:PXP",
-                "ids:interfaceDescription": {
-                    "@value": "https://example.com/ids/PXP/interfaceDescription/log",
-                    "@type": "anyURI"
+        "duty": [{"action": [{
+            "refinement": [
+                {
+                    "leftOperand": "idsc:LOG_LEVEL",
+                    "rightOperand": [{
+                        "@value": "idsc:ON_DENY",
+                        "@type": "xsd:string"
+                    }],
+                    "operator": "eq"
                 },
-                "ids:endpointURI": {
-                    "@value": "https://example.com/ids/PXPendpoint/log",
-                    "@type": "anyURI"
+                {
+                    "leftOperand": "systemDevice",
+                    "rightOperand": [{
+                        "@value": "http://SystemDevice",
+                        "@type": "xsd:anyURI"
+                    }],
+                    "operator": "eq"
                 }
-            }],
-            "action": [{
-                "refinement": [
-                    {
-                        "leftOperand": "idsc:LOG_LEVEL",
-                        "rightOperand": {
-                            "@value": "idsc:ON_DENY",
-                            "@type": "xsd:string"
-                        },
-                        "ids:comment": "  ",
-                        "operator": "eq"
-                    },
-                    {
-                        "leftOperand": "systemDevice",
-                        "rightOperand": {
-                            "@value": "http://SystemDevice",
-                            "@type": "xsd:anyURI"
-                        },
-                        "ids:comment": "  ",
-                        "operator": "eq"
-                    }
-                ],
-                "rdf:value": {"@id": "log"}
-            }]
-        }],
+            ],
+            "rdf:value": {"@id": "idsc:LOG"}
+        }]}],
         "assignee": "http://example.com/ids/party/consumer-party",
         "target": "http://target/"
     }],
