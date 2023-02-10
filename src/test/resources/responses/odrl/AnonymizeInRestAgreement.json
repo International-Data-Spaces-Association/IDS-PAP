@@ -1,22 +1,19 @@
 {
-    "uid": "https:\/\/w3id.org\/idsa\/autogen\/contract\/anonymize-in-rest",
+    "uid": "https://w3id.org/idsa/autogen/contract/anonymize-in-rest",
     "@type": "Agreement",
-    "obligation": [
-        {
-            "assigner": "http:\/\/example.com\/party\/my-party",
-            "action": "anonymize",
-            "assignee": "http:\/\/example.com\/ids\/party\/consumer-party",
-            "target": "http:\/\/target\/"
-        }
-    ],
-    "profile": "http:\/\/example.com\/odrl:profile",
+    "obligation": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "anonymize",
+        "assignee": "http://example.com/ids/party/consumer-party",
+        "target": "http://target/"
+    }],
+    "profile": "http://example.com/odrl:profile",
     "@context": [
-        "http:\/\/www.w3.org\/ns\/odrl.jsonld",
+        "http://www.w3.org/ns/odrl.jsonld",
         {
-            "ids": "https:\/\/w3id.org\/idsa\/core\/",
-            "idsc": "https:\/\/w3id.org\/idsa\/code\/",
-            "dc": "http:\/\/purl.org\/dc\/terms\/"
-        },
-        null
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/",
+            "dc": "http://purl.org/dc/terms/"
+        }
     ]
 }

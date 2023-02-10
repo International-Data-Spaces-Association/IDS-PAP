@@ -1,45 +1,30 @@
 {
-    "uid": "https:\/\/w3id.org\/idsa\/autogen\/contract\/anonymize-in-transit",
+    "uid": "https://w3id.org/idsa/autogen/contract/anonymize-in-transit",
     "@type": "Agreement",
-    "profile": "http:\/\/example.com\/odrl:profile",
-    "permission": [
-        {
-            "assigner": "http:\/\/example.com\/party\/my-party",
-            "action": "use",
-            "duty": [
-                {
-                    "action": [
-                        {
-                            "refinement": [
-                                {
-                                    "leftOperand": "idsc:JSON_PATH",
-                                    "rightOperand": [
-                                        {
-                                            "@value": "FieldToChange",
-                                            "@type": "xsd:string"
-                                        }
-                                    ],
-                                    "operator": "eq"
-                                }
-                            ],
-                            "rdf:value": {
-                                "@id": "idsc:drop"
-                            }
-                        }
-                    ]
-                }
-            ],
-            "assignee": "http:\/\/example.com\/ids\/party\/consumer-party",
-            "target": "http:\/\/target\/"
-        }
-    ],
+    "profile": "http://example.com/odrl:profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "duty": [{"action": [{
+            "refinement": [{
+                "leftOperand": "idsc:JSON_PATH",
+                "rightOperand": [{
+                    "@value": "FieldToChange",
+                    "@type": "xsd:string"
+                }],
+                "operator": "eq"
+            }],
+            "rdf:value": {"@id": "idsc:drop"}
+        }]}],
+        "assignee": "http://example.com/ids/party/consumer-party",
+        "target": "http://target/"
+    }],
     "@context": [
-        "http:\/\/www.w3.org\/ns\/odrl.jsonld",
+        "http://www.w3.org/ns/odrl.jsonld",
         {
-            "ids": "https:\/\/w3id.org\/idsa\/core\/",
-            "idsc": "https:\/\/w3id.org\/idsa\/code\/",
-            "dc": "http:\/\/purl.org\/dc\/terms\/"
-        },
-        null
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/",
+            "dc": "http://purl.org/dc/terms/"
+        }
     ]
 }

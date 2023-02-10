@@ -138,7 +138,7 @@ public class RecievedOdrlPolicyTest extends SuperTest {
 		
 		jsonObject.put("postduties_notificationLevel", "idsc:ON_DENY");
 		jsonObject.put("postduties_informedParty", "http://SystemDevice");
-		writeFile(jsonObject, url, expectedResponseFilePath);
+		//writeFile(jsonObject, url, expectedResponseFilePath);
 		check(jsonObject, url, expectedResponseFilePath);
 	}
 	
