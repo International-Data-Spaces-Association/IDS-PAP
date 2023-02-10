@@ -1,0 +1,52 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [{
+        "ids:postDuty": [{
+            "ids:action": [{
+                "ids:pxpEndpoint": {
+                    "@type": "ids:PXP",
+                    "ids:interfaceDescription": {
+                        "@value": "https://example.com/ids/PXP/interfaceDescription/increment_counter",
+                        "@type": "anyURI"
+                    },
+                    "ids:endpointURI": {
+                        "@value": "https://example.com/ids/PXPendpoint/increment_counter",
+                        "@type": "anyURI"
+                    }
+                },
+                "@id": "idsc:INCREMENT_COUNTER"
+            }],
+            "@type": "ids:Duty"
+        }],
+        "ids:action": [{"@id": "idsc:USE"}],
+        "ids:constraint": [{
+            "@type": "ids:Constraint",
+            "ids:pipEndpoint": {
+                "@type": "ids:PIP",
+                "ids:interfaceDescription": {
+                    "@value": "https://example.com/ids/PIP/interfaceDescription/count",
+                    "@type": "anyURI"
+                },
+                "ids:endpointURI": {
+                    "@value": "https://example.com/ids/PXPendpoint/count",
+                    "@type": "anyURI"
+                }
+            },
+            "ids:rightOperand": [{
+                "@value": "22",
+                "@type": "xsd:decimal"
+            }],
+            "ids:leftOperand": {"@id": "idsc:COUNT"},
+            "ids:operator": {"@id": "idsc:LTEQ"}
+        }],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@id": "https://w3id.org/idsa/autogen/contract/count-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}

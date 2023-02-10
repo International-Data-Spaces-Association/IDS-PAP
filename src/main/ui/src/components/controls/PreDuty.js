@@ -1,3 +1,8 @@
+/**
+ * @file This contains the pre duty component 
+ * @author Tom Kollmer 
+ */
+
 import React, { useState } from "react";
 import {
   Grid,
@@ -12,29 +17,40 @@ import Remove from "./Remove";
 import { Typography } from "@material-ui/core";
 import Anonymize from "./Anonymize";
 
-
+/**
+ * Components for the pre duty component
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {object} selectedComponents contains all selected components
+ * @param {func} removeComponent is called to remove components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {object} classes contains the css definitions
+ * @param {string} name that should be used for the components
+ * @param {string} title that should be used for the components
+ * @param {string} prefix that should be used for the components
+ * @returns component
+ */
 export default function PreDuty(props) {
   const {
-    selectedComponents,
-    values,
-    setValues,
+    valueHook,
     errors,
-    handleInputChange,
+    selectedComponents,
     removeComponent,
     removeEnteredData,
     classes,
     name = "",
     title = "",
-    type = "",
+    prefix = "",
   } = props;
 
   const selected_delete_data_components = {
     duration: false,
     timeDate: false,
   };
-  const [selectedDeleteComponents, setSelectedDeleteComponents] = useState(
+  const setSelectedDeleteComponents = useState(
     selected_delete_data_components
-  );
+  )[1];
 
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
@@ -44,8 +60,8 @@ export default function PreDuty(props) {
   const addAll = () => {
     const dict = selectedComponents.availableComponents;
     dict.forEach(function (item) {
-      if (item.isVisible) {
-        item.isVisible = false;
+      if (!item.isVisible) {
+        item.isVisible = true;
         selectedComponents.order.push(item.id);
       }
     });
@@ -55,12 +71,11 @@ export default function PreDuty(props) {
       case "anonymizeTransit":
         return () => (
           <>
-            <Grid container key={"anonymizeTransit" + type}>
-              <Title label="Anonymize in Transit" seperator={true} xs={12} />
+            <Grid container key={"anonymizeTransit" + prefix}>
+              <Title label="Anonymize in Transit" separator={true} xs={12} />
               <Grid container xs={11} spacing={2}>
                 <Anonymize
-                  values={values}
-                  handleInputChange={handleInputChange}
+                  valueHook={valueHook}
                   errors={errors}
                 />
               </Grid>
@@ -70,11 +85,11 @@ export default function PreDuty(props) {
                     duration: false,
                     timeDate: false,
                   });
-                  removeComponent(type, "anonymizeTransit");
+                  removeComponent(prefix, "anonymizeTransit");
                   removeEnteredData([
-                    type + "_modifier",
-                    type + "_valueToChange",
-                    type + "_fieldToChange",
+                    prefix + "_modifier",
+                    prefix + "_valueToChange",
+                    prefix + "_fieldToChange",
                   ]);
                 }}
               />
@@ -82,22 +97,22 @@ export default function PreDuty(props) {
           </>
         );
       case "anonymizeInRest":
-        const key = type + "_anomInRest"
-        if (values[key] === "") {
-          values[key] = "Active"
+        const key = prefix + "_anomInRest"
+        if (valueHook[0][key] === "") {
+          valueHook[0][key] = "Active"
         }
         return () => (
           <>
-            <Grid container key={"anonymizeInRest" + type}>
-              <Title label="Anonymize in Rest" seperator={true} xs={12} />
+            <Grid container key={"anonymizeInRest" + prefix}>
+              <Title label="Anonymize in Rest" separator={true} xs={12} />
               <Grid container xs={11} spacing={2}>
                   <Typography> Anonymize in Rest activated. </Typography>
               </Grid>
               <Remove
                 onClick={() => {
-                  removeComponent(type, "anonymizeInRest");
+                  removeComponent(prefix, "anonymizeInRest");
                   removeEnteredData([
-                    type + "_anomInRest"
+                    prefix + "_anomInRest"
                   ]);
                 }}
               />
@@ -127,7 +142,7 @@ export default function PreDuty(props) {
             {components.map((c) => c())}
 
             {Object.values(selectedComponents.availableComponents).some(
-              (x) => x.isVisible === true
+              (x) => x.isVisible === false
             ) ? (
               <>
                 <Grid item xs={12} container >
@@ -173,10 +188,10 @@ export default function PreDuty(props) {
       ) : (
         <>
           {Object.values(selectedComponents.availableComponents).some(
-            (x) => x.isVisible === true
+            (x) => x.isVisible === false
           ) ? (
             <>
-              <Grid item xs={12} container justify="center">
+              <Grid item xs={12} container justifyContent="center">
                 <Grid item xs={5}>
                   <Button
                     color="primary"

@@ -105,7 +105,7 @@ export default function HowTo() {
 
       </div>
       <div className={classes.infoBox}>
-        <Grid container spacing={0}  direction="row" alignItems="center" justify="center">
+        <Grid container spacing={0}  direction="row" alignItems="center" justifyContent="center">
           <Grid item xs={2} md={1} container>
             <Icon
               className="fas fa-exclamation"

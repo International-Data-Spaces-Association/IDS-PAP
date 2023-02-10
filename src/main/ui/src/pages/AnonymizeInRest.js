@@ -8,31 +8,51 @@ import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
+import { useLocation } from "react-router-dom";
 
 export default function AnonymizeInRest() {
+  var initialValues = OdrlPolicy()
+  var stateLocal = useLocation().state;
+  
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [states] = useState({
-    selected: "null",
-  });
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const selected_components = {
+    page: "AnonymizeInRest",
   };
+
   const handleSubmit = (e) => {
+    const values = valueHook[0]
     Submit(
       "/policy/AnonymizeInRestPolicyForm",
       values,
-      states,
+      selected_components,
       setErrors,
       history,
       e
     );
   };
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
+  };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="The assumption is that your data is stored in a database on consumer side.
                 This policy requests a specified IDS data consumer to anonymize your stored data."
@@ -42,24 +62,32 @@ export default function AnonymizeInRest() {
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
               <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+                valueHook={valueHook}
                 errors={errors}
-                type="submit"
               />
             </Paper>
           </Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.saveBtn}
-              type="submit"
-              id="Save"
-            >
-              Save
-            </Button>
-          </Grid>
+          <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
+              </Grid>
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
         </Grid>
       </Form>
     </div>

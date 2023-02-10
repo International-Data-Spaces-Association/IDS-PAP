@@ -10,70 +10,95 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import Title from "../components/controls/Title";
+import { useLocation } from "react-router-dom";
 
 const selected_components = {
-  counter: true,
+  page: "CountAccess",
 };
 
 export default function CountAccess() {
+  var initialValues = OdrlPolicy();
+  var stateLocal = useLocation().state;
+
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
+  const valueHook = useState(initialValues);
   const classes = useStyle();
   const [errors, setErrors] = useState({});
-  const [values, setValues] = useState(OdrlPolicy);
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+
 
   const handleSubmit = (e) => {
+    const values = valueHook[0];
     Submit(
       "/policy/CountAccessPolicyForm",
       values,
-      selectedComponents,
+      selected_components,
       setErrors,
       history,
       e
     );
   };
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
+  };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy restricts the numeric count of using your data by a specified IDS data consumer."
           icon={<EqualizerIcon />}
         />
         <Grid container>
-        <Grid item xs={12}>
-              <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-          />
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
 
-          <Grid container>
-            <Title label="Count" />
-            <Input
-              name="counter"
-              value={values.counter}
-              placeholder="0"
-              onChange={handleInputChange}
-              error={errors.counter}
-            />
+              <Grid container>
+                <Title label="Count" />
+                <Input
+                  name="counter"
+                  placeholder="0"
+                  valueHook={valueHook}
+                  errors={errors}
+                />
+              </Grid>
+            </Paper>
           </Grid>
-          </Paper>
-            </Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.saveBtn}
-              type="submit"
-              id="Save"
-            >
-              Save
-            </Button>
-          </Grid>
+          <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
+              </Grid>
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
+
         </Grid>
       </Form>
     </div>

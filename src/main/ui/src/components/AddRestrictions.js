@@ -1,10 +1,13 @@
+/**
+ * @file This file contains the add restrictions components
+ * @author Tom Kollmer 
+ */
 import React, { useState } from "react";
 import {
   Grid,
   MenuItem,
   Menu,
   Button,
-  Paper,
   Typography,
 } from "@material-ui/core";
 import Input from "../components/controls/Input";
@@ -19,17 +22,25 @@ import {
 import Date from "../components/controls/Date";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
-import MultiselectInputField from "../components/controls/MultiselectInputField";
+import MultiSelectInputField from "../components/controls/MultiselectInputField";
 import MenuItems from "../components/controls/MenuItems";
-import AddIcon from "@material-ui/icons/Add";
 
+/**
+ * Components for the add restrictions component
+ * @component
+ * @param {object} selectedComponents contains all selected components
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {func} removeComponent is called to remove components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {object} classes contains the css definitions
+ * @returns component
+ */
 export default function AddRestrictions(props) {
   const {
     selectedComponents,
-    values,
-    setValues,
+    valueHook,
     errors,
-    handleInputChange,
     removeComponent,
     removeEnteredData,
     classes,
@@ -42,8 +53,8 @@ export default function AddRestrictions(props) {
   const addAll = () => {
     const dict = selectedComponents.availableComponents;
     dict.forEach(function (item) {
-      if (item.isVisible) {
-        item.isVisible = false;
+      if (!item.isVisible) {
+        item.isVisible = true;
         selectedComponents.order.push(item.id);
       }
     });
@@ -54,13 +65,11 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"location"}>
             <Title label="Restrict Location" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="location"
-              values={values}
-              setValues={setValues}
+              valueHook={valueHook}
               placeholder="e.g. https://ontologi.es/place/DE"
-              onChange={handleInputChange}
-              error={errors}
+              errors={errors}
             />
             <Remove
               onClick={() => {
@@ -74,13 +83,11 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"application"}>
             <Title label="Restrict Application" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="application"
-              values={values}
-              setValues={setValues}
-              placeholder="e.g. http://example.com/ids/application/smart-app"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              placeholder="e.g. http://example.com/ids/application/smart-app"             
+              errors={errors}
             />
             <Remove
               onClick={() => {
@@ -94,13 +101,11 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"connector"}>
             <Title label="Restrict Connector" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="connector"
-              values={values}
-              setValues={setValues}
-              placeholder="e.g. http://example.com/ids/connector/connector1"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              placeholder="e.g. http://example.com/ids/connector/connector1"             
+              errors={errors}
             />
             {}
             <Remove
@@ -115,13 +120,11 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"securityLevel"}>
             <Title label="Restrict Security Level" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="securityLevel"
-              values={values}
-              setValues={setValues}
-              placeholder=""
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              placeholder=""             
+              errors={errors}
               inputType={"itempicker"}
               itemList={security_level_list}
             />
@@ -138,13 +141,11 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"state"}>
             <Title label="Restrict State" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="state"
-              values={values}
-              setValues={setValues}
-              placeholder=""
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              placeholder=""             
+              errors={errors}
               inputType={"itempicker"}
               itemList={state_list}
             />
@@ -161,13 +162,11 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"role"}>
             <Title label="Restrict User Role" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="role"
-              values={values}
-              setValues={setValues}
-              placeholder=""
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              placeholder=""             
+              errors={errors}
               inputType={"itempicker"}
               itemList={role_list}
             />
@@ -188,13 +187,11 @@ export default function AddRestrictions(props) {
               label="Restrict Purpose"
               subtitle="Any certified application in the market place uses the data for a specified purpose. \n You can restrict the usage of your data to specific applications by choosing your intended purpose from the list below*:"
             />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="purpose"
-              values={values}
-              setValues={setValues}
-              placeholder=""
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              placeholder=""            
+              errors={errors}
               inputType={"itempicker"}
               itemList={purpose_list}
             />
@@ -210,13 +207,11 @@ export default function AddRestrictions(props) {
         return () => (
           <Grid container key={"event"}>
             <Title label="Restrict Event" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="event"
-              values={values}
-              setValues={setValues}
-              placeholder="e.g. http://example.com/ids/event/exhibition"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              placeholder="e.g. http://example.com/ids/event/exhibition"            
+              errors={errors}
             />
             <Remove
               onClick={() => {
@@ -232,20 +227,18 @@ export default function AddRestrictions(props) {
             <Title label="Restrict Time Interval" />
             <Grid container xs={11} spacing={2}>
               <Date
-                name="restrictTimeIntervalStart"
+                name="restrictStartTimeInterval"
                 label="Start Time*"
-                value={values.restrictTimeIntervalStart}
-                onChange={handleInputChange}
-                error={errors.restrictTimeIntervalStart}
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={4}
               />
               <Date
-                name="restrictTimeIntervalEnd"
+                name="restrictEndTimeInterval"
                 label="End Time*"
-                value={values.restrictTimeIntervalEnd}
-                onChange={handleInputChange}
-                error={errors.restrictTimeIntervalEnd}
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={4}
               />
@@ -253,8 +246,8 @@ export default function AddRestrictions(props) {
             <Remove
               onClick={() => {
                 removeEnteredData([
-                  "restrictTimeIntervalEnd",
-                  "restrictTimeIntervalStart",
+                  "restrictEndTimeInterval",
+                  "restrictStartTimeInterval",
                 ]);
                 removeComponent("restrictions", "interval");
               }}
@@ -269,10 +262,9 @@ export default function AddRestrictions(props) {
               <Input
                 name="price"
                 label="Payment (Euro)*"
-                value={values.price}
                 placeholder="e.g. 10"
-                onChange={handleInputChange}
-                error={errors.price}
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={3}
               />
@@ -281,8 +273,8 @@ export default function AddRestrictions(props) {
                 label="For Sale or Rent*"
                 defaultValue=""
                 ItemList={sale_rent_list}
-                onChange={handleInputChange}
-                error={errors.payment}
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={3}
               />
@@ -303,10 +295,9 @@ export default function AddRestrictions(props) {
             <Grid container xs={11} spacing={2}>
               <Input
                 name="counter"
-                value={values.counter}
                 placeholder="e.g. 10"
-                onChange={handleInputChange}
-                error={errors.counter}
+                valueHook={valueHook}
+                errors={errors}
                 xs={3}
                 sm={3}
                 md={3}
@@ -321,6 +312,29 @@ export default function AddRestrictions(props) {
           </Grid>
         );
 
+        case "startTime":
+          return () => (
+            <Grid container key={"startTime"}>
+              <Title label="Restrict Start Time" />
+              <Grid container xs={11} spacing={2}>
+                <Date
+                  name="restrictStartTime"
+                  label="Start Time"
+                  valueHook={valueHook}
+                  errors={errors}
+                  sm={11}
+                  md={5}
+                />
+              </Grid>
+              <Remove
+                onClick={() => {
+                  removeEnteredData(["restrictStartTime"]);
+                  removeComponent("restrictions", "startTime");
+                }}
+              />
+            </Grid>
+          );
+
       case "endTime":
         return () => (
           <Grid container key={"endTime"}>
@@ -329,9 +343,8 @@ export default function AddRestrictions(props) {
               <Date
                 name="restrictEndTime"
                 label="End Time"
-                value={values.restrictEndTime}
-                onChange={handleInputChange}
-                error={errors.restrictEndTime}
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={5}
               />
@@ -353,20 +366,18 @@ export default function AddRestrictions(props) {
               <Input
                 name="durationYear"
                 label="Year (Optional)"
-                value={values.durationYear}
-                placeholder="e.g. 2021"
-                onChange={handleInputChange}
-                error={errors.durationYear}
+                placeholder="e.g. 1"
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={3}
               />
               <Input
                 name="durationMonth"
                 label="Month (Optional)"
-                value={values.durationMonth}
-                placeholder="e.g. 01"
-                onChange={handleInputChange}
-                error={errors.durationMonth}
+                placeholder="e.g. 1"
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={3}
               />
@@ -374,31 +385,20 @@ export default function AddRestrictions(props) {
               <Input
                 name="durationDay"
                 label="Day (Optional)"
-                value={values.durationDay}
-                placeholder="e.g. 01"
-                onChange={handleInputChange}
-                error={errors.durationDay}
+                placeholder="e.g. 1"
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={3}
               />
               <Input
                 name="durationHour"
                 label="Hour (Optional)"
-                value={values.durationHour}
                 placeholder="e.g. 12"
-                onChange={handleInputChange}
-                error={errors.durationHour}
+                valueHook={valueHook}
+                errors={errors}
                 sm={11}
                 md={3}
-              />
-              <Date
-                name="specifyBeginTime"
-                label="Begin Time (Optional)"
-                value={values.specifyBeginTime}
-                onChange={handleInputChange}
-                error={errors.specifyBeginTime}
-                sm={11}
-                md={5}
               />
             </Grid>
             <Remove
@@ -406,7 +406,6 @@ export default function AddRestrictions(props) {
                 removeEnteredData([
                   "durationYear",
                   "durationMonth",
-                  "specifyBeginTime",
                   "durationDay",
                   "durationHour",
                 ]);
@@ -435,7 +434,7 @@ export default function AddRestrictions(props) {
           {components.map((c) => c())}
 
           {selectedComponents.order.length <= 12 ? (
-            <Grid item xs={12} container justify="center">
+            <Grid item xs={12} container justifyContent="center">
               <Grid item xs={5}>
                 <Button
                   color="primary"
@@ -445,7 +444,7 @@ export default function AddRestrictions(props) {
                   className={classes.addBtn}
                   id="Add Component"
                 >
-                  Restriction
+                  Add Restriction
                 </Button>
               </Grid>
               <Menu
@@ -474,7 +473,7 @@ export default function AddRestrictions(props) {
           ) : null}
         </>
       ) : (
-        <Grid item xs={12} container justify="center">
+        <Grid item xs={12} container justifyContent="center">
           <Grid item xs={5}>
             <Button
               color="primary"

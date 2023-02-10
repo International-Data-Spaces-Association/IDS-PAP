@@ -1,6 +1,6 @@
 package de.fraunhofer.iese.ids.odrl.pap.util;
 
-import de.fraunhofer.iese.ids.odrl.mydata.translator.util.MydataTranslator;
+import de.fraunhofer.iese.ids.odrl.mydata.translator.service.MydataTranslator;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.interfaces.ITranslator;
 

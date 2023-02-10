@@ -1,0 +1,54 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [{
+        "ids:postDuty": [{
+            "ids:action": [{
+                "ids:pxpEndpoint": {
+                    "@type": "ids:PXP",
+                    "ids:interfaceDescription": {
+                        "@value": "https://example.com/ids/PXP/interfaceDescription/log",
+                        "@type": "anyURI"
+                    },
+                    "ids:endpointURI": {
+                        "@value": "https://example.com/ids/PXPendpoint/log",
+                        "@type": "anyURI"
+                    }
+                },
+                "ids:refinement": [
+                    {
+                        "@type": "ids:Constraint",
+                        "ids:comment": "  ",
+                        "ids:rightOperand": [{
+                            "@value": "idsc:ON_DENY",
+                            "@type": "xsd:string"
+                        }],
+                        "ids:leftOperand": {"@id": "idsc:LOG_LEVEL"},
+                        "ids:operator": {"@id": "idsc:DEFINES_AS"}
+                    },
+                    {
+                        "@type": "ids:Constraint",
+                        "ids:comment": "  ",
+                        "ids:rightOperand": [{
+                            "@value": "http://SystemDevice",
+                            "@type": "xsd:anyURI"
+                        }],
+                        "ids:leftOperand": {"@id": "idsc:SYSTEM_DEVICE"},
+                        "ids:operator": {"@id": "idsc:DEFINES_AS"}
+                    }
+                ],
+                "rdf:value": {"@id": "idsc:LOG"}
+            }],
+            "@type": "ids:Duty"
+        }],
+        "ids:action": [{"@id": "idsc:USE"}],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@id": "https://w3id.org/idsa/autogen/contract/log-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}

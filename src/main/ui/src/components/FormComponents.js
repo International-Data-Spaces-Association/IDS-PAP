@@ -1,3 +1,8 @@
+/**
+ * @file This contains the basic form component for the complex policy page and provide access page
+ * @author Tom Kollmer 
+ */
+
 import React from "react";
 import { Grid } from "@material-ui/core";
 import Input from "../components/controls/Input";
@@ -12,37 +17,42 @@ import {
 import Date from "../components/controls/Date";
 import Remove from "../components/controls/Remove";
 import Title from "../components/controls/Title";
-import MultiselectInputField from "../components/controls/MultiselectInputField";
+import MultiSelectInputField from "./controls/MultiselectInputField";
 
+/**
+ * The basic form component used by create complex policy page and provide access page
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {object} selectedComponents contains all selected components
+ * @param {func} removeComponent is called to remove components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @returns component
+ */
 export default function FormComponents(props) {
   const {
-    selectedComponents,
-    values,
-    setValues,
+    valueHook,
     errors,
-    handleInputChange,
+    selectedComponents,
     removeComponent,
-    removeEnteredData,
+    removeEnteredData
   } = props;
-
+  
   const components = selectedComponents.order.map((c) => {
     switch (c) {
       case "location":
         return () => (
           <Grid container key={"location"}>
             <Title label="Restrict Location" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="location"
-              values={values}
-              setValues={setValues}
               placeholder="e.g. https://ontologi.es/place/DE"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
                 removeComponent("location");
-                removeEnteredData("location");
+                removeEnteredData(["location_input", "location_op"]);
               }}
             />
           </Grid>
@@ -51,18 +61,16 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"application"}>
             <Title label="Restrict Application" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="application"
-              values={values}
-              setValues={setValues}
               placeholder="e.g. http://example.com/ids/application/smart-app"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
                 removeComponent("application");
-                removeEnteredData("application");
+                removeEnteredData(["application_input", "application_op"]);
               }}
             />
           </Grid>
@@ -71,19 +79,17 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"connector"}>
             <Title label="Restrict Connector" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="connector"
-              values={values}
-              setValues={setValues}
               placeholder="e.g. http://example.com/ids/connector/connector1"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              errors={errors}
             />
             {}
             <Remove
               onClick={() => {
                 removeComponent("connector");
-                removeEnteredData("connector");
+                removeEnteredData(["connector_input", "connector_op"]);
               }}
             />
           </Grid>
@@ -92,21 +98,19 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"securityLevel"}>
             <Title label="Restrict Security Level" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="securityLevel"
-              values={values}
-              setValues={setValues}
               placeholder=""
-              onChange={handleInputChange}
-              error={errors}
               inputType={"itempicker"}
               itemList={security_level_list}
+              valueHook={valueHook}
+              errors={errors}
             />
             {}
             <Remove
               onClick={() => {
                 removeComponent("securityLevel");
-                removeEnteredData("securityLevel");
+                removeEnteredData(["securityLevel_input", "securityLevel_op"]);
               }}
             />
           </Grid>
@@ -115,21 +119,19 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"state"}>
             <Title label="Restrict State" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="state"
-              values={values}
-              setValues={setValues}
               placeholder=""
-              onChange={handleInputChange}
-              error={errors}
               inputType={"itempicker"}
               itemList={state_list}
+              valueHook={valueHook}
+              errors={errors}
             />
             {}
             <Remove
               onClick={() => {
                 removeComponent("state");
-                removeEnteredData("state");
+                removeEnteredData(["state_input", "state_op"]);
               }}
             />
           </Grid>
@@ -138,22 +140,20 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"role"}>
             <Title label="Restrict User Role" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="role"
-              values={values}
-              setValues={setValues}
               placeholder=""
-              onChange={handleInputChange}
-              error={errors}
               inputType={"itempicker"}
               itemList={role_list}
+              valueHook={valueHook}
+              errors={errors}
             />
 
             {}
             <Remove
               onClick={() => {
                 removeComponent("role");
-                removeEnteredData("role");
+                removeEnteredData(["role_input", "role_op"]);
               }}
             />
           </Grid>
@@ -165,20 +165,18 @@ export default function FormComponents(props) {
               label="Restrict Purpose"
               subtitle="Any certified application in the market place uses the data for a specified purpose. \n You can restrict the usage of your data to specific applications by choosing your intended purpose from the list below*:"
             />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="purpose"
-              values={values}
-              setValues={setValues}
               placeholder=""
-              onChange={handleInputChange}
-              error={errors}
               inputType={"itempicker"}
               itemList={purpose_list}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
                 removeComponent("purpose");
-                removeEnteredData("purpose");
+                removeEnteredData(["purpose_input", "purpose_op"]);
               }}
             />
           </Grid>
@@ -187,18 +185,16 @@ export default function FormComponents(props) {
         return () => (
           <Grid container key={"event"}>
             <Title label="Restrict Event" />
-            <MultiselectInputField
+            <MultiSelectInputField
               name="event"
-              values={values}
-              setValues={setValues}
               placeholder="e.g. http://example.com/ids/event/exhibition"
-              onChange={handleInputChange}
-              error={errors}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
                 removeComponent("event");
-                removeEnteredData("event");
+                removeEnteredData(["event_input", "event_op"]);
               }}
             />
           </Grid>
@@ -208,31 +204,29 @@ export default function FormComponents(props) {
           <Grid container key={"interval"}>
             <Title label="Restrict Time Interval" />
             <Date
-              name="restrictTimeIntervalStart"
+              name="restrictStartTime"
               label="Start Time*"
-              value={values.restrictTimeIntervalStart}
-              onChange={handleInputChange}
-              error={errors.restrictTimeIntervalStart}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
             <Grid item sm={1} />
             <Date
-              name="restrictTimeIntervalEnd"
+              name="restrictEndTime"
               label="End Time*"
-              value={values.restrictTimeIntervalEnd}
-              onChange={handleInputChange}
-              error={errors.restrictTimeIntervalEnd}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
             <Grid item md={4} />
             <Remove
               onClick={() => {
-                removeEnteredData(
-                  "restrictTimeIntervalEnd",
-                  "restrictTimeIntervalStart"
-                );
+                removeEnteredData([
+                  "restrictEndTime",
+                  "restrictStartTime"
+                ]);
                 removeComponent("interval");
               }}
             />
@@ -245,10 +239,9 @@ export default function FormComponents(props) {
             <Input
               name="price"
               label="Payment (Euro)*"
-              value={values.price}
               placeholder="e.g. 10"
-              onChange={handleInputChange}
-              error={errors.price}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -258,15 +251,15 @@ export default function FormComponents(props) {
               label="For Sale or Rent*"
               defaultValue=""
               ItemList={sale_rent_list}
-              onChange={handleInputChange}
-              error={errors.payment}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
             <Grid item md={4} />
             <Remove
               onClick={() => {
-                removeEnteredData("price", "payment");
+                removeEnteredData(["price", "payment"]);
                 removeComponent("payment");
               }}
             />
@@ -279,15 +272,14 @@ export default function FormComponents(props) {
             <Title label="Restrict Number of Usage" />
             <Input
               name="counter"
-              value={values.counter}
               placeholder="e.g. 10"
-              onChange={handleInputChange}
-              error={errors.counter}
+              valueHook={valueHook}
+              errors={errors}
             />
             <Remove
               onClick={() => {
                 removeComponent("counter");
-                removeEnteredData("counter");
+                removeEnteredData(["counter"]);
               }}
             />
           </Grid>
@@ -301,16 +293,15 @@ export default function FormComponents(props) {
             <Date
               name="restrictEndTime"
               label="End Time"
-              value={values.restrictEndTime}
-              onChange={handleInputChange}
-              error={errors.restrictEndTime}
+              valueHook={valueHook}
+              errors={errors.restrictEndTime}
               sm={11}
               md={3}
             />
             <Grid item md={8} />
             <Remove
               onClick={() => {
-                removeEnteredData("restrictEndTime");
+                removeEnteredData(["restrictEndTime"]);
                 removeComponent("endTime");
               }}
             />
@@ -325,10 +316,9 @@ export default function FormComponents(props) {
             <Input
               name="durationYear"
               label="Year (Optional)"
-              value={values.durationYear}
               placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationYear}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -336,20 +326,9 @@ export default function FormComponents(props) {
             <Input
               name="durationMonth"
               label="Month (Optional)"
-              value={values.durationMonth}
               placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationMonth}
-              sm={11}
-              md={3}
-            />
-            <Grid item sm={1} />
-            <Date
-              name="specifyBeginTime"
-              label="Begin Time (Optional)"
-              value={values.specifyBeginTime}
-              onChange={handleInputChange}
-              error={errors.specifyBeginTime}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -357,10 +336,9 @@ export default function FormComponents(props) {
             <Input
               name="durationDay"
               label="Day (Optional)"
-              value={values.durationDay}
               placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationDay}
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
@@ -368,23 +346,30 @@ export default function FormComponents(props) {
             <Input
               name="durationHour"
               label="Hour (Optional)"
-              value={values.durationHour}
               placeholder="e.g. 3"
-              onChange={handleInputChange}
-              error={errors.durationHour}
+              valueHook={valueHook}
+              errors={errors}
+              sm={11}
+              md={3}
+            />
+            <Grid item sm={1} />
+            <Date
+              name="specifyBeginTime"
+              label="Begin Time (Optional)"
+              valueHook={valueHook}
+              errors={errors}
               sm={11}
               md={3}
             />
             <Grid item md={4} />
             <Remove
               onClick={() => {
-                removeEnteredData(
+                removeEnteredData([
                   "durationYear",
                   "durationMonth",
-                  "specifyBeginTime",
                   "durationDay",
                   "durationHour"
-                );
+                ]);
                 removeComponent("duration");
               }}
             />

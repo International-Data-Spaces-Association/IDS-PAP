@@ -1,0 +1,57 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [{
+        "ids:action": [{"@id": "idsc:USE"}],
+        "ids:constraint": [
+            {
+                "@type": "ids:Constraint",
+                "ids:pipEndpoint": {
+                    "@type": "ids:PIP",
+                    "ids:interfaceDescription": {
+                        "@value": "https://example.com/ids/PIP/interfaceDescription/date_time",
+                        "@type": "anyURI"
+                    },
+                    "ids:endpointURI": {
+                        "@value": "https://example.com/ids/PXPendpoint/date_time",
+                        "@type": "anyURI"
+                    }
+                },
+                "ids:rightOperand": [{
+                    "@value": "2052-01-05T20:47:00Z",
+                    "@type": "xsd:datetimeStamp"
+                }],
+                "ids:leftOperand": {"@id": "idsc:DATE_TIME"},
+                "ids:operator": {"@id": "idsc:BEFORE"}
+            },
+            {
+                "@type": "ids:Constraint",
+                "ids:pipEndpoint": {
+                    "@type": "ids:PIP",
+                    "ids:interfaceDescription": {
+                        "@value": "https://example.com/ids/PIP/interfaceDescription/date_time",
+                        "@type": "anyURI"
+                    },
+                    "ids:endpointURI": {
+                        "@value": "https://example.com/ids/PXPendpoint/date_time",
+                        "@type": "anyURI"
+                    }
+                },
+                "ids:rightOperand": [{
+                    "@value": "2051-12-16T20:47:00Z",
+                    "@type": "xsd:datetimeStamp"
+                }],
+                "ids:leftOperand": {"@id": "idsc:DATE_TIME"},
+                "ids:operator": {"@id": "idsc:AFTER"}
+            }
+        ],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@id": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}

@@ -1,34 +1,47 @@
+/**
+ * @file This contains the log data component 
+ * @author Tom Kollmer 
+ */
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { log_level_list } from "./InitialFieldListValues";
 import Input from "./Input";
 import ItemPicker from "./ItemPicker";
-import Title from "./Title";
 
+/**
+ * Components for the delete data pages
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {number} xs size of the component at small screens
+ * @param {number} sm size of the component at medium screens
+ * @param {number} md size of the component at large screens
+ * @param {string} prefix that should be added to the name
+ * @returns component
+ */
 export default function LogData(props) {
-  const {handleInputChange, values, errors, xs=12, sm=12, md=12, type=""} = props;
+  const {valueHook, errors, xs=12, sm=12, md=12, prefix=""} = props;
   return (
     <>
       <Grid item xs={xs} sm={sm} md={md}>
       <Grid container>
             <ItemPicker
               label="Log Level"
-              name= {type + "logLevel"}
+              name= {prefix + "logLevel"}
               defaultValue=""
               ItemList={log_level_list}
-              onChange={handleInputChange}
-              error={errors[type + "logLevel"]}
+              valueHook={valueHook}
+              errors={errors}
             />
           </Grid>
 
           <Grid container>
             <Input
              label="System Device"
-              name={type + "systemDevice"}
-              value={values[type + "systemDevice"]}
+              name={prefix + "systemDevice"}
               placeholder="e.g. http://example.com/ids/system/ESN-database"
-              onChange={handleInputChange}
-              error={errors[type + "systemDevice"]}
+              valueHook={valueHook}
+              errors={errors}
             />
           </Grid>
       </Grid>

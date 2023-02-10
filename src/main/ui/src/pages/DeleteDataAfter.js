@@ -9,43 +9,50 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteData from "../components/controls/DeleteData";
+import { useLocation } from "react-router-dom";
+
 export default function DeleteDataAfter() {
   const selected_components = {
-    duration: false,
-    timeDate: false,
+    postduties_duration: false,
+    postduties_timeDate: false,
   };
+
+  var initialValues = OdrlPolicy()
+  var stateLocal = useLocation().state;
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+    if (initialValues.postduties_durationYear !== "") {
+      selected_components.postduties_duration = true
+    }
+    if (initialValues.postduties_timeAndDate !== "") {
+      selected_components.postduties_timeDate = true
+    }
+  }
   
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] = useState(selected_components);
 
-  const resetStates = () => {
-    for (var key in selectedComponents) {
-      if (selectedComponents.hasOwnProperty(key)) {
-        selectedComponents[key] = false;
-      }
-    }
-    setValues({
-      ...values,
-      timeAndDate: "",
-      durationHour: "",
-      durationDay: "",
-      durationMonth: "",
-      durationYear: "",
-    });
-  };
-
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
   const handleSubmit = (e) => {
+    const values = valueHook[0]
+    var state = {page: "DeleteDataAfter",
+      postduties_duration: false,
+      postduties_timeDate: false,};
+
+    if (selectedComponents.postduties_duration) {
+      state.postduties_duration = true;
+    }
+    if (selectedComponents.postduties_timeDate) {
+      state.postduties_timeDate = true;
+    }
+    console.log(values)
     if (Object.values(selectedComponents).some((x) => x === true)) {
       Submit(
         "/policy/deletePolicyAfterUsage",
         values,
-        selectedComponents,
+        state,
         setErrors,
         history,
         e
@@ -54,7 +61,7 @@ export default function DeleteDataAfter() {
       Submit(
         "/policy/deletePolicyAfterUsagePeriod",
         values,
-        selectedComponents,
+        state,
         setErrors,
         history,
         e
@@ -64,16 +71,29 @@ export default function DeleteDataAfter() {
   const removeEnteredData = (ids) => {
     ids.forEach(function (id) {
       if (OdrlPolicy[id] instanceof Array) {
-        values[id] = [""];
+        valueHook[0][id] = [""];
         OdrlPolicy[id] = [""];
       } else {
-        values[id] = "";
+        valueHook[0][id] = "";
       }
     });
   };
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
+  };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         {Object.values(selectedComponents).every((x) => x === false) ? (
           <PageHeader
             title="The assumption is that your data is stored in a database on consumer side."
@@ -97,37 +117,42 @@ export default function DeleteDataAfter() {
         <Grid container>
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-              <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+            <IdentifyPolicy
+                valueHook={valueHook}
                 errors={errors}
-                resetStates={resetStates}
               />
 
               <DeleteData
-                handleInputChange={handleInputChange}
+                valueHook={valueHook}
                 errors={errors}
-                values={values}
                 selectedComponents={selectedComponents}
                 removeEnteredData={removeEnteredData}
                 setSelectedComponents={setSelectedComponents}
-                type = "postduties_"
+                prefix = "postduties_"
               />
             </Paper>
           </Grid>
-          <Grid item xs={12}>
-            <Grid item xs={2}>
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.saveBtn}
-                type="submit"
-                id="Save"
-              >
-                Save
-              </Button>
-            </Grid>
-          </Grid>
+          <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
+              </Grid>
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
         </Grid>
       </Form>
     </div>

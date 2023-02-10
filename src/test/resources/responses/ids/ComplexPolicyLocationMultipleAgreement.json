@@ -1,0 +1,41 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [{
+        "ids:action": [{"@id": "idsc:USE"}],
+        "ids:constraint": [{
+            "@type": "ids:Constraint",
+            "ids:pipEndpoint": {
+                "@type": "ids:PIP",
+                "ids:interfaceDescription": {
+                    "@value": "https://example.com/ids/PIP/interfaceDescription/absolute_spatial_position",
+                    "@type": "anyURI"
+                },
+                "ids:endpointURI": {
+                    "@value": "https://example.com/ids/PXPendpoint/absolute_spatial_position",
+                    "@type": "anyURI"
+                }
+            },
+            "ids:rightOperand": [
+                {
+                    "@value": "http://location1",
+                    "@type": "xsd:anyURI"
+                },
+                {
+                    "@value": "http://location2",
+                    "@type": "xsd:anyURI"
+                }
+            ],
+            "ids:leftOperand": {"@id": "idsc:ABSOLUTE_SPATIAL_POSITION"},
+            "ids:operator": {"@id": "idsc:IN"}
+        }],
+        "ids:target": {"@id": "http://target/"}
+    }],
+    "@id": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}

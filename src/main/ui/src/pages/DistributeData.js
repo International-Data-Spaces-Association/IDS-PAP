@@ -12,24 +12,44 @@ import Submit from "../components/backend/Submit";
 import ItemPicker from "../components/controls/ItemPicker";
 import Title from "../components/controls/Title";
 import { artifact_state_list } from "../components/controls/InitialFieldListValues";
+import { useLocation } from "react-router-dom";
 
-const selected_components = {};
-
+const selected_components = {
+  page: "DistributeData",
+};
 export default function DistributeData() {
+  var initialValues = OdrlPolicy();
+  var stateLocal = useLocation().state;
+
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
   };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
+
   const handleSubmit = (e) => {
+    const values = valueHook[0];
     Submit(
       "/policy/DistributePolicyForm",
       values,
-      selectedComponents,
+      selected_components,
       setErrors,
       history,
       e
@@ -37,7 +57,7 @@ export default function DistributeData() {
   };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy allows a specified IDS data consumer to distribute your data only if the data is encoded (compressed or encrypted)."
           icon={<ShareIcon />}
@@ -46,11 +66,7 @@ export default function DistributeData() {
         <Grid container>
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-              <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
-                errors={errors}
-              />
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
 
               <Grid container>
                 <Title label="Artifact State" />
@@ -58,8 +74,8 @@ export default function DistributeData() {
                   name="artifactState"
                   defaultValue=""
                   ItemList={artifact_state_list}
-                  onChange={handleInputChange}
-                  error={errors.artifactState}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
 
@@ -67,25 +83,34 @@ export default function DistributeData() {
                 <Title label="Policy to be sent to the third party" />
                 <Input
                   name="policy"
-                  value={values.policy}
                   placeholder="e.g. http://example.com/policy/third-party-policy"
-                  onChange={handleInputChange}
-                  error={errors.policy}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
             </Paper>
           </Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.saveBtn}
-              type="submit"
-              id="Save"
-            >
-              Save
-            </Button>
-          </Grid>
+                        <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
+              </Grid>
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
         </Grid>
       </Form>
     </div>

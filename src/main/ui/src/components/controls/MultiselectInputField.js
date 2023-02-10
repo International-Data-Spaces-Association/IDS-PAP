@@ -1,3 +1,7 @@
+/**
+ * @file This contains the multi select input field component
+ * @author Tom Kollmer 
+ */
 import React from "react";
 import { IconButton, Grid, Button } from "@material-ui/core";
 import ItemPicker from "./ItemPicker";
@@ -7,24 +11,37 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import { useStyle } from "../Style";
 
-export default function MultiselectInputField(props) {
+/**
+ * Multi select input field component
+ * @component
+ * @param {string} name of the input field
+ * @param {string} placeholder that should be used
+ * @param {string} inputType that should be used "input" or "itempicker"
+ * @param {object} itemList that should be used
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {number} xs size of the component at small screens
+ * @param {number} sm size of the component at medium screens
+ * @param {number} md size of the component at large screens
+ * @returns component
+ */
+export default function MultiSelectInputField(props) {
   const {
     name,
-    label,
     placeholder,
-    values,
-    setValues,
     inputType = "input",
     itemList,
-    error = null,
+    valueHook,
+    errors = null,
     xs = 11,
     sm = 11,
     md = 11,
   } = props;
+  const [values, setValues] = valueHook;
+
   const classes = useStyle();
   const numberPattern = /\d+/g;
-
-  const handleInputChange = (e) => {
+  const handleInputChange = (e, valueHook) => {
     const e_name = e.target.name;
     const id = e_name.match(numberPattern);
     var items = values;
@@ -45,12 +62,13 @@ export default function MultiselectInputField(props) {
     const items = values;
     if (index !== -1) {
       items[name + "_input"].splice(index, 1);
+      items[name + "_op"] = ""
       setValues({ ...items });
     }
     setValues({ ...items });
   };
 
-  if (values[name + "_input"].length === 1) {
+  if (valueHook[0][name + "_input"].length === 1) {
     return (
       <Grid item container xs={xs} sm={sm} md={md} spacing={2}>
         {inputType === "input" && (
@@ -58,8 +76,10 @@ export default function MultiselectInputField(props) {
             name={name + "_input_0"}
             label={""}
             placeholder={placeholder}
-            value={values[name + "_input"][0]}
-            onChange={handleInputChange}
+            valueHook={valueHook}
+            overrideOnChange={handleInputChange}
+            overrideValue={values[name + "_input"][0]}
+            errors = {errors}
             xs={11}
             sm={11}
             md={11}
@@ -73,14 +93,17 @@ export default function MultiselectInputField(props) {
             md={11}
             label={""}
             ItemList={itemList}
-            value={values[name + "_input"][0]}
-            onChange={handleInputChange}
+            overrideOnChange={handleInputChange}
+            overrideValue={values[name + "_input"][0]}
+            valueHook={[values[name+"_input"], setValues]}
+            errors = {errors}
           />
         )}
 
-        <Grid item container xs={1} justify="center" spacing={1}>
+        <Grid item container xs={1} justifyContent="center" spacing={1}>
           <IconButton
             aria-label="add"
+            id={name+"_add"}
             color="primary"
             className={classes.formBtn}
             onClick={() => {
@@ -92,10 +115,10 @@ export default function MultiselectInputField(props) {
         </Grid>
       </Grid>
     );
-  } else if (values[name + "_input"].length > 1) {
+  } else if (valueHook[0][name + "_input"].length > 1) {
     const components = (
       <Grid item xs={xs} sm={sm} md={md}>
-        {values[name + "_input"].map((data, id) => {
+        {valueHook[0][name + "_input"].map((data, id) => {
           return (
             <Grid item container xs={12} spacing={1}>
               {id === 0 && (
@@ -105,8 +128,10 @@ export default function MultiselectInputField(props) {
                       name={name + "_input_" + id}
                       label={""}
                       placeholder={placeholder}
-                      value={data}
-                      onChange={handleInputChange}
+                      valueHook={valueHook}
+                      errors = {errors}
+                      overrideOnChange={handleInputChange}
+                      overrideValue={values[name + "_input"][0]}
                       xs={9}
                       sm={9}
                       md={9}
@@ -115,24 +140,27 @@ export default function MultiselectInputField(props) {
                   {inputType === "itempicker" && (
                     <ItemPicker
                       name={name + "_input_" + id}
+                      label={""}
+                      ItemList={itemList}
+                      valueHook={valueHook}
+                      errors = {errors}
+                      overrideOnChange={handleInputChange}
+                      overrideValue={values[name + "_input"][0]}
                       xs={9}
                       sm={9}
                       md={9}
-                      label={""}
-                      ItemList={itemList}
-                      value={values[name + "_input"][0]}
-                      onChange={handleInputChange}
                     />
                   )}
                   <ItemPicker
-                    name={name + "_op_"}
+                    name={name + "_op"}
+                    label={"Operator"}
+                    ItemList={operator_list}
+                    valueHook={valueHook}
+                    errors = {errors}
+                    overrideOnChange={handleInputChange}
                     xs={2}
                     sm={2}
                     md={2}
-                    label={"Operator"}
-                    ItemList={operator_list}
-                    value={values[name + "_op"]}
-                    onChange={handleInputChange}
                   />
                 </>
               )}
@@ -143,8 +171,10 @@ export default function MultiselectInputField(props) {
                       name={name + "_input_" + id}
                       label={""}
                       placeholder={placeholder}
-                      value={data}
-                      onChange={handleInputChange}
+                      valueHook={valueHook}
+                      errors = {errors}
+                      overrideOnChange={handleInputChange}
+                      overrideValue={data}
                       xs={11}
                       sm={11}
                       md={11}
@@ -153,21 +183,24 @@ export default function MultiselectInputField(props) {
                   {inputType === "itempicker" && (
                     <ItemPicker
                       name={name+ "_input_" + id}
+                      label={""}
+                      ItemList={itemList}
+                      valueHook={valueHook}
+                      errors = {errors}
+                      overrideOnChange={handleInputChange}
+                      overrideValue={data}
                       xs={11}
                       sm={11}
                       md={11}
-                      label={""}
-                      ItemList={itemList}
-                      value={data}
-                      onChange={handleInputChange}
                     />
                   )}
                 </>
               )}
-              <Grid item container xs={1} justify="center" spacing={1}>
+              <Grid item container xs={1} justifyContent="center" spacing={1}>
                 <IconButton
                   aria-label="remove"
                   color="secondary"
+                  id={name+"_add"}
                   className={"btnAdd_" + id}
                   onClick={() => {
                     handleRemoveItem(id);
@@ -176,15 +209,15 @@ export default function MultiselectInputField(props) {
                   <RemoveIcon />
                 </IconButton>
               </Grid>
-              {id + 1 === values[name + "_input"].length && (
-                <Grid item container xs={12} justify="center" spacing={1}>
+              {id + 1 === valueHook[0][name + "_input"].length && (
+                <Grid item container xs={12} justifyContent="center" spacing={1}>
                   <Button
                     color="primary"
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     id="Add Component"
                     onClick={() => {
-                      handleAddItem(values[name + "_input"].length);
+                      handleAddItem(valueHook[0][name + "_input"].length);
                     }}
                   >
                     Add {name}

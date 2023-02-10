@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import {
   makeStyles,
-  Paper,
   ThemeProvider,
   AppBar,
   unstable_createMuiStrictModeTheme as createMuiTheme,
@@ -69,8 +68,6 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const [open, setOpen] = React.useState(window.innerWidth > 600);
   const classes = useStyles();
-  document.title = 'IDS PAP'
-
   return (
     <ThemeProvider theme={theme}>
       <Router history={history}>

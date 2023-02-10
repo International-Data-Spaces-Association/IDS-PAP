@@ -1,0 +1,28 @@
+{
+    "uid": "https://w3id.org/idsa/autogen/contract/count-access",
+    "@type": "Agreement",
+    "profile": "http://example.com/odrl:profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "duty": [{"action": "idsc:INCREMENT_COUNTER"}],
+        "constraint": [{
+            "leftOperand": "count",
+            "rightOperand": [{
+                "@value": "10",
+                "@type": "xsd:decimal"
+            }],
+            "operator": "lteq"
+        }],
+        "assignee": "http://example.com/ids/party/consumer-party",
+        "target": "http://target/"
+    }],
+    "@context": [
+        "http://www.w3.org/ns/odrl.jsonld",
+        {
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/",
+            "dc": "http://purl.org/dc/terms/"
+        }
+    ]
+}

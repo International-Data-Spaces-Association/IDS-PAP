@@ -1,31 +1,133 @@
 package de.fraunhofer.iese.ids.odrl.pap.controller;
 
-import java.net.URI;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.jsonldjava.utils.JsonUtils;
 
+import de.fraunhofer.iese.ids.odrl.pap.model.JsonOdrlPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.model.RecievedOdrlPolicy;
+//import de.fraunhofer.iese.ids.odrl.pap.model.ShortPolicy;
+import de.fraunhofer.iese.ids.odrl.pap.repository.ShortPolicy;
 import de.fraunhofer.iese.ids.odrl.pap.util.OdrlTranslator;
 import de.fraunhofer.iese.ids.odrl.pap.util.TransformPolicy;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.Action;
+import de.fraunhofer.iese.ids.odrl.pap.util.UcAppService;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.OdrlPolicy;
-import de.fraunhofer.iese.ids.odrl.policy.library.model.Rule;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.ActionType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.enums.RuleType;
 import de.fraunhofer.iese.ids.odrl.policy.library.model.tooling.IdsOdrlUtil;
+import de.fraunhofer.iese.ids.odrl.pap.repository.Policy;
+import de.fraunhofer.iese.ids.odrl.pap.services.PolicyService;
 
 @RestController()
 @CrossOrigin
 public class IDSPapRestController {
+	
+	PolicyService policyService;
+	
+	@Autowired
+    public IDSPapRestController(PolicyService policyService ) {
+        this.policyService = policyService;
+    }
+
 	String baseUid = "https://w3id.org/idsa/autogen/contract/";
-	@PostMapping("/policy/ProvideAccess")
+	
+	private void checkIfPolicyIsEditedAndDelete(RecievedOdrlPolicy rp) {
+		try {
+			Optional<Policy> policy = policyService.findPolicyById((long) rp.getId());
+			if (policy.isPresent()) {
+				policyService.deletePolicy(policy.get());
+				template(rp);
+			}
+		} catch (Exception e) {
+		}
+	}
+	
+	@DeleteMapping("/api/policies/{id}")
+	public ResponseEntity<HttpStatus> deletePolicy(@PathVariable Long id) {
+		try {
+			Optional<Policy> policy = policyService.findPolicyById(id);
+			if (policy.isPresent()) {
+				policyService.deletePolicy(policy.get());
+			}
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/api/policies/export_{id}")
+	public ResponseEntity<String> exportPolicy(@PathVariable Long id) {
+		try {
+			Optional<Policy> policy = policyService.findPolicyById(id);
+			if (policy.isPresent()) {
+				Policy realPolicy = policy.get();
+				return new ResponseEntity<>(realPolicy.getFieldValues(), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/api/policies/edit_{id}")
+	public ResponseEntity<Policy> editPolicy(@PathVariable Long id) {
+		try {
+			Optional<Policy> policy = policyService.findPolicyById(id);
+			if (policy.isPresent()) {
+				Policy realPolicy = policy.get();
+				return new ResponseEntity<>(realPolicy, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/api/policies")
+	public ResponseEntity<List<ShortPolicy>> getAllPolicies() {
+		try {
+			List<ShortPolicy> list = policyService.shortPolicyFindById();
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/policy/template")
+	public void template(@RequestBody RecievedOdrlPolicy rp) {
+		// Store the policy in the database
+		Policy policy = new Policy(rp.getName(), rp.getPolicyType(), rp.getOriginQuery(), rp.getComment(), new JSONObject(rp).toString());
+		//policy.setName(rp.getName());
+		//policy.setComment(rp.getComment());
+		//policy.setPolicyType(rp.getPolicyType());
+		//policy.setQueryOrigin(rp.getOriginQuery());
+		rp.setIsTemplate(false);
+		//policy.setFieldValues(new JSONObject(rp).toString());
+		try {
+			policyService.savePolicy(policy);
+		} catch (Exception e) {
+		}
+	}
+	
+	@PostMapping("/policy/ProvideAccessPolicyForm")
 	public String accessPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "restrict-access";
 		if (converter.addLocationCondition()) {
@@ -52,7 +154,7 @@ public class IDSPapRestController {
 		if (converter.addEventCondition()) {
 			uid = baseUid + "restrict-access-event";
 		}
-		if (converter.addRestrictTimeIntervalCondition()) {
+		if (converter.addRestrictStartTimeCondition()) {
 			uid = baseUid + "restrict-access-interval";
 		}
 		if (converter.addRestrictEndTimeCondition()) {
@@ -64,11 +166,12 @@ public class IDSPapRestController {
 		if (converter.addElapsedTimeRightOperand()) {
 			uid = baseUid + "restrict-access-interval";
 		}
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/ComplexPolicyForm")
 	public String complexPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "complex-policy-access";
 		converter.addLocationCondition();
@@ -80,89 +183,99 @@ public class IDSPapRestController {
 		converter.addPurposeCondition();
 		converter.addEventCondition();
 		converter.addCounterCondition();
-		converter.addRestrictTimeIntervalCondition();
+		converter.addRestrictInterval();
 		converter.addRestrictEndTimeCondition();
+		converter.addRestrictStartTimeCondition();
 		converter.addPaymentCondition();
 		converter.addElapsedTimeRightOperand();
 		converter.addRuleDistributeData();			
 		converter.addPostDuties();
 		converter.addPreDuties();
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/CountAccessPolicyForm")
 	public String countPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "count-access";
 		converter.addCounterCondition();
 		converter.addCounterToPostduties();
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/deletePolicyAfterUsage")
 	public String deletePolicyAfterUsage(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "delete-after-usage";
 		converter.addDeletePolicyAfterUsage();
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/deletePolicyAfterUsagePeriod")
 	public String deletePolicyAfterUsagePeriod(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "delete-after-usage";
 		converter.addDeletePolicyAfterUsagePeriod();
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/AnonymizeInRestPolicyForm")
 	public String anonymizeInRestolicy(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.OBLIGATION ,ActionType.ANONYMIZE);
 		String uid = baseUid + "anonymize-in-rest";
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/AnonymizeInTransitPolicyForm")
 	public String anonymizeTransitPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "anonymize-in-transit";
 		converter.addPreDuties();
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/LogAccessPolicyForm")
 	public String logPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "log-access";
 		converter.addPostDuties();
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/InformPolicyForm")
 	public String informPolicy(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.USE);
 		String uid = baseUid + "notify";
 		converter.addPostDuties();
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/DistributePolicyForm")
 	public String distributePolicyForm(@RequestBody RecievedOdrlPolicy rp) {
+		checkIfPolicyIsEditedAndDelete(rp);
 		JsonIDSConverter converter = new JsonIDSConverter(rp,RuleType.PERMISSION ,ActionType.DISTRIBUTE);
 		String uid = baseUid + "restrict-access-encoding";
 		converter.distributeData();
-		return converter.createPolicy(uid);
+		return converter.createPolicy(uid, policyService);
 	}
 	
 	@PostMapping("/policy/JsonOdrlPolicyMYDATA")
-	public String policy(@RequestBody String jsonPolicy) {
+	public String policy(@RequestBody String jsonPolicy)  {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 		boolean tempProviderSide = true;
 		return TransformPolicy.createTechnologyDependentPolicy(odrlPolicy, tempProviderSide);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@PostMapping("/policy/InterpretOdrlPolicy")
-	public String interpretPolicy(@RequestBody String jsonPolicy) {
+	public String interpretPolicy(@RequestBody String jsonPolicy)  {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(jsonPolicy);
 		Map map = null;
 		try {
@@ -180,12 +293,18 @@ public class IDSPapRestController {
 		return dtPolicy;
 	}
 	
-	@PostMapping("/policy/initialTDP")
-	public String initialTDP(@RequestBody String odrl) {
+	@PostMapping("/policy/initialTechnologyDependentPolicy")
+	public String initialTechnologyDependentPolicy(@RequestBody String odrl)  {
 		OdrlPolicy odrlPolicy = IdsOdrlUtil.getOdrlPolicy(odrl);
 		boolean tempProviderSide = true;
 		String dtPolicy = OdrlTranslator.translate(null, tempProviderSide, odrlPolicy);
-
 		return dtPolicy;
 	}
+	
+	@PostMapping("/policy/sendPolicy")
+	public String sendPolicy(@RequestBody JsonOdrlPolicy jsonOdrlPolicy) {
+		String returnedPolicy = UcAppService.sendPolicy(jsonOdrlPolicy);
+		return returnedPolicy;
+	}
+	
 }

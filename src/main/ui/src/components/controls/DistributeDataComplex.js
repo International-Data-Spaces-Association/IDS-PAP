@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+/**
+ * @file This file contains components for the distribute data page
+ * @author Tom Kollmer 
+ */
+
 import {
   Grid,
-  MenuItem,
-  Menu,
   Button,
   Paper,
-  Typography,
 } from "@material-ui/core";
 import Input from "./Input";
 import ItemPicker from "./ItemPicker";
@@ -14,40 +15,33 @@ import { artifact_state_list } from "./InitialFieldListValues";
 import { useStyle } from "../Style";
 import Remove from "./Remove";
 
+/**
+ * Components for the distribute data pages
+ * @component
+ * @param {object} valueHook access to the user input
+ * @param {object} errors contains all error messages
+ * @param {object} selectedComponents contains all selected components
+ * @param {func} removeEnteredData is called to remove entered data
+ * @param {func} removeComponent is called to remove components from the UI
+  * @returns component
+ */
 export default function DistributeDataComplex(props) {
-  const { values, setValues, errors, handleInputChange, removeEnteredData } =
-    props;
+  const {
+    valueHook,
+    errors,
+    selectedComponents,
+    setSelectedComponents,
+    removeEnteredData,
+    removeComponent,
+  } = props;
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   const classes = useStyle();
-
-  const selected_components = {
-    show_distribute: false,
-  };
-  const [selectedComponents, setSelectedComponents] =
-    useState(selected_components);
-
-  const showDistribute = () => {
-    setSelectedComponents({
-      ["show_distribute"]: !selectedComponents.show_distribute,
-    });
-  };
-
-  const resetStates = (e) => {
-    setSelectedComponents({
-      ["show_distribute"]: false,
-    });
-    removeEnteredData(["artifactState", "policy"]);
-  };
   return (
     <>
-        {selectedComponents.show_distribute ? (
-          <>
-                <Paper elevation={3} className={classes.paper}>
-            <Grid container >
+      {selectedComponents.availableComponents[0].isVisible ? (
+        <>
+          <Paper elevation={3} className={classes.paper}>
+            <Grid container>
               <Grid item xs={12}>
                 <Title label="Distribute Data" />
               </Grid>
@@ -57,42 +51,57 @@ export default function DistributeDataComplex(props) {
                   defaultValue=""
                   label="Artifact State"
                   ItemList={artifact_state_list}
-                  onChange={handleInputChange}
-                  error={errors.artifactState}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
-              <Remove onClick={resetStates} />
+              <Remove
+                onClick={() => {
+                  removeComponent("distributeData", "distribute");
+                  removeEnteredData(["artifactState", "policy"]);
+                }}
+              />
 
               <Grid item xs={11}>
                 <Input
                   name="policy"
                   label="Policy to be sent to the third party"
-                  value={values.policy}
                   placeholder="e.g. http://example.com/policy/offer-policy"
-                  onChange={handleInputChange}
-                  error={errors.policy}
+                  valueHook={valueHook}
+                  errors={errors}
                 />
               </Grid>
             </Grid>
-            </Paper>
-
-          </>
-        ) : (
-          <Grid item xs={12} container justify="center">
-            <Grid item xs={5}>
-              <Button
-                color="primary"
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={showDistribute}
-                className={classes.addBtn}
-                id="Add Component"
-              >
-                Distribute Data
-              </Button>
-            </Grid>
+          </Paper>
+        </>
+      ) : (
+        <Grid item xs={12} container justifyContent="center">
+          <Grid item xs={5}>
+            <Button
+              color="primary"
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={() => {
+                setSelectedComponents({
+                  prefix: "distributeData",
+                  order: [],
+                  availableComponents: [
+                    {
+                      id: "distribute",
+                      name: "Distribute Data",
+                      isVisible: true,
+                    },
+                  ],
+                });
+              }}
+              className={classes.addBtn}
+              id="Add Component"
+            >
+              Add Restriction to Distribute Data
+            </Button>
           </Grid>
-        )}
+        </Grid>
+      )}
     </>
   );
 }

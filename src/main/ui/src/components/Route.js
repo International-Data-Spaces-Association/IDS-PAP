@@ -1,3 +1,8 @@
+/**
+ * @file Here are all paths defined that are used by the UI 
+ * @author Tom Kollmer 
+ */
+
 import { Route, Switch } from "react-router-dom";
 import React from "react";
 import CountAccess from "../pages/CountAccess";
@@ -11,12 +16,19 @@ import DistributeData from "../pages/DistributeData";
 import ProvideAccess from "../pages/ProvideAccess";
 import DeleteDataAfter from "../pages/DeleteDataAfter";
 import InterpretOdrlPolicy from "../pages/InterpretOdrlPolicy";
+import ManagePolicies from "../pages/ManagePolicies";
 import ODRLCreator from "../pages/ODRLCreator";
 import Account from "../pages/Account";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import ForgotPassword from "../pages/ForgotPassword";
 import HowTo from "../pages/HowTo";
+import NegotiatePolicy from "../pages/NegotiatePolicy";
+/**
+ * Here are all routes to the pages defined. To add a new 
+ * page just add a new route and add the page component
+ * @returns Router
+ */
 export default function RouteToPage() {
   return (
     <Switch>
@@ -24,8 +36,16 @@ export default function RouteToPage() {
         <Home />
       </Route>
 
+      <Route exact path="/policy/NegotiatePolicy">
+        <NegotiatePolicy />
+      </Route>
+
       <Route exact path="/policy/InterpretOdrlPolicy">
         <InterpretOdrlPolicy />
+      </Route>
+
+      <Route exact path="/policy/ManagePolicies">
+        <ManagePolicies />
       </Route>
 
       <Route exact path="/policy/ComplexPolicyForm">
@@ -40,7 +60,7 @@ export default function RouteToPage() {
         <CountAccess />
       </Route>
 
-      <Route exact path="/policy/DeletData">
+      <Route exact path="/policy/DeleteData">
         <DeleteDataAfter />
       </Route>
 

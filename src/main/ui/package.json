@@ -1,15 +1,20 @@
 {
+  "proxy": "http://localhost:9090",
   "name": "odrl-pap",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fontsource/material-icons": "^4.5.4",
+    "@fontsource/roboto": "^4.5.8",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.61",
     "@tailwindcss/postcss7-compat": "^2.1.2",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.7",
     "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
+    "axios-retry": "^3.2.4",
     "browserslist": "^4.16.6",
     "caniuse-lite": "^1.0.30001230",
     "clsx": "^1.1.1",
@@ -17,10 +22,12 @@
     "fg-loadcss": "^3.1.0",
     "history": "^5.0.0",
     "icomoon-react": "^2.0.19",
+    "material-table": "^1.69.3",
     "postcss": "^7.0.35",
     "react": "^17.0.1",
     "react-codemirror2": "^7.2.1",
     "react-dom": "^17.0.1",
+    "react-promise-tracker": "^2.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
@@ -30,7 +37,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "createdoc": "jsdoc src -r -d docs"
   },
   "eslintConfig": {
     "extends": [
@@ -49,5 +57,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.10"
   }
 }

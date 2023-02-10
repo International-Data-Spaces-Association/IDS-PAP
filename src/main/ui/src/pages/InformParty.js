@@ -9,66 +9,90 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import InformParty from "../components/controls/InformParty";
+import { useLocation } from "react-router-dom";
 
 const selected_components = {
-  informedParty: true,
+  page: "InformParty",
 };
 
 export default function LogAccess() {
+  var initialValues = OdrlPolicy();
+  var stateLocal = useLocation().state;
+
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
   const handleSubmit = (e) => {
+    const values = valueHook[0];
+
     Submit(
       "/policy/InformPolicyForm",
       values,
-      selectedComponents,
+      selected_components,
       setErrors,
       history,
       e
     );
   };
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
+  };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
+
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy allows a specified IDS data consumer to use your data and requests notifications on each data usage."
           icon={<NotificationsActiveIcon />}
         />
         <Grid container>
-        <Grid item xs={12}>
-              <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-                
-          <IdentifyPolicy
-            values={values}
-            handleInputChange={handleInputChange}
-            errors={errors}
-          />
-          <InformParty
-          handleInputChange={handleInputChange}
-          errors={errors}
-          values={values}
-          type="postduties_"
-          />
-                        </Paper>
-            </Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.saveBtn}
-              type="submit"
-              id="Save"
-            >
-              Save
-            </Button>
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
+              <InformParty
+                valueHook={valueHook}
+                errors={errors}
+                prefix="postduties_"
+              />
+            </Paper>
           </Grid>
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
+              </Grid>
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
         </Grid>
       </Form>
     </div>

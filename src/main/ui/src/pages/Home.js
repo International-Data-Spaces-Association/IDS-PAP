@@ -5,6 +5,11 @@ import { loadCSS } from 'fg-loadcss';
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
+  container:{
+    minHeight: "89vh",
+    display: "flex",
+    flexDirection: "column",
+  },
   content: {
     fontSize: "100px",
   },
@@ -25,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
   infoBox: {
     backgroundColor: "#179c7d",
-    marginTop:'1em',
     padding:'1em',
     color:'white',
     textAlign:'justify',
+    marginTop: "auto",
   },
   text:{
     marginLeft:'1em',
@@ -62,7 +67,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={classes.root}>
+    <div className={classes.container}>
       <div className={classes.text}>
         <Typography variant="h3" className={classes.title}> Data Usage Control Scenario </Typography>
         <img className={classes.img} src={papEditor} alt=""></img>
@@ -112,10 +117,10 @@ export default function Home() {
       </div>
       <div className={classes.infoBox}>
         <Grid container spacing={1}>
-          <Grid item xs={2} md={1} container justify="center">
+          <Grid item xs={2} md={1} container justifyContent="center">
             <Icon className="fas fa-question" style={{ color: '#FFFFFF', fontSize:"4em",}} />
           </Grid>
-          <Grid container xs={10} justify="Bottom center">
+          <Grid container xs={10} justifyContent="Bottom center">
             <Typography variant="body1">
               {" "}
               Please check our page on{" "}

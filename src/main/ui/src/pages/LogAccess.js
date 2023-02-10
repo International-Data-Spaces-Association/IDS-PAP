@@ -9,35 +9,51 @@ import IdentifyPolicy from "../components/controls/IdentifyPolicy";
 import { OdrlPolicy } from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import LogData from "../components/controls/LogData";
+import { useLocation } from "react-router-dom";
 
 const selected_components = {
-  logAccess: true,
+  page: "LogAccess",
 };
 
 export default function LogAccess() {
+  var initialValues = OdrlPolicy()
+  var stateLocal = useLocation().state;
+  
+  if (stateLocal !== undefined) {
+    initialValues = stateLocal;
+  }
+
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
-  const [selectedComponents] = useState(selected_components);
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e) => {
+    const values = valueHook[0]
     Submit(
       "/policy/LogAccessPolicyForm",
       values,
-      selectedComponents,
+      selected_components,
       setErrors,
       history,
       e
     );
   };
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+    values["language"] = "ODRL" 
+    handleSubmit();
+  };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy gives permission to a specified IDS data consumer to use your data and requests to log the usage information on a specified system device."
           icon={<AssignmentIcon />}
@@ -46,32 +62,40 @@ export default function LogAccess() {
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
               <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
+                valueHook = {valueHook}
                 errors={errors}
               />
               <LogData
-                handleInputChange={handleInputChange}
-                values={values}
+                valueHook = {valueHook}
                 errors={errors}
                 xs={12}
                 sm={12}
                 md={12}
-                type="postduties_"
+                prefix="postduties_"
               />
             </Paper>
           </Grid>
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.saveBtn}
-              type="submit"
-              id="Save"
-            >
-              Save
-            </Button>
-          </Grid>
+          <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
+              </Grid>
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
         </Grid>
       </Form>
     </div>

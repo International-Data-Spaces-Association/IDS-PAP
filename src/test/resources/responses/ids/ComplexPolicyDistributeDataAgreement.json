@@ -1,0 +1,69 @@
+{
+    "ids:consumer": "http://example.com/ids/party/consumer-party",
+    "@type": "ids:ContractAgreement",
+    "ids:provider": "http://example.com/party/my-party",
+    "profile": "http://example.com/ids-profile",
+    "ids:permission": [
+        {
+            "ids:action": [{"@id": "idsc:USE"}],
+            "ids:target": {"@id": "http://target/"}
+        },
+        {
+            "ids:action": [{"@id": "idsc:DISTRIBUTE"}],
+            "ids:constraint": [{
+                "@type": "ids:Constraint",
+                "ids:pipEndpoint": {
+                    "@type": "ids:PIP",
+                    "ids:interfaceDescription": {
+                        "@value": "https://example.com/ids/PIP/interfaceDescription/artifact_state",
+                        "@type": "anyURI"
+                    },
+                    "ids:endpointURI": {
+                        "@value": "https://example.com/ids/PXPendpoint/artifact_state",
+                        "@type": "anyURI"
+                    }
+                },
+                "ids:comment": "  ",
+                "ids:rightOperand": [{
+                    "@value": "idsc:ANONYMIZED",
+                    "@type": "xsd:string"
+                }],
+                "ids:leftOperand": {"@id": "idsc:ARTIFACT_STATE"},
+                "ids:operator": {"@id": "idsc:EQUALS"}
+            }],
+            "ids:preDuty": [{
+                "ids:action": [{
+                    "ids:pxpEndpoint": {
+                        "@type": "ids:PXP",
+                        "ids:interfaceDescription": {
+                            "@value": "https://example.com/ids/PXP/interfaceDescription/next_policy",
+                            "@type": "anyURI"
+                        },
+                        "ids:endpointURI": {
+                            "@value": "https://example.com/ids/PXPendpoint/next_policy",
+                            "@type": "anyURI"
+                        }
+                    },
+                    "ids:refinement": [{
+                        "@type": "ids:Constraint",
+                        "ids:comment": "  ",
+                        "ids:rightOperand": [{
+                            "@value": "http://Policy1",
+                            "@type": "xsd:anyURI"
+                        }],
+                        "ids:leftOperand": {"@id": "idsc:TARGET_POLICY"},
+                        "ids:operator": {"@id": "idsc:DEFINES_AS"}
+                    }],
+                    "rdf:value": {"@id": "idsc:NEXT_POLICY"}
+                }],
+                "@type": "ids:Duty"
+            }],
+            "ids:target": {"@id": "http://target/"}
+        }
+    ],
+    "@id": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
+    "@context": {
+        "ids": "https://w3id.org/idsa/core/",
+        "idsc": "https://w3id.org/idsa/code/"
+    }
+}

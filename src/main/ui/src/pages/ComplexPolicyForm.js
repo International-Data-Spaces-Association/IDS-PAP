@@ -1,60 +1,110 @@
 import React, { useState } from "react";
 import { Grid, Button, Paper } from "@material-ui/core";
 import { useStyle } from "../components/Style";
+import Alert from '@material-ui/lab/Alert';
 import { useHistory } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+import {
+  OdrlPolicy,
+  recreateSelectedCompFromJson,
+  recreateSelectedDistriCompFromJson,
+  recreateSelectedPreduCompFromJson,
+  recreateSelectedPostduCompFromJson,
+} from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import PostDuty from "../components/controls/PostDuty";
 import PreDuty from "../components/controls/PreDuty";
 import AddRestrictions from "../components/AddRestrictions";
 import DistributeDataComplex from "../components/controls/DistributeDataComplex";
+import { useLocation } from "react-router-dom";
+import TemplateDialog from "../components/controls/TemplateDialog";
 export default function ComplexPolicyForm() {
   const selected_components = {
-    type: "restrictions",
+    prefix: "restrictions",
     order: [],
     availableComponents: [
-      { id: "application", name: "Application", isVisible: true },
-      { id: "connector", name: "Connector", isVisible: true },
-      { id: "counter", name: "Counter", isVisible: true },
-      { id: "duration", name: "Duration", isVisible: true },
-      { id: "endTime", name: "EndTime", isVisible: true },
-      { id: "event", name: "Event", isVisible: true },
-      { id: "interval", name: "Interval", isVisible: true },
-      { id: "location", name: "Location", isVisible: true },
-      { id: "payment", name: "Payment", isVisible: true },
-      { id: "purpose", name: "Purpose", isVisible: true },
-      { id: "role", name: "Role", isVisible: true },
-      { id: "securityLevel", name: "SecurityLevel", isVisible: true },
-      { id: "state", name: "State", isVisible: true },
+      { id: "application", name: "Application", isVisible: false },
+      { id: "connector", name: "Connector", isVisible: false },
+      { id: "counter", name: "Counter", isVisible: false },
+      { id: "duration", name: "Duration", isVisible: false },
+      { id: "startTime", name: "StartTime", isVisible: false },
+      { id: "endTime", name: "EndTime", isVisible: false },
+      { id: "event", name: "Event", isVisible: false },
+      { id: "interval", name: "Interval", isVisible: false },
+      { id: "location", name: "Location", isVisible: false },
+      { id: "payment", name: "Payment", isVisible: false },
+      { id: "purpose", name: "Purpose", isVisible: false },
+      { id: "role", name: "Role", isVisible: false },
+      { id: "securityLevel", name: "Security Level", isVisible: false },
+      { id: "state", name: "State", isVisible: false },
+    ],
+  };
+
+  const selected_distribute_components = {
+    prefix: "distributeData",
+    order: [],
+    availableComponents: [
+      { id: "distribute", name: "Distribute Data", isVisible: false },
     ],
   };
 
   const selected_preduties_components = {
-    type: "preduties",
+    prefix: "preduties",
     order: [],
     availableComponents: [
-      { id: "anonymizeTransit", name: "Anonymize in Transit", isVisible: true },
-      { id: "anonymizeInRest", name: "Anonymize in Rest", isVisible: true },
+      {
+        id: "anonymizeTransit",
+        name: "Anonymize in Transit",
+        isVisible: false,
+      },
+      { id: "anonymizeInRest", name: "Anonymize in Rest", isVisible: false },
     ],
   };
 
   const selected_postduties_components = {
-    type: "postduties",
+    prefix: "postduties",
     order: [],
     availableComponents: [
-      { id: "delete", name: "Delete Data After", isVisible: true },
-      { id: "log", name: "Log Data Usage", isVisible: true },
-      { id: "inform", name: "Inform Party", isVisible: true },
+      { id: "delete", name: "Delete Data After", isVisible: false },
+      { id: "log", name: "Log Data Usage", isVisible: false },
+      { id: "inform", name: "Inform Party", isVisible: false },
     ],
   };
 
+  const selected_delete_data_components = {
+    postduties_duration: false,
+    postduties_timeDate: false,
+  };
+  // Used to recreate the state if an existing policy is shown
+  var initialValues = OdrlPolicy();
+  initialValues = recreateSelectedCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_components
+  );
+  recreateSelectedDistriCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_distribute_components
+  );
+  recreateSelectedPreduCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_preduties_components
+  );
+  recreateSelectedPostduCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_postduties_components,
+    selected_delete_data_components
+  );
+
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] =
@@ -62,16 +112,23 @@ export default function ComplexPolicyForm() {
   const [selectedPreDuties, setSelectedPreDuties] = useState(
     selected_preduties_components
   );
+  const [
+    selectedDistributeDataComponents,
+    setSelectedDistributeDataComponents,
+  ] = useState(selected_distribute_components);
+
   const [selectedPostDuties, setSelectedPostDuties] = useState(
     selected_postduties_components
   );
 
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-    console.log(values);
-  };
+  const [selectedDeleteComponents, setSelectedDeleteComponents] = useState(
+    selected_delete_data_components
+  );
 
-  const handleSubmit = (e) => {
+
+  function preprocessSubmit(){
+    const values = valueHook[0];
+
     OdrlPolicy.location_input = [""];
     OdrlPolicy.application_input = [""];
     OdrlPolicy.connector_input = [""];
@@ -80,38 +137,68 @@ export default function ComplexPolicyForm() {
     OdrlPolicy.event_input = [""];
     OdrlPolicy.state_input = [""];
     OdrlPolicy.securityLevel_input = [""];
-    const dict = selectedComponents.availableComponents;
-    var state = {};
-    dict.forEach(function (item) {
-      state[item.id] = !item.isVisible;
+    var state = { page: "CreatePolicy" };
+    selectedComponents.availableComponents.forEach(function (item) {
+      state[item.id] = item.isVisible;
     });
+    selectedPreDuties.availableComponents.forEach(function (item) {
+      state[item.id] = item.isVisible;
+    });
+    selectedPostDuties.availableComponents.forEach(function (item) {
+      state[item.id] = item.isVisible;
+    });
+
+    selectedDistributeDataComponents.availableComponents.forEach(function (
+      item
+    ) {
+      state[item.id] = item.isVisible;
+    });
+    for (const [key, value] of Object.entries(selectedDeleteComponents)) {
+      state[key] = value;
+    }
+    return {values, state}
+  }
+  const handleSubmit = (e) => {
+    var {values, state} = preprocessSubmit()
+    values["is_template"] = false
+    //values["originQuery"] = ""
     Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
   };
 
+  const handleSubmitTemplate = (e) => {
+    var {values, state} = preprocessSubmit()
+
+    Submit("/policy/ComplexPolicyForm", values, state, setErrors, history, e);
+    values["is_template"] = false
+    //values["originQuery"] = ""
+  };
+  
+
   const resetStates = () => {
-    OdrlPolicy.location_input = [""];
-    OdrlPolicy.application_input = [""];
-    OdrlPolicy.connector_input = [""];
-    OdrlPolicy.role_input = [""];
-    OdrlPolicy.purpose_input = [""];
-    OdrlPolicy.event_input = [""];
-    OdrlPolicy.state_input = [""];
-    OdrlPolicy.securityLevel_input = [""];
-    setValues({ ...OdrlPolicy });
+    const setValues = valueHook[1];
+    setValues({ ...OdrlPolicy() });
     setSelectedComponents({ ...selected_components });
     setSelectedPostDuties({ ...selected_postduties_components });
     setSelectedPreDuties({ ...selected_preduties_components });
+    setSelectedDistributeDataComponents({ ...selected_distribute_components });
+    setSelectedDeleteComponents({ ...selected_delete_data_components });
   };
 
-  const removeComponent = (type, id) => {
-    const states = [selectedComponents, selectedPostDuties, selectedPreDuties];
+  const removeComponent = (prefix, id) => {
+    const states = [
+      selectedComponents,
+      selectedDistributeDataComponents,
+      selectedPostDuties,
+      selectedPreDuties,
+    ];
     const setStates = [
       setSelectedComponents,
+      setSelectedDistributeDataComponents,
       setSelectedPostDuties,
       setSelectedPreDuties,
     ];
     states.forEach(function (state, index) {
-      if (state.type === type) {
+      if (state.prefix === prefix) {
         const dict = state.availableComponents;
         const list = state.order;
         const setState = setStates[index];
@@ -120,7 +207,7 @@ export default function ComplexPolicyForm() {
           if (item.id === id) {
             const obj = JSON.parse(JSON.stringify(state));
             obj.order = list.filter((e) => e !== id);
-            obj.availableComponents[key].isVisible = true;
+            obj.availableComponents[key].isVisible = false;
             setState({ ...obj });
           }
         });
@@ -128,11 +215,26 @@ export default function ComplexPolicyForm() {
     });
   };
 
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
+  };
+
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
+
+
   const removeEnteredData = (ids) => {
+    const values = valueHook[0];
     ids.forEach(function (id) {
-      if (OdrlPolicy[id] instanceof Array) {
+      if (values[id] instanceof Array) {
         values[id] = [""];
-        OdrlPolicy[id] = [""];
       } else {
         values[id] = "";
       }
@@ -142,89 +244,112 @@ export default function ComplexPolicyForm() {
   return (
     <>
       <div className={classes.page}>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <PageHeader
             title="This policy gives permission to a specified IDS data consumer to use your data."
             icon={<PostAddIcon />}
           />
           <Grid container>
+          {errors.odrlLanguageError !== undefined && errors.odrlLanguageError !== ""? (
+            <Grid item xs={12}>
+              <Alert severity="error">{errors.odrlLanguageError} </Alert>
+            </Grid>):null}
+
+            {!Object.values(errors).every((x) => x === "") && valueHook[0].is_template? (
+            <Grid item xs={12}>
+              <Alert severity="error">Unable to save template! </Alert>
+            </Grid>):null}
+
             <Grid item xs={12}>
               <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-                <IdentifyPolicy
-                  classes={classes}
-                  values={values}
-                  handleInputChange={handleInputChange}
-                  errors={errors}
-                />
+                <IdentifyPolicy valueHook={valueHook} errors={errors} />
                 <AddRestrictions
-                  selectedComponents={selectedComponents}
-                  values={values}
-                  setValues={setValues}
+                  valueHook={valueHook}
                   errors={errors}
-                  handleInputChange={handleInputChange}
+                  selectedComponents={selectedComponents}
                   removeComponent={removeComponent}
                   removeEnteredData={removeEnteredData}
                   classes={classes}
-                  type={"preduties"}
+                  prefix={"preduties"}
                 />
               </Paper>
             </Grid>
 
             <Grid item xs={12}>
               <DistributeDataComplex
-                values={values}
-                setValues={setValues}
+                valueHook={valueHook}
                 errors={errors}
-                handleInputChange={handleInputChange}
                 removeEnteredData={removeEnteredData}
+                selectedComponents={selectedDistributeDataComponents}
+                setSelectedComponents={setSelectedDistributeDataComponents}
+                removeComponent={removeComponent}
               />
             </Grid>
 
             <Grid item xs={12}>
               <PreDuty
-                selectedComponents={selectedPreDuties}
-                values={values}
-                setValues={setValues}
+                valueHook={valueHook}
                 errors={errors}
-                handleInputChange={handleInputChange}
+                selectedComponents={selectedPreDuties}
                 removeComponent={removeComponent}
                 removeEnteredData={removeEnteredData}
                 classes={classes}
                 name={"Pre Duty"}
                 title={"Pre Duties"}
-                type={"preduties"}
+                prefix={"preduties"}
               />
             </Grid>
 
             <Grid item xs={12}>
               <PostDuty
-                selectedComponents={selectedPostDuties}
-                values={values}
-                setValues={setValues}
+                valueHook={valueHook}
                 errors={errors}
-                handleInputChange={handleInputChange}
+                selectedComponents={selectedPostDuties}
+                setSelectedComponents={setSelectedDistributeDataComponents}
+                selectedDeleteComponents={selectedDeleteComponents}
+                setSelectedDeleteComponents={setSelectedDeleteComponents}
                 removeComponent={removeComponent}
                 removeEnteredData={removeEnteredData}
                 classes={classes}
                 name={"Post Duty"}
                 title={"Post Duties"}
-                type={"postduties"}
+                prefix={"postduties"}
               />
             </Grid>
 
             <Grid container>
+              
               <Grid item xs={2} xm={1}>
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   className={classes.saveBtn}
-                  type="submit"
-                  id="Save"
+                  onClick={handleClickSetIDS}
                 >
-                  Save
+                  generate IDS policy
                 </Button>
               </Grid>
-              <Grid item xs={7} xm={9} />
+
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
+
+
+              <Grid item xs={2} xm={2}>
+                <TemplateDialog
+                  valueHook={valueHook}
+                  handleSubmit={handleSubmitTemplate}
+                  originPath="/policy/ComplexPolicyForm"
+                />
+              </Grid>
+              <Grid item xs={4} xm={8} />
 
               <Grid item xs={2} xm={1}>
                 <Button

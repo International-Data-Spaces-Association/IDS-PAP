@@ -6,33 +6,45 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { useHistory } from "react-router-dom";
 import Form from "../components/controls/Form";
 import IdentifyPolicy from "../components/controls/IdentifyPolicy";
-import { OdrlPolicy } from "../components/backend/OdrlPolicy";
+import {
+  OdrlPolicy,
+  recreateSelectedCompFromJson,
+} from "../components/backend/OdrlPolicy";
 import Submit from "../components/backend/Submit";
 
 import FormComponents from "../components/FormComponents";
 import MenuItems from "../components/controls/MenuItems";
+import { useLocation } from "react-router-dom";
 
 export default function ProvideAccess() {
   const selected_components = {
+    prefix: "components",
     order: [],
     availableComponents: [
-      { id: "application", name: "Application", isVisible: true },
-      { id: "connector", name: "Connector", isVisible: true },
-      { id: "duration", name: "Duration", isVisible: true },
-      { id: "endTime", name: "EndTime", isVisible: true },
-      { id: "event", name: "Event", isVisible: true },
-      { id: "interval", name: "Interval", isVisible: true },
-      { id: "location", name: "Location", isVisible: true },
-      { id: "payment", name: "Payment", isVisible: true },
-      { id: "purpose", name: "Purpose", isVisible: true },
-      { id: "role", name: "Role", isVisible: true },
-      { id: "securityLevel", name: "SecurityLevel", isVisible: true },
-      { id: "state", name: "State", isVisible: true },
+      { id: "application", name: "Application", isVisible: false },
+      { id: "connector", name: "Connector", isVisible: false },
+      { id: "duration", name: "Duration", isVisible: false },
+      { id: "endTime", name: "EndTime", isVisible: false },
+      { id: "event", name: "Event", isVisible: false },
+      { id: "interval", name: "Interval", isVisible: false },
+      { id: "location", name: "Location", isVisible: false },
+      { id: "payment", name: "Payment", isVisible: false },
+      { id: "purpose", name: "Purpose", isVisible: false },
+      { id: "role", name: "Role", isVisible: false },
+      { id: "securityLevel", name: "SecurityLevel", isVisible: false },
+      { id: "state", name: "State", isVisible: false },
     ],
   };
 
+  var initialValues = OdrlPolicy();
+  initialValues = recreateSelectedCompFromJson(
+    useLocation().state,
+    initialValues,
+    selected_components
+  );
+
   const classes = useStyle();
-  const [values, setValues] = useState(OdrlPolicy);
+  const valueHook = useState(initialValues);
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const [selectedComponents, setSelectedComponents] =
@@ -45,29 +57,73 @@ export default function ProvideAccess() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const removeEnteredData = (id1, id2) => {
-    setValues({ ...values, [id1]: OdrlPolicy[id1], [id2]: OdrlPolicy[id2] });
+
+  const removeComponent = (id) => {
+    const prefix = "components";
+    const states = [selectedComponents];
+    const setStates = [setSelectedComponents];
+    states.forEach(function (state, index) {
+      if (state.prefix === prefix) {
+        const dict = state.availableComponents;
+        const list = state.order;
+        const setState = setStates[index];
+
+        dict.forEach(function (item, key) {
+          if (item.id === id) {
+            const obj = JSON.parse(JSON.stringify(state));
+            obj.order = list.filter((e) => e !== id);
+            obj.availableComponents[key].isVisible = false;
+            setState({ ...obj });
+          }
+        });
+      }
+    });
   };
 
-  const resetStates = () => {
-    setSelectedComponents({ ...selected_components });
+  const removeEnteredData = (ids) => {
+    const values = valueHook[0];
+    ids.forEach(function (id) {
+      if (values[id] instanceof Array) {
+        values[id] = [""];
+      } else {
+        values[id] = "";
+      }
+    });
   };
-  const handleInputChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+
 
   const handleSubmit = (e) => {
+    const values = valueHook[0];
     const dict = selectedComponents.availableComponents;
-    var state = {};
+    var state = { page: "ProvideAccess" };
     dict.forEach(function (item) {
-      state[item.id] = !item.isVisible;
+      state[item.id] = item.isVisible;
     });
-    Submit("/policy/ProvideAccess", values, state, setErrors, history, e);
+    Submit(
+      "/policy/ProvideAccessPolicyForm",
+      values,
+      state,
+      setErrors,
+      history,
+      e
+    );
+  };
+  const handleClickSetODRL = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "ODRL" 
+    handleSubmit();
   };
 
+  const handleClickSetIDS = (event, index) => {
+    const values = valueHook[0];
+
+    values["language"] = "IDS" 
+    handleSubmit();
+  };
   return (
     <div className={classes.page}>
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <PageHeader
           title="This policy gives permission to a specified IDS data consumer to use your data."
           icon={<LockOpenIcon />}
@@ -76,34 +132,28 @@ export default function ProvideAccess() {
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paperWithoutRemoveBtn}>
-              <IdentifyPolicy
-                values={values}
-                handleInputChange={handleInputChange}
-                errors={errors}
-              />
+              <IdentifyPolicy valueHook={valueHook} errors={errors} />
               <FormComponents
                 selectedComponents={selectedComponents}
-                values={values}
-                setValues={setValues}
+                valueHook={valueHook}
                 errors={errors}
-                handleInputChange={handleInputChange}
-                removeComponent={resetStates}
+                removeComponent={removeComponent}
                 removeEnteredData={removeEnteredData}
               />
               {Object.values(selectedComponents.availableComponents).every(
-                (x) => x.isVisible === true
+                (x) => x.isVisible === false
               ) ? (
-                <Grid item xs={12} container justify="center">
+                <Grid item xs={12} container justifyContent="center">
                   <Grid item xs={2}>
                     <Button
                       color="primary"
                       aria-controls="simple-menu"
                       aria-haspopup="true"
                       onClick={handleClick}
-                      id="Add Component"
+                      id="Add Restriction"
                       className={classes.addBtn}
                     >
-                      Add Component
+                      Add Restriction
                     </Button>
                   </Grid>
                   <Menu
@@ -122,18 +172,28 @@ export default function ProvideAccess() {
               ) : null}
             </Paper>
           </Grid>
+          <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetIDS}
+                >
+                  generate IDS policy
+                </Button>
+              </Grid>
 
-          <Grid item xs={2}>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.saveBtn}
-              type="submit"
-              id="Save"
-            >
-              Save
-            </Button>
-          </Grid>
+              <Grid item xs={2} xm={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.saveBtn}
+                  onClick={handleClickSetODRL}
+                >
+                  generate ODRL policy
+                </Button>
+              </Grid>
+
         </Grid>
       </Form>
     </div>

@@ -1,3 +1,8 @@
+/**
+ * @file This contains the navigation component
+ * @author Tom Kollmer 
+ */
+
 import React from "react";
 import clsx from "clsx";
 import {
@@ -17,7 +22,7 @@ import { Link } from "react-router-dom";
 import logo from "../images/fhg.svg";
 import profile_img from "../images/John.jpg";
 
-import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import SearchIcon from '@material-ui/icons/Search';
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -28,9 +33,10 @@ import ShareIcon from "@material-ui/icons/Share";
 import EqualizerIcon from "@material-ui/icons/Equalizer";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import MenuItem from "@material-ui/core/MenuItem";
-
+import BallotIcon from '@material-ui/icons/Ballot';
 import iconSet from "../icons/selection.json";
 import IcomoonReact from "icomoon-react";
+import MergeTypeIcon from '@material-ui/icons/MergeType';
 import "../index.css";
 var drawerWidth = 324;
 
@@ -82,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: "0px",
     },
     "& .MuiListItem-root": {
-      height: "75px",
+      height: "69px",
       color: theme.palette.primary.light,
       fontFamily: "FrutigerLTComBold",
       fontSize: "1rem",
@@ -98,15 +104,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * This component is used to show the toolbar and navigation menu. 
+ * The menu can also be minimized
+ * @param {object} open react hook that contains a boolean if the navigation is open
+ * @param {func} setOpen function to set the state of open
+ * @returns 
+ */
 export default function Navigation(props) {
   const { open, setOpen } = props;
   const classes = useStyles();
   const [logedIn] = React.useState(true);
-  const [selected, setSelected] = React.useState({ selected: null });
+  const [selected, setSelected] = React.useState({ selected: "" });
 
+  console.log(selected)
   React.useEffect(() => {
-    const parsedSelected = String(localStorage.getItem("selected") || "")
-    setSelected({ selected: parsedSelected });
+    //const parsedSelected = String(localStorage.getItem("selected") || "")
+    //setSelected({ selected: parsedSelected });
   }, [])
 
   React.useEffect(() => {
@@ -182,18 +196,34 @@ export default function Navigation(props) {
           {logedIn ? (
             <>
               <List>
+                {/*
+              <MenuItem
+                  button
+                  component={Link}
+                  to="/policy/NegotiatePolicy"
+                  onClick={() => updateSelected("Negotiate Policy")}
+                  selected={selected.selected === "Negotiate Policy"}
+                  className={classes.menuItem}
+                >
+                  <MergeTypeIcon className={classes.listitemicon} />
+
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Negotiate Policy
+                  </ListItemText>
+                </MenuItem>
+                */}
                 <MenuItem
                   button
                   component={Link}
                   to="/policy/InterpretOdrlPolicy"
-                  onClick={() => updateSelected("Interprete an IDS Policy")}
-                  selected={selected.selected === "Interprete an IDS Policy"}
+                  onClick={() => updateSelected("Interpret an IDS Policy")}
+                  selected={selected.selected === "Interpret an IDS Policy"}
                   className={classes.menuItem}
                 >
-                  <SwapHorizIcon className={classes.listitemicon} />
+                  <SearchIcon className={classes.listitemicon} />
 
                   <ListItemText classes={{ primary: classes.navigation }}>
-                    Interprete Policy
+                    Interpret Policy
                   </ListItemText>
                 </MenuItem>
 
@@ -208,6 +238,20 @@ export default function Navigation(props) {
                   <PostAddIcon className={classes.listitemicon} />
                   <ListItemText classes={{ primary: classes.navigation }}>
                     Create Policy
+                  </ListItemText>
+                </MenuItem>
+
+                <MenuItem
+                  button
+                  component={Link}
+                  to="/policy/ManagePolicies"
+                  onClick={() => updateSelected("Manage Policies")}
+                  selected={selected.selected === "Manage Policies"}
+                  className={classes.menuItem}
+                >
+                  <BallotIcon className={classes.listitemicon} />
+                  <ListItemText classes={{ primary: classes.navigation }}>
+                    Manage Policies
                   </ListItemText>
                 </MenuItem>
 
@@ -243,7 +287,7 @@ export default function Navigation(props) {
                 <MenuItem
                   button
                   component={Link}
-                  to="/policy/DeletData"
+                  to="/policy/DeleteData"
                   onClick={() => updateSelected("Delete Data After")}
                   selected={selected.selected === "Delete Data After"}
                   className={classes.menuItem}
@@ -309,7 +353,7 @@ export default function Navigation(props) {
                     Inform Party
                   </ListItemText>
                 </MenuItem>
-
+                
                 <MenuItem
                   button
                   component={Link}
@@ -323,6 +367,7 @@ export default function Navigation(props) {
                     Distribute Data
                   </ListItemText>
                 </MenuItem>
+                <MenuItem/>
               </List>
             </>
           ) : null}

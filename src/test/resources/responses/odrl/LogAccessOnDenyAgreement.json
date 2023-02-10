@@ -1,0 +1,40 @@
+{
+    "uid": "https://w3id.org/idsa/autogen/contract/log-access",
+    "@type": "Agreement",
+    "profile": "http://example.com/odrl:profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "duty": [{"action": [{
+            "refinement": [
+                {
+                    "leftOperand": "idsc:LOG_LEVEL",
+                    "rightOperand": [{
+                        "@value": "idsc:ON_DENY",
+                        "@type": "xsd:string"
+                    }],
+                    "operator": "eq"
+                },
+                {
+                    "leftOperand": "systemDevice",
+                    "rightOperand": [{
+                        "@value": "http://SystemDevice",
+                        "@type": "xsd:anyURI"
+                    }],
+                    "operator": "eq"
+                }
+            ],
+            "rdf:value": {"@id": "idsc:LOG"}
+        }]}],
+        "assignee": "http://example.com/ids/party/consumer-party",
+        "target": "http://target/"
+    }],
+    "@context": [
+        "http://www.w3.org/ns/odrl.jsonld",
+        {
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/",
+            "dc": "http://purl.org/dc/terms/"
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "uid": "https://w3id.org/idsa/autogen/contract/complex-policy-access",
+    "@type": "Agreement",
+    "profile": "http://example.com/odrl:profile",
+    "permission": [{
+        "assigner": "http://example.com/party/my-party",
+        "action": "use",
+        "assignee": "http://example.com/ids/party/consumer-party",
+        "target": "http://target/"
+    }],
+    "@context": [
+        "http://www.w3.org/ns/odrl.jsonld",
+        {
+            "ids": "https://w3id.org/idsa/core/",
+            "idsc": "https://w3id.org/idsa/code/",
+            "dc": "http://purl.org/dc/terms/"
+        }
+    ]
+}
