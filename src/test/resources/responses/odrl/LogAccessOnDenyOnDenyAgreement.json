@@ -1,40 +1,55 @@
 {
-    "uid": "https://w3id.org/idsa/autogen/contract/notify",
+    "uid": "https:\/\/w3id.org\/idsa\/autogen\/contract\/notify",
     "@type": "Agreement",
-    "profile": "http://example.com/odrl:profile",
-    "permission": [{
-        "assigner": "http://example.com/party/my-party",
-        "action": "use",
-        "duty": [{"action": [{
-            "refinement": [
+    "profile": "http:\/\/example.com\/odrl:profile",
+    "permission": [
+        {
+            "assigner": "http:\/\/example.com\/party\/my-party",
+            "action": "use",
+            "duty": [
                 {
-                    "leftOperand": "idsc:NOTIFICATION_LEVEL",
-                    "rightOperand": [{
-                        "@value": "idsc:ON_DENY",
-                        "@type": "xsd:string"
-                    }],
-                    "operator": "eq"
-                },
-                {
-                    "leftOperand": "recipient",
-                    "rightOperand": [{
-                        "@value": "http://SystemDevice",
-                        "@type": "xsd:anyURI"
-                    }],
-                    "operator": "eq"
+                    "action": [
+                        {
+                            "refinement": [
+                                {
+                                    "leftOperand": "idsc:NOTIFICATION_LEVEL",
+                                    "rightOperand": [
+                                        {
+                                            "@value": "idsc:ON_DENY",
+                                            "@type": "xsd:string"
+                                        }
+                                    ],
+                                    "operator": "eq"
+                                },
+                                {
+                                    "leftOperand": "recipient",
+                                    "rightOperand": [
+                                        {
+                                            "@value": "http:\/\/SystemDevice",
+                                            "@type": "xsd:anyURI"
+                                        }
+                                    ],
+                                    "operator": "eq"
+                                }
+                            ],
+                            "rdf:value": {
+                                "@id": "idsc:NOTIFY"
+                            }
+                        }
+                    ]
                 }
             ],
-            "rdf:value": {"@id": "idsc:NOTIFY"}
-        }]}],
-        "assignee": "http://example.com/ids/party/consumer-party",
-        "target": "http://target/"
-    }],
-    "@context": [
-        "http://www.w3.org/ns/odrl.jsonld",
-        {
-            "ids": "https://w3id.org/idsa/core/",
-            "idsc": "https://w3id.org/idsa/code/",
-            "dc": "http://purl.org/dc/terms/"
+            "assignee": "http:\/\/example.com\/ids\/party\/consumer-party",
+            "target": "http:\/\/target\/"
         }
+    ],
+    "@context": [
+        "http:\/\/www.w3.org\/ns\/odrl.jsonld",
+        {
+            "ids": "https:\/\/w3id.org\/idsa\/core\/",
+            "idsc": "https:\/\/w3id.org\/idsa\/code\/",
+            "dc": "http:\/\/purl.org\/dc\/terms\/"
+        },
+        null
     ]
 }

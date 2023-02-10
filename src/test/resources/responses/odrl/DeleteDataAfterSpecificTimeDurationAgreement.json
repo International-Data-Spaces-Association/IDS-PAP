@@ -1,30 +1,45 @@
 {
-    "uid": "https://w3id.org/idsa/autogen/contract/delete-after-usage",
+    "uid": "https:\/\/w3id.org\/idsa\/autogen\/contract\/delete-after-usage",
     "@type": "Agreement",
-    "profile": "http://example.com/odrl:profile",
-    "permission": [{
-        "assigner": "http://example.com/party/my-party",
-        "action": "use",
-        "duty": [{"action": [{
-            "refinement": [{
-                "leftOperand": "delayPeriod",
-                "rightOperand": [{
-                    "@value": "P2021Y11M1DT10H",
-                    "@type": "xsd:duration"
-                }],
-                "operator": "eq"
-            }],
-            "rdf:value": {"@id": "delete"}
-        }]}],
-        "assignee": "http://example.com/ids/party/consumer-party",
-        "target": "http://target/"
-    }],
-    "@context": [
-        "http://www.w3.org/ns/odrl.jsonld",
+    "profile": "http:\/\/example.com\/odrl:profile",
+    "permission": [
         {
-            "ids": "https://w3id.org/idsa/core/",
-            "idsc": "https://w3id.org/idsa/code/",
-            "dc": "http://purl.org/dc/terms/"
+            "assigner": "http:\/\/example.com\/party\/my-party",
+            "action": "use",
+            "duty": [
+                {
+                    "action": [
+                        {
+                            "refinement": [
+                                {
+                                    "leftOperand": "delayPeriod",
+                                    "rightOperand": [
+                                        {
+                                            "@value": "P2021Y11M1DT10H",
+                                            "@type": "xsd:duration"
+                                        }
+                                    ],
+                                    "operator": "eq"
+                                }
+                            ],
+                            "rdf:value": {
+                                "@id": "delete"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "assignee": "http:\/\/example.com\/ids\/party\/consumer-party",
+            "target": "http:\/\/target\/"
         }
+    ],
+    "@context": [
+        "http:\/\/www.w3.org\/ns\/odrl.jsonld",
+        {
+            "ids": "https:\/\/w3id.org\/idsa\/core\/",
+            "idsc": "https:\/\/w3id.org\/idsa\/code\/",
+            "dc": "http:\/\/purl.org\/dc\/terms\/"
+        },
+        null
     ]
 }
