@@ -15,7 +15,12 @@ Download maven [here](https://maven.apache.org)
 ### Dependencies
 #### Policy Library
 To be able to run it, it is necessary to install  the maven project Policy Library first.
-You can get it [here](https://gitlab.cc-asp.fraunhofer.de/iese-ids/policy-library).
+You can get it from the following locations:
+
+[Fraunhofer GitLab](https://gitlab.cc-asp.fraunhofer.de/iese-ids/policy-library)
+
+[IDSA Github](https://github.com/International-Data-Spaces-Association/Policy-Library/tree/master)
+
 
     <dependency>  
          <groupId>de.fraunhofer.iese.ids.odrl</groupId>  
@@ -25,7 +30,11 @@ You can get it [here](https://gitlab.cc-asp.fraunhofer.de/iese-ids/policy-librar
 
 #### MY DATA Translator
 To be able to run it, it is necessary to install  the maven project MY Data Translator.
-You can get it [here](https://gitlab.cc-asp.fraunhofer.de/iese-ids/mydata-translator).
+You can get it from the following locations:
+
+[Fraunhofer GitLab](https://gitlab.cc-asp.fraunhofer.de/iese-ids/mydata-translator)
+
+[IDSA Github](https://github.com/International-Data-Spaces-Association/Mydata-Translator/tree/master)
 
     <dependency>  
          <groupId>de.fraunhofer.iese.ids.odrl</groupId>  
